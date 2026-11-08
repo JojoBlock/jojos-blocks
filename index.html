@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JoJo’s Blocks — Children's Coloring Books &amp; Activity Books</title>
+<meta name="description" content="JoJo’s Blocks is a children's coloring book brand offering digital PDF coloring books for parents and children. Explore the collection, colour, learn and play — screen-free.">
+<meta name="keywords" content="children's coloring books, kids coloring books, printable coloring books, activity books for kids, coloring pages for kids">
+<meta name="author" content="JoJo’s Blocks">
+<meta name="robots" content="index, follow">
+<!-- TODO: replace www.example.com with your real domain in all meta, JSON-LD, sitemap.xml and robots.txt -->
+<link rel="canonical" href="https://www.example.com/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="JoJo’s Blocks — Children's Coloring Books &amp; Activity Books">
+<meta property="og:description" content="Colourful, screen-free digital PDF coloring books for children.">
+<meta property="og:url" content="https://www.example.com/">
+<meta property="og:image" content="https://www.example.com/assets/covers/book-01.svg">
+<meta property="og:site_name" content="JoJo’s Blocks">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="JoJo’s Blocks — Children's Coloring Books">
+<meta name="twitter:description" content="Colourful, screen-free coloring and activity books for children.">
+<meta name="twitter:image" content="https://www.example.com/assets/covers/book-01.svg">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "JoJo’s Blocks",
+  "url": "https://www.example.com/",
+  "description": "Children's coloring books as digital PDF editions for parents and children.",
+  "publisher": { "@type": "Organization", "name": "JoJo’s Blocks", "url": "https://www.example.com/" }
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#books">Skip to books</a>
+
+<header id="site-header">
+  <div class="wrap nav">
+    <a class="logo" href="#top" aria-label="JoJo’s Blocks — home"><span class="logo-mark" aria-hidden="true">🧱</span> JoJo’s Blocks</a>
+    <button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">☰</button>
+    <nav aria-label="Main navigation">
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="#top">Home</a></li>
+        <li><a href="#books">Our Books</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#why">Why Choose Us</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a class="btn btn-primary btn-sm" href="#books">Shop Books</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">✦ Colour • Create • Learn</span>
+        <h1 id="hero-title">Where little imaginations <span class="hl-coral">colour</span> the world <span class="hl-teal">bright</span>.</h1>
+        <p class="lead">Beautiful coloring and activity books made for curious kids and the parents who love watching them create. Pick a book, grab the crayons, and enjoy calm, screen-free time together.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#books">Explore Our Books →</a>
+          <a class="btn btn-outline" href="#about">Discover Our Collection</a>
+        </div>
+        <ul class="hero-points">
+          <li>🖨️ Printable PDF</li>
+                    <li>📵 Screen-free play</li>
+        </ul>
+      </div>
+      <div class="hero-art">
+        <img src="assets/covers/book-01.svg" alt="Colourful placeholder book cover for JoJo’s Blocks — a rainbow, crayons and playful shapes" width="800" height="960">
+        <div class="float-badge badge-a">🎨 Creativity first<small>Colour, imagine, play</small></div>
+        <div class="float-badge badge-b">📚 PDF &amp; print<small>Choose your favourite format</small></div>
+      </div>
+    </div>
+    <div class="wrap trust" aria-label="Ways to buy">
+      <span>✓ Digital PDF coloring books only</span>
+      <span>✓ Print at home, again and again</span>
+      <span>✓ Made for family colouring time</span>
+    </div>
+  </section>
+
+  <!-- BOOKS -->
+  <section class="section section-alt" id="books" aria-labelledby="books-title">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Our Books</span>
+          <h2 id="books-title">Featured book collection</h2>
+          <p class="lead">Browse the collection below — new coloring books will be added over time. Real titles and details will appear here when you add them in js/products.js — nothing below is invented from a book we have not seen.</p>
+        </div>
+        <p id="book-count" aria-live="polite"></p>
+      </div>
+      <div class="product-grid" id="product-grid"><!-- Cards are rendered by js/main.js from js/products.js --></div>
+      <div class="placeholder-note" role="note">
+        <strong>About these cards:</strong> these are placeholders, ready for you to fill in yourself. No titles, ages, page counts or purchase links have been invented. To add a real book, open <code>js/products.js</code> and edit that book's title, description, age, pages, cover and links — the step-by-step beginner's guide is in the project README. Leave any detail you do not know as <code>null</code> and it will simply not be shown.
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section class="section" id="why" aria-labelledby="why-title">
+    <div class="wrap">
+      <div class="center">
+        <span class="eyebrow">Why Parents Love Our Books</span>
+        <h2 id="why-title">Colouring is play — and play is how children learn</h2>
+        <p class="lead">Colouring gives children a calm, creative activity they can enjoy on their own or together with you. These are general benefits of creative play, not medical claims about any individual child.</p>
+      </div>
+      <div class="grid-3" style="margin-top:36px">
+        <article class="feature reveal"><div class="icon icon-pink" aria-hidden="true">🎨</div><h3>Creativity &amp; imagination</h3><p>Blank pages invite children to choose colours, invent stories and make each picture their own.</p></article>
+        <article class="feature reveal"><div class="icon icon-mint" aria-hidden="true">✏️</div><h3>Fine motor practice</h3><p>Holding crayons and colouring inside shapes gives little hands everyday practice with grip and control.</p></article>
+        <article class="feature reveal"><div class="icon icon-peach" aria-hidden="true">🧩</div><h3>Learning through play</h3><p>Themed pages can introduce animals, letters, numbers and the world around us in a relaxed, playful way.</p></article>
+        <article class="feature reveal"><div class="icon icon-lav" aria-hidden="true">📵</div><h3>Screen-free time</h3><p>A book, some crayons and a quiet table — a simple alternative to screens for car rides, waiting rooms and rainy days.</p></article>
+        <article class="feature reveal"><div class="icon icon-sun" aria-hidden="true">👨‍👩‍👧</div><h3>Time together</h3><p>Colouring side by side is an easy way to talk, laugh and share a calm moment as a family.</p></article>
+        <article class="feature reveal"><div class="icon icon-pink" aria-hidden="true">🖨️</div><h3>Print again &amp; again</h3><p>With a printable PDF, a favourite page can be printed fresh whenever a child wants to colour it differently.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section section-alt" id="about" aria-labelledby="about-title">
+    <div class="wrap about-grid">
+      <div class="about-art"><img src="assets/covers/book-02.svg" alt="Placeholder cover artwork for JoJo’s Blocks book two" loading="lazy" width="800" height="960"></div>
+      <div>
+        <span class="eyebrow">About Our Brand</span>
+        <h2 id="about-title">A creative destination for young colourists</h2>
+        <p>JoJo’s Blocks is a children's coloring book brand. We make coloring books, activity books and educational printable books that children enjoy and parents can trust for simple, screen-free fun.</p>
+        <p>Our books are digital PDF coloring books. Buy the PDF, print the pages at home, and colour them again and again.</p>
+        <ul class="check-list">
+          <li>Original, child-friendly illustrations — no copied characters</li>
+          <li>Clear, age-appropriate themes (details added per book)</li>
+          <li>Digital PDF format, ready to print at home</li>
+          <li>Designed for home, school and travel</li>
+        </ul>
+        <p><em>We do not claim awards, a founder story or company history here — those details will be added only if you provide them.</em></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW TO BUY -->
+  <section class="section" id="how-to-buy" aria-labelledby="how-title">
+    <div class="wrap">
+      <div class="center"><span class="eyebrow">How To Buy</span><h2 id="how-title">Four easy steps</h2></div>
+      <div class="steps" style="margin-top:36px">
+        <article class="step reveal"><div class="step-num">1</div><h3>Explore the collection</h3><p>Browse the books above and open View Details to see what each book includes.</p></article>
+        <article class="step reveal"><div class="step-num">2</div><h3>Choose a favourite</h3><p>Pick the theme your child will love most.</p></article>
+        <article class="step reveal"><div class="step-num">3</div><h3>Choose your PDF</h3><p>Pick the digital PDF coloring book your child will love most.</p></article>
+        <article class="step reveal"><div class="step-num">4</div><h3>Get your PDF</h3><p>When a purchase link is live, click Get the PDF to complete your purchase and receive your download. This site takes no payment itself.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section section-alt" id="faq" aria-labelledby="faq-title">
+    <div class="wrap">
+      <div class="center"><span class="eyebrow">FAQ</span><h2 id="faq-title">Frequently asked questions</h2></div>
+      <div class="faq" style="margin-top:32px">
+        <div class="faq-item"><button class="faq-q" aria-expanded="false">What are coloring books?<span class="chev" aria-hidden="true">⌄</span></button><div class="faq-a"><p>Colouring books are collections of black-and-white line illustrations for children (and grown-ups) to colour in with crayons, pencils or markers. Ours also include activity-style pages, depending on the book.</p></div></div>
+        <div class="faq-item"><button class="faq-q" aria-expanded="false">Which age groups are the books suitable for?<span class="chev" aria-hidden="true">⌄</span></button><div class="faq-a"><p>Age guidance is shown on each product card once it has been added for that book. If no age is shown, it has not been added yet — please check the book's details before buying.</p></div></div>
+        <div class="faq-item"><button class="faq-q" aria-expanded="false">Are the books digital PDFs?<span class="chev" aria-hidden="true">⌄</span></button><div class="faq-a"><p>Yes — JoJo’s Blocks sells digital PDF coloring books only. Where a Get the PDF button is live, the book is available as a downloadable PDF. Buttons marked “link coming soon” do not have a purchase link yet.</p></div></div>
+        <div class="faq-item"><button class="faq-q" aria-expanded="false">How do I buy a book?<span class="chev" aria-hidden="true">⌄</span></button><div class="faq-a"><p>Choose a book, then click Get the PDF. If the button says “link coming soon”, that book is not for sale yet.</p></div></div>
+        <div class="faq-item"><button class="faq-q" aria-expanded="false">How do I receive a digital download?<span class="chev" aria-hidden="true">⌄</span></button><div class="faq-a"><p>After buying, you will receive the PDF download from the seller — usually on the confirmation page and by email. This website does not send or store the files.</p></div></div>
+        <div class="faq-item"><button class="faq-q" aria-expanded="false">Can coloring books be printed at home?<span class="chev" aria-hidden="true">⌄</span></button><div class="faq-a"><p>Yes. Print the pages you want on ordinary home printer paper. Check that book’s licence terms before sharing or reselling pages.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="section" id="newsletter" aria-labelledby="news-title">
+    <div class="wrap">
+      <div class="newsletter reveal">
+        <h2 id="news-title">Join the JoJo’s Blocks community</h2>
+        <p>Be first to hear about new books and printable freebies. No spam — just new colouring fun, when there is something new to share.</p>
+        <form class="newsletter-form" id="newsletter-form" novalidate>
+          <label class="skip-link" for="newsletter-email">Email address</label>
+          <input type="email" id="newsletter-email" name="email" placeholder="Your email address" autocomplete="email" required>
+          <button class="btn btn-dark" type="submit">Subscribe</button>
+        </form>
+        <p class="newsletter-note" id="newsletter-note">This form is front-end only for now — it is not yet connected to an email service. See README.md for how to connect one.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a class="footer-logo" href="#top"><span class="logo-mark" aria-hidden="true">🧱</span> JoJo’s Blocks</a>
+        <p>Digital PDF coloring books for children — colour, learn and play, screen-free.</p>
+        <p>Contact: <span id="contact-email">Email address to be added</span></p>
+      </div>
+      <nav aria-label="Footer navigation"><h4>Explore</h4><a href="#top">Home</a><a href="#books">Our Books</a><a href="#about">About Us</a><a href="#why">Why Choose Us</a><a href="#faq">FAQ</a></nav>
+      <nav aria-label="Our books"><h4>Our Books</h4><a href="#books">Book 1</a><a href="#books">Book 2</a><a href="#books">Book 3</a><a href="#books">Book 4</a></nav>
+      <nav aria-label="Legal"><h4>Legal</h4><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms &amp; Conditions</a><a href="#newsletter">Newsletter</a></nav>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year">2026</span> JoJo’s Blocks. All rights reserved.</span>
+      <span>Working brand name — update in js/products.js and index.html.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Product detail modal -->
+<div class="modal" id="product-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Book details">
+  <div class="modal-card">
+    <button class="modal-close" type="button" aria-label="Close details">✕</button>
+    <div id="modal-body" style="display:contents"></div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="js/products.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
