@@ -131,7 +131,8 @@ coloring-book-store/
 ├── css/styles.css
 ├── js/products.js      # ★ EDIT BOOKS, LINKS, BRAND, DOMAIN HERE
 ├── js/main.js          # rendering, modal, FAQ, menu, newsletter — no need to edit
-├── assets/favicon.svg
+├── assets/favicon.svg      # old favicon (kept, no longer referenced)
+├── assets/profile-logo.jpg # brand logo — the exact file used as the Gumroad profile picture (800x800 coral logo, SHA-256 bfeb971a97a94eadca759e9052424f9ce031febc06d0d27651e7bdce590a08b5); also the site favicon and header/footer logo
 ├── assets/covers/book-01.svg … book-04.svg   # placeholder covers
 ├── robots.txt
 ├── sitemap.xml
