@@ -1,4 +1,5 @@
 User-agent: *
-Allow: /
+Disallow: /
 Sitemap: https://www.example.com/sitemap.xml
-# TODO: replace www.example.com with your real domain.
+# Site is unpublished — change "Disallow: /" to "Allow: /" when you launch,
+# and replace www.example.com with your real domain.

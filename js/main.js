@@ -25,7 +25,7 @@
 
   function buyButton(url, label, cls) {
     if (url) {
-      return '<a class="btn ' + cls + '" href="' + url + '" target="_blank" rel="noopener sponsored">' + label + '</a>';
+      return '<a class="btn ' + cls + '" href="' + url + '" target="_blank" rel="noopener">' + label + '</a>';
     }
     return '<button type="button" class="btn ' + cls + ' btn-disabled" data-missing="' + label + '">' + label + ' — link coming soon</button>';
   }
@@ -65,7 +65,7 @@
       '<h4>What&rsquo;s inside</h4>' +
       '<ul class="card-features">' + p.features.map(function (f) { return "<li>" + f + "</li>"; }).join("") + '</ul>' +
       '<div class="card-actions">' + buyButton(p.pdfUrl, "Get the PDF", "btn-primary") + '</div>' +
-      '<p class="modal-note">This is a digital PDF coloring book. No payment is taken on this site, and no purchase link has been added yet — add one in js/products.js when you are ready to sell it.</p></div>';
+      '<p class="modal-note">This is a digital PDF coloring book. It is not for sale yet — check back soon.</p></div>';
     modal.classList.add("open");
     modal.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
@@ -88,7 +88,7 @@
     }
     var missing = e.target.closest("[data-missing]");
     if (missing) {
-      showToast(missing.getAttribute("data-missing") + ": the purchase link has not been added yet. Add it in js/products.js — see README.md.");
+      showToast(missing.getAttribute("data-missing") + ": this book is not for sale yet — check back soon.");
       return;
     }
     if (e.target === modal || e.target.closest(".modal-close")) closeModal();
@@ -137,7 +137,12 @@
     });
   });
 
-  /* Reveal on scroll */
+  /* Reveal on scroll — render the product cards FIRST, so they are
+     included in the elements observed below. (Previously the cards
+     were rendered after this setup, so they were never observed and
+     stayed invisible.) */
+  renderProducts();
+
   var revealEls = document.querySelectorAll(".reveal");
   if ("IntersectionObserver" in window) {
     var io = new IntersectionObserver(function (entries) {
@@ -164,19 +169,24 @@
       if (SITE_CONFIG.newsletterConnected) {
         note.textContent = "Thank you! You are subscribed.";
       } else {
-        note.textContent = "Thank you — your email was noted in this browser only. The newsletter is not connected to an email service yet, so no email was sent or stored on a server. Connect a service (see README.md) to make this live.";
+        note.textContent = "Thank you — the newsletter is not connected yet, so your email was not sent or stored. Please check back soon.";
       }
       form.reset();
     });
   }
 
-  /* Footer year + contact placeholder */
+  /* Footer year + contact (the contact line stays hidden until a
+     real email is set in SITE_CONFIG.contactEmail). */
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
+  var contactLine = document.getElementById("contact-line");
   var contactEl = document.getElementById("contact-email");
-  if (contactEl) {
-    contactEl.textContent = SITE_CONFIG.contactEmail || "Email address to be added";
+  if (contactLine) {
+    if (SITE_CONFIG.contactEmail && contactEl) {
+      contactEl.textContent = SITE_CONFIG.contactEmail;
+    } else {
+      contactLine.style.display = "none";
+    }
   }
 
-  renderProducts();
 })();

@@ -111,7 +111,7 @@ header.scrolled{box-shadow:0 6px 24px rgba(43,45,66,.08)}
 .faq-q .chev{transition:transform .2s ease;font-size:1.2rem;color:var(--coral)}
 .faq-item.open .faq-q .chev{transform:rotate(180deg)}
 .faq-a{max-height:0;overflow:hidden;transition:max-height .25s ease}
-.faq-item.open .faq-a{max-height:320px}
+.faq-item.open .faq-a{max-height:480px}
 .faq-a p{padding:0 22px 20px;margin:0;color:var(--muted)}
 
 /* Newsletter */
