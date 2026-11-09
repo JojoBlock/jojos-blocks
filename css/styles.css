@@ -110,8 +110,11 @@ header.scrolled{box-shadow:0 6px 24px rgba(43,45,66,.08)}
 .faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;gap:16px;background:none;border:0;padding:19px 22px;font-family:var(--font-body);font-size:1.06rem;font-weight:800;color:var(--ink);cursor:pointer;text-align:left}
 .faq-q .chev{transition:transform .2s ease;font-size:1.2rem;color:var(--coral)}
 .faq-item.open .faq-q .chev{transform:rotate(180deg)}
-.faq-a{max-height:0;overflow:hidden;transition:max-height .25s ease}
-.faq-item.open .faq-a{max-height:480px}
+/* FAQ answers are visible by default (no-JS fallback). Only once JS has
+   run and added the .js class to <html> do they collapse until opened. */
+.faq-a{max-height:none}
+html.js .faq-a{max-height:0;overflow:hidden;transition:max-height .25s ease}
+html.js .faq-item.open .faq-a{max-height:480px}
 .faq-a p{padding:0 22px 20px;margin:0;color:var(--muted)}
 
 /* Newsletter */

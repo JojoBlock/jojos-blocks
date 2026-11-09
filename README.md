@@ -92,7 +92,7 @@ Copy one whole product block in `js/products.js`, paste it after the last one, a
 - If a card disappears, open the browser console (F12) — a JavaScript error there usually names the line in `js/products.js`.
 
 ## Replace the domain placeholder
-Search the project for `www.example.com` and replace it with your real domain in: `index.html` (canonical, Open Graph/Twitter, JSON-LD), `js/products.js` (`SITE_CONFIG.domain`), `sitemap.xml`, `robots.txt`. Also update `SITE_CONFIG.contactEmail` in `js/products.js` when you have a contact email — until then the footer contact line is hidden.
+Search the project for `www.example.com` and replace it with your real domain in: `index.html` (canonical, Open Graph/Twitter, JSON-LD), `js/products.js` (`SITE_CONFIG.domain`), `sitemap.xml`, `robots.txt`. Also update `SITE_CONFIG.contactEmail` in `js/products.js` when you have a contact email — until then the footer reads “Contact details coming soon”.
 
 ## Audit — 9 Nov 2026
 A full audit found and fixed these genuine problems (design and colours unchanged):
@@ -102,6 +102,9 @@ A full audit found and fixed these genuine problems (design and colours unchange
 - **Small technical fixes:** the purchase-link `rel` no longer claims `sponsored`; the newsletter message no longer says your email was "noted in this browser" (it is not stored anywhere); FAQ answers can now expand to 480px instead of 320px; Privacy Policy and Terms pages now have meta descriptions.
 - **Unpublished site kept out of search:** the page meta robots tag was `index, follow` and `robots.txt` allowed all crawlers, even though the site is unpublished. Both are now set to block indexing/crawling until launch (see the launch checklist for how to flip them back).
 - Still needed from you before launch: real book details, a contact email, a real domain, and legal review of Privacy/Terms. The GitHub repository was also found showing as **Public** on 9 Nov 2026 even though it was set to Private on 8 Nov — check its visibility in GitHub Settings before sharing anything.
+
+## Preview ↔ GitHub reconciliation — 9 Nov 2026
+The hosted preview had picked up extra improvements that were not in the GitHub source. They are now all in this source (and on GitHub): book-detail modal is focus-trapped, titled by the book name and returns focus when closed; FAQ buttons use `aria-controls`/ids and the answers stay visible if JavaScript is off; light/dark `theme-color` tags; FAQ structured data (JSON-LD) matches the visible FAQ word for word; hero second button reads “See How Buying Works” and links to How to Buy; footer book links show the real titles; footer reads “Contact details coming soon” until a real email is set; Books 3–4 covers and the About photo load eagerly with their 600×849 shape reserved; collection intro and the yellow parents' note rewritten; newsletter note shortened. Design, colours and typography unchanged. The full-cover fix (`object-fit: contain`, 600×849) was already on GitHub before this — see commit `1db03655`.
 
 ## Newsletter
 The form is front-end only (`SITE_CONFIG.newsletterConnected: false`). To make it live, connect an email service (e.g. Mailchimp / ConvertKit / Buttondown), point the form at its endpoint, then set `newsletterConnected: true`.

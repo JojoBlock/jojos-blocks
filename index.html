@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#FFF9F0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#2B2D42" media="(prefers-color-scheme: dark)">
 <title>JoJo’s Blocks — Children's Coloring Books | Digital PDF Coloring Books</title>
 <meta name="description" content="JoJo’s Blocks is a children's coloring book brand offering digital PDF coloring books for parents and children. Explore the collection, colour, learn and play — screen-free.">
 <meta name="keywords" content="children's coloring books, kids coloring books, printable coloring books, coloring pages for kids, digital PDF coloring books">
@@ -33,6 +35,44 @@
   "url": "https://www.example.com/",
   "description": "Children's coloring books as digital PDF editions for parents and children.",
   "publisher": { "@type": "Organization", "name": "JoJo’s Blocks", "url": "https://www.example.com/" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What are coloring books?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Colouring books are collections of black-and-white line illustrations for children (and grown-ups) to colour in with crayons, pencils or markers. Ours are digital PDF coloring books you can print at home." }
+    },
+    {
+      "@type": "Question",
+      "name": "Which age groups are the books suitable for?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Age guidance is shown on each product card once it has been added for that book. If no age is shown, it has not been added yet — please check the book's details before buying." }
+    },
+    {
+      "@type": "Question",
+      "name": "Are the books digital PDFs?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes — JoJo’s Blocks sells digital PDF coloring books only. Where a Get the PDF button is live, the book is available as a downloadable PDF. Buttons marked “link coming soon” do not have a purchase link yet." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I buy a book?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Choose a book, then click Get the PDF. If the button says “link coming soon”, that book is not for sale yet." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I receive a digital download?",
+      "acceptedAnswer": { "@type": "Answer", "text": "After buying, you will receive the PDF download from the seller — usually on the confirmation page and by email. This website does not send or store the files." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can coloring books be printed at home?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Print the pages you want on ordinary home printer paper. Check that book’s licence terms before sharing or reselling pages." }
+    }
+  ]
 }
 </script>
 </head>
@@ -67,7 +107,7 @@
         <p class="lead">Beautiful coloring books made for curious kids and the parents who love watching them create. Pick a book, grab the crayons, and enjoy calm, screen-free time together.</p>
         <div class="hero-ctas">
           <a class="btn btn-primary" href="#books">Explore Our Books →</a>
-          <a class="btn btn-outline" href="#books">Browse the Collection</a>
+          <a class="btn btn-outline" href="#how-to-buy">See How Buying Works</a>
         </div>
         <ul class="hero-points">
           <li>🖨️ Printable PDF</li>
@@ -95,11 +135,12 @@
         <div>
           <span class="eyebrow">Our Books</span>
           <h2 id="books-title">Featured book collection</h2>
-          <p class="lead">Browse the collection below — new coloring books will be added over time. Each book is a digital PDF you can print at home.</p>
+          <p class="lead">Browse the collection below — every book is a digital PDF you print at home, so favourite pages can be coloured again and again. New books are added regularly.</p>
         </div>
         <p id="book-count" aria-live="polite"></p>
       </div>
-      <div class="product-grid" id="product-grid"><!-- Cards are rendered by js/main.js from js/products.js --></div>
+      <div class="product-grid" id="product-grid"><noscript><p class="placeholder-note">Please enable JavaScript to browse the book collection.</p></noscript><!-- Cards are rendered by js/main.js from js/products.js --></div>
+      <p class="placeholder-note">For parents: not sure where to start? Open View Details on any book to see what&rsquo;s inside before you choose.</p>
     </div>
   </section>
 
@@ -125,7 +166,7 @@
   <!-- ABOUT -->
   <section class="section section-alt" id="about" aria-labelledby="about-title">
     <div class="wrap about-grid">
-      <div class="about-art"><img src="assets/covers/book-02.jpg" alt="My First Animal Explorer cover — a lion, elephant, giraffe, monkey, rabbit and panda" loading="lazy" width="600" height="849"></div>
+      <div class="about-art"><img src="assets/covers/book-02.jpg" alt="My First Animal Explorer cover — a lion, elephant, giraffe, monkey, rabbit and panda" loading="eager" width="600" height="849"></div>
       <div>
         <span class="eyebrow">About Our Brand</span>
         <h2 id="about-title">A creative destination for young colourists</h2>
@@ -160,12 +201,12 @@
     <div class="wrap">
       <div class="center"><span class="eyebrow">FAQ</span><h2 id="faq-title">Frequently asked questions</h2></div>
       <div class="faq" style="margin-top:32px">
-        <div class="faq-item"><button class="faq-q" aria-expanded="false">What are coloring books?<span class="chev" aria-hidden="true">⌄</span></button><div class="faq-a"><p>Colouring books are collections of black-and-white line illustrations for children (and grown-ups) to colour in with crayons, pencils or markers. Ours are digital PDF coloring books you can print at home.</p></div></div>
-        <div class="faq-item"><button class="faq-q" aria-expanded="false">Which age groups are the books suitable for?<span class="chev" aria-hidden="true">⌄</span></button><div class="faq-a"><p>Age guidance is shown on each product card once it has been added for that book. If no age is shown, it has not been added yet — please check the book's details before buying.</p></div></div>
-        <div class="faq-item"><button class="faq-q" aria-expanded="false">Are the books digital PDFs?<span class="chev" aria-hidden="true">⌄</span></button><div class="faq-a"><p>Yes — JoJo’s Blocks sells digital PDF coloring books only. Where a Get the PDF button is live, the book is available as a downloadable PDF. Buttons marked “link coming soon” do not have a purchase link yet.</p></div></div>
-        <div class="faq-item"><button class="faq-q" aria-expanded="false">How do I buy a book?<span class="chev" aria-hidden="true">⌄</span></button><div class="faq-a"><p>Choose a book, then click Get the PDF. If the button says “link coming soon”, that book is not for sale yet.</p></div></div>
-        <div class="faq-item"><button class="faq-q" aria-expanded="false">How do I receive a digital download?<span class="chev" aria-hidden="true">⌄</span></button><div class="faq-a"><p>After buying, you will receive the PDF download from the seller — usually on the confirmation page and by email. This website does not send or store the files.</p></div></div>
-        <div class="faq-item"><button class="faq-q" aria-expanded="false">Can coloring books be printed at home?<span class="chev" aria-hidden="true">⌄</span></button><div class="faq-a"><p>Yes. Print the pages you want on ordinary home printer paper. Check that book’s licence terms before sharing or reselling pages.</p></div></div>
+        <div class="faq-item"><button class="faq-q" id="faq-q1" aria-expanded="false" aria-controls="faq-a1">What are coloring books?<span class="chev" aria-hidden="true">⌄</span></button><div class="faq-a" id="faq-a1" role="region" aria-labelledby="faq-q1"><p>Colouring books are collections of black-and-white line illustrations for children (and grown-ups) to colour in with crayons, pencils or markers. Ours are digital PDF coloring books you can print at home.</p></div></div>
+        <div class="faq-item"><button class="faq-q" id="faq-q2" aria-expanded="false" aria-controls="faq-a2">Which age groups are the books suitable for?<span class="chev" aria-hidden="true">⌄</span></button><div class="faq-a" id="faq-a2" role="region" aria-labelledby="faq-q2"><p>Age guidance is shown on each product card once it has been added for that book. If no age is shown, it has not been added yet — please check the book's details before buying.</p></div></div>
+        <div class="faq-item"><button class="faq-q" id="faq-q3" aria-expanded="false" aria-controls="faq-a3">Are the books digital PDFs?<span class="chev" aria-hidden="true">⌄</span></button><div class="faq-a" id="faq-a3" role="region" aria-labelledby="faq-q3"><p>Yes — JoJo’s Blocks sells digital PDF coloring books only. Where a Get the PDF button is live, the book is available as a downloadable PDF. Buttons marked “link coming soon” do not have a purchase link yet.</p></div></div>
+        <div class="faq-item"><button class="faq-q" id="faq-q4" aria-expanded="false" aria-controls="faq-a4">How do I buy a book?<span class="chev" aria-hidden="true">⌄</span></button><div class="faq-a" id="faq-a4" role="region" aria-labelledby="faq-q4"><p>Choose a book, then click Get the PDF. If the button says “link coming soon”, that book is not for sale yet.</p></div></div>
+        <div class="faq-item"><button class="faq-q" id="faq-q5" aria-expanded="false" aria-controls="faq-a5">How do I receive a digital download?<span class="chev" aria-hidden="true">⌄</span></button><div class="faq-a" id="faq-a5" role="region" aria-labelledby="faq-q5"><p>After buying, you will receive the PDF download from the seller — usually on the confirmation page and by email. This website does not send or store the files.</p></div></div>
+        <div class="faq-item"><button class="faq-q" id="faq-q6" aria-expanded="false" aria-controls="faq-a6">Can coloring books be printed at home?<span class="chev" aria-hidden="true">⌄</span></button><div class="faq-a" id="faq-a6" role="region" aria-labelledby="faq-q6"><p>Yes. Print the pages you want on ordinary home printer paper. Check that book’s licence terms before sharing or reselling pages.</p></div></div>
       </div>
     </div>
   </section>
@@ -181,7 +222,7 @@
           <input type="email" id="newsletter-email" name="email" placeholder="Your email address" autocomplete="email" required>
           <button class="btn btn-dark" type="submit">Subscribe</button>
         </form>
-        <p class="newsletter-note" id="newsletter-note">We are setting up our newsletter — this form is not connected yet, so your email will not be sent or stored. Check back soon.</p>
+        <p class="newsletter-note" id="newsletter-note">Our newsletter isn&rsquo;t connected yet — check back soon.</p>
       </div>
     </div>
   </section>
@@ -193,10 +234,10 @@
       <div>
         <a class="footer-logo" href="#top"><span class="logo-mark" aria-hidden="true">🧱</span> JoJo’s Blocks</a>
         <p>Digital PDF coloring books for children — colour, learn and play, screen-free.</p>
-        <p id="contact-line">Contact: <span id="contact-email"></span></p>
+        <p id="contact-line">Contact: <span id="contact-email">details coming soon</span></p>
       </div>
       <nav aria-label="Footer navigation"><h4>Explore</h4><a href="#top">Home</a><a href="#books">Our Books</a><a href="#about">About Us</a><a href="#why">Why Choose Us</a><a href="#faq">FAQ</a></nav>
-      <nav aria-label="Our books"><h4>Our Books</h4><a href="#books">Book 1</a><a href="#books">Book 2</a><a href="#books">Book 3</a><a href="#books">Book 4</a></nav>
+      <nav aria-label="Our books"><h4>Our Books</h4><a href="#books">My First ABC Book</a><a href="#books">My First Animal Explorer</a><a href="#books">My Little Community Helpers</a><a href="#books">My Little Space Adventure</a></nav>
       <nav aria-label="Legal"><h4>Legal</h4><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms &amp; Conditions</a><a href="#newsletter">Newsletter</a></nav>
     </div>
     <div class="footer-bottom">
@@ -207,7 +248,7 @@
 </footer>
 
 <!-- Product detail modal -->
-<div class="modal" id="product-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Book details">
+<div class="modal" id="product-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-title">
   <div class="modal-card">
     <button class="modal-close" type="button" aria-label="Close details">✕</button>
     <div id="modal-body" style="display:contents"></div>

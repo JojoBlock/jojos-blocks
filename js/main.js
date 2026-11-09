@@ -1,11 +1,16 @@
 /* JoJo’s Blocks — interactions. Vanilla JS, no dependencies. */
 (function () {
   "use strict";
+  /* Mark JS as available: without this class the FAQ answers stay
+     visible (no-JS fallback) — see css/styles.css (.faq-a). */
+  document.documentElement.classList.add("js");
+
   var grid = document.getElementById("product-grid");
   var modal = document.getElementById("product-modal");
   var modalBody = document.getElementById("modal-body");
   var toast = document.getElementById("toast");
   var toastTimer = null;
+  var lastFocused = null;
 
   function showToast(msg) {
     if (!toast) return;
@@ -31,9 +36,14 @@
   }
 
   function cardHTML(p) {
+    /* Books 3 and 4 sit further down the page: load their covers
+       eagerly so they never show up as blank colour blocks while
+       lazy-loading catches up. Fixed width/height reserves the
+       600x849 cover shape and prevents layout shift. */
+    var loading = (p.id === "book-03" || p.id === "book-04") ? "eager" : "lazy";
     return '' +
     '<article class="card reveal" data-id="' + p.id + '">' +
-      '<div class="card-cover"><img src="' + p.cover + '" alt="' + p.coverAlt + '" loading="lazy" width="600" height="849">' +
+      '<div class="card-cover"><img src="' + p.cover + '" alt="' + p.coverAlt + '" loading="' + loading + '" width="600" height="849">' +
       '<span class="card-badge">' + p.slot + '</span></div>' +
       '<div class="card-body">' +
         '<h3>' + p.title + '</h3>' +
@@ -56,10 +66,11 @@
   }
 
   function openModal(p) {
+    lastFocused = document.activeElement;
     modalBody.innerHTML =
-      '<div class="modal-cover"><img src="' + p.cover + '" alt="' + p.coverAlt + '"></div>' +
+      '<div class="modal-cover"><img src="' + p.cover + '" alt="' + p.coverAlt + '" width="600" height="849"></div>' +
       '<div class="modal-info"><span class="eyebrow">' + p.slot + ' · ' + p.theme + '</span>' +
-      '<h3>' + p.title + '</h3>' +
+      '<h3 id="modal-title">' + p.title + '</h3>' +
       '<p class="card-meta">' + metaLine(p) + '</p>' +
       '<p>' + p.description + '</p>' +
       '<h4>What&rsquo;s inside</h4>' +
@@ -77,7 +88,26 @@
     modal.classList.remove("open");
     modal.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
+    if (lastFocused && lastFocused.focus) lastFocused.focus();
+    lastFocused = null;
   }
+
+  /* Focus trap: while the modal is open, Tab cycles only through
+     the controls inside it instead of wandering behind it. */
+  modal.addEventListener("keydown", function (e) {
+    if (e.key !== "Tab" || !modal.classList.contains("open")) return;
+    var focusables = modal.querySelectorAll('button:not([disabled]), a[href]');
+    if (!focusables.length) return;
+    var first = focusables[0];
+    var last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  });
 
   document.addEventListener("click", function (e) {
     var details = e.target.closest("[data-details]");
@@ -121,7 +151,9 @@
     if (header) header.classList.toggle("scrolled", window.scrollY > 8);
   }, { passive: true });
 
-  /* FAQ accordion — one open at a time, keyboard friendly (native <button>) */
+  /* FAQ accordion — one open at a time, keyboard friendly (native <button>).
+     Buttons are wired in index.html with aria-controls + ids, so screen
+     readers can follow each question to its answer. */
   document.querySelectorAll(".faq-q").forEach(function (btn) {
     btn.addEventListener("click", function () {
       var item = btn.closest(".faq-item");
@@ -169,24 +201,20 @@
       if (SITE_CONFIG.newsletterConnected) {
         note.textContent = "Thank you! You are subscribed.";
       } else {
-        note.textContent = "Thank you — the newsletter is not connected yet, so your email was not sent or stored. Please check back soon.";
+        note.textContent = "Thank you — the newsletter isn’t connected yet, so your email wasn’t sent or stored.";
       }
       form.reset();
     });
   }
 
-  /* Footer year + contact (the contact line stays hidden until a
-     real email is set in SITE_CONFIG.contactEmail). */
+  /* Footer year + contact. Until a real email is set in
+     SITE_CONFIG.contactEmail, the footer reads
+     "Contact: details coming soon" instead of hiding the line. */
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
-  var contactLine = document.getElementById("contact-line");
   var contactEl = document.getElementById("contact-email");
-  if (contactLine) {
-    if (SITE_CONFIG.contactEmail && contactEl) {
-      contactEl.textContent = SITE_CONFIG.contactEmail;
-    } else {
-      contactLine.style.display = "none";
-    }
+  if (SITE_CONFIG.contactEmail && contactEl) {
+    contactEl.textContent = SITE_CONFIG.contactEmail;
   }
 
 })();
