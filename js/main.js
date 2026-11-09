@@ -76,7 +76,7 @@
       '<h4>What&rsquo;s inside</h4>' +
       '<ul class="card-features">' + p.features.map(function (f) { return "<li>" + f + "</li>"; }).join("") + '</ul>' +
       '<div class="card-actions">' + buyButton(p.pdfUrl, "Get the PDF", "btn-primary") + '</div>' +
-      '<p class="modal-note">This is a digital PDF coloring book. It is not for sale yet — check back soon.</p></div>';
+      '<p class="modal-note">' + (p.pdfUrl ? 'This is a digital PDF. Click Get the PDF to buy securely on Gumroad — your download is ready right after purchase. This site takes no payment itself.' : 'This is a digital PDF coloring book. It is not for sale yet — check back soon.') + '</p></div>';
     modal.classList.add("open");
     modal.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";

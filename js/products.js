@@ -13,8 +13,8 @@
       purchase link in pdfUrl. Leave it as null until then —
       the button will show an honest "link coming soon" note
       instead of sending visitors to a wrong page.
-      Never paste a guessed link. No marketplace or payment
-      system is connected yet.
+      Never paste a guessed link. Gumroad checkout is now
+      connected (Nov 2026) — pdfUrl holds each book's real Gumroad link.
    Business focus: digital PDF coloring books only.
    5. Replace cover with your own image in assets/covers/
       and update the cover field, e.g. "assets/covers/my-book.jpg"
@@ -72,7 +72,7 @@ const PRODUCTS = [
     ],
     cover: "assets/covers/book-01.jpg",
     coverAlt: "My First ABC Book cover — colourful ABC letters with an apple, a beach ball and a kitten",
-    pdfUrl: null,  // real PDF purchase link — add later, when you are ready to sell
+    pdfUrl: "https://jojosblocks.gumroad.com/l/my-first-abc-book",  // Gumroad checkout — verified 9 Nov 2026, products still unpublished drafts
     seo: {
       focusKeyword: "abc coloring book for toddlers ages 2-4",
       secondaryKeywords: [],
@@ -97,7 +97,7 @@ const PRODUCTS = [
     ],
     cover: "assets/covers/book-02.jpg",
     coverAlt: "My First Animal Explorer cover — a lion, elephant, giraffe, monkey, rabbit and panda",
-    pdfUrl: null,  // real PDF purchase link — add later, when you are ready to sell
+    pdfUrl: "https://jojosblocks.gumroad.com/l/my-first-animal-explorer",  // Gumroad checkout — verified 9 Nov 2026, products still unpublished drafts
     seo: {
       focusKeyword: "animal coloring book for kids",
       secondaryKeywords: [],
@@ -122,7 +122,7 @@ const PRODUCTS = [
     ],
     cover: "assets/covers/book-03.jpg",
     coverAlt: "My Little Community Helpers cover — a firefighter, mail carrier, teacher, nurse, police officer and builder",
-    pdfUrl: null,  // real PDF purchase link — add later, when you are ready to sell
+    pdfUrl: "https://jojosblocks.gumroad.com/l/my-little-community-helpers",  // Gumroad checkout — verified 9 Nov 2026, products still unpublished drafts
     seo: {
       focusKeyword: "community helpers coloring book for kids",
       secondaryKeywords: [],
@@ -147,12 +147,39 @@ const PRODUCTS = [
     ],
     cover: "assets/covers/book-04.jpg",
     coverAlt: "My Little Space Adventure cover — a young astronaut, a friendly green alien and Rocket-7 under a smiling moon",
-    pdfUrl: null,  // real PDF purchase link — add later, when you are ready to sell
+    pdfUrl: "https://jojosblocks.gumroad.com/l/my-little-space-adventure",  // Gumroad checkout — verified 9 Nov 2026, products still unpublished drafts
     seo: {
       focusKeyword: "space coloring book for kids ages 3-5",
       secondaryKeywords: [],
       longTailKeywords: [],
       metaDescription: "My Little Space Adventure: a 42-page digital PDF coloring and activity book for ages 3–5 — explore planets, solve puzzles and find the Cosmic Crystal."
     }
+  },
+  {
+    id: "book-05",
+    slot: "Bundle",
+    title: "JoJo's Blocks Complete Coloring Book Bundle",
+    shortTitle: "Complete Coloring Book Bundle",
+    theme: "All 4 books • Alphabet, animals, helpers & space",
+    age: null,
+    pages: 154,
+    format: "Digital PDF coloring book bundle",
+    description: "Four favorite adventures in one bundle — 154 pages of coloring, tracing, puzzles and learning for one low price. Includes My First ABC Book (28 pages, ages 2–4), My First Animal Explorer (30 pages), My Little Community Helpers (54 pages, 24 helpers) and My Little Space Adventure (42 pages, ages 3–5). Download the PDFs, print at home, and colour!",
+    features: [
+      "My First ABC Book — 28 pages, ages 2–4",
+      "My First Animal Explorer — 30 pages",
+      "My Little Community Helpers — 54 pages, 24 helpers",
+      "My Little Space Adventure — 42 pages, ages 3–5"
+    ],
+    cover: "assets/covers/bundle-cover.jpg",
+    coverAlt: "Complete 4-book bundle cover — collage of the four JoJo's Blocks book covers",
+    pdfUrl: "https://jojosblocks.gumroad.com/l/jojos-blocks-coloring-bundle",  // Gumroad checkout — verified 9 Nov 2026, product still an unpublished draft
+    seo: {
+      focusKeyword: "printable coloring book bundle for kids",
+      secondaryKeywords: [],
+      longTailKeywords: [],
+      metaDescription: "JoJo's Blocks Complete Coloring Book Bundle: 154 pages — all four printable coloring books for kids in one PDF bundle."
+    }
   }
+
 ];

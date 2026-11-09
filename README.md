@@ -5,7 +5,7 @@ Brand name: **JoJo’s Blocks** (renamed from the working name “Rainbow Pages�
 This website is **unpublished**. Do not share it publicly until you have filled in your real books and checked the launch checklist below.
 
 ## What was built
-Complete landing page / storefront in vanilla HTML5, CSS3 and JavaScript — no framework, no internal checkout, no marketplace or payment integration yet. Business focus: digital PDF coloring books only, for parents and children.
+Complete landing page / storefront in vanilla HTML5, CSS3 and JavaScript — no framework, no internal checkout. Purchase buttons link out to Gumroad checkout (connected 9 Nov 2026). Business focus: digital PDF coloring books only, for parents and children.
 - Header + responsive mobile menu, hero, featured collection, Why Parents Love Our Books, About, How to Buy, FAQ accordion, newsletter (front-end only), footer, product-detail modal.
 - Product cards are rendered from `js/products.js`, so adding a book needs no HTML redesign.
 - SEO: semantic HTML, unique title/meta description, Open Graph + Twitter cards, canonical placeholder, favicon, `robots.txt`, `sitemap.xml`, Schema.org WebSite JSON-LD.
@@ -76,12 +76,14 @@ description: "A short description in your own words, based on the actual book.",
 
 The four placeholder covers in `assets/covers/` are simple original SVG drawings. Replace them with your real covers when you are ready.
 
-### Add a PDF purchase link later
-No marketplace or payment system is connected yet. When you are ready to sell a book, in `js/products.js` set its `pdfUrl` to the real purchase link for that PDF:
-```js
-pdfUrl: "https://example.com/your-real-pdf-link",
-```
-Leave it as `null` until then — the button will read “link coming soon”.
+### Gumroad purchase links — connected 9 Nov 2026
+Gumroad checkout is now connected. In `js/products.js` each book's `pdfUrl` holds its real Gumroad product link, and the detail popup uses the same link. The five links (all verified, products still unpublished drafts on Gumroad — their pages say "not currently for sale" until published):
+- My First ABC Book — https://jojosblocks.gumroad.com/l/my-first-abc-book
+- My First Animal Explorer — https://jojosblocks.gumroad.com/l/my-first-animal-explorer
+- My Little Community Helpers — https://jojosblocks.gumroad.com/l/my-little-community-helpers
+- My Little Space Adventure — https://jojosblocks.gumroad.com/l/my-little-space-adventure
+- Complete 4-Book Bundle (book-05, 154 pages, cover `assets/covers/bundle-cover.jpg`) — https://jojosblocks.gumroad.com/l/jojos-blocks-coloring-bundle
+The bundle link slug is `jojos-blocks-coloring-bundle` — the spelling `jojosblocks-coloring-bundle` (no hyphen) returns a Gumroad 404, so do not use it. To change a link, edit only that book's `pdfUrl` in `js/products.js`. Leave it as `null` if a book should not be for sale — the button will then read “link coming soon”.
 
 ### Add a fifth or sixth book
 Copy one whole product block in `js/products.js`, paste it after the last one, and give it a new `id` (e.g. `book-05`) and a new `slot` (e.g. `"Book 5"`). Fill in its fields the same way. The card, detail modal and book count update automatically. Add a comma after the previous book's closing `}` if there was not one already.
@@ -139,7 +141,7 @@ coloring-book-store/
 ## Before you publish — checklist
 - [x] All books in the collection have real titles, descriptions and covers (added 9 Nov 2026 from the real PDFs).
 - [ ] Age and page count are filled in, or left as `null` where unknown.
-- [ ] Real PDF purchase links are in place (or `null` where a book is not for sale yet).
+- [x] Real PDF purchase links are in place — all five Gumroad links in `js/products.js` (9 Nov 2026).
 - [ ] Contact email added.
 - [ ] Real domain replaces `www.example.com` everywhere.
 - [ ] `robots.txt` changed from `Disallow: /` to `Allow: /` and the `index.html` meta robots tag changed from `noindex, nofollow` to `index, follow` (both are set to keep the unpublished site out of search results until launch).
