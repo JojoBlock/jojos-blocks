@@ -25,13 +25,14 @@
    give it a new id (e.g. "book-05"), and the site renders it
    automatically — card, modal, sitemap entry and SEO fields.
 
-   IMPORTANT — PLACEHOLDERS, NOT REAL BOOKS
-   No real titles, page counts, ages or themes have been entered
-   here. Every field below marked "To be added" is a genuine
-   placeholder. Fill each one in yourself from your own books —
-   only write what is true of that book. Do NOT publish the site
-   as final until those objects are filled in.
-   See README.md for the beginner's step-by-step guide.
+   REAL BOOKS — ADDED 9 NOV 2026
+   These four books were read from Aarif's own PDFs (kept privately
+   in ~/workspace/user/jojos-blocks-books/, never in this repo).
+   Titles, themes, ages and page counts below come from the books
+   themselves: ages only where the book states them (ABC: Ages 2-4
+   on the cover; Space: Ages 3-5 on the cover). Covers are the books'
+   real cover pages, saved as assets/covers/book-01.jpg … book-04.jpg.
+   To add a fifth book, copy one block and fill it in the same way.
    ============================================================ */
 
 const SITE_CONFIG = {
@@ -52,101 +53,101 @@ const PRODUCTS = [
   {
     id: "book-01",
     slot: "Book 1",
-    title: "Book 1 — Coming soon",
-    shortTitle: "Book 1",
-    theme: "Details coming soon",
-    age: null,            // e.g. "Ages 4–8" — only when the PDF states/supports it
-    pages: null,          // e.g. 50 — count the PDF pages, do not guess
+    title: "My First ABC Book",
+    shortTitle: "My First ABC Book",
+    theme: "Alphabet • Letters A–Z",
+    age: "Ages 2–4",
+    pages: 28,
     format: "Digital PDF coloring book",
-    description: "A new JoJo's Blocks coloring book is on its way. Its title, theme, age guidance and page count will appear here once the book is ready.",
+    description: "Meet the alphabet one letter at a time. Each page pairs a big letter with a picture word — A is for Apple, B is for Ball, C is for Cat — with a colour guide and tracing practice, so little ones learn, colour and write their first letters.",
     features: [
-      "Digital PDF coloring book",
-      "Print at home, again and again",
-      "Screen-free creative play"
+      "26 letters from A to Z, each with a picture word",
+      "Colour guide and letter-tracing practice on every page",
+      "Phonics hints such as “A is for Apple”"
     ],
-    cover: "assets/covers/book-01.svg",
-    coverAlt: "JoJo's Blocks coloring book cover — details coming soon",
+    cover: "assets/covers/book-01.jpg",
+    coverAlt: "My First ABC Book cover — colourful ABC letters with an apple, a beach ball and a kitten",
     pdfUrl: null,  // real PDF purchase link — add later, when you are ready to sell
     seo: {
-      focusKeyword: "To be added — from the real book title/theme",
+      focusKeyword: "abc coloring book for toddlers ages 2-4",
       secondaryKeywords: [],
       longTailKeywords: [],
-      metaDescription: "To be added — write this from the real book. See README.md."
+      metaDescription: "My First ABC Book: a 28-page digital PDF coloring book for ages 2–4 — learn, colour and trace the alphabet A to Z."
     }
   },
   {
     id: "book-02",
     slot: "Book 2",
-    title: "Book 2 — Coming soon",
-    shortTitle: "Book 2",
-    theme: "Details coming soon",
+    title: "My First Animal Explorer",
+    shortTitle: "My First Animal Explorer",
+    theme: "Animals • Learn, trace, colour, discover",
     age: null,
-    pages: null,
+    pages: 30,
     format: "Digital PDF coloring book",
-    description: "A new JoJo's Blocks coloring book is on its way. Its title, theme, age guidance and page count will appear here once the book is ready.",
+    description: "Hello, little explorer! Meet lions, elephants, giraffes, pandas, monkeys and more — learn each animal's name, trace the word, count, match and colour. A certificate of achievement waits at the end for every super animal explorer.",
     features: [
-      "Digital PDF coloring book",
-      "Print at home, again and again",
-      "Screen-free creative play"
+      "Meet lions, elephants, giraffes, pandas and more",
+      "Trace animal names, count, match and find shadows",
+      "Certificate of Achievement at the end"
     ],
-    cover: "assets/covers/book-02.svg",
-    coverAlt: "JoJo's Blocks coloring book cover — details coming soon",
+    cover: "assets/covers/book-02.jpg",
+    coverAlt: "My First Animal Explorer cover — a lion, elephant, giraffe, monkey, rabbit and panda",
     pdfUrl: null,  // real PDF purchase link — add later, when you are ready to sell
     seo: {
-      focusKeyword: "To be added — from the real book title/theme",
+      focusKeyword: "animal coloring book for kids",
       secondaryKeywords: [],
       longTailKeywords: [],
-      metaDescription: "To be added — write this from the real book. See README.md."
+      metaDescription: "My First Animal Explorer: a 30-page digital PDF coloring and activity book — meet the animals, trace their names, count, match and colour."
     }
   },
   {
     id: "book-03",
     slot: "Book 3",
-    title: "Book 3 — Coming soon",
-    shortTitle: "Book 3",
-    theme: "Details coming soon",
+    title: "My Little Community Helpers",
+    shortTitle: "My Little Community Helpers",
+    theme: "Community helpers • The people who help us every day",
     age: null,
-    pages: null,
+    pages: 54,
     format: "Digital PDF coloring book",
-    description: "A new JoJo's Blocks coloring book is on its way. Its title, theme, age guidance and page count will appear here once the book is ready.",
+    description: "Meet the people who help us every day! 24 community helpers — doctors, nurses, firefighters, police officers, teachers, veterinarians, electricians, mail carriers and more — with simple job descriptions, big colouring illustrations and a fun matching activity.",
     features: [
-      "Digital PDF coloring book",
-      "Print at home, again and again",
-      "Screen-free creative play"
+      "24 community helpers to meet and colour",
+      "Simple job descriptions children can understand",
+      "Matching activity and a thank-you page"
     ],
-    cover: "assets/covers/book-03.svg",
-    coverAlt: "JoJo's Blocks coloring book cover — details coming soon",
+    cover: "assets/covers/book-03.jpg",
+    coverAlt: "My Little Community Helpers cover — a firefighter, mail carrier, teacher, nurse, police officer and builder",
     pdfUrl: null,  // real PDF purchase link — add later, when you are ready to sell
     seo: {
-      focusKeyword: "To be added — from the real book title/theme",
+      focusKeyword: "community helpers coloring book for kids",
       secondaryKeywords: [],
       longTailKeywords: [],
-      metaDescription: "To be added — write this from the real book. See README.md."
+      metaDescription: "My Little Community Helpers: a 54-page digital PDF coloring book — meet 24 community helpers, learn their jobs and colour big illustrations."
     }
   },
   {
     id: "book-04",
     slot: "Book 4",
-    title: "Book 4 — Coming soon",
-    shortTitle: "Book 4",
-    theme: "Details coming soon",
-    age: null,
-    pages: null,
+    title: "My Little Space Adventure",
+    shortTitle: "My Little Space Adventure",
+    theme: "Space • Planets, aliens and rockets",
+    age: "Ages 3–5",
+    pages: 42,
     format: "Digital PDF coloring book",
-    description: "A new JoJo's Blocks coloring book is on its way. Its title, theme, age guidance and page count will appear here once the book is ready.",
+    description: "Join Nova, Zippy the alien and Rocket-7 on a mission to find the missing Cosmic Crystal. Colour planets and alien worlds, solve mazes and puzzles, decode alien messages and take the Space Explorer Quiz — with a Junior Space Explorer certificate at the end.",
     features: [
-      "Digital PDF coloring book",
-      "Print at home, again and again",
-      "Screen-free creative play"
+      "A story mission with Nova, Zippy and Rocket-7",
+      "Mazes, puzzles, counting, matching and alien-language codes",
+      "Creative colouring pages and a certificate"
     ],
-    cover: "assets/covers/book-04.svg",
-    coverAlt: "JoJo's Blocks coloring book cover — details coming soon",
+    cover: "assets/covers/book-04.jpg",
+    coverAlt: "My Little Space Adventure cover — a young astronaut, a friendly green alien and Rocket-7 under a smiling moon",
     pdfUrl: null,  // real PDF purchase link — add later, when you are ready to sell
     seo: {
-      focusKeyword: "To be added — from the real book title/theme",
+      focusKeyword: "space coloring book for kids ages 3-5",
       secondaryKeywords: [],
       longTailKeywords: [],
-      metaDescription: "To be added — write this from the real book. See README.md."
+      metaDescription: "My Little Space Adventure: a 42-page digital PDF coloring and activity book for ages 3–5 — explore planets, solve puzzles and find the Cosmic Crystal."
     }
   }
 ];

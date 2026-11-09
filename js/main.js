@@ -33,7 +33,7 @@
   function cardHTML(p) {
     return '' +
     '<article class="card reveal" data-id="' + p.id + '">' +
-      '<div class="card-cover"><img src="' + p.cover + '" alt="' + p.coverAlt + '" loading="lazy" width="600" height="760">' +
+      '<div class="card-cover"><img src="' + p.cover + '" alt="' + p.coverAlt + '" loading="lazy" width="600" height="849">' +
       '<span class="card-badge">' + p.slot + '</span></div>' +
       '<div class="card-body">' +
         '<h3>' + p.title + '</h3>' +

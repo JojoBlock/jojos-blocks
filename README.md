@@ -11,8 +11,17 @@ Complete landing page / storefront in vanilla HTML5, CSS3 and JavaScript — no 
 - SEO: semantic HTML, unique title/meta description, Open Graph + Twitter cards, canonical placeholder, favicon, `robots.txt`, `sitemap.xml`, Schema.org WebSite JSON-LD.
 - Accessibility: skip link, aria labels, keyboard-friendly FAQ/modal, Escape closes modal, focus styles, reduced-motion support.
 
-## The books — placeholders, ready for you to fill in yourself
-The product cards are placeholders (`Book 1`–`Book 4` to start with). More books can be added at any time — the collection is not fixed at four. No titles, themes, ages, page counts, descriptions or purchase links have been invented — every field marked “To be added” is genuinely empty. You will add the real information yourself, using your own books. **Do not publish as final until you have filled them in.**
+## The books — real books, added 9 Nov 2026
+The four books below were read from Aarif's own PDFs (kept privately in `~/workspace/user/jojos-blocks-books/` — the PDFs themselves are **not** in this repo or on GitHub). Titles, themes, ages and page counts come from the books themselves; ages appear only where the book states them.
+
+| Book | Title | Pages | Age | Cover |
+|---|---|---|---|---|
+| 1 | My First ABC Book | 28 | Ages 2–4 | `assets/covers/book-01.jpg` |
+| 2 | My First Animal Explorer | 30 | — (not stated in the book) | `assets/covers/book-02.jpg` |
+| 3 | My Little Community Helpers | 54 | — (not stated in the book) | `assets/covers/book-03.jpg` |
+| 4 | My Little Space Adventure | 42 | Ages 3–5 | `assets/covers/book-04.jpg` |
+
+More books can be added at any time — the collection is not fixed at four. Covers are the books' real cover pages, rendered from the PDFs at 600px wide. The old placeholder SVG covers (`book-01.svg` … `book-04.svg`) are still in `assets/covers/` but are no longer used by any page.
 
 ## Beginner's guide: edit a book in 5 minutes
 You only need to edit **one file: `js/products.js`**. Open it in any text editor. You do not need to touch `index.html`, `css/styles.css` or `js/main.js`.
@@ -20,13 +29,13 @@ You only need to edit **one file: `js/products.js`**. Open it in any text editor
 Each book is one block that starts with `id: "book-01"` and ends with `}`. Change only the text inside the quotation marks, and keep the quotation marks and commas exactly as they are.
 
 ### Worked example — filling in Book 1
-Change this:
+Change this (Book 1 as it stands now):
 ```js
-title: "Book 1 — Coming soon",
-theme: "Details coming soon",
-age: null,
-pages: null,
-description: "A new JoJo's Blocks coloring book is on its way. Its title, theme, age guidance and page count will appear here once the book is ready.",
+title: "My First ABC Book",
+theme: "Alphabet • Letters A–Z",
+age: "Ages 2–4",
+pages: 28,
+description: "Meet the alphabet one letter at a time. Each page pairs a big letter with a picture word — A is for Apple, B is for Ball, C is for Cat — with a colour guide and tracing practice, so little ones learn, colour and write their first letters.",
 ```
 To this (using *your* book's real details only):
 ```js
@@ -122,7 +131,7 @@ coloring-book-store/
 ```
 
 ## Before you publish — checklist
-- [ ] All books in the collection have real titles, descriptions and covers.
+- [x] All books in the collection have real titles, descriptions and covers (added 9 Nov 2026 from the real PDFs).
 - [ ] Age and page count are filled in, or left as `null` where unknown.
 - [ ] Real PDF purchase links are in place (or `null` where a book is not for sale yet).
 - [ ] Contact email added.
