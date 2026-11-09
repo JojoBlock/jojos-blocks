@@ -198,11 +198,33 @@
         note.textContent = "Please enter a valid email address.";
         return;
       }
-      if (SITE_CONFIG.newsletterConnected) {
-        note.textContent = "Thank you! You are subscribed.";
-      } else {
-        note.textContent = "Thank you — the newsletter isn’t connected yet, so your email wasn’t sent or stored.";
+      if (SITE_CONFIG.newsletterConnected && SITE_CONFIG.newsletterEndpoint) {
+        /* Live: save the email to the subscriber sheet via the
+           Apps Script endpoint, then show a real success message.
+           The button is disabled while subscribing so a double
+           tap cannot save the same email twice. */
+        var btn = form.querySelector('button[type="submit"]');
+        if (btn) btn.disabled = true;
+        note.textContent = "Subscribing…";
+        fetch(SITE_CONFIG.newsletterEndpoint, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({ email: email })
+        }).then(function (res) {
+          if (btn) btn.disabled = false;
+          if (res.type === "opaque" || res.ok) {
+            note.textContent = "Thank you! You’re subscribed — welcome to the JoJo’s Blocks community.";
+            form.reset();
+          } else {
+            note.textContent = "Sorry, something went wrong — please try again.";
+          }
+        }).catch(function () {
+          if (btn) btn.disabled = false;
+          note.textContent = "Sorry, something went wrong — please try again.";
+        });
+        return;
       }
+      note.textContent = "Thank you — the newsletter isn’t connected yet, so your email wasn’t sent or stored.";
       form.reset();
     });
   }

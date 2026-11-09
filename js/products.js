@@ -45,8 +45,13 @@ const SITE_CONFIG = {
   // Then update the same placeholder in index.html, sitemap.xml
   // and robots.txt.
   domain: "https://www.example.com",
-  contactEmail: null, // e.g. "hello@example.com" — null = the footer contact line stays hidden
-  newsletterConnected: false // true only after an email service is wired up
+  contactEmail: null, // e.g. "hello@example.com" — null = the footer reads "Contact details coming soon"
+  newsletterConnected: true, // live since 9 Nov 2026: signups are saved to the "JoJo's Blocks subscribers" sheet via the Apps Script endpoint below — only flip back to false if the endpoint stops working
+  // Newsletter endpoint: the Google Apps Script web app URL that saves
+  // signups to the "JoJo's Blocks subscribers" sheet. Leave as null until
+  // the script is deployed — the form then keeps its honest
+  // "not connected yet" message instead of pretending to work.
+  newsletterEndpoint: "https://script.google.com/macros/s/AKfycbxDPqZVrPDuZECG5JUGKwYHvNciYsNAwMJv8R6FmQxo5zsQc6XRiqYbRhjb_NkJCPNM/exec" // Apps Script web app URL — deployed 9 Nov 2026; set newsletterConnected true only after a real test signup lands in the sheet
 };
 
 const PRODUCTS = [
