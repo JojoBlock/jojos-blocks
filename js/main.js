@@ -35,6 +35,14 @@
     return '<button type="button" class="btn ' + cls + ' btn-disabled" data-missing="' + label + '">' + label + ' — buy link unavailable</button>';
   }
 
+  function priceHTML(p, cls) {
+    if (!p.price) return "";
+    var note = (p.salePrice && p.salePrice !== p.price)
+      ? ' <span class="price-note">10% off with JOJOS10 · you pay ' + p.salePrice + '</span>'
+      : "";
+    return '<p class="' + cls + '">' + p.price + note + '</p>';
+  }
+
   function cardHTML(p) {
     /* Books 3 and 4 sit further down the page: load their covers
        eagerly so they never show up as blank colour blocks while
@@ -50,6 +58,7 @@
         '<p class="card-theme">' + p.theme + '</p>' +
         '<p>' + p.description + '</p>' +
         '<p class="card-meta">' + metaLine(p) + '</p>' +
+        priceHTML(p, "card-price") +
         '<ul class="card-features">' + p.features.map(function (f) { return "<li>" + f + "</li>"; }).join("") + '</ul>' +
         '<div class="card-actions">' +
           '<button type="button" class="btn btn-outline" data-details="' + p.id + '">View Details</button>' +
@@ -65,6 +74,24 @@
     document.getElementById("book-count").textContent = "New coloring books added regularly";
   }
 
+  /* Per-product deep links: each book has its own shareable URL,
+     https://jojosblocks.online/#book-<slug> — opening it scrolls to
+     the collection and opens that book's details modal. Added
+     10 Nov 2026 as the destination URL for Pinterest Pins. */
+  function productFromHash() {
+    var m = /^#book-([a-z0-9-]+)$/.exec(window.location.hash || "");
+    if (!m) return null;
+    return PRODUCTS.find(function (x) { return x.slug === m[1]; }) || null;
+  }
+  function openFromHash() {
+    var p = productFromHash();
+    if (p) {
+      var books = document.getElementById("books");
+      if (books) books.scrollIntoView();
+      openModal(p);
+    }
+  }
+
   function openModal(p) {
     lastFocused = document.activeElement;
     modalBody.innerHTML =
@@ -72,6 +99,7 @@
       '<div class="modal-info"><span class="eyebrow">' + p.slot + ' · ' + p.theme + '</span>' +
       '<h3 id="modal-title">' + p.title + '</h3>' +
       '<p class="card-meta">' + metaLine(p) + '</p>' +
+      priceHTML(p, "modal-price") +
       '<p>' + p.description + '</p>' +
       '<h4>What&rsquo;s inside</h4>' +
       '<ul class="card-features">' + p.features.map(function (f) { return "<li>" + f + "</li>"; }).join("") + '</ul>' +
@@ -82,12 +110,17 @@
     document.body.style.overflow = "hidden";
     var closeBtn = modal.querySelector(".modal-close");
     if (closeBtn) closeBtn.focus();
+    /* Deep link: the modal's URL is shareable (replaceState, so the
+       back button is not polluted with a modal entry). */
+    if (p.slug) history.replaceState(null, "", "#book-" + p.slug);
   }
 
   function closeModal() {
     modal.classList.remove("open");
     modal.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
+    /* Leave the deep link behind: back to the collection anchor. */
+    if (productFromHash()) history.replaceState(null, "", "#books");
     if (lastFocused && lastFocused.focus) lastFocused.focus();
     lastFocused = null;
   }
@@ -125,6 +158,14 @@
   });
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
+  });
+
+  /* Deep-link navigation: a #book-<slug> URL opens that book's
+     modal; any other hash closes the modal (e.g. back to #books). */
+  window.addEventListener("hashchange", function () {
+    var p = productFromHash();
+    if (p) { openModal(p); return; }
+    if (modal.classList.contains("open")) closeModal();
   });
 
   /* Mobile menu */
@@ -174,6 +215,11 @@
      were rendered after this setup, so they were never observed and
      stayed invisible.) */
   renderProducts();
+
+  /* If the visitor arrived on a per-product link
+     (https://jojosblocks.online/#book-<slug>), open that book's
+     details modal straight away. */
+  openFromHash();
 
   var revealEls = document.querySelectorAll(".reveal");
   if ("IntersectionObserver" in window) {

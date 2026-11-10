@@ -81,6 +81,10 @@ img.logo-mark{display:block;object-fit:cover}
 .card-body{padding:24px;display:flex;flex-direction:column;gap:2px;flex:1}
 .card-theme{font-weight:800;color:var(--lav);margin-bottom:4px}
 .card-meta{font-weight:700;color:var(--muted);font-size:.95rem}
+.card-price{font-weight:700;font-size:1.05rem;margin:10px 0 0}
+.card-price .price-note{font-weight:400;color:var(--muted);font-size:.9rem}
+.modal-price{font-weight:700;font-size:1.15rem;margin:12px 0 0}
+.modal-price .price-note{font-weight:400;color:var(--muted);font-size:.95rem}
 .card-features{list-style:none;padding:0;margin:10px 0 16px;display:grid;gap:6px}
 .card-features li{padding-left:26px;position:relative;font-size:.97rem}
 .card-features li::before{content:"✓";position:absolute;left:0;top:0;width:20px;height:20px;border-radius:50%;background:var(--mint);color:#1B7A4D;display:grid;place-items:center;font-size:.8rem;font-weight:900}

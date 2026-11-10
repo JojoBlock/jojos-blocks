@@ -66,6 +66,9 @@ const SITE_CONFIG = {
 const PRODUCTS = [
   {
     id: "book-01",
+    slug: "my-first-abc-book",
+    price: "$3.99",
+    salePrice: "$3.59", // with JOJOS10 (10% off, auto-applied at Gumroad checkout)
     slot: "Book 1",
     title: "My First ABC Book",
     shortTitle: "My First ABC Book",
@@ -91,6 +94,9 @@ const PRODUCTS = [
   },
   {
     id: "book-02",
+    slug: "my-first-animal-explorer",
+    price: "$4.99",
+    salePrice: "$4.49", // with JOJOS10 (10% off, auto-applied at Gumroad checkout)
     slot: "Book 2",
     title: "My First Animal Explorer",
     shortTitle: "My First Animal Explorer",
@@ -116,6 +122,9 @@ const PRODUCTS = [
   },
   {
     id: "book-03",
+    slug: "my-little-community-helpers",
+    price: "$4.99",
+    salePrice: "$4.49", // with JOJOS10 (10% off, auto-applied at Gumroad checkout)
     slot: "Book 3",
     title: "My Little Community Helpers",
     shortTitle: "My Little Community Helpers",
@@ -141,6 +150,9 @@ const PRODUCTS = [
   },
   {
     id: "book-04",
+    slug: "my-little-space-adventure",
+    price: "$4.99",
+    salePrice: "$4.49", // with JOJOS10 (10% off, auto-applied at Gumroad checkout)
     slot: "Book 4",
     title: "My Little Space Adventure",
     shortTitle: "My Little Space Adventure",
@@ -166,6 +178,9 @@ const PRODUCTS = [
   },
   {
     id: "book-05",
+    slug: "complete-coloring-book-bundle",
+    price: "$12.99",
+    salePrice: "$11.69", // with JOJOS10 (10% off, auto-applied at Gumroad checkout)
     slot: "Bundle",
     title: "JoJo's Blocks Complete Coloring Book Bundle",
     shortTitle: "Complete Coloring Book Bundle",

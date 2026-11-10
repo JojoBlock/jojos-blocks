@@ -155,3 +155,12 @@ coloring-book-store/
 - Website live at https://jojosblocks.online (GitHub Pages, custom domain, `CNAME` file in repo). Repository stays PUBLIC by Aarif's decision 10 Nov 2026 — he cannot afford paid hosting or GitHub plans right now. Do not make it private.
 - Buttons read "Buy Now on Gumroad" and link to the published Gumroad products.
 - Buy links use Gumroad's direct-checkout format (`?wanted=true` on each product URL), fixed 10 Nov 2026 after customers saw several products together in checkout. Cause: Gumroad keeps a persistent cart in the visitor's browser — clicking "I want this!" on other products leaves them in the cart, and no link format clears a saved cart (verified live: plain link, `?wanted=true` and the buy-now checkout URL all open the same saved cart). A fresh visitor always sees exactly the one product they clicked; returning visitors remove older cart items once. Do not "fix" this by changing product URLs again without re-testing in a fresh private session.
+
+## Per-product deep links — 10 Nov 2026
+Each product has its own shareable URL that opens its details modal directly (used as Pinterest Pin destinations):
+- My First ABC Book — https://jojosblocks.online/#book-my-first-abc-book
+- My First Animal Explorer — https://jojosblocks.online/#book-my-first-animal-explorer
+- My Little Community Helpers — https://jojosblocks.online/#book-my-little-community-helpers
+- My Little Space Adventure — https://jojosblocks.online/#book-my-little-space-adventure
+- Complete Coloring Book Bundle — https://jojosblocks.online/#book-complete-coloring-book-bundle
+Implemented in `js/main.js` (`productFromHash` / `openFromHash`; opening a modal sets the hash via `replaceState`, closing it returns to `#books`). Prices are now shown on cards and in the modal from the `price` / `salePrice` fields in `js/products.js` (sale price = with JOJOS10, auto-applied at Gumroad checkout).
