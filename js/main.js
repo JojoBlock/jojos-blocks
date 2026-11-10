@@ -28,12 +28,28 @@
     return bits.join(" · ");
   }
 
-  function buyButton(url, label, cls) {
+  function buyButton(url, label, cls, bookSlug, location) {
     if (url) {
-      return '<a class="btn ' + cls + '" href="' + url + '" target="_blank" rel="noopener">' + label + '</a>';
+      var attrs = (bookSlug ? ' data-book="' + bookSlug + '" data-location="' + (location || "card") + '"' : "");
+      return '<a class="btn ' + cls + '" href="' + url + '" target="_blank" rel="noopener"' + attrs + '>' + label + '</a>';
     }
     return '<button type="button" class="btn ' + cls + ' btn-disabled" data-missing="' + label + '">' + label + ' — buy link unavailable</button>';
   }
+
+  /* GA4 event tracking — fires only when the GA4 tag has loaded.
+     Buy-button clicks are the measurable conversion: the purchase
+     itself happens on Gumroad and cannot be tracked from this site. */
+  function trackEvent(name, params) {
+    if (typeof window.gtag === "function") {
+      window.gtag("event", name, params || {});
+    }
+  }
+  document.addEventListener("click", function (e) {
+    var buy = e.target.closest ? e.target.closest("a[data-book]") : null;
+    if (buy) {
+      trackEvent("buy_now_click", { book_slug: buy.getAttribute("data-book"), location: buy.getAttribute("data-location") || "card" });
+    }
+  });
 
   function priceHTML(p, cls) {
     if (!p.price) return "";
@@ -62,7 +78,7 @@
         '<ul class="card-features">' + p.features.map(function (f) { return "<li>" + f + "</li>"; }).join("") + '</ul>' +
         '<div class="card-actions">' +
           '<button type="button" class="btn btn-outline" data-details="' + p.id + '">View Details</button>' +
-          buyButton(p.pdfUrl, "Buy Now on Gumroad", "btn-primary") +
+          buyButton(p.pdfUrl, "Buy Now on Gumroad", "btn-primary", p.slug, "card") +
         '</div>' +
       '</div>' +
     '</article>';
@@ -103,8 +119,9 @@
       '<p>' + p.description + '</p>' +
       '<h4>What&rsquo;s inside</h4>' +
       '<ul class="card-features">' + p.features.map(function (f) { return "<li>" + f + "</li>"; }).join("") + '</ul>' +
-      '<div class="card-actions">' + buyButton(p.pdfUrl, "Buy Now on Gumroad", "btn-primary") + '</div>' +
+      '<div class="card-actions">' + buyButton(p.pdfUrl, "Buy Now on Gumroad", "btn-primary", p.slug, "modal") + '</div>' +
       '<p class="modal-note">' + (p.pdfUrl ? 'This is a digital PDF. Click Buy Now on Gumroad to buy securely — your download is ready right after purchase. This site takes no payment itself.' : 'This is a digital PDF coloring book. It is not available to buy right now.') + '</p></div>';
+    trackEvent("view_details", { book_slug: p.slug });
     modal.classList.add("open");
     modal.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
@@ -260,6 +277,7 @@
           if (btn) btn.disabled = false;
           if (res.type === "opaque" || res.ok) {
             note.textContent = "Thank you! You’re subscribed — welcome to the JoJo’s Blocks community.";
+            trackEvent("newsletter_signup", {});
             form.reset();
           } else {
             note.textContent = "Sorry, something went wrong — please try again.";
