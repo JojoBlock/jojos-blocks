@@ -1,5 +1,3 @@
 User-agent: *
-Disallow: /
-Sitemap: https://www.example.com/sitemap.xml
-# Site is unpublished — change "Disallow: /" to "Allow: /" when you launch,
-# and replace www.example.com with your real domain.
+Allow: /
+Sitemap: https://jojosblocks.online/sitemap.xml

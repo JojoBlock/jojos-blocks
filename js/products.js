@@ -11,7 +11,7 @@
       pages: put a number, e.g. 50, or leave it as null if unknown.
    4. When you are ready to sell a book, paste its real PDF
       purchase link in pdfUrl. Leave it as null until then —
-      the button will show an honest "link coming soon" note
+      the button will show an honest "buy link unavailable" note
       instead of sending visitors to a wrong page.
       Never paste a guessed link. Gumroad checkout is now
       connected (Nov 2026) — pdfUrl holds each book's real Gumroad link.
@@ -40,12 +40,9 @@ const SITE_CONFIG = {
   // Also update <title> and the JSON-LD in index.html.
   brandName: "JoJo’s Blocks",
   tagline: "Children's Coloring Books",
-  // Replace with your real domain when you buy one, e.g.
-  // "https://www.jojosblocksbooks.com"
-  // Then update the same placeholder in index.html, sitemap.xml
-  // and robots.txt.
-  domain: "https://www.example.com",
-  contactEmail: null, // e.g. "hello@example.com" — null = the footer reads "Contact details coming soon"
+  // Live domain since launch 10 Nov 2026: https://jojosblocks.online
+  domain: "https://jojosblocks.online",
+  contactEmail: null, // e.g. "hello@jojosblocks.online" — null = no contact line shown in the footer
   newsletterConnected: true, // live since 9 Nov 2026: signups are saved to the "JoJo's Blocks subscribers" sheet via the Apps Script endpoint below — only flip back to false if the endpoint stops working
   // Newsletter endpoint: the Google Apps Script web app URL that saves
   // signups to the "JoJo's Blocks subscribers" sheet. Leave as null until
@@ -72,7 +69,7 @@ const PRODUCTS = [
     ],
     cover: "assets/covers/book-01.jpg",
     coverAlt: "My First ABC Book cover — colourful ABC letters with an apple, a beach ball and a kitten",
-    pdfUrl: "https://jojosblocks.gumroad.com/l/my-first-abc-book",  // Gumroad checkout — verified 9 Nov 2026, products still unpublished drafts
+    pdfUrl: "https://jojosblocks.gumroad.com/l/my-first-abc-book",  // Gumroad checkout — published 10 Nov 2026
     seo: {
       focusKeyword: "abc coloring book for toddlers ages 2-4",
       secondaryKeywords: [],
@@ -97,7 +94,7 @@ const PRODUCTS = [
     ],
     cover: "assets/covers/book-02.jpg",
     coverAlt: "My First Animal Explorer cover — a lion, elephant, giraffe, monkey, rabbit and panda",
-    pdfUrl: "https://jojosblocks.gumroad.com/l/my-first-animal-explorer",  // Gumroad checkout — verified 9 Nov 2026, products still unpublished drafts
+    pdfUrl: "https://jojosblocks.gumroad.com/l/my-first-animal-explorer",  // Gumroad checkout — published 10 Nov 2026
     seo: {
       focusKeyword: "animal coloring book for kids",
       secondaryKeywords: [],
@@ -122,7 +119,7 @@ const PRODUCTS = [
     ],
     cover: "assets/covers/book-03.jpg",
     coverAlt: "My Little Community Helpers cover — a firefighter, mail carrier, teacher, nurse, police officer and builder",
-    pdfUrl: "https://jojosblocks.gumroad.com/l/my-little-community-helpers",  // Gumroad checkout — verified 9 Nov 2026, products still unpublished drafts
+    pdfUrl: "https://jojosblocks.gumroad.com/l/my-little-community-helpers",  // Gumroad checkout — published 10 Nov 2026
     seo: {
       focusKeyword: "community helpers coloring book for kids",
       secondaryKeywords: [],
@@ -147,7 +144,7 @@ const PRODUCTS = [
     ],
     cover: "assets/covers/book-04.jpg",
     coverAlt: "My Little Space Adventure cover — a young astronaut, a friendly green alien and Rocket-7 under a smiling moon",
-    pdfUrl: "https://jojosblocks.gumroad.com/l/my-little-space-adventure",  // Gumroad checkout — verified 9 Nov 2026, products still unpublished drafts
+    pdfUrl: "https://jojosblocks.gumroad.com/l/my-little-space-adventure",  // Gumroad checkout — published 10 Nov 2026
     seo: {
       focusKeyword: "space coloring book for kids ages 3-5",
       secondaryKeywords: [],
@@ -173,7 +170,7 @@ const PRODUCTS = [
     ],
     cover: "assets/covers/bundle-cover.jpg",
     coverAlt: "Complete 4-book bundle cover — collage of the four JoJo's Blocks book covers",
-    pdfUrl: "https://jojosblocks.gumroad.com/l/jojos-blocks-coloring-bundle",  // Gumroad checkout — verified 9 Nov 2026, product still an unpublished draft
+    pdfUrl: "https://jojosblocks.gumroad.com/l/jojos-blocks-coloring-bundle",  // Gumroad checkout — published 10 Nov 2026
     seo: {
       focusKeyword: "printable coloring book bundle for kids",
       secondaryKeywords: [],

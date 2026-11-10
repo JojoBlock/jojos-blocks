@@ -141,11 +141,16 @@ coloring-book-store/
 
 ## Before you publish — checklist
 - [x] All books in the collection have real titles, descriptions and covers (added 9 Nov 2026 from the real PDFs).
-- [ ] Age and page count are filled in, or left as `null` where unknown.
+- [x] Age and page count are filled in, or left as `null` where unknown.
 - [x] Real PDF purchase links are in place — all five Gumroad links in `js/products.js` (9 Nov 2026).
 - [ ] Contact email added.
-- [ ] Real domain replaces `www.example.com` everywhere.
-- [ ] `robots.txt` changed from `Disallow: /` to `Allow: /` and the `index.html` meta robots tag changed from `noindex, nofollow` to `index, follow` (both are set to keep the unpublished site out of search results until launch).
+- [x] Real domain replaces `www.example.com` everywhere — live domain is https://jojosblocks.online (10 Nov 2026).
+- [x] `robots.txt` changed from `Disallow: /` to `Allow: /` and the `index.html` meta robots tag changed from `noindex, nofollow` to `index, follow` (10 Nov 2026, launch).
 - [ ] Privacy Policy and Terms reviewed by a qualified adviser.
-- [ ] Newsletter connected, or the form's honest “not connected” note kept.
-- [ ] No placeholder text (“To be added”, “Book 1”, “link coming soon”) remains on any live book.
+- [x] Newsletter connected — live since 9 Nov 2026 (Google Sheets + Apps Script).
+- [x] No placeholder text (“To be added”, “Book 1”, “link coming soon”) remains on any live book.
+
+## Launch — 10 Nov 2026
+- All five Gumroad products PUBLISHED 10 Nov 2026 (ABC $3.99, Animal $4.99, Community Helpers $4.99, Space $4.99, bundle $12.99; JOJOS10 10% off auto-applied on all five). Prices and settings as agreed; nothing published before Aarif's explicit approval that day.
+- Website live at https://jojosblocks.online (GitHub Pages, custom domain, `CNAME` file in repo). Repository stays PUBLIC by Aarif's decision 10 Nov 2026 — he cannot afford paid hosting or GitHub plans right now. Do not make it private.
+- Buttons read "Buy Now on Gumroad" and link to the published Gumroad products.

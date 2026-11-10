@@ -32,7 +32,7 @@
     if (url) {
       return '<a class="btn ' + cls + '" href="' + url + '" target="_blank" rel="noopener">' + label + '</a>';
     }
-    return '<button type="button" class="btn ' + cls + ' btn-disabled" data-missing="' + label + '">' + label + ' — link coming soon</button>';
+    return '<button type="button" class="btn ' + cls + ' btn-disabled" data-missing="' + label + '">' + label + ' — buy link unavailable</button>';
   }
 
   function cardHTML(p) {
@@ -53,7 +53,7 @@
         '<ul class="card-features">' + p.features.map(function (f) { return "<li>" + f + "</li>"; }).join("") + '</ul>' +
         '<div class="card-actions">' +
           '<button type="button" class="btn btn-outline" data-details="' + p.id + '">View Details</button>' +
-          buyButton(p.pdfUrl, "Get the PDF", "btn-primary") +
+          buyButton(p.pdfUrl, "Buy Now on Gumroad", "btn-primary") +
         '</div>' +
       '</div>' +
     '</article>';
@@ -75,8 +75,8 @@
       '<p>' + p.description + '</p>' +
       '<h4>What&rsquo;s inside</h4>' +
       '<ul class="card-features">' + p.features.map(function (f) { return "<li>" + f + "</li>"; }).join("") + '</ul>' +
-      '<div class="card-actions">' + buyButton(p.pdfUrl, "Get the PDF", "btn-primary") + '</div>' +
-      '<p class="modal-note">' + (p.pdfUrl ? 'This is a digital PDF. Click Get the PDF to buy securely on Gumroad — your download is ready right after purchase. This site takes no payment itself.' : 'This is a digital PDF coloring book. It is not for sale yet — check back soon.') + '</p></div>';
+      '<div class="card-actions">' + buyButton(p.pdfUrl, "Buy Now on Gumroad", "btn-primary") + '</div>' +
+      '<p class="modal-note">' + (p.pdfUrl ? 'This is a digital PDF. Click Buy Now on Gumroad to buy securely — your download is ready right after purchase. This site takes no payment itself.' : 'This is a digital PDF coloring book. It is not available to buy right now.') + '</p></div>';
     modal.classList.add("open");
     modal.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
@@ -118,7 +118,7 @@
     }
     var missing = e.target.closest("[data-missing]");
     if (missing) {
-      showToast(missing.getAttribute("data-missing") + ": this book is not for sale yet — check back soon.");
+      showToast(missing.getAttribute("data-missing") + ": this book is not available to buy right now.");
       return;
     }
     if (e.target === modal || e.target.closest(".modal-close")) closeModal();
@@ -229,9 +229,9 @@
     });
   }
 
-  /* Footer year + contact. Until a real email is set in
-     SITE_CONFIG.contactEmail, the footer reads
-     "Contact: details coming soon" instead of hiding the line. */
+  /* Footer year. A contact email can be added later in
+     SITE_CONFIG.contactEmail — the footer contact line was removed
+     at launch because no public contact email has been supplied yet. */
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
   var contactEl = document.getElementById("contact-email");
