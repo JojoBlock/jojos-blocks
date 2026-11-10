@@ -120,6 +120,7 @@
       '<h4>What&rsquo;s inside</h4>' +
       '<ul class="card-features">' + p.features.map(function (f) { return "<li>" + f + "</li>"; }).join("") + '</ul>' +
       '<div class="card-actions">' + buyButton(p.pdfUrl, "Buy Now on Gumroad", "btn-primary", p.slug, "modal") + '</div>' +
+      '<p class="modal-note"><a href="books/' + p.slug + '.html">Open the full product page for ' + p.title + '</a></p>' +
       '<p class="modal-note">' + (p.pdfUrl ? 'This is a digital PDF. Click Buy Now on Gumroad to buy securely — your download is ready right after purchase. This site takes no payment itself.' : 'This is a digital PDF coloring book. It is not available to buy right now.') + '</p></div>';
     trackEvent("view_details", { book_slug: p.slug });
     modal.classList.add("open");

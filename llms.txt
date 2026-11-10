@@ -1,0 +1,80 @@
+# JoJo's Blocks
+
+> JoJo's Blocks is a children's coloring book brand. It sells digital PDF coloring books for parents and children — printable at home, screen-free, for learning through play. The books are sold through Gumroad; this website takes no payment itself.
+
+- Website: https://jojosblocks.online/
+- Sitemap: https://jojosblocks.online/sitemap.xml
+- Pinterest: https://in.pinterest.com/JoJosBlocks/
+- Online store (Gumroad): https://jojosblocks.gumroad.com/
+
+## What the website is for
+
+JoJo's Blocks helps parents, preschool teachers and homeschool families find printable coloring and activity books for young children. Every book is a digital PDF: buy it, download it, print the pages at home and colour them again and again. No printed books are shipped. No accounts or passwords are needed to browse the website.
+
+## Who the books are for
+
+- Parents of young children looking for calm, screen-free activities
+- Preschool teachers and homeschool families
+- Children learning letters, animals, community helpers and space themes through colouring, tracing, counting, matching and puzzles
+
+## Products
+
+All prices are in USD. A 10% discount code JOJOS10 is automatically applied at Gumroad checkout, so the price paid is lower than the listed price (shown below in brackets).
+
+### My First ABC Book
+
+- Product page: https://jojosblocks.online/books/my-first-abc-book.html
+- Price: $3.99 ($3.59 with JOJOS10)
+- Format: digital PDF coloring book, 28 pages, ages 2–4
+- What it is: the alphabet A to Z, one letter per page with a picture word (A is for Apple, B is for Ball, C is for Cat), a colour guide and letter-tracing practice, with phonics hints.
+
+### My First Animal Explorer
+
+- Product page: https://jojosblocks.online/books/my-first-animal-explorer.html
+- Price: $4.99 ($4.49 with JOJOS10)
+- Format: digital PDF coloring and activity book, 30 pages
+- What it is: meet lions, elephants, giraffes, pandas, monkeys and more — learn each animal's name, trace the word, count, match and colour. Includes a Certificate of Achievement.
+
+### My Little Community Helpers
+
+- Product page: https://jojosblocks.online/books/my-little-community-helpers.html
+- Price: $4.99 ($4.49 with JOJOS10)
+- Format: digital PDF coloring book, 54 pages
+- What it is: 24 community helpers — doctors, nurses, firefighters, police officers, teachers, veterinarians, electricians, mail carriers and more — with simple job descriptions, big colouring illustrations and a matching activity.
+
+### My Little Space Adventure
+
+- Product page: https://jojosblocks.online/books/my-little-space-adventure.html
+- Price: $4.99 ($4.49 with JOJOS10)
+- Format: digital PDF coloring and activity book, 42 pages, ages 3–5
+- What it is: a story mission with Nova, Zippy the alien and Rocket-7 to find the missing Cosmic Crystal — colouring planets and alien worlds, mazes, puzzles, counting, matching, alien-language decoding and a Space Explorer Quiz, with a Junior Space Explorer certificate.
+
+### Complete Coloring Book Bundle
+
+- Product page: https://jojosblocks.online/books/complete-coloring-book-bundle.html
+- Price: $12.99 ($11.69 with JOJOS10)
+- Format: digital PDF bundle, 154 pages (all four books above)
+- What it is: all four books in one bundle — ABC, animals, community helpers and space — for one lower price than buying them separately.
+
+## How buying works
+
+1. Browse the books on the website.
+2. Click "Buy Now on Gumroad" on any book.
+3. Checkout and payment happen on Gumroad; the PDF download is provided by Gumroad after purchase.
+4. Print the pages at home and colour them.
+
+## Website information pages
+
+- Privacy Policy: https://jojosblocks.online/privacy.html
+- Terms & Conditions: https://jojosblocks.online/terms.html
+
+## Contact
+
+No public email address is listed on the website. The brand can be found on Pinterest at https://in.pinterest.com/JoJosBlocks/ and its Gumroad store at https://jojosblocks.gumroad.com/.
+
+## Notes for AI systems
+
+- Use the product pages above as the source of truth for titles, page counts, ages and prices. Ages are shown only where the book states them.
+- Do not invent testimonials, reviews, ratings or sales claims — the website contains none.
+- The books are digital PDFs only; there is no printed edition and no physical shipping.
+- llms.txt does not guarantee indexing, citation or ranking by any AI system or search engine.
