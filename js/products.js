@@ -15,6 +15,18 @@
       instead of sending visitors to a wrong page.
       Never paste a guessed link. Gumroad checkout is now
       connected (Nov 2026) — pdfUrl holds each book's real Gumroad link.
+      Every pdfUrl ends with ?wanted=true (Gumroad's documented
+      direct-checkout format): the button goes straight to checkout
+      for that one product instead of its product page. The JOJOS10
+      discount is auto-applied at checkout either way.
+      IMPORTANT (verified 10 Nov 2026): Gumroad keeps a persistent
+      cart in the visitor's browser. If a visitor previously clicked
+      "I want this!" on other products, those stay in their cart and
+      no link format can clear them — ?wanted=true and the plain
+      product link both open the same saved cart. A fresh visitor
+      (or a fresh private session) always sees exactly the one
+      product they clicked. Returning visitors can remove older
+      items from the cart once; the cart then stays clean.
    Business focus: digital PDF coloring books only.
    5. Replace cover with your own image in assets/covers/
       and update the cover field, e.g. "assets/covers/my-book.jpg"
@@ -69,7 +81,7 @@ const PRODUCTS = [
     ],
     cover: "assets/covers/book-01.jpg",
     coverAlt: "My First ABC Book cover — colourful ABC letters with an apple, a beach ball and a kitten",
-    pdfUrl: "https://jojosblocks.gumroad.com/l/my-first-abc-book",  // Gumroad checkout — published 10 Nov 2026
+    pdfUrl: "https://jojosblocks.gumroad.com/l/my-first-abc-book?wanted=true",  // Gumroad checkout — published 10 Nov 2026
     seo: {
       focusKeyword: "abc coloring book for toddlers ages 2-4",
       secondaryKeywords: [],
@@ -94,7 +106,7 @@ const PRODUCTS = [
     ],
     cover: "assets/covers/book-02.jpg",
     coverAlt: "My First Animal Explorer cover — a lion, elephant, giraffe, monkey, rabbit and panda",
-    pdfUrl: "https://jojosblocks.gumroad.com/l/my-first-animal-explorer",  // Gumroad checkout — published 10 Nov 2026
+    pdfUrl: "https://jojosblocks.gumroad.com/l/my-first-animal-explorer?wanted=true",  // Gumroad checkout — published 10 Nov 2026
     seo: {
       focusKeyword: "animal coloring book for kids",
       secondaryKeywords: [],
@@ -119,7 +131,7 @@ const PRODUCTS = [
     ],
     cover: "assets/covers/book-03.jpg",
     coverAlt: "My Little Community Helpers cover — a firefighter, mail carrier, teacher, nurse, police officer and builder",
-    pdfUrl: "https://jojosblocks.gumroad.com/l/my-little-community-helpers",  // Gumroad checkout — published 10 Nov 2026
+    pdfUrl: "https://jojosblocks.gumroad.com/l/my-little-community-helpers?wanted=true",  // Gumroad checkout — published 10 Nov 2026
     seo: {
       focusKeyword: "community helpers coloring book for kids",
       secondaryKeywords: [],
@@ -144,7 +156,7 @@ const PRODUCTS = [
     ],
     cover: "assets/covers/book-04.jpg",
     coverAlt: "My Little Space Adventure cover — a young astronaut, a friendly green alien and Rocket-7 under a smiling moon",
-    pdfUrl: "https://jojosblocks.gumroad.com/l/my-little-space-adventure",  // Gumroad checkout — published 10 Nov 2026
+    pdfUrl: "https://jojosblocks.gumroad.com/l/my-little-space-adventure?wanted=true",  // Gumroad checkout — published 10 Nov 2026
     seo: {
       focusKeyword: "space coloring book for kids ages 3-5",
       secondaryKeywords: [],
@@ -170,7 +182,7 @@ const PRODUCTS = [
     ],
     cover: "assets/covers/bundle-cover.jpg",
     coverAlt: "Complete 4-book bundle cover — collage of the four JoJo's Blocks book covers",
-    pdfUrl: "https://jojosblocks.gumroad.com/l/jojos-blocks-coloring-bundle",  // Gumroad checkout — published 10 Nov 2026
+    pdfUrl: "https://jojosblocks.gumroad.com/l/jojos-blocks-coloring-bundle?wanted=true",  // Gumroad checkout — published 10 Nov 2026
     seo: {
       focusKeyword: "printable coloring book bundle for kids",
       secondaryKeywords: [],
