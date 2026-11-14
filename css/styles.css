@@ -19,6 +19,9 @@ h3{font-size:1.35rem}
 p{margin:0 0 1em}
 .wrap{max-width:1180px;margin:0 auto;padding:0 22px}
 .section{padding:84px 0}
+/* First section on a sub-page sits directly under the sticky header:
+   keep its top padding tight so it does not read as a blank gap. */
+main > .section:first-child{padding-top:48px}
 .section-alt{background:#fff}
 .eyebrow{display:inline-block;font-weight:800;letter-spacing:.12em;text-transform:uppercase;font-size:.78rem;color:var(--coral);margin-bottom:10px}
 .lead{font-size:1.15rem;color:var(--muted);max-width:640px}
@@ -168,6 +171,9 @@ footer a:hover{color:#fff;text-decoration:underline}
   .grid-4,.steps{grid-template-columns:1fr 1fr}
   .footer-simple{flex-direction:column;gap:24px}
   .modal-card{grid-template-columns:1fr}
+  /* On short/narrow screens the tall cover otherwise fills the whole
+     modal and pushes the price and Buy Now button out of view. */
+  .modal-cover img{max-height:32vh}
   .nav-toggle{display:block}
   .nav-menu{position:absolute;top:72px;left:0;right:0;background:#fff;flex-direction:column;padding:14px 22px 20px;box-shadow:var(--shadow-lg);display:none}
   .nav-menu.open{display:flex}
@@ -194,6 +200,11 @@ footer a:hover{color:#fff;text-decoration:underline}
 .has-dropdown.open .dropdown-menu,
 .has-dropdown:hover .dropdown-menu,
 .has-dropdown:focus-within .dropdown-menu{display:block}
+/* Escape-dismissed: hides the menu even while :hover / :focus-within
+   would show it, until the pointer moves or focus moves away
+   (js/site.js manages this class). Placed after the show rules so it
+   wins at equal specificity. */
+.has-dropdown.dismissed .dropdown-menu{display:none}
 .dropdown-menu a{display:block;padding:10px 12px;border-radius:12px;color:var(--ink);text-decoration:none}
 .dropdown-menu a:hover,.dropdown-menu a:focus-visible{background:#FFF1E6;outline:none}
 .dropdown-menu a strong{display:block;font-size:1rem}

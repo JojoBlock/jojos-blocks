@@ -43,27 +43,43 @@
      Hover and keyboard focus also open it on desktop, via CSS
      (:hover / :focus-within). Escape closes it and returns focus to
      the button; a click anywhere outside closes it. "Soon" items are
-     plain text, not links, so they cannot be activated by mistake. */
+     plain text, not links, so they cannot be activated by mistake.
+     NOTE: the menu can be visible through CSS :hover / :focus-within
+     without the .open class, so Escape must check all three states.
+     Closing adds .dismissed, which suppresses the CSS hover/focus
+     rules until the pointer or focus moves away — otherwise refocusing
+     the button would reopen the menu through :focus-within. */
   var dropdownToggle = document.getElementById("explore-toggle");
   var dropdown = document.getElementById("explore-menu");
   var dropdownItem = dropdownToggle ? dropdownToggle.closest(".has-dropdown") : null;
   function closeDropdown(refocus) {
     if (!dropdownItem) return;
     dropdownItem.classList.remove("open");
+    dropdownItem.classList.add("dismissed");
     if (dropdownToggle) dropdownToggle.setAttribute("aria-expanded", "false");
     if (refocus && dropdownToggle) dropdownToggle.focus();
+  }
+  function clearDismissed() {
+    if (dropdownItem) dropdownItem.classList.remove("dismissed");
   }
   if (dropdownToggle && dropdownItem) {
     dropdownToggle.addEventListener("click", function (e) {
       e.stopPropagation();
+      clearDismissed();
       var open = dropdownItem.classList.toggle("open");
       dropdownToggle.setAttribute("aria-expanded", open ? "true" : "false");
     });
+    dropdownToggle.addEventListener("blur", clearDismissed);
+    dropdownItem.addEventListener("mouseenter", clearDismissed);
+    dropdownItem.addEventListener("mouseleave", clearDismissed);
     document.addEventListener("click", function (e) {
       if (!dropdownItem.contains(e.target)) closeDropdown(false);
     });
     document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && dropdownItem.classList.contains("open")) closeDropdown(true);
+      if (e.key !== "Escape") return;
+      var visible = dropdownItem.classList.contains("open") ||
+        dropdownItem.matches(":hover") || dropdownItem.matches(":focus-within");
+      if (visible) closeDropdown(true);
     });
   }
 
