@@ -65,7 +65,7 @@ img.logo-mark{display:block;object-fit:cover}
 .hero-art img{border-radius:28px;box-shadow:var(--shadow-lg);width:100%;aspect-ratio:600/849;object-fit:contain;object-position:center;background:#FFF1E6}
 .float-badge{position:absolute;background:#fff;border-radius:16px;padding:12px 16px;box-shadow:var(--shadow);font-weight:800;animation:float 5s ease-in-out infinite}
 .float-badge small{display:block;font-weight:600;color:var(--muted);font-size:.85rem}
-.badge-a{left:-14px;top:22px}.badge-b{right:-10px;bottom:26px;animation-delay:1.4s}
+.badge-a{left:-14px;top:-28px}.badge-b{left:-14px;bottom:26px;animation-delay:1.4s}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
 @media (prefers-reduced-motion:reduce){.float-badge{animation:none}html{scroll-behavior:auto}.reveal{opacity:1!important;transform:none!important}}
 
@@ -84,10 +84,15 @@ img.logo-mark{display:block;object-fit:cover}
 .card-body{padding:24px;display:flex;flex-direction:column;gap:2px;flex:1}
 .card-theme{font-weight:800;color:var(--lav);margin-bottom:4px}
 .card-meta{font-weight:700;color:var(--muted);font-size:.95rem}
-.card-price{font-weight:700;font-size:1.05rem;margin:10px 0 0}
-.card-price .price-note{font-weight:400;color:var(--muted);font-size:.9rem}
-.modal-price{font-weight:700;font-size:1.15rem;margin:12px 0 0}
-.modal-price .price-note{font-weight:400;color:var(--muted);font-size:.95rem}
+.card-price,.modal-price{margin:12px 0 0}
+/* Discount presentation: small crossed-out original + badge on one
+   line, the final price large and bold as the focus, code line below.
+   The percentage is computed from the prices, never hardcoded. */
+.price-was{color:var(--muted);text-decoration:line-through;font-weight:600;font-size:.95rem;margin-right:8px}
+.price-off{display:inline-block;background:var(--coral);color:#fff;font-size:.75rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:999px;vertical-align:middle}
+.price-now{display:block;font-size:1.55rem;font-weight:800;color:var(--ink);line-height:1.25;margin-top:4px}
+.price-code{display:block;font-size:.9rem;color:var(--muted);font-weight:600;margin-top:2px}
+.modal-price .price-now{font-size:1.8rem}
 .card-features{list-style:none;padding:0;margin:10px 0 16px;display:grid;gap:6px}
 .card-features li{padding-left:26px;position:relative;font-size:.97rem}
 .card-features li::before{content:"✓";position:absolute;left:0;top:0;width:20px;height:20px;border-radius:50%;background:var(--mint);color:#1B7A4D;display:grid;place-items:center;font-size:.8rem;font-weight:900}
@@ -144,6 +149,9 @@ footer a:hover{color:#fff;text-decoration:underline}
 .footer-logo{color:#fff;font-family:var(--font-display);font-size:1.4rem;text-decoration:none;display:flex;gap:10px;align-items:center;margin-bottom:12px}
 .footer-links{display:flex;flex-wrap:wrap;gap:6px 22px;align-content:flex-start;padding-top:6px}
 .footer-links a{display:block;padding:6px 0;font-weight:700;white-space:nowrap}
+.footer-links .social-link{display:inline-flex;align-items:center;gap:8px}
+.social-icon{width:18px;height:18px;fill:#E60023;flex:none}
+.footer-links .social-link:hover .social-icon,.footer-links .social-link:focus-visible .social-icon{fill:#FF4D6A}
 .footer-bottom{border-top:1px solid rgba(255,255,255,.14);margin-top:36px;padding-top:20px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:.92rem}
 .footer-bottom a{display:inline}
 
@@ -183,7 +191,7 @@ footer a:hover{color:#fff;text-decoration:underline}
   .section{padding:60px 0}
   .grid-3,.grid-4,.steps{grid-template-columns:1fr}
   .newsletter{padding:36px 22px}
-  .badge-a{left:6px}.badge-b{right:6px}
+  .badge-a{left:6px}.badge-b{left:6px}
 }
 
 /* Explore dropdown + "coming soon" nav items (Phase 1C).

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- BLOG ARTICLE TEMPLATE — reusable, not yet rendered. The generator
+     does not publish any page from this template until a real article
+     exists in data (see data/categories.json, blog.articleFields).
+     Do not link to a blog article URL until its content is written.
+     Tokens: {{TITLE}} {{COVER_IMAGE}} {{COVER_ALT}} {{DATE_PUBLISHED}}
+     {{CATEGORIES}} {{TAGS}} {{SEO_TITLE}} {{META_DESCRIPTION}}
+     {{CONTENT_HTML}} {{RELATED_ARTICLES}} -->
+<title>{{SEO_TITLE}}</title>
+<meta name="description" content="{{META_DESCRIPTION}}">
+<link rel="canonical" href="https://jojosblocks.online/blog/{{SLUG}}.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="{{SEO_TITLE}}">
+<meta property="og:description" content="{{META_DESCRIPTION}}">
+<meta property="og:image" content="{{COVER_IMAGE}}">
+<meta property="article:published_time" content="{{DATE_PUBLISHED}}">
+<link rel="stylesheet" href="../css/styles.css?v=6">
+</head>
+<body>
+<a class="skip-link" href="#article">Skip to article</a>
+{{HEADER}}
+<main id="article">
+  <article class="wrap section">
+    <p><a href="../index.html">← Back to home</a></p>
+    <span class="eyebrow">{{CATEGORIES}}</span>
+    <h1>{{TITLE}}</h1>
+    <p class="card-meta"><time datetime="{{DATE_PUBLISHED}}">{{DATE_PUBLISHED}}</time> · {{TAGS}}</p>
+    <img src="{{COVER_IMAGE}}" alt="{{COVER_ALT}}" width="1200" height="630">
+    {{CONTENT_HTML}}
+  </article>
+  <section class="section section-alt" aria-label="Related articles">
+    <div class="wrap">
+      <h2>Related articles</h2>
+      {{RELATED_ARTICLES}}
+    </div>
+  </section>
+</main>
+{{FOOTER}}
+<script src="../js/site.js?v=2"></script>
+</body>
+</html>

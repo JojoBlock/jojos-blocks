@@ -49,11 +49,29 @@
      counted twice. */
 
   function priceHTML(p, cls) {
+    /* Discount presentation: the original price is small and crossed
+       out, the discount is a badge, and the final price is the large
+       visual focus, with the code shown plainly. The percentage is
+       computed from the two prices, never hardcoded. A product with
+       no sale price (or a sale price equal to the price) shows its
+       plain price with no discount claim. */
     if (!p.price) return "";
-    var note = (p.salePrice && p.salePrice !== p.price)
-      ? ' <span class="price-note">10% off with JOJOS10 · you pay ' + p.salePrice + '</span>'
-      : "";
-    return '<p class="' + cls + '">' + p.price + note + '</p>';
+    var code = (typeof SITE_CONFIG !== "undefined" && SITE_CONFIG.discountCode) || "JOJOS10";
+    var pct = discountPct(p.price, p.salePrice);
+    if (!pct) return '<p class="' + cls + ' price-block"><span class="price-now">' + p.price + '</span></p>';
+    return '<p class="' + cls + ' price-block">' +
+      '<span class="price-was">' + p.price + '</span>' +
+      '<span class="price-off">' + pct + '% OFF</span>' +
+      '<span class="price-now">' + p.salePrice + '</span>' +
+      '<span class="price-code">' + code + ' applied at checkout</span></p>';
+  }
+
+  function discountPct(price, salePrice) {
+    if (!price || !salePrice || salePrice === price) return 0;
+    var was = parseFloat(String(price).replace(/[^0-9.]/g, ""));
+    var now = parseFloat(String(salePrice).replace(/[^0-9.]/g, ""));
+    if (!was || !now || now >= was) return 0;
+    return Math.round((1 - now / was) * 100);
   }
 
   function cardHTML(p) {

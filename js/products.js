@@ -24,11 +24,12 @@ const SITE_CONFIG = {
   // Brand name — change this one line to rename the site.
   // Also update <title> and the JSON-LD in index.html.
   brandName: "JoJo’s Blocks",
-  tagline: "Children's Coloring Books",
+  tagline: "Digital Products & Creative Resources",
   // Live domain since launch 10 Nov 2026: https://jojosblocks.online
   domain: "https://jojosblocks.online",
   contactEmail: "jojobusiness0101@gmail.com", // public business email — shown in the footer when set
   pinterestUrl: "https://www.pinterest.com/JoJosBlocks/", // verified Pinterest profile — shown in the footer
+  discountCode: "JOJOS10", // 10% off code shown with discounted prices — see data/products.json
   newsletterConnected: true, // live since 9 Nov 2026: signups are saved to the "JoJo's Blocks subscribers" sheet via the Apps Script endpoint below — only flip back to false if the endpoint stops working
   // Newsletter endpoint: the Google Apps Script web app URL that saves
   // signups to the "JoJo's Blocks subscribers" sheet. Leave as null until

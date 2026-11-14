@@ -1,4 +1,4 @@
-# JoJo’s Blocks — Children's Coloring Book Storefront
+# JoJo’s Blocks — Digital Products Storefront
 
 Brand name: **JoJo’s Blocks** (renamed from the working name “Rainbow Pages” on 8 Nov 2026. To change it again, update `site.brandName` in `data/products.json`, the `<title>` and JSON-LD in `templates/index.html`, and the logo text in `templates/partials/header.html` and `templates/partials/footer.html` — then re-run the generator).
 
@@ -24,7 +24,20 @@ Header/footer restructuring and future-ready architecture; live site untouched:
 - Shared site chrome moved to `js/site.js` (mobile menu, Explore dropdown, header shadow, footer year, Buy Now tracking); `js/main.js` keeps homepage-only behavior (cards, modal, FAQ, newsletter). Book pages no longer carry inline scripts.
 - Deep-link test gap FIXED: the old harness used the hash `#book-03`, which never matched a product slug (slugs are full names), so its deep-link checks passed vacuously. The harness now uses a real slug (`#book-my-first-animal-explorer`), asserts the modal genuinely opens with content, and adds Escape-close and hashchange tests. (Correction: main.js never used DOMContentLoaded — it runs immediately — so the earlier explanation was wrong.)
 - Tests (all in `workspace/jojos-blocks/restructure/tests/`, kept outside the repo): render + interaction 15/15, site chrome 12/12, full site check 173/173 (link crawl 26 paths 0 broken, 404 behavior, JSON-LD, sitemap, meta, accessibility basics). Generator `--check` idempotent.
-- Known limitation: no rendered screenshots of the new header/dropdown/footer exist yet — the local Chromium is blocked by policy and the cloud browser cannot reach the local dev server. The owner reviews the branch after it is pushed (needs the owner's GitHub login) or on the live site after deployment approval. True phone-width layout check still outstanding (owner to check on their own phone).
+- Screenshots of the new header/dropdown/footer now exist (Phase 1D, below) — the earlier limitation is resolved: rendered screenshots are produced with Playwright + Chromium headless shell against the local dev server (see `workspace/jojos-blocks/restructure/screenshot-phase1d.py`).
+
+## Phase 1D + Homepage Redesign — 14 Nov 2026 (development branch `restructure/dev`, not deployed)
+Three defects found by rendered-preview inspection and fixed; then the homepage repositioned for the broader digital-products brand; live site untouched:
+- Dropdown Escape: the Explore menu did not close on Escape when opened by hover (CSS `:hover`/`:focus-within` showed it without the `.open` class, and refocusing the toggle reopened it). Fixed with a `.dismissed` class that suppresses the show rules, cleared on mouseenter/mouseleave/blur/toggle-click; Escape now fires on `.open` OR `:hover` OR `:focus-within`. Verified in the browser (hover-open and click-open) and by unit test.
+- Sub-page top gap: first `.section` had 84px top padding on a plain background (~130px under the header). Fixed to 48px (`main > .section:first-child`); measured 76px on book pages (48px + the breadcrumb's own 28px margin) and ~53–59px on privacy — modest, not a defect.
+- Modal cover on short screens: cover filled the whole modal below 900px. Fixed with `.modal-cover img{max-height:32vh}`; verified visually at 800px (cover capped, price/features/Buy Now visible).
+- Homepage repositioning: hero headline is now "Discover. Create. Explore." with the broader description ("Discover thoughtfully designed digital products, creative resources and useful finds…"); hero art is the bundle cover (the whole collection in one image); hero points are Printable PDF / Instant download / New finds added regularly; About section rewritten for a digital-products brand growing beyond books; FAQ and newsletter copy broadened; `site.tagline` is now "Digital Products & Creative Resources". All five books and the Books section are unchanged.
+- Pricing display (verified against live Gumroad, 14 Nov 2026): every card, modal and book page now shows the original price small and crossed out, a 10% OFF badge, the large bold final price, and "JOJOS10 applied at checkout". The percentage is computed from the two prices, never hardcoded. JOJOS10 eligibility was verified on all five live Gumroad products — the code is applied automatically in checkout, discounted amounts $3.59 / $4.49 / $4.49 / $4.49 / $11.69 match the site exactly. (Checkout totals for Indian customers include GST added by Gumroad; the site's prices are the product amounts.)
+- Footer Pinterest logo: the text link is now the official Pinterest "P" badge (simple-icons glyph, inlined SVG) + "Pinterest" text, linked to the verified profile https://www.pinterest.com/JoJosBlocks/ with `target="_blank" rel="noopener"` and `aria-label="JoJo's Blocks on Pinterest"`. Instagram stays unlinked.
+- Future-ready structure: `data/categories.json` is the full category taxonomy (7 top categories + subcategories, with future URL patterns and the affiliate-disclosure rule); the generator validates it (unique ids, soon items never link, live hrefs must point at files it writes). `templates/blog-article.html` is a reusable article template (title, cover, date, categories, tags, SEO, related articles) — not rendered until a real article exists, so no empty pages are published.
+- JSON-LD fix: the homepage `sameAs` used a stale regional Pinterest domain; now the verified `www.pinterest.com/JoJosBlocks/`.
+- Tests: render + interaction 23/23 (8 new price-presentation checks), site chrome 18/18, full site check 192/192 (new checks: hero headline + bundle art, price blocks on all 5 book pages, Pinterest icon + label, no stale regional Pinterest links). Generator `--check` idempotent. Rendered screenshots: 10 (desktop 1920px, 800px, 390px) in `workspace/jojos-blocks/restructure/screenshots-phase1d/`.
+- NOT pushed: this work is committed locally only (`restructure/dev`); the preview branch still shows the previous snapshot until the owner approves a push. Nothing merged or deployed; live site untouched.
 
 ## What was built
 Complete landing page / storefront in vanilla HTML5, CSS3 and JavaScript — no framework, no internal checkout. Purchase buttons link out to Gumroad checkout (connected 9 Nov 2026). Business focus: digital PDF coloring books for parents and children (the first products). Primary markets: USA and Europe. US English throughout; prices in USD.
@@ -153,8 +166,10 @@ coloring-book-store/
 ├── css/styles.css
 ├── data/products.json  # ★ EDIT BOOKS, LINKS, BRAND, CONTACT HERE (single source of truth)
 ├── data/navigation.json # ★ EDIT NAVIGATION + CATEGORIES HERE (header, Explore dropdown, footer links)
+├── data/categories.json # ★ CATEGORY TAXONOMY for the future platform (validated by the generator)
 ├── templates/index.html # homepage template
 ├── templates/book.html # book-page template (tokens filled by the generator)
+├── templates/blog-article.html # blog article template — reusable, NOT rendered until a real article exists
 ├── templates/privacy.html templates/terms.html templates/404.html templates/refund-policy.html
 ├── templates/partials/header.html templates/partials/footer.html # the ONE shared header/footer
 ├── tools/generate-pages.js # dependency-free Node generator (--only / --all / --check)

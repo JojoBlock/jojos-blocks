@@ -56,6 +56,7 @@ const path = require("path");
 const ROOT = path.resolve(__dirname, "..");
 const DATA_FILE = path.join(ROOT, "data", "products.json");
 const NAV_FILE = path.join(ROOT, "data", "navigation.json");
+const CATEGORIES_FILE = path.join(ROOT, "data", "categories.json");
 const TEMPLATE_FILE = path.join(ROOT, "templates", "book.html");
 const TEMPLATES_DIR = path.join(ROOT, "templates");
 const PARTIALS_DIR = path.join(TEMPLATES_DIR, "partials");
@@ -99,6 +100,28 @@ function licenseText(p) {
   // Single-Classroom Use is a future add-on, not a data value yet.
   if (p.license === "personal-family") return "Personal & family use";
   return "See Terms & Conditions";
+}
+
+function discountPct(price, salePrice) {
+  // Percentage computed from the two prices, never hardcoded.
+  if (!price || !salePrice || salePrice === price) return 0;
+  const was = parseFloat(String(price).replace(/[^0-9.]/g, ""));
+  const now = parseFloat(String(salePrice).replace(/[^0-9.]/g, ""));
+  if (!was || !now || now >= was) return 0;
+  return Math.round((1 - now / was) * 100);
+}
+
+function priceBlock(p, code) {
+  // Inner HTML for the price display: crossed-out original, discount
+  // badge, large final price, and the code line. A product with no
+  // sale price shows its plain price with no discount claim.
+  // The wrapper <p class="... price-block"> lives in the template.
+  const pct = discountPct(p.price, p.salePrice);
+  if (!pct) return '<span class="price-now">' + escText(p.price) + "</span>";
+  return '<span class="price-was">' + escText(p.price) + "</span>" +
+    ' <span class="price-off">' + pct + "% OFF</span>" +
+    '<span class="price-now">' + escText(p.salePrice) + "</span>" +
+    '<span class="price-code">' + escText(code) + " applied at checkout</span>";
 }
 
 /* ---- Shared header + footer (Phase 1C) -------------------------------
@@ -159,9 +182,16 @@ function footerLinksHTML(prefix, isHome) {
   }
   // Refund Policy is deliberately NOT linked here: it is a draft until
   // the owner approves it and it gets qualified legal review.
-  lines.push('        <a href="' + escAttr(nav.pinterestUrl) + '" target="_blank" rel="noopener">Pinterest</a>');
+  // Pinterest uses the official "P" badge (simple-icons path) with an
+  // accessible label; Instagram stays unlinked (it shows the owner's
+  // first name) until the owner decides otherwise.
+  lines.push('        <a class="social-link" href="' + escAttr(nav.pinterestUrl) + '" target="_blank" rel="noopener" aria-label="JoJo\u2019s Blocks on Pinterest">' + PINTEREST_ICON + '<span>Pinterest</span></a>');
   return lines.join("\n") + "\n";
 }
+
+// Official Pinterest "P" badge (simple-icons Pinterest glyph, CC0).
+// Inlined so the footer needs no extra asset; colored via CSS.
+const PINTEREST_ICON = '<svg class="social-icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.39 18.592.026 11.985.026L12.017 0z"/></svg>';
 
 function chromeFor(prefix, isHome) {
   const headerTpl = fs.readFileSync(path.join(PARTIALS_DIR, "header.html"), "utf8");
@@ -229,8 +259,7 @@ function renderBook(p, all) {
     .replaceAll("{{COVER_HEIGHT}}", String(p.coverHeight))
     .replaceAll("{{COVER_ALT}}", escAttr(p.coverAlt))
     .replaceAll("{{PRICE_AMOUNT}}", priceAmount(p.price))
-    .replaceAll("{{PRICE_DISPLAY}}", escText(p.price))
-    .replaceAll("{{SALE_PRICE_DISPLAY}}", escText(p.salePrice))
+    .replaceAll("{{PRICE_BLOCK}}", priceBlock(p, DATA.site.discountCode))
     .replaceAll("{{EYEBROW}}", escText(p.slot + " · " + p.theme))
     .replaceAll("{{CARD_META}}", escText(cardMeta(p)))
     .replaceAll("{{DESCRIPTION}}", escText(p.description))
@@ -367,6 +396,7 @@ function renderProductsJs(DATA) {
   lines.push("  domain: " + jsString(site.domain) + ",");
   lines.push("  contactEmail: " + (site.contactEmail === null ? "null" : jsString(site.contactEmail)) + ", // public business email — shown in the footer when set");
   lines.push("  pinterestUrl: " + jsString(site.pinterestUrl) + ", // verified Pinterest profile — shown in the footer");
+  lines.push("  discountCode: " + jsString(site.discountCode) + ", // 10% off code shown with discounted prices — see data/products.json");
   lines.push("  newsletterConnected: " + site.newsletterConnected + ", // live since 9 Nov 2026: signups are saved to the \"JoJo's Blocks subscribers\" sheet via the Apps Script endpoint below — only flip back to false if the endpoint stops working");
   lines.push("  // Newsletter endpoint: the Google Apps Script web app URL that saves");
   lines.push("  // signups to the \"JoJo's Blocks subscribers\" sheet. Leave as null until");
@@ -443,6 +473,7 @@ function main() {
   }
   if (!fs.existsSync(DATA_FILE)) fail("missing " + DATA_FILE);
   if (!fs.existsSync(NAV_FILE)) fail("missing " + NAV_FILE);
+  if (!fs.existsSync(CATEGORIES_FILE)) fail("missing " + CATEGORIES_FILE);
   if (!fs.existsSync(TEMPLATE_FILE)) fail("missing " + TEMPLATE_FILE);
   const DATA = JSON.parse(fs.readFileSync(DATA_FILE, "utf8"));
   global.DATA = DATA;
@@ -453,6 +484,42 @@ function main() {
   if (!NAV.top || !NAV.explore || !NAV.footer || !NAV.contact) fail("data/navigation.json: top, explore, footer and contact are required");
   if (!/^https:\/\/www\.pinterest\.com\//.test(NAV.pinterestUrl || "")) fail("data/navigation.json: pinterestUrl must be the verified Pinterest profile URL");
   if (!NAV.contactEmail || NAV.contactEmail !== DATA.site.contactEmail) fail("data/navigation.json: contactEmail must match data/products.json site.contactEmail");
+  // Category taxonomy validation (data/categories.json): unique ids,
+  // valid statuses, soon items never link anywhere, every navigation
+  // category exists in the taxonomy, and every live category's href
+  // points at a file this generator writes.
+  const CATS = JSON.parse(fs.readFileSync(CATEGORIES_FILE, "utf8"));
+  if (!CATS.categories || !Array.isArray(CATS.categories)) fail("data/categories.json: categories array is required");
+  const catIds = new Set();
+  const seenLiveHrefs = [];
+  (function walkCats(list) {
+    for (const c of list) {
+      if (!c.id || !c.label || !c.status) fail("data/categories.json: every category needs id, label and status");
+      if (catIds.has(c.id)) fail("data/categories.json: duplicate category id: " + c.id);
+      catIds.add(c.id);
+      if (c.status !== "live" && c.status !== "soon") fail("data/categories.json: category " + c.id + " has invalid status: " + c.status);
+      if (c.status === "soon" && c.href) fail("data/categories.json: soon category must not have an href: " + c.id);
+      if (c.children) walkCats(c.children);
+    }
+  })(CATS.categories);
+  const writtenFiles = new Set(["index.html", "privacy.html", "terms.html", "404.html", "refund-policy.html", "sitemap.xml", "llms.txt"]);
+  for (const p of (DATA.products || [])) writtenFiles.add("books/" + p.slug + ".html");
+  function navCategoryIds() {
+    const ids = [];
+    for (const item of (NAV.explore || [])) ids.push(item.id);
+    for (const item of (NAV.top || [])) if (item.status === "soon") ids.push(item.id);
+    return ids;
+  }
+  for (const id of navCategoryIds()) {
+    if (!catIds.has(id)) fail("data/navigation.json: category id not in data/categories.json: " + id);
+  }
+  for (const item of (NAV.explore || [])) {
+    if (item.status === "live") {
+      if (!item.href) fail("data/navigation.json: live category needs an href: " + item.id);
+      const filePart = item.href.split("#")[0] || "index.html";
+      if (!writtenFiles.has(filePart)) fail("data/navigation.json: live category href points at a file the generator does not write: " + item.href);
+    }
+  }
   const site = DATA.site;
   const products = DATA.products || [];
   if (!site || !site.domain) fail("data/products.json: site.domain is required");
