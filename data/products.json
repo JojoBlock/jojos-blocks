@@ -19,7 +19,7 @@
       "format": "Digital PDF coloring book",
       "gumroadUrl": "https://jojosblocks.gumroad.com/l/my-first-abc-book?wanted=true",
       "id": "book-01",
-      "lastmod": "2026-11-10",
+      "lastmod": "2026-11-15",
       "llmsFormat": "digital PDF coloring book, 28 pages, ages 2–4",
       "llmsSummary": "the alphabet A to Z, one letter per page with a picture word (A is for Apple, B is for Ball, C is for Cat), a color guide and letter-tracing practice, with phonics hints.",
       "pages": 28,
@@ -38,7 +38,7 @@
           "letter tracing practice",
           "preschool abc book"
         ],
-        "seoTitle": "My First ABC Book — Printable ABC Coloring Book for Toddlers (Ages 2–4) | JoJo’s Blocks"
+        "seoTitle": "My First ABC Book | Printable ABC Coloring Book for Ages 2–4 | JoJo’s Blocks"
       },
       "shortTitle": "My First ABC Book",
       "slot": "Book 1",
@@ -67,7 +67,7 @@
       "format": "Digital PDF coloring book",
       "gumroadUrl": "https://jojosblocks.gumroad.com/l/my-first-animal-explorer?wanted=true",
       "id": "book-02",
-      "lastmod": "2026-11-10",
+      "lastmod": "2026-11-15",
       "llmsFormat": "digital PDF coloring and activity book, 30 pages, ages 3–6",
       "llmsSummary": "meet lions, elephants, giraffes, pandas, monkeys and more — learn each animal's name, trace the word, count, match and color. Includes a Certificate of Achievement.",
       "pages": 30,
@@ -86,7 +86,7 @@
           "count and match activities",
           "safari animals workbook"
         ],
-        "seoTitle": "My First Animal Explorer — Printable Animal Coloring Book for Kids | JoJo’s Blocks"
+        "seoTitle": "My First Animal Explorer | Printable Animal Coloring Book for Ages 3–6 | JoJo’s Blocks"
       },
       "shortTitle": "My First Animal Explorer",
       "slot": "Book 2",
@@ -115,7 +115,7 @@
       "format": "Digital PDF coloring book",
       "gumroadUrl": "https://jojosblocks.gumroad.com/l/my-little-community-helpers?wanted=true",
       "id": "book-03",
-      "lastmod": "2026-11-10",
+      "lastmod": "2026-11-15",
       "llmsFormat": "digital PDF coloring book, 54 pages, ages 4–7",
       "llmsSummary": "24 community helpers — doctors, nurses, firefighters, police officers, teachers, veterinarians, electricians, mail carriers and more — with simple job descriptions, big coloring illustrations and a matching activity.",
       "pages": 54,
@@ -134,7 +134,7 @@
           "careers coloring pages",
           "helpers matching activity"
         ],
-        "seoTitle": "My Little Community Helpers — Printable Community Helpers Coloring Book for Kids | JoJo’s Blocks"
+        "seoTitle": "My Little Community Helpers | Printable Community Helpers Coloring Book for Ages 4–7 | JoJo’s Blocks"
       },
       "shortTitle": "My Little Community Helpers",
       "slot": "Book 3",
@@ -163,7 +163,7 @@
       "format": "Digital PDF coloring book",
       "gumroadUrl": "https://jojosblocks.gumroad.com/l/my-little-space-adventure?wanted=true",
       "id": "book-04",
-      "lastmod": "2026-11-10",
+      "lastmod": "2026-11-15",
       "llmsFormat": "digital PDF coloring and activity book, 42 pages, ages 3–5",
       "llmsSummary": "a story mission with Nova, Zippy the alien and Rocket-7 to find the missing Cosmic Crystal — coloring planets and alien worlds, mazes, puzzles, counting, matching, alien-language decoding and a Space Explorer Quiz, with a Junior Space Explorer certificate.",
       "pages": 42,
@@ -182,7 +182,7 @@
           "astronaut coloring book",
           "solar system worksheets"
         ],
-        "seoTitle": "My Little Space Adventure — Printable Space Coloring Book for Kids (Ages 3–5) | JoJo’s Blocks"
+        "seoTitle": "My Little Space Adventure | Printable Space Coloring Book for Ages 3–5 | JoJo’s Blocks"
       },
       "shortTitle": "My Little Space Adventure",
       "slot": "Book 4",
@@ -212,7 +212,7 @@
       "format": "Digital PDF coloring book bundle",
       "gumroadUrl": "https://jojosblocks.gumroad.com/l/jojos-blocks-coloring-bundle?wanted=true",
       "id": "book-05",
-      "lastmod": "2026-11-10",
+      "lastmod": "2026-11-15",
       "llmsFormat": "digital PDF bundle, 154 pages, ages 2–7 (all four books above)",
       "llmsSummary": "all four books in one bundle — ABC, animals, community helpers and space — for one lower price than buying them separately.",
       "pages": 154,
@@ -231,7 +231,7 @@
           "preschool workbook bundle",
           "coloring pages value pack"
         ],
-        "seoTitle": "Complete Coloring Book Bundle — 154 Printable Coloring Pages for Kids (4 Books in One) | JoJo’s Blocks"
+        "seoTitle": "Complete Coloring Book Bundle | Printable Coloring Books for Kids Ages 2–7 | JoJo’s Blocks"
       },
       "shortTitle": "Complete Coloring Book Bundle",
       "slot": "Bundle",
@@ -267,7 +267,7 @@
   "staticPages": [
     {
       "changefreq": "weekly",
-      "lastmod": "2026-11-10",
+      "lastmod": "2026-11-15",
       "path": "/",
       "priority": "1.0"
     },
