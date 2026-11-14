@@ -77,7 +77,7 @@ const PRODUCTS = [
     title: "My First Animal Explorer",
     shortTitle: "My First Animal Explorer",
     theme: "Animals • Learn, trace, color, discover",
-    age: null,
+    age: "Ages 3–6",
     license: "personal-family", // personal-family = Personal & Family Use (owner-approved default)
     pages: 30,
     format: "Digital PDF coloring book",
@@ -106,7 +106,7 @@ const PRODUCTS = [
     title: "My Little Community Helpers",
     shortTitle: "My Little Community Helpers",
     theme: "Community helpers • The people who help us every day",
-    age: null,
+    age: "Ages 4–7",
     license: "personal-family", // personal-family = Personal & Family Use (owner-approved default)
     pages: 54,
     format: "Digital PDF coloring book",
@@ -164,7 +164,7 @@ const PRODUCTS = [
     title: "JoJo's Blocks Complete Coloring Book Bundle",
     shortTitle: "Complete Coloring Book Bundle",
     theme: "All 4 books • Alphabet, animals, helpers & space",
-    age: null,
+    age: "Ages 2–7",
     license: "personal-family", // personal-family = Personal & Family Use (owner-approved default)
     pages: 154,
     format: "Digital PDF coloring book bundle",

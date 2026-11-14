@@ -37,7 +37,16 @@ Three defects found by rendered-preview inspection and fixed; then the homepage 
 - Future-ready structure: `data/categories.json` is the full category taxonomy (7 top categories + subcategories, with future URL patterns and the affiliate-disclosure rule); the generator validates it (unique ids, soon items never link, live hrefs must point at files it writes). `templates/blog-article.html` is a reusable article template (title, cover, date, categories, tags, SEO, related articles) — not rendered until a real article exists, so no empty pages are published.
 - JSON-LD fix: the homepage `sameAs` used a stale regional Pinterest domain; now the verified `www.pinterest.com/JoJosBlocks/`.
 - Tests: render + interaction 23/23 (8 new price-presentation checks), site chrome 18/18, full site check 192/192 (new checks: hero headline + bundle art, price blocks on all 5 book pages, Pinterest icon + label, no stale regional Pinterest links). Generator `--check` idempotent. Rendered screenshots: 10 (desktop 1920px, 800px, 390px) in `workspace/jojos-blocks/restructure/screenshots-phase1d/`.
-- NOT pushed: this work is committed locally only (`restructure/dev`); the preview branch still shows the previous snapshot until the owner approves a push. Nothing merged or deployed; live site untouched.
+- Pushed to the preview branch 14 Nov 2026 (remote head `cac4f85c`, 38 text files; the 7 JPEGs cannot go through the snapshot tool and stay as the originals on the remote branch). The githack preview cache lagged the push by ~40 minutes (index refreshed first, book pages a few minutes later). Nothing merged or deployed; live site untouched.
+
+## Owner decisions — 14 Nov 2026
+- Ages APPROVED and published: Animal Explorer 3–6, Community Helpers 4–7, Bundle 2–7. All five products now show ages on cards, modals and book pages.
+- Personal + Family license: wording kept as proposed, PENDING qualified legal review — do not treat it as legally final.
+- Single-Classroom license: NOT offered at this stage (owner decision). No classroom license created.
+- Refund policy: hybrid approach NOT finalized. The draft (`refund-policy.html`, DRAFT notice, unlinked, not in sitemap) stays a draft until the owner understands and approves it after a plain-language explanation.
+- Support: owner checks the inbox on weekdays; the 2-business-day reply commitment is confirmed and now stated in the refund draft.
+- Legal review: owner will arrange qualified legal review of Privacy, Terms, license wording and Refund Policy (US + Europe). Keep all four marked pending review until then.
+- Analytics: owner authorized read-only browser verification of GA4 events and Pinterest Tag activity (no settings changes). Verification results are reported separately.
 
 ## What was built
 Complete landing page / storefront in vanilla HTML5, CSS3 and JavaScript — no framework, no internal checkout. Purchase buttons link out to Gumroad checkout (connected 9 Nov 2026). Business focus: digital PDF coloring books for parents and children (the first products). Primary markets: USA and Europe. US English throughout; prices in USD.
@@ -47,13 +56,13 @@ Complete landing page / storefront in vanilla HTML5, CSS3 and JavaScript — no 
 - Accessibility: skip link, aria labels, keyboard-friendly FAQ/modal, Escape closes modal, focus styles, reduced-motion support.
 
 ## The books — real books, added 9 Nov 2026
-The four books below were read from Aarif's own PDFs (kept privately in `~/workspace/user/jojos-blocks-books/` — the PDFs themselves are **not** in this repo or on GitHub). Titles, themes, ages and page counts come from the books themselves; ages appear only where the book states them.
+The four books below were read from Aarif's own PDFs (kept privately in `~/workspace/user/jojos-blocks-books/` — the PDFs themselves are **not** in this repo or on GitHub). Titles, themes and page counts come from the books themselves; ages are those stated in the books (ABC 2–4, Space 3–5) or approved by the owner on 14 Nov 2026 (Animal Explorer 3–6, Community Helpers 4–7, Bundle 2–7).
 
 | Book | Title | Pages | Age | Cover |
 |---|---|---|---|---|
 | 1 | My First ABC Book | 28 | Ages 2–4 | `assets/covers/book-01.jpg` |
-| 2 | My First Animal Explorer | 30 | — (not stated in the book) | `assets/covers/book-02.jpg` |
-| 3 | My Little Community Helpers | 54 | — (not stated in the book) | `assets/covers/book-03.jpg` |
+| 2 | My First Animal Explorer | 30 | Ages 3–6 | `assets/covers/book-02.jpg` |
+| 3 | My Little Community Helpers | 54 | Ages 4–7 | `assets/covers/book-03.jpg` |
 | 4 | My Little Space Adventure | 42 | Ages 3–5 | `assets/covers/book-04.jpg` |
 
 More books can be added at any time — the collection is not fixed at four. Covers are the books' real cover pages, rendered from the PDFs at 600px wide. The old placeholder SVG covers (`book-01.svg` … `book-04.svg`) were archived on 14 Nov 2026 to `assets/archive/placeholder-covers/` — verified unreferenced by any page (only this README mentioned them). Originals are also preserved in the pre-Phase-1A backup.

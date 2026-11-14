@@ -1,5 +1,5 @@
 {
-  "_readme": "JoJo's Blocks — CENTRAL PRODUCT DATA. This is the single source of truth for every product on the website. Edit this file to add or change a book; never edit a generated book page by hand. Generated files: books/*.html, sitemap.xml, llms.txt (and later js/products.js). Generator: tools/generate-pages.js — run 'node tools/generate-pages.js --only <slug>' for one page or '--all' for everything. Paid PDF files are NEVER stored in this repository: the only purchase link is gumroadUrl. Free resources will live in a separate data/free-resources.json (not created until the first free resource exists) so paid and free products are never mixed. Fields marked null are UNKNOWN, not zero — do not guess them. Status 'published' means 'listed on the live website'. Contact email set 2026-11-14: jojobusiness0101@gmail.com. Pinterest profile verified 2026-11-14: https://www.pinterest.com/JoJosBlocks/ . Instagram @rz.views is intentionally NOT linked: its profile publicly displays the owner's first name, which conflicts with the brand-only identity rule. License default (owner-approved proposal, 2026-11-14): personal-family (Personal + Family Use); Single-Classroom Use is a future add-on, not a separate product yet. Ages for Animal Explorer, Community Helpers and the Bundle are still null — proposed ranges (3-6, 4-7, 2-7) are working recommendations only and must NOT be published until the owner confirms them. US English throughout since 2026-11-14 (coloring, favorite, license).",
+  "_readme": "JoJo's Blocks — CENTRAL PRODUCT DATA. This is the single source of truth for every product on the website. Edit this file to add or change a book; never edit a generated book page by hand. Generated files: books/*.html, sitemap.xml, llms.txt (and later js/products.js). Generator: tools/generate-pages.js — run 'node tools/generate-pages.js --only <slug>' for one page or '--all' for everything. Paid PDF files are NEVER stored in this repository: the only purchase link is gumroadUrl. Free resources will live in a separate data/free-resources.json (not created until the first free resource exists) so paid and free products are never mixed. Fields marked null are UNKNOWN, not zero — do not guess them. Status 'published' means 'listed on the live website'. Contact email set 2026-11-14: jojobusiness0101@gmail.com. Pinterest profile verified 2026-11-14: https://www.pinterest.com/JoJosBlocks/ . Instagram @rz.views is intentionally NOT linked: its profile publicly displays the owner's first name, which conflicts with the brand-only identity rule. License default (owner-approved proposal, 2026-11-14): personal-family (Personal + Family Use); Single-Classroom Use is a future add-on, not a separate product yet. Ages APPROVED and published 2026-11-14 (owner decision): Animal Explorer 3-6, Community Helpers 4-7, Bundle 2-7. License wording (Personal + Family) is kept as proposed, pending qualified legal review — do not treat it as legally final. Single-Classroom license NOT offered at this stage (owner decision 2026-11-14). US English throughout since 2026-11-14 (coloring, favorite, license).",
   "products": [
     {
       "age": "Ages 2–4",
@@ -50,9 +50,9 @@
       "license": "personal-family"
     },
     {
-      "age": null,
-      "ageMax": null,
-      "ageMin": null,
+      "age": "Ages 3–6",
+      "ageMax": 6,
+      "ageMin": 3,
       "category": "coloring-books",
       "cover": "assets/covers/book-02.jpg",
       "coverAlt": "My First Animal Explorer cover — a lion, elephant, giraffe, monkey, rabbit and panda",
@@ -68,7 +68,7 @@
       "gumroadUrl": "https://jojosblocks.gumroad.com/l/my-first-animal-explorer?wanted=true",
       "id": "book-02",
       "lastmod": "2026-11-10",
-      "llmsFormat": "digital PDF coloring and activity book, 30 pages",
+      "llmsFormat": "digital PDF coloring and activity book, 30 pages, ages 3–6",
       "llmsSummary": "meet lions, elephants, giraffes, pandas, monkeys and more — learn each animal's name, trace the word, count, match and color. Includes a Certificate of Achievement.",
       "pages": 30,
       "price": "$4.99",
@@ -98,9 +98,9 @@
       "license": "personal-family"
     },
     {
-      "age": null,
-      "ageMax": null,
-      "ageMin": null,
+      "age": "Ages 4–7",
+      "ageMax": 7,
+      "ageMin": 4,
       "category": "coloring-books",
       "cover": "assets/covers/book-03.jpg",
       "coverAlt": "My Little Community Helpers cover — a firefighter, mail carrier, teacher, nurse, police officer and builder",
@@ -116,7 +116,7 @@
       "gumroadUrl": "https://jojosblocks.gumroad.com/l/my-little-community-helpers?wanted=true",
       "id": "book-03",
       "lastmod": "2026-11-10",
-      "llmsFormat": "digital PDF coloring book, 54 pages",
+      "llmsFormat": "digital PDF coloring book, 54 pages, ages 4–7",
       "llmsSummary": "24 community helpers — doctors, nurses, firefighters, police officers, teachers, veterinarians, electricians, mail carriers and more — with simple job descriptions, big coloring illustrations and a matching activity.",
       "pages": 54,
       "price": "$4.99",
@@ -194,9 +194,9 @@
       "license": "personal-family"
     },
     {
-      "age": null,
-      "ageMax": null,
-      "ageMin": null,
+      "age": "Ages 2–7",
+      "ageMax": 7,
+      "ageMin": 2,
       "category": "bundles",
       "cover": "assets/covers/bundle-cover.jpg",
       "coverAlt": "Complete 4-book bundle cover — collage of the four JoJo's Blocks book covers",
@@ -213,7 +213,7 @@
       "gumroadUrl": "https://jojosblocks.gumroad.com/l/jojos-blocks-coloring-bundle?wanted=true",
       "id": "book-05",
       "lastmod": "2026-11-10",
-      "llmsFormat": "digital PDF bundle, 154 pages (all four books above)",
+      "llmsFormat": "digital PDF bundle, 154 pages, ages 2–7 (all four books above)",
       "llmsSummary": "all four books in one bundle — ABC, animals, community helpers and space — for one lower price than buying them separately.",
       "pages": 154,
       "price": "$12.99",
