@@ -130,13 +130,17 @@ html.js .faq-item.open .faq-a{max-height:480px}
 .newsletter-form input{flex:1;min-width:240px;padding:14px 18px;border-radius:999px;border:0;font-size:1rem;font-family:var(--font-body)}
 .newsletter-note{margin-top:14px;font-size:.92rem;color:rgba(255,255,255,.9)}
 
-/* Footer */
-footer{background:var(--ink);color:#D9DBE8;padding:56px 0 28px;margin-top:0}
-.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px}
-footer h4{color:#fff;margin-bottom:14px}
-footer a{color:#D9DBE8;text-decoration:none;display:block;padding:4px 0}
+/* Footer — minimal: brand + one compact link row (Phase 1C).
+   The old four-column footer-grid is retired; nothing references it. */
+footer{background:var(--ink);color:#D9DBE8;padding:48px 0 28px;margin-top:0}
+.footer-simple{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap}
+.footer-brand{max-width:520px}
+.footer-brand p{margin-bottom:8px}
+footer a{color:#D9DBE8;text-decoration:none}
 footer a:hover{color:#fff;text-decoration:underline}
 .footer-logo{color:#fff;font-family:var(--font-display);font-size:1.4rem;text-decoration:none;display:flex;gap:10px;align-items:center;margin-bottom:12px}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 22px;align-content:flex-start;padding-top:6px}
+.footer-links a{display:block;padding:6px 0;font-weight:700;white-space:nowrap}
 .footer-bottom{border-top:1px solid rgba(255,255,255,.14);margin-top:36px;padding-top:20px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:.92rem}
 .footer-bottom a{display:inline}
 
@@ -162,7 +166,7 @@ footer a:hover{color:#fff;text-decoration:underline}
   .product-grid{grid-template-columns:1fr}
   .grid-3{grid-template-columns:1fr 1fr}
   .grid-4,.steps{grid-template-columns:1fr 1fr}
-  .footer-grid{grid-template-columns:1fr 1fr}
+  .footer-simple{flex-direction:column;gap:24px}
   .modal-card{grid-template-columns:1fr}
   .nav-toggle{display:block}
   .nav-menu{position:absolute;top:72px;left:0;right:0;background:#fff;flex-direction:column;padding:14px 22px 20px;box-shadow:var(--shadow-lg);display:none}
@@ -172,7 +176,42 @@ footer a:hover{color:#fff;text-decoration:underline}
 @media (max-width:560px){
   .section{padding:60px 0}
   .grid-3,.grid-4,.steps{grid-template-columns:1fr}
-  .footer-grid{grid-template-columns:1fr}
   .newsletter{padding:36px 22px}
   .badge-a{left:6px}.badge-b{right:6px}
+}
+
+/* Explore dropdown + "coming soon" nav items (Phase 1C).
+   Desktop: the menu opens on hover, on keyboard focus, or on click/tap
+   (js/site.js toggles .open). Mobile: it expands inline inside the
+   open nav panel. "Soon" items are plain text, never links, so no
+   visitor can land on an empty category page. */
+.has-dropdown{position:relative}
+.dropdown-toggle{display:flex;align-items:center;gap:6px;padding:9px 13px;border-radius:999px;color:var(--ink);font-weight:700;font-size:.98rem;font-family:var(--font-body);background:none;border:0;cursor:pointer}
+.dropdown-toggle:hover,.dropdown-toggle:focus-visible{background:#FFE9E9;color:var(--coral-dark);outline:none}
+.dropdown-toggle .chev{font-size:.8rem;line-height:1;transition:transform .18s ease}
+.has-dropdown.open .dropdown-toggle .chev{transform:rotate(180deg)}
+.dropdown-menu{position:absolute;top:calc(100% + 10px);left:0;min-width:320px;margin:0;padding:8px;list-style:none;background:#fff;border:1px solid rgba(43,45,66,.09);border-radius:16px;box-shadow:var(--shadow-lg);display:none;z-index:60}
+.has-dropdown.open .dropdown-menu,
+.has-dropdown:hover .dropdown-menu,
+.has-dropdown:focus-within .dropdown-menu{display:block}
+.dropdown-menu a{display:block;padding:10px 12px;border-radius:12px;color:var(--ink);text-decoration:none}
+.dropdown-menu a:hover,.dropdown-menu a:focus-visible{background:#FFF1E6;outline:none}
+.dropdown-menu a strong{display:block;font-size:1rem}
+.dropdown-menu a small{display:block;color:var(--muted);font-weight:600;font-size:.85rem;line-height:1.35}
+.dropdown-soon{padding:10px 12px;color:var(--muted)}
+.dropdown-soon strong{display:block;font-size:1rem;color:var(--ink)}
+.dropdown-soon small{display:block;font-weight:600;font-size:.85rem;line-height:1.35}
+.soon-pill{display:inline-block;margin-left:8px;padding:2px 9px;border-radius:999px;background:#F1F1F5;color:var(--muted);font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;vertical-align:middle}
+.nav-soon{display:block;padding:9px 13px;border-radius:999px;color:var(--muted);font-weight:700;font-size:.98rem;cursor:default;white-space:nowrap}
+@media (prefers-reduced-motion:reduce){
+  .dropdown-toggle .chev{transition:none}
+}
+@media (max-width:900px){
+  .has-dropdown{width:100%}
+  .dropdown-toggle{width:100%;justify-content:space-between}
+  .dropdown-menu{position:static;min-width:0;border:0;box-shadow:none;padding:2px 0 6px 14px;display:none}
+  .has-dropdown.open .dropdown-menu{display:block}
+  .has-dropdown:hover .dropdown-menu,.has-dropdown:focus-within .dropdown-menu{display:none}
+  .has-dropdown.open:hover .dropdown-menu,.has-dropdown.open:focus-within .dropdown-menu{display:block}
+  .nav-soon{padding:9px 13px}
 }
