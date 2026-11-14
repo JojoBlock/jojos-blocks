@@ -44,24 +44,39 @@
       window.gtag("event", name, params || {});
     }
   }
-  document.addEventListener("click", function (e) {
-    var buy = e.target.closest ? e.target.closest("a[data-book]") : null;
-    if (buy) {
-      trackEvent("buy_now_click", { book_slug: buy.getAttribute("data-book"), location: buy.getAttribute("data-location") || "card" });
-    }
-  });
+  /* Buy-button clicks are tracked in js/site.js (shared by every page),
+     not here — one handler for the whole site, so a click is never
+     counted twice. */
 
   function priceHTML(p, cls) {
+    /* Discount presentation: the original price is small and crossed
+       out, the discount is a badge, and the final price is the large
+       visual focus, with the code shown plainly. The percentage is
+       computed from the two prices, never hardcoded. A product with
+       no sale price (or a sale price equal to the price) shows its
+       plain price with no discount claim. */
     if (!p.price) return "";
-    var note = (p.salePrice && p.salePrice !== p.price)
-      ? ' <span class="price-note">10% off with JOJOS10 · you pay ' + p.salePrice + '</span>'
-      : "";
-    return '<p class="' + cls + '">' + p.price + note + '</p>';
+    var code = (typeof SITE_CONFIG !== "undefined" && SITE_CONFIG.discountCode) || "JOJOS10";
+    var pct = discountPct(p.price, p.salePrice);
+    if (!pct) return '<p class="' + cls + ' price-block"><span class="price-now">' + p.price + '</span></p>';
+    return '<p class="' + cls + ' price-block">' +
+      '<span class="price-was">' + p.price + '</span>' +
+      '<span class="price-off">' + pct + '% OFF</span>' +
+      '<span class="price-now">' + p.salePrice + '</span>' +
+      '<span class="price-code">' + code + ' applied at checkout</span></p>';
+  }
+
+  function discountPct(price, salePrice) {
+    if (!price || !salePrice || salePrice === price) return 0;
+    var was = parseFloat(String(price).replace(/[^0-9.]/g, ""));
+    var now = parseFloat(String(salePrice).replace(/[^0-9.]/g, ""));
+    if (!was || !now || now >= was) return 0;
+    return Math.round((1 - now / was) * 100);
   }
 
   function cardHTML(p) {
     /* Books 3 and 4 sit further down the page: load their covers
-       eagerly so they never show up as blank colour blocks while
+       eagerly so they never show up as blank color blocks while
        lazy-loading catches up. Fixed width/height reserves the
        600x849 cover shape and prevents layout shift. */
     var loading = (p.id === "book-03" || p.id === "book-04") ? "eager" : "lazy";
@@ -121,6 +136,7 @@
       '<ul class="card-features">' + p.features.map(function (f) { return "<li>" + f + "</li>"; }).join("") + '</ul>' +
       '<div class="card-actions">' + buyButton(p.pdfUrl, "Buy Now on Gumroad", "btn-primary", p.slug, "modal") + '</div>' +
       '<p class="modal-note"><a href="books/' + p.slug + '.html">Open the full product page for ' + p.title + '</a></p>' +
+      '<p class="modal-note">License: ' + (p.license === "personal-family" ? "Personal &amp; family use" : "See Terms &amp; Conditions") + ' — see <a href="terms.html">Terms &amp; Conditions</a> for the full license.</p>' +
       '<p class="modal-note">' + (p.pdfUrl ? 'This is a digital PDF. Click Buy Now on Gumroad to buy securely — your download is ready right after purchase. This site takes no payment itself.' : 'This is a digital PDF coloring book. It is not available to buy right now.') + '</p></div>';
     trackEvent("view_details", { book_slug: p.slug });
     modal.classList.add("open");
@@ -186,29 +202,8 @@
     if (modal.classList.contains("open")) closeModal();
   });
 
-  /* Mobile menu */
-  var navToggle = document.getElementById("nav-toggle");
-  var navMenu = document.getElementById("nav-menu");
-  if (navToggle && navMenu) {
-    navToggle.addEventListener("click", function () {
-      var open = navMenu.classList.toggle("open");
-      navToggle.setAttribute("aria-expanded", open ? "true" : "false");
-      navToggle.textContent = open ? "✕" : "☰";
-    });
-    navMenu.querySelectorAll("a").forEach(function (a) {
-      a.addEventListener("click", function () {
-        navMenu.classList.remove("open");
-        navToggle.setAttribute("aria-expanded", "false");
-        navToggle.textContent = "☰";
-      });
-    });
-  }
-
-  /* Header shadow on scroll */
-  var header = document.getElementById("site-header");
-  window.addEventListener("scroll", function () {
-    if (header) header.classList.toggle("scrolled", window.scrollY > 8);
-  }, { passive: true });
+  /* Mobile menu, Explore dropdown, header shadow and footer year live
+     in js/site.js (shared by every page) — not duplicated here. */
 
   /* FAQ accordion — one open at a time, keyboard friendly (native <button>).
      Buttons are wired in index.html with aria-controls + ids, so screen
@@ -251,7 +246,7 @@
     revealEls.forEach(function (el) { el.classList.add("visible"); });
   }
 
-  /* Newsletter — front-end only, honestly labelled */
+  /* Newsletter — front-end only, honestly labeled */
   var form = document.getElementById("newsletter-form");
   if (form) {
     form.addEventListener("submit", function (e) {
@@ -294,14 +289,7 @@
     });
   }
 
-  /* Footer year. A contact email can be added later in
-     SITE_CONFIG.contactEmail — the footer contact line was removed
-     at launch because no public contact email has been supplied yet. */
-  var yearEl = document.getElementById("year");
-  if (yearEl) yearEl.textContent = new Date().getFullYear();
-  var contactEl = document.getElementById("contact-email");
-  if (SITE_CONFIG.contactEmail && contactEl) {
-    contactEl.textContent = SITE_CONFIG.contactEmail;
-  }
+  /* Footer year is set by js/site.js. The footer contact email is
+     written directly in the footer partial — no JavaScript needed. */
 
 })();
