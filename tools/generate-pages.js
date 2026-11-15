@@ -171,7 +171,7 @@ function hrefFor(href, prefix, isHome) {
   return prefix + href;
 }
 
-function navItemsHTML(prefix, isHome) {
+function navItemsHTML(prefix, isHome, currentId) {
   const nav = NAV;
   const lines = [];
   for (const item of nav.top) {
@@ -179,16 +179,23 @@ function navItemsHTML(prefix, isHome) {
       // Dropdown menu: the button label comes from the menu item itself
       // (Part 3 — was hardcoded "Explore"). Live children link out,
       // soon children are text.
+      // Current-page state (15 Nov 2026 UI/UX pass): when the page
+      // being rendered is this menu's section (e.g. the Products
+      // landing page) or one of its children, the toggle gets
+      // .is-active and the matching child link gets aria-current.
+      let menuActive = item.id === currentId;
       const kids = nav.explore.map((c) => {
         if (c.status === "live") {
           if (!c.href) fail("navigation.json: live category '" + c.id + "' has no href");
-          return '        <li><a href="' + escAttr(hrefFor(c.href, prefix, isHome)) + '"><strong>' + escText(c.label) + '</strong><small>' + escText(c.description || "") + '</small></a></li>';
+          const current = c.id === currentId ? ' aria-current="page"' : "";
+          if (c.id === currentId) menuActive = true;
+          return '        <li><a href="' + escAttr(hrefFor(c.href, prefix, isHome)) + '"' + current + '><strong>' + escText(c.label) + '</strong><small>' + escText(c.description || "") + '</small></a></li>';
         }
         if (c.href) fail("navigation.json: soon category '" + c.id + "' must not have an href (it has no content yet)");
         return '        <li class="dropdown-soon"><strong>' + escText(c.label) + ' <span class="soon-pill">Soon</span></strong><small>' + escText(c.description || "") + '</small></li>';
       }).join("\n");
       lines.push('        <li class="has-dropdown">');
-      lines.push('          <button class="dropdown-toggle" id="explore-toggle" aria-expanded="false" aria-haspopup="true" aria-controls="explore-menu">' + escText(item.label) + ' <span class="chev" aria-hidden="true">⌄</span></button>');
+      lines.push('          <button class="dropdown-toggle' + (menuActive ? " is-active" : "") + '" id="explore-toggle" aria-expanded="false" aria-haspopup="true" aria-controls="explore-menu">' + escText(item.label) + ' <span class="chev" aria-hidden="true">⌄</span></button>');
       lines.push('          <ul class="dropdown-menu" id="explore-menu">');
       lines.push(kids);
       lines.push('          </ul>');
@@ -201,7 +208,11 @@ function navItemsHTML(prefix, isHome) {
       continue;
     }
     if (!item.href) fail("navigation.json: live item '" + item.id + "' has no href");
-    lines.push('        <li><a href="' + escAttr(hrefFor(item.href, prefix, isHome)) + '">' + escText(item.label) + '</a></li>');
+    // Current-page state (15 Nov 2026 UI/UX pass): the nav link for
+    // the page being rendered carries aria-current="page" and
+    // .is-active, so a visitor can tell from the header where they are.
+    const current = item.id === currentId ? ' aria-current="page" class="is-active"' : "";
+    lines.push('        <li><a href="' + escAttr(hrefFor(item.href, prefix, isHome)) + '"' + current + '>' + escText(item.label) + '</a></li>');
   }
   // Contact is the header's compact button (mailto — direct, no dead page).
   const contact = nav.contact;
@@ -228,14 +239,14 @@ function footerLinksHTML(prefix, isHome) {
 // Inlined so the footer needs no extra asset; colored via CSS.
 const PINTEREST_ICON = '<svg class="social-icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.39 18.592.026 11.985.026L12.017 0z"/></svg>';
 
-function chromeFor(prefix, isHome) {
+function chromeFor(prefix, isHome, currentId) {
   const headerTpl = fs.readFileSync(path.join(PARTIALS_DIR, "header.html"), "utf8");
   const footerTpl = fs.readFileSync(path.join(PARTIALS_DIR, "footer.html"), "utf8");
   const homeHref = isHome ? "#top" : prefix + "index.html";
   const header = headerTpl
     .replaceAll("{{PREFIX}}", prefix)
     .replaceAll("{{HOME_HREF}}", homeHref)
-    .replaceAll("{{NAV_ITEMS}}", navItemsHTML(prefix, isHome));
+    .replaceAll("{{NAV_ITEMS}}", navItemsHTML(prefix, isHome, currentId || null));
   const footer = footerTpl
     .replaceAll("{{PREFIX}}", prefix)
     .replaceAll("{{HOME_HREF}}", homeHref)
@@ -268,7 +279,7 @@ function renderStaticPage(templateName, outName, prefix, isHome) {
 function renderHome(articles) {
   const template = fs.readFileSync(path.join(TEMPLATES_DIR, "index.html"), "utf8");
   const site = DATA.site;
-  const chrome = chromeFor("", true);
+  const chrome = chromeFor("", true, "home");
   const sorted = [...articles].sort((x, y) => (y.datePublished < x.datePublished ? -1 : y.datePublished > x.datePublished ? 1 : x.slug.localeCompare(y.slug))).slice(0, 3);
   const cards = sorted.map((a) =>
     '<article class="blog-card"><a class="blog-card-cover" href="blog/' + a.slug + '.html"><img src="' + a.coverImage + '" alt="' + escAttr(a.coverAlt) + '" width="1200" height="630" loading="lazy"></a>' +
@@ -390,7 +401,7 @@ function renderFreePage(free, published) {
     }))
   }, null, 2) + '\n</script>';
   const cards = published.map((p) => productCardHTML(p, prefix)).join("\n        ");
-  const chrome = chromeFor(prefix, false);
+  const chrome = chromeFor(prefix, false, "free-resources");
   const out = template
     .replaceAll("{{HEADER}}", chrome.header)
     .replaceAll("{{FOOTER}}", chrome.footer)
@@ -534,7 +545,7 @@ function renderArticle(a, all) {
         : "<li>" + escText(s.text) + "</li>").join("") +
       "</ul></section>";
   }
-  const chrome = chromeFor(prefix, false);
+  const chrome = chromeFor(prefix, false, "blog");
   const out = template
     .replaceAll("{{HEADER}}", chrome.header)
     .replaceAll("{{FOOTER}}", chrome.footer)
@@ -589,7 +600,7 @@ function renderBlogIndex(articles, blogHome, blogCategories) {
     }).join("");
   const categoryFilter = '<div class="filter-bar" role="group" aria-label="Filter articles by category">' + filterChips + "</div>" +
     '<p class="filter-empty" hidden>No articles in this category yet — check back soon.</p>';
-  const chrome = chromeFor("../", false);
+  const chrome = chromeFor("../", false, "blog");
   const out = template
     .replaceAll("{{HEADER}}", chrome.header)
     .replaceAll("{{FOOTER}}", chrome.footer)
@@ -652,17 +663,69 @@ function formatFileSize(bytes) {
 
 // Anchor ids for the resource groups on the Free Resources landing
 // page — these must match the live category hrefs in
-// data/sections.json (free-resources section).
+// data/sections.json (free-resources section). Six categories
+// (15 Nov 2026 UI/UX pass); the brief's taxonomy.
 const RESOURCE_CATEGORY_ANCHORS = {
   "Coloring Pages": "coloring-pages",
-  "Sketches & Drawing": "sketches-drawing",
-  "Educational Worksheets": "educational-worksheets",
-  "Planners & Templates": "planners-templates",
-  "Stickers": "stickers",
-  "Creative Sheets": "creative-sheets",
-  "Wallpapers": "wallpapers",
-  "AI Art Resources": "ai-art-resources"
+  "Learn to Draw": "learn-to-draw",
+  "Learning Worksheets": "learning-worksheets",
+  "Planners & Routine": "planners-routine",
+  "Creative Printables": "creative-printables",
+  "Wallpapers & AI": "wallpapers-ai"
 };
+
+// Category filter chips for the Free Resources landing page
+// (15 Nov 2026 UI/UX pass). The brief's exact 6 categories, in order,
+// with counts from the live resource list. "All Resources" is selected
+// by default. The chip values are the category names themselves, so
+// they match the data-category attributes on the resource cards.
+const RESOURCE_FILTER_CATEGORIES = [
+  "Coloring Pages",
+  "Learn to Draw",
+  "Learning Worksheets",
+  "Planners & Routine",
+  "Creative Printables",
+  "Wallpapers & AI"
+];
+
+function resourceFilterBarHTML(resources) {
+  const counts = {};
+  for (const r of resources) counts[r.category] = (counts[r.category] || 0) + 1;
+  const chips = '<button type="button" class="chip is-active" data-filter="all" aria-pressed="true">All Resources <span class="chip-count">' + resources.length + '</span></button>' +
+    RESOURCE_FILTER_CATEGORIES.map((cat) =>
+      '<button type="button" class="chip" data-filter="' + escAttr(cat) + '" aria-pressed="false">' + escText(cat) + ' <span class="chip-count">' + (counts[cat] || 0) + '</span></button>'
+    ).join("");
+  return '<div class="filter-bar" role="group" aria-label="Filter free resources by category">' + chips + '</div>';
+}
+
+// Guide accordions for the Free Resources landing page
+// (15 Nov 2026 UI/UX pass). The section guide's existing content,
+// moved below the listings into collapsed <details> accordions so the
+// resources sit near the top of the page. Nothing is deleted: the
+// three guide items are retitled (Printing tips -> Printing Guide,
+// Ages 2-7 -> Age Guide, What each category will offer ->
+// What's Included) and a fourth accordion carries the licence wording
+// already stated in the guide ("personal and family use only ... print
+// as many copies as you need for your own household ... No resale or
+// redistribution"). Native <details>/<summary> is keyboard-operable
+// and exposes its expanded state without JavaScript.
+function resourceGuideAccordionsHTML(section) {
+  const guide = section.guide;
+  if (!guide || !guide.items || !guide.items.length) return "";
+  const titles = ["Printing Guide", "Age Guide", "What's Included"];
+  const items = guide.items.map((it, i) =>
+    '      <details class="accordion-item">\n' +
+    '        <summary class="accordion-q">' + escText(titles[i] || it.h) + '<span class="chev" aria-hidden="true">⌄</span></summary>\n' +
+    '        <div class="accordion-a"><p>' + escText(it.text) + '</p></div>\n' +
+    '      </details>'
+  ).join("\n");
+  const licence =
+    '      <details class="accordion-item">\n' +
+    '        <summary class="accordion-q">Usage &amp; Licence<span class="chev" aria-hidden="true">⌄</span></summary>\n' +
+    '        <div class="accordion-a"><p>Every free resource is for personal and family use only — print as many copies as you need for your own household. No resale or redistribution. Please don\u2019t share the files themselves; instead, tell friends to download their own free copy from this page.</p></div>\n' +
+    '      </details>';
+  return '    <div class="guide-accordions">\n      <h2>' + escText(guide.title) + '</h2>\n' + items + '\n' + licence + '\n    </div>\n';
+}
 
 function resourceJsonLd(r, canonical, downloadUrl) {
   return '<script type="application/ld+json">\n' + JSON.stringify({
@@ -699,7 +762,7 @@ function renderResourcePage(r) {
     : "<li>Save the JPG to your phone and set it as your wallpaper (1080x1920).</li>" +
       "<li>" + escText(r.licence) + " only.</li>" +
       "<li>No resale or redistribution.</li>";
-  const chrome = chromeFor(prefix, false);
+  const chrome = chromeFor(prefix, false, "free-resources");
   const out = template
     .replaceAll("{{HEADER}}", chrome.header)
     .replaceAll("{{FOOTER}}", chrome.footer)
@@ -787,7 +850,11 @@ function renderSectionPage(section, products, resources) {
     featured = '    <div class="section-featured" id="products">\n      <h2>' + escText(section.featured.title) + '</h2>\n      <p class="lead">' + escText(section.featured.description) + '</p>\n      <div class="product-grid">\n' + cards + '\n      </div>\n    </div>\n';
   } else if (section.featured && section.featured.type === "resource") {
     const f = section.featured;
-    featured = '    <div class="section-featured">\n      <article class="feature-card filter-item">\n        <span class="feature-icon" aria-hidden="true">🎁</span>\n        <h2>' + escText(f.title) + '</h2>\n        <p>' + escText(f.description) + '</p>\n        <p class="card-meta">' + escText(f.meta) + '</p>\n        <a class="btn btn-primary" href="' + escAttr(hrefFor(f.href, prefix, false)) + '" data-free-download="taster-pack" data-location="' + escAttr(section.id) + '">' + escText(f.buttonText) + '</a>\n      </article>\n    </div>\n';
+    // Taster Pack card (15 Nov 2026 UI/UX pass): the real cover thumbnail
+    // (assets/free-resources/taster-pack-thumbnail.jpg, a render of the
+    // PDF's page 1) replaces the text-only 🎁 emoji card. Same PDF link,
+    // same data-free-download tracking, same meta line.
+    featured = '    <div class="section-featured">\n      <article class="feature-card feature-card--taster filter-item">\n        <img class="feature-cover" src="' + escAttr(prefix + "assets/free-resources/taster-pack-thumbnail.jpg") + '" alt="JoJo\u2019s Blocks Free Taster Pack — cover page" width="849" height="1200" loading="lazy">\n        <div class="feature-body">\n        <h2>' + escText(f.title) + '</h2>\n        <p>' + escText(f.description) + '</p>\n        <p class="card-meta">' + escText(f.meta) + '</p>\n        <a class="btn btn-primary" href="' + escAttr(hrefFor(f.href, prefix, false)) + '" data-free-download="taster-pack" data-location="' + escAttr(section.id) + '">' + escText(f.buttonText) + '</a>\n        </div>\n      </article>\n    </div>\n';
   }
   // Category cards.
   const cards = (section.categories || []).map((c) => {
@@ -802,8 +869,17 @@ function renderSectionPage(section, products, resources) {
   // "guide": {title, items:[{h, text}]}). Rendered only when present;
   // a section without a guide renders byte-identical output, because
   // the template token sits on the intro line and renders to "".
+  // EXCEPTION (15 Nov 2026 UI/UX pass): on the Free Resources page the
+  // guide is NOT rendered up top — it moves below the listings as
+  // collapsed accordions (guideAccordions, token after the resource
+  // list), so the resources sit near the top of the page.
   let guide = "";
-  if (section.guide && section.guide.items && section.guide.items.length) {
+  let guideAccordions = "";
+  let filterBar = "";
+  if (section.id === "free-resources") {
+    guideAccordions = resourceGuideAccordionsHTML(section);
+    if (resources && resources.length) filterBar = resourceFilterBarHTML(resources);
+  } else if (section.guide && section.guide.items && section.guide.items.length) {
     guide = '\n    <div class="section-guide">\n      <h2>' + escText(section.guide.title) + '</h2>\n' +
       section.guide.items.map((it) => '      <h3>' + escText(it.h) + '</h3>\n      <p>' + escText(it.text) + '</p>').join("\n") +
       '\n    </div>';
@@ -818,7 +894,9 @@ function renderSectionPage(section, products, resources) {
   if (section.id === "free-resources" && resources && resources.length) {
     resourceList = resourceListHTML(resources, prefix);
   }
-  const chrome = chromeFor(prefix, false);
+  // Nav current-page id: the Products landing page is the nav's
+  // "Digital Products" child, not the "Products" menu itself.
+  const chrome = chromeFor(prefix, false, section.id === "products" ? "digital-products" : section.id);
   const out = template
     .replaceAll("{{HEADER}}", chrome.header)
     .replaceAll("{{FOOTER}}", chrome.footer)
@@ -833,6 +911,8 @@ function renderSectionPage(section, products, resources) {
     .replaceAll("{{FEATURED_HTML}}", featured)
     .replaceAll("{{RESOURCE_LIST_HTML}}", resourceList)
     .replaceAll("{{GUIDE_HTML}}", guide)
+    .replaceAll("{{GUIDE_ACCORDIONS_HTML}}", guideAccordions)
+    .replaceAll("{{FILTER_BAR_HTML}}", filterBar)
     .replaceAll("{{CATEGORY_CARDS}}", cards)
     .replaceAll("{{NOTE_HTML}}", note)
     .replaceAll("{{BREADCRUMB_JSONLD}}", breadcrumbJsonLd([

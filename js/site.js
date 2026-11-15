@@ -145,58 +145,79 @@
     }
   });
 
-  /* Part 3 — category filter chips (blog listing). Clicking a chip
-     shows only cards whose data-category matches, hides the rest, and
-     updates the pressed state. Fires one GA4 filter_use event per
-     click (no duplicate firing — a single delegated handler). */
+  /* Part 3 + UI/UX pass 1 — category filter chips + search boxes,
+     combined. One shared state ({query, category}) drives a single
+     applyFilters() so the two compose instead of fighting: the old
+     chip handler un-hid items the search had hidden (and vice versa).
+     Scope fix: search/filter only ever touch searchable cards —
+     .filter-item:not(.category-card). Category cards ("Browse
+     categories") are navigation, never search results, so they stay
+     visible; the Taster Pack feature card has no data-category, so a
+     category chip hides it and "All Resources" brings it back. Group
+     headings (.resource-group) hide when every card in their group is
+     hidden, so no orphan headings remain. The empty state counts only
+     searchable cards. GA4: one filter_use per chip click, one
+     search_use per search session (query text never sent). */
   var filterBar = document.querySelector(".filter-bar");
+  var searchBox = document.querySelector(".search-box");
+  var filterState = { query: "", category: "all" };
+  var searched = false;
+  function searchableItems() {
+    return document.querySelectorAll(".filter-item:not(.category-card)");
+  }
+  function applyFilters() {
+    var visible = 0;
+    searchableItems().forEach(function (item) {
+      var matchesQuery = !filterState.query ||
+        item.textContent.toLowerCase().indexOf(filterState.query) !== -1;
+      var matchesCategory = filterState.category === "all" ||
+        item.getAttribute("data-category") === filterState.category;
+      var show = matchesQuery && matchesCategory;
+      item.hidden = !show;
+      if (show) visible++;
+    });
+    /* Group headings: hide a heading when its whole group is hidden.
+       Each heading is immediately followed by its .product-grid. */
+    document.querySelectorAll(".resource-group").forEach(function (heading) {
+      var grid = heading.nextElementSibling;
+      var anyVisible = false;
+      if (grid) {
+        grid.querySelectorAll(".filter-item").forEach(function (item) {
+          if (!item.hidden) anyVisible = true;
+        });
+      }
+      heading.hidden = !anyVisible;
+    });
+    var empty = document.querySelector(".filter-empty");
+    if (empty && searchableItems().length) empty.hidden = visible > 0;
+    return visible;
+  }
   if (filterBar) {
     filterBar.addEventListener("click", function (e) {
       var chip = e.target.closest ? e.target.closest(".chip[data-filter]") : null;
       if (!chip) return;
       var value = chip.getAttribute("data-filter");
+      filterState.category = value;
       filterBar.querySelectorAll(".chip[data-filter]").forEach(function (c) {
         var active = c === chip;
         c.classList.toggle("is-active", active);
         c.setAttribute("aria-pressed", active ? "true" : "false");
       });
-      var visible = 0;
-      document.querySelectorAll(".filter-item[data-category]").forEach(function (item) {
-        var show = value === "all" || item.getAttribute("data-category") === value;
-        item.hidden = !show;
-        if (show) visible++;
-      });
-      var empty = document.querySelector(".filter-empty");
-      if (empty) empty.hidden = visible > 0;
+      applyFilters();
       if (typeof window.gtag === "function") {
         window.gtag("event", "filter_use", { filter_value: value, page: window.location.pathname });
       }
     });
   }
-
-  /* Part 3 — search boxes (section landing pages). Filters the
-     .filter-item cards on the page by their visible text as the user
-     types. Fires one GA4 search_use event per search session (the
-     first keystroke), reporting only that a search happened — never
-     the query text — so no personal data leaves the page. */
-  var searchBox = document.querySelector(".search-box");
   if (searchBox) {
-    var searched = false;
     searchBox.addEventListener("input", function () {
-      var q = searchBox.value.trim().toLowerCase();
-      var visible = 0;
-      document.querySelectorAll(".filter-item").forEach(function (item) {
-        var show = !q || item.textContent.toLowerCase().indexOf(q) !== -1;
-        item.hidden = !show;
-        if (show) visible++;
-      });
-      var empty = document.querySelector(".filter-empty");
-      if (empty) empty.hidden = visible > 0;
-      if (q && !searched && typeof window.gtag === "function") {
+      filterState.query = searchBox.value.trim().toLowerCase();
+      applyFilters();
+      if (filterState.query && !searched && typeof window.gtag === "function") {
         searched = true;
         window.gtag("event", "search_use", { page: window.location.pathname });
       }
-      if (!q) searched = false;
+      if (!filterState.query) searched = false;
     });
   }
 
