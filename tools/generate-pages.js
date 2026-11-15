@@ -48,8 +48,9 @@
  *     category page. The generator FAILS if a live item has no href or
  *     a soon item has one.
  *   - refund-policy.html is generated but is a DRAFT (unlinked from the
- *     footer, not in the sitemap) until the owner approves it and it gets
- *     qualified legal review. 404.html is never in the sitemap.
+ *     footer) until the owner approves it and it gets qualified legal
+ *     review. It has been listed in the sitemap since Part 4.
+ *     404.html is never in the sitemap.
  *   - Free resources live in data/free-resources.json and are rendered by
  *     renderFreePage() into free-printables/index.html. The PDF itself must
  *     already exist under assets/free-resources/ and its byte size must match
@@ -405,7 +406,11 @@ function renderFreePage(free, published) {
     .replaceAll("{{LICENSE_LI}}", licenseLi)
     .replaceAll("{{PRODUCT_CARDS}}", cards)
     .replaceAll("{{FAQ_ITEMS}}", faqItems)
-    .replaceAll("{{FAQ_JSONLD}}", faqJsonLd);
+    .replaceAll("{{FAQ_JSONLD}}", faqJsonLd)
+    .replaceAll("{{BREADCRUMB_JSONLD}}", breadcrumbJsonLd([
+      { name: "Home", url: site.domain + "/" },
+      { name: "Free Printables", url: canonical },
+    ]));
   const leftover = out.match(/\{\{[A-Z_]+\}\}/);
   if (leftover) fail("unreplaced token " + leftover[0] + " while rendering free-printables");
   return out;
@@ -481,6 +486,7 @@ function articleJsonLd(a, ogImage) {
     "description": a.metaDescription,
     "image": ogImage,
     "datePublished": a.datePublished,
+    "dateModified": a.datePublished,
     "author": { "@type": "Organization", "name": "JoJo's Blocks" },
     "publisher": { "@type": "Organization", "name": "JoJo's Blocks", "logo": { "@type": "ImageObject", "url": DATA.site.domain + "/assets/profile-logo.jpg" } }
   }, null, 2) + "\n</script>";
@@ -656,6 +662,16 @@ function renderSectionPage(section, products) {
     if (c.href) fail("data/sections.json: soon category '" + c.id + "' must not have an href");
     return '      <article class="category-card coming-soon filter-item">\n        <span class="category-icon" aria-hidden="true">' + escText(c.icon || "✦") + '</span>\n        <h3>' + escText(c.label) + '</h3>\n        <p>' + escText(c.description) + '</p>\n        <p class="coming-soon-text">' + escText(c.comingSoon || "More coming soon.") + '</p>\n        <span class="soon-pill">Coming Soon</span>\n      </article>';
   }).join("\n");
+  // Part 4 — optional honest guide/intro content (data/sections.json
+  // "guide": {title, items:[{h, text}]}). Rendered only when present;
+  // a section without a guide renders byte-identical output, because
+  // the template token sits on the intro line and renders to "".
+  let guide = "";
+  if (section.guide && section.guide.items && section.guide.items.length) {
+    guide = '\n    <div class="section-guide">\n      <h2>' + escText(section.guide.title) + '</h2>\n' +
+      section.guide.items.map((it) => '      <h3>' + escText(it.h) + '</h3>\n      <p>' + escText(it.text) + '</p>').join("\n") +
+      '\n    </div>';
+  }
   // Optional note / affiliate disclosure.
   const note = section.note
     ? '    <div class="section-note">\n      <h2>Good to know</h2>\n      <p>' + escText(section.note) + '</p>\n    </div>\n'
@@ -673,6 +689,7 @@ function renderSectionPage(section, products) {
     .replaceAll("{{HEADING}}", escText(section.heading))
     .replaceAll("{{INTRO}}", escText(section.intro))
     .replaceAll("{{FEATURED_HTML}}", featured)
+    .replaceAll("{{GUIDE_HTML}}", guide)
     .replaceAll("{{CATEGORY_CARDS}}", cards)
     .replaceAll("{{NOTE_HTML}}", note)
     .replaceAll("{{BREADCRUMB_JSONLD}}", breadcrumbJsonLd([
@@ -691,6 +708,11 @@ function renderSitemap(published, site, articles, sections) {
   for (const sp of DATA.staticPages) {
     lines.push(url(site.domain + sp.path, sp.lastmod, sp.changefreq, sp.priority));
   }
+  // Part 4: refund-policy.html is a real page that returns 200, so it
+  // belongs in the sitemap (listed here, not via data/products.json,
+  // which is the protected product data file). It stays unlinked from
+  // the footer until the owner approves it + qualified legal review.
+  lines.push(url(site.domain + "/refund-policy.html", "2026-11-15", "yearly", "0.3"));
   // Original order: homepage, then the 5 book pages in data order, then privacy/terms.
   // staticPages holds "/" first; insert the book pages right after it.
   const home = lines.splice(2, 1)[0];
@@ -981,6 +1003,10 @@ function main() {
     if (sectionIds.has(s.id)) fail("duplicate section id: " + s.id);
     sectionIds.add(s.id);
     if (s.featured && s.featured.type !== "products" && s.featured.type !== "resource") fail("section " + s.id + ": featured.type must be 'products' or 'resource'");
+    if (s.guide) {
+      if (!s.guide.title || !Array.isArray(s.guide.items) || !s.guide.items.length) fail("section " + s.id + ": guide needs a title and at least one item");
+      for (const it of s.guide.items) if (!it.h || !it.text) fail("section " + s.id + ": every guide item needs h and text");
+    }
     const catIds2 = new Set();
     for (const c of (s.categories || [])) {
       if (!c.id || !c.label || !c.description || !c.status) fail("section " + s.id + ": every category needs id, label, description and status");
@@ -1125,7 +1151,7 @@ function main() {
   // Static pages share the header/footer partials; they are generated
   // from templates/ so the chrome can never drift between pages.
   // refund-policy.html stays a draft: generated, but unlinked from the
-  // footer and absent from the sitemap until approved + legally reviewed.
+  // footer (listed in the sitemap since Part 4) until approved + legally reviewed.
   // The homepage is rendered by renderHome (Part 3) so its "Latest from
   // the blog" section always shows the three newest articles.
   writeFile(path.join(ROOT, "index.html"), renderHome(publishedArticles), checkOnly);
