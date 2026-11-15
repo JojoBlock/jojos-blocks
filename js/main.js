@@ -134,8 +134,8 @@
       '<p>' + p.description + '</p>' +
       '<h4>What&rsquo;s inside</h4>' +
       '<ul class="card-features">' + p.features.map(function (f) { return "<li>" + f + "</li>"; }).join("") + '</ul>' +
-      '<div class="card-actions">' + buyButton(p.pdfUrl, "Buy Now on Gumroad", "btn-primary", p.slug, "modal") + '</div>' +
-      '<p class="modal-note"><a href="books/' + p.slug + '.html">Open the full product page for ' + p.title + '</a></p>' +
+      '<div class="card-actions">' + buyButton(p.pdfUrl, "Buy Now on Gumroad", "btn-primary", p.slug, "modal") +
+      '<a class="btn btn-outline" href="books/' + p.slug + '.html">View Full Product Details</a></div>' +
       '<p class="modal-note">License: ' + (p.license === "personal-family" ? "Personal &amp; family use" : "See Terms &amp; Conditions") + ' — see <a href="terms.html">Terms &amp; Conditions</a> for the full license.</p>' +
       '<p class="modal-note">' + (p.pdfUrl ? 'This is a digital PDF. Click Buy Now on Gumroad to buy securely — your download is ready right after purchase. This site takes no payment itself.' : 'This is a digital PDF coloring book. It is not available to buy right now.') + '</p></div>';
     trackEvent("view_details", { book_slug: p.slug });
