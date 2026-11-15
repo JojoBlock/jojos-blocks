@@ -14,6 +14,9 @@
  *     templates/blog-article.html + data/articles.json)
  *   - <section>/index.html (one per section landing page, from
  *     templates/section.html + data/sections.json — Part 3)
+ *   - games/<slug>/index.html (one per READY game only, from
+ *     templates/game.html + data/games.json — UI/UX Pass 2 prep;
+ *     coming-soon games emit no page and no sitemap entry)
  *   - free-resources/<slug>/index.html (one per free resource, from
  *     templates/resource.html + data/resources.json — Part 5)
  *   - privacy.html, terms.html, 404.html, refund-policy.html
@@ -88,6 +91,8 @@ const ARTICLE_TEMPLATE = path.join(ROOT, "templates", "blog-article.html");
 const BLOG_INDEX_TEMPLATE = path.join(ROOT, "templates", "blog-index.html");
 const SECTIONS_FILE = path.join(ROOT, "data", "sections.json");
 const SECTION_TEMPLATE = path.join(ROOT, "templates", "section.html");
+const GAMES_FILE = path.join(ROOT, "data", "games.json");
+const GAME_TEMPLATE = path.join(ROOT, "templates", "game.html");
 const RESOURCES_FILE = path.join(ROOT, "data", "resources.json");
 const RESOURCE_TEMPLATE = path.join(ROOT, "templates", "resource.html");
 const TEMPLATE_FILE = path.join(ROOT, "templates", "book.html");
@@ -727,6 +732,99 @@ function resourceGuideAccordionsHTML(section) {
   return '    <div class="guide-accordions">\n      <h2>' + escText(guide.title) + '</h2>\n' + items + '\n' + licence + '\n    </div>\n';
 }
 
+// Guide accordions for the Games & Play landing page
+// (15 Nov 2026 UI/UX Pass 2). Same collapsed <details> pattern as the
+// Free Resources guide accordions above, but the item headings are
+// used as-is (no retitling) and there is no licence accordion: the
+// three guide items move out of the full-text block at the top of the
+// page into collapsed accordions below the category grid, so the
+// discovery area comes first and the guidance second.
+function sectionGuideAccordionsHTML(section) {
+  const guide = section.guide;
+  if (!guide || !guide.items || !guide.items.length) return "";
+  const items = guide.items.map((it) =>
+    '      <details class="accordion-item">\n' +
+    '        <summary class="accordion-q">' + escText(it.h) + '<span class="chev" aria-hidden="true">⌄</span></summary>\n' +
+    '        <div class="accordion-a"><p>' + escText(it.text) + '</p></div>\n' +
+    '      </details>'
+  ).join("\n");
+  return '    <div class="guide-accordions">\n      <h2>' + escText(guide.title) + '</h2>\n' + items + '\n    </div>\n';
+}
+
+// Browser games in development (UI/UX Pass 2 deployment prep,
+// 16 Nov 2026) — data/games.json is the single source of truth.
+// Titles are WORKING TITLES ONLY; final names, thumbnails and
+// gameplay are supplied and approved by the owner after development.
+// A game with status "coming-soon" renders as a card with a neutral
+// thumbnail tile (category icon + "Artwork coming soon" label —
+// never a fake screenshot or invented artwork), its working title,
+// one honest gameplay sentence, its category and a Coming Soon pill.
+// The card is a plain <article>: never a link, never a Play button,
+// never placeholder gameplay. The grid is auto-fill (see
+// css/styles.css .games-grid), so adding a game to data/games.json
+// just adds a card and the layout stays balanced.
+function gameCardHTML(g) {
+  return '      <article class="game-card coming-soon">\n' +
+    '        <div class="game-thumb" aria-hidden="true">\n' +
+    '          <span class="game-thumb-icon">' + escText(g.icon || "🎮") + '</span>\n' +
+    '          <span class="game-thumb-note">Artwork coming soon</span>\n' +
+    '        </div>\n' +
+    '        <div class="game-body">\n' +
+    '          <h3>' + escText(g.title) + '</h3>\n' +
+    '          <p>' + escText(g.description) + '</p>\n' +
+    '          <span class="game-category">' + escText(g.category) + '</span>\n' +
+    '          <span class="soon-pill">Coming Soon</span>\n' +
+    '        </div>\n' +
+    '      </article>';
+}
+
+function gamesGridHTML(games) {
+  if (!games || !games.length) return "";
+  const cards = games.map((g) => gameCardHTML(g)).join("\n");
+  return '    <div class="section-games">\n' +
+    '      <h2>Games in development</h2>\n' +
+    '      <p class="lead">' + games.length + ' original browser games are in development — free to play here when they are ready. The titles below are working titles; final names and artwork will be added as each game is finished.</p>\n' +
+    '      <div class="games-grid">\n' + cards + '\n      </div>\n' +
+    '    </div>\n';
+}
+
+// Individual game page (templates/game.html). Rendered ONLY for a
+// game whose status is "ready" — coming-soon games emit no page, no
+// sitemap entry and no link. The playable game itself is built by the
+// separate games project and mounted at #game-root; this template
+// carries no placeholder gameplay and no Play button.
+function renderGamePage(g) {
+  const template = fs.readFileSync(GAME_TEMPLATE, "utf8");
+  const site = DATA.site;
+  const prefix = "../../";
+  const canonical = site.domain + "/games/" + g.slug + "/";
+  const thumb = g.thumbnail
+    ? '    <div class="resource-print"><img src="' + escAttr(prefix + g.thumbnail) + '" alt="' + escAttr(g.title + " — game artwork") + '" width="1200" height="630" loading="lazy"></div>\n'
+    : '    <div class="game-thumb" aria-hidden="true">\n      <span class="game-thumb-icon">' + escText(g.icon || "🎮") + '</span>\n      <span class="game-thumb-note">Artwork coming soon</span>\n    </div>\n';
+  const body = '    <div class="game-play" id="game-root">\n      <!-- The playable game mounts here (separate games project). -->\n    </div>\n';
+  const chrome = chromeFor(prefix, false, "games");
+  const out = template
+    .replaceAll("{{HEADER}}", chrome.header)
+    .replaceAll("{{FOOTER}}", chrome.footer)
+    .replaceAll("{{PREFIX}}", prefix)
+    .replaceAll("{{SEO_TITLE}}", escAttr(g.title + " | Games & Play | JoJo's Blocks"))
+    .replaceAll("{{META_DESCRIPTION}}", escAttr(g.metaDescription))
+    .replaceAll("{{CANONICAL_URL}}", canonical)
+    .replaceAll("{{GAME_TITLE}}", escText(g.title))
+    .replaceAll("{{GAME_DESCRIPTION}}", escText(g.description))
+    .replaceAll("{{GAME_CATEGORY}}", escText(g.category))
+    .replaceAll("{{GAME_THUMB_HTML}}", thumb)
+    .replaceAll("{{GAME_BODY_HTML}}", body)
+    .replaceAll("{{BREADCRUMB_JSONLD}}", breadcrumbJsonLd([
+      { name: "Home", url: site.domain + "/" },
+      { name: "Games & Play", url: site.domain + "/games/" },
+      { name: g.title, url: canonical },
+    ]));
+  const leftover = out.match(/\{\{[A-Z_]+\}\}/);
+  if (leftover) fail("unreplaced token " + leftover[0] + " while rendering game " + g.id);
+  return out;
+}
+
 function resourceJsonLd(r, canonical, downloadUrl) {
   return '<script type="application/ld+json">\n' + JSON.stringify({
     "@context": "https://schema.org",
@@ -838,7 +936,7 @@ function resourceListHTML(resources, prefix) {
  * Soon card with NO link and NO download/buy/play button. The featured
  * block is either the real products (type "products"), one real resource
  * (type "resource"), or absent. */
-function renderSectionPage(section, products, resources) {
+function renderSectionPage(section, products, resources, games) {
   const template = fs.readFileSync(SECTION_TEMPLATE, "utf8");
   const site = DATA.site;
   const prefix = "../";
@@ -875,10 +973,18 @@ function renderSectionPage(section, products, resources) {
   // list), so the resources sit near the top of the page.
   let guide = "";
   let guideAccordions = "";
+  let guideAccordionsAfter = "";
   let filterBar = "";
   if (section.id === "free-resources") {
     guideAccordions = resourceGuideAccordionsHTML(section);
     if (resources && resources.length) filterBar = resourceFilterBarHTML(resources);
+  } else if (section.id === "games") {
+    // UI/UX Pass 2 (final adjustment, 15 Nov 2026): the games guide
+    // renders as collapsed accordions BELOW the category grid, so
+    // discovering the games comes first and guidance second. Free
+    // Resources keeps its accordions above its Browse categories
+    // (guideAccordions), unchanged.
+    guideAccordionsAfter = sectionGuideAccordionsHTML(section);
   } else if (section.guide && section.guide.items && section.guide.items.length) {
     guide = '\n    <div class="section-guide">\n      <h2>' + escText(section.guide.title) + '</h2>\n' +
       section.guide.items.map((it) => '      <h3>' + escText(it.h) + '</h3>\n      <p>' + escText(it.text) + '</p>').join("\n") +
@@ -894,8 +1000,25 @@ function renderSectionPage(section, products, resources) {
   if (section.id === "free-resources" && resources && resources.length) {
     resourceList = resourceListHTML(resources, prefix);
   }
+  // Games in development (UI/UX Pass 2 deployment prep): the six
+  // coming-soon game cards sit above the Browse categories grid, so
+  // the page order is title/intro → games grid → categories →
+  // collapsed accordions → note. Every other section renders "".
+  let gamesHtml = "";
+  if (section.id === "games") {
+    gamesHtml = gamesGridHTML(games);
+  }
   // Nav current-page id: the Products landing page is the nav's
   // "Digital Products" child, not the "Products" menu itself.
+  // UI/UX Pass 2: the search box is dead UI on Games (js/site.js only
+  // filters .filter-item:not(.category-card), and every games card is
+  // a category card), so it renders empty there and byte-identical
+  // markup everywhere else.
+  const searchHtml = section.id === "games" ? "" :
+    '\n    <div class="section-search" role="search">\n' +
+    '      <label class="visually-hidden" for="section-search">Search this section</label>\n' +
+    '      <input type="search" id="section-search" class="search-box" placeholder="Search ' + escText(section.title) + '…" autocomplete="off">\n' +
+    '    </div>';
   const chrome = chromeFor(prefix, false, section.id === "products" ? "digital-products" : section.id);
   const out = template
     .replaceAll("{{HEADER}}", chrome.header)
@@ -912,6 +1035,9 @@ function renderSectionPage(section, products, resources) {
     .replaceAll("{{RESOURCE_LIST_HTML}}", resourceList)
     .replaceAll("{{GUIDE_HTML}}", guide)
     .replaceAll("{{GUIDE_ACCORDIONS_HTML}}", guideAccordions)
+    .replaceAll("{{GAMES_HTML}}", gamesHtml)
+    .replaceAll("{{GUIDE_ACCORDIONS_AFTER_HTML}}", guideAccordionsAfter)
+    .replaceAll("{{SEARCH_HTML}}", searchHtml)
     .replaceAll("{{FILTER_BAR_HTML}}", filterBar)
     .replaceAll("{{CATEGORY_CARDS}}", cards)
     .replaceAll("{{NOTE_HTML}}", note)
@@ -924,7 +1050,7 @@ function renderSectionPage(section, products, resources) {
   return out;
 }
 
-function renderSitemap(published, site, articles, sections, resources) {
+function renderSitemap(published, site, articles, sections, resources, readyGames) {
   const lines = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'];
   const url = (loc, lastmod, changefreq, priority) =>
     `  <url><loc>${loc}</loc><lastmod>${lastmod}</lastmod><changefreq>${changefreq}</changefreq><priority>${priority}</priority></url>`;
@@ -955,11 +1081,16 @@ function renderSitemap(published, site, articles, sections, resources) {
   const sectionLines = (sections || []).map((s) =>
     url(site.domain + "/" + s.path.replace(/index\.html$/, ""), s.lastmod, "monthly", "0.8")
   );
+  // Individual game pages (only games whose status is "ready" —
+  // coming-soon games have no page and never appear here).
+  const gameLines = (readyGames || []).map((g) =>
+    url(site.domain + "/games/" + g.slug + "/", g.lastmod, "monthly", "0.7")
+  );
   // Part 5 free resource detail pages (only real pages that exist).
   const resourceLines = (resources || []).map((r) =>
     url(site.domain + "/free-resources/" + r.slug + "/", r.lastmod, "monthly", "0.7")
   );
-  lines.splice(2, 0, home, ...bookLines, ...blogLines, ...sectionLines, ...resourceLines);
+  lines.splice(2, 0, home, ...bookLines, ...blogLines, ...sectionLines, ...gameLines, ...resourceLines);
   lines.push("</urlset>", "");
   return lines.join("\n");
 }
@@ -1260,6 +1391,43 @@ function main() {
     }
     writtenFiles.add(s.path);
   }
+  // Browser games in development (data/games.json, UI/UX Pass 2
+  // deployment prep, 16 Nov 2026): working titles only. A coming-soon
+  // game needs id, title, description, category and status; it must
+  // NOT have a slug, href or thumbnail (no page, no link, no invented
+  // artwork). A ready game additionally needs slug + thumbnail +
+  // metaDescription (120-160 chars) + lastmod; only ready games get
+  // a page + sitemap entry. All six games are coming-soon right now.
+  if (!fs.existsSync(GAMES_FILE)) fail("missing " + GAMES_FILE);
+  if (!fs.existsSync(GAME_TEMPLATE)) fail("missing " + GAME_TEMPLATE);
+  const GAMES_DATA = JSON.parse(fs.readFileSync(GAMES_FILE, "utf8"));
+  const GAMES = GAMES_DATA.games || [];
+  if (!GAMES.length) fail("data/games.json: games array is required");
+  const gameIds = new Set();
+  const readyGames = [];
+  for (const g of GAMES) {
+    for (const f of ["id", "title", "description", "category", "status"]) {
+      if (g[f] === undefined || g[f] === null || g[f] === "") fail("game " + (g.id || "?") + " is missing required field: " + f);
+    }
+    if (gameIds.has(g.id)) fail("duplicate game id: " + g.id);
+    gameIds.add(g.id);
+    if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(g.id)) fail("game id must be lowercase kebab-case: " + g.id);
+    if (g.status !== "coming-soon" && g.status !== "ready") fail("game " + g.id + ": status must be 'coming-soon' or 'ready' (got " + g.status + ")");
+    if (g.status === "coming-soon") {
+      if (g.slug || g.href || g.thumbnail) fail("game " + g.id + ": coming-soon games must not have a slug, href or thumbnail");
+    } else {
+      for (const f of ["slug", "thumbnail", "metaDescription", "lastmod"]) {
+        if (g[f] === undefined || g[f] === null || g[f] === "") fail("ready game " + g.id + " is missing required field: " + f);
+      }
+      if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(g.slug)) fail("ready game " + g.id + ": slug must be lowercase kebab-case");
+      if (g.metaDescription.length < 120 || g.metaDescription.length > 160) fail("ready game " + g.id + ": metaDescription must be 120-160 characters (got " + g.metaDescription.length + ")");
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(g.lastmod)) fail("ready game " + g.id + ": lastmod must be YYYY-MM-DD");
+      if (!g.thumbnail.startsWith("assets/games/")) fail("ready game " + g.id + ": thumbnail must live under assets/games/ (got: " + g.thumbnail + ")");
+      if (!fs.existsSync(path.join(ROOT, g.thumbnail))) fail("ready game thumbnail not found: " + g.thumbnail);
+      readyGames.push(g);
+      writtenFiles.add("games/" + g.slug + "/index.html");
+    }
+  }
   // Part 5 — free resources (data/resources.json): the free resources
   // library. Every file must exist under assets/free-resources/ and
   // its byte size must match the data file, or the build fails — so a
@@ -1448,16 +1616,22 @@ function main() {
   writeFile(path.join(ROOT, "blog", "index.html"), renderBlogIndex(publishedArticles, ARTICLES.blogHome, (CATS.categories.find((c) => c.id === "blog") || {}).categories || []), checkOnly);
   // Part 3 section landing pages (data/sections.json).
   for (const s of SECTIONS.sections) {
-    writeFile(path.join(ROOT, s.path), renderSectionPage(s, published, RESOURCES), checkOnly);
+    writeFile(path.join(ROOT, s.path), renderSectionPage(s, published, RESOURCES, GAMES), checkOnly);
+  }
+  // Individual game pages: only games whose status is "ready" get a
+  // page (all six are coming-soon right now, so nothing is emitted
+  // and the sitemap stays at 36 URLs).
+  for (const g of readyGames) {
+    writeFile(path.join(ROOT, "games", g.slug, "index.html"), renderGamePage(g), checkOnly);
   }
   // Part 5 free resource detail pages (data/resources.json).
   for (const r of RESOURCES) {
     writeFile(path.join(ROOT, "free-resources", r.slug, "index.html"), renderResourcePage(r), checkOnly);
   }
-  writeFile(path.join(ROOT, "sitemap.xml"), renderSitemap(published, site, publishedArticles, SECTIONS.sections, RESOURCES), checkOnly);
+  writeFile(path.join(ROOT, "sitemap.xml"), renderSitemap(published, site, publishedArticles, SECTIONS.sections, RESOURCES, readyGames), checkOnly);
   writeFile(path.join(ROOT, "llms.txt"), renderLlms(published, site, FREE, publishedArticles, SECTIONS.sections, RESOURCES), checkOnly);
   writeFile(path.join(ROOT, "js", "products.js"), renderProductsJs(DATA), checkOnly);
-  console.log("done. " + published.length + " book pages + index.html + " + statics.length + " static pages + free-printables/index.html + " + publishedArticles.length + " article page(s) + blog/index.html + " + SECTIONS.sections.length + " section page(s) + " + RESOURCES.length + " resource page(s) + sitemap.xml + llms.txt + js/products.js" + (checkOnly ? " (dry run — nothing written)" : ""));
+  console.log("done. " + published.length + " book pages + index.html + " + statics.length + " static pages + free-printables/index.html + " + publishedArticles.length + " article page(s) + blog/index.html + " + SECTIONS.sections.length + " section page(s) + " + readyGames.length + " game page(s) + " + RESOURCES.length + " resource page(s) + sitemap.xml + llms.txt + js/products.js" + (checkOnly ? " (dry run — nothing written)" : ""));
 }
 
 main();
