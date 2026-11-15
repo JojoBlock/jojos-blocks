@@ -8,10 +8,14 @@
  *   - books/<slug>.html   (one per published product, from templates/book.html)
  *   - free-printables/index.html (free resources page, from
  *     templates/free-resources.html + data/free-resources.json)
+ *   - blog/index.html     (blog listing, from templates/blog-index.html
+ *     + data/articles.json)
+ *   - blog/<slug>.html    (one per published article, from
+ *     templates/blog-article.html + data/articles.json)
  *   - privacy.html, terms.html, 404.html, refund-policy.html
  *                         (from templates/<name>.html)
- *   - sitemap.xml         (static pages + published products)
- *   - llms.txt            (product list for AI systems)
+ *   - sitemap.xml         (static pages + published products + blog)
+ *   - llms.txt            (product list for AI systems + blog articles)
  *   - js/products.js      (homepage card/modal data, same values as data/products.json)
  *
  * Every page shares ONE header and ONE footer, from
@@ -22,6 +26,8 @@
  *
  * Usage (run from the repository root):
  *   node tools/generate-pages.js --only <slug>   regenerate ONE book page
+ *   node tools/generate-pages.js --only article:<slug>
+ *                                            regenerate ONE article page (+ listing)
  *   node tools/generate-pages.js --all           regenerate everything above
  *   node tools/generate-pages.js --check         dry run: print what would change, write nothing
  *
@@ -45,12 +51,14 @@
  *     already exist under assets/free-resources/ and its byte size must match
  *     the data file, or the build fails — so a paid PDF can never be
  *     published as a free download by mistake.
- *   - Paid PDF files are never stored in this repository. The only purchase
- *     link is each product's gumroadUrl.
- *   - Existing URLs are preserved: a product page is always books/<slug>.html
- *     and its canonical URL is always <domain>/books/<slug>.html. If a slug
- *     ever has to change, add a redirect and update the canonical by hand —
- *     this script will not do it silently.
+ *   - Blog articles live in data/articles.json and are rendered by
+ *     renderArticle() into blog/<slug>.html (+ blog/index.html listing).
+ *     The article meta description must be 120-160 characters, the
+ *     category must be one of the fixed list in data/categories.json
+ *     (blog.categories), related articles must exist, and inline links
+ *     must point at a page this generator writes — or the build fails.
+ *     The public Blog navigation stays "soon" until the owner activates
+ *     it; these pages exist on the dev branch for preview and review.
  */
 "use strict";
 
@@ -63,6 +71,9 @@ const NAV_FILE = path.join(ROOT, "data", "navigation.json");
 const CATEGORIES_FILE = path.join(ROOT, "data", "categories.json");
 const FREE_DATA_FILE = path.join(ROOT, "data", "free-resources.json");
 const FREE_TEMPLATE = path.join(ROOT, "templates", "free-resources.html");
+const ARTICLES_FILE = path.join(ROOT, "data", "articles.json");
+const ARTICLE_TEMPLATE = path.join(ROOT, "templates", "blog-article.html");
+const BLOG_INDEX_TEMPLATE = path.join(ROOT, "templates", "blog-index.html");
 const TEMPLATE_FILE = path.join(ROOT, "templates", "book.html");
 const TEMPLATES_DIR = path.join(ROOT, "templates");
 const PARTIALS_DIR = path.join(TEMPLATES_DIR, "partials");
@@ -360,7 +371,177 @@ function renderFreePage(free, published) {
   return out;
 }
 
-function renderSitemap(published, site) {
+// ---------- Blog articles (data/articles.json) ----------
+// Content blocks are structured data, not raw HTML: lead, h2, h3, p, ul,
+// cta. Paragraph and list text may contain inline links as [label](/path);
+// the href must point at a page this generator writes. US English only.
+function inlineLinks(text) {
+  const esc = escText(text);
+  return esc.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (m, label, href) =>
+    '<a href="' + escAttr(href) + '">' + label + "</a>");
+}
+
+function articleWords(a) {
+  let n = 0;
+  for (const b of a.content || []) {
+    if (b.text) n += b.text.split(/\s+/).filter(Boolean).length;
+    if (b.items) for (const it of b.items) n += it.split(/\s+/).filter(Boolean).length;
+    if (b.links) for (const l of b.links) n += l.label.split(/\s+/).filter(Boolean).length;
+  }
+  return n;
+}
+
+function readingTime(a) {
+  const mins = Math.max(1, Math.ceil(articleWords(a) / 200));
+  return mins + " min read";
+}
+
+function renderArticleContent(a) {
+  const parts = [];
+  for (const b of a.content || []) {
+    if (b.t === "lead") parts.push('<p class="lead">' + inlineLinks(b.text) + "</p>");
+    else if (b.t === "h2") parts.push("<h2>" + escText(b.text) + "</h2>");
+    else if (b.t === "h3") parts.push("<h3>" + escText(b.text) + "</h3>");
+    else if (b.t === "p") parts.push("<p>" + inlineLinks(b.text) + "</p>");
+    else if (b.t === "ul") parts.push("<ul>" + b.items.map((it) => "<li>" + inlineLinks(it) + "</li>").join("") + "</ul>");
+    else if (b.t === "cta") {
+      const links = (b.links || []).map((l) =>
+        '<a class="btn ' + (l.primary ? "btn-primary" : "btn-outline") + '" href="' + escAttr(l.href) + '">' + escText(l.label) + "</a>"
+      ).join("\n          ");
+      parts.push('<div class="callout"><h2>' + escText(b.title) + "</h2><p>" + inlineLinks(b.text) + '</p><div class="callout-actions">\n          ' + links + "\n        </div></div>");
+    } else fail("article " + a.slug + ": unknown content block type: " + b.t);
+  }
+  return parts.join("\n    ");
+}
+
+function faqItemsHTML(faqs) {
+  return (faqs || []).map((f) =>
+    '<details class="faq-item"><summary class="faq-q">' + escText(f.q) + '<span class="chev" aria-hidden="true">⌄</span></summary><div class="faq-a"><p>' + escText(f.a) + "</p></div></details>"
+  ).join("\n        ");
+}
+
+function faqJsonLdScript(faqs) {
+  if (!faqs || !faqs.length) return "";
+  return '<script type="application/ld+json">\n' + JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map((f) => ({
+      "@type": "Question",
+      "name": f.q,
+      "acceptedAnswer": { "@type": "Answer", "text": f.a }
+    }))
+  }, null, 2) + "\n</script>";
+}
+
+function articleJsonLd(a, ogImage) {
+  return '<script type="application/ld+json">\n' + JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": a.title,
+    "description": a.metaDescription,
+    "image": ogImage,
+    "datePublished": a.datePublished,
+    "author": { "@type": "Organization", "name": "JoJo's Blocks" },
+    "publisher": { "@type": "Organization", "name": "JoJo's Blocks", "logo": { "@type": "ImageObject", "url": DATA.site.domain + "/assets/profile-logo.jpg" } }
+  }, null, 2) + "\n</script>";
+}
+
+function breadcrumbJsonLd(items) {
+  return '<script type="application/ld+json">\n' + JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": items.map((it, i) => ({
+      "@type": "ListItem",
+      "position": i + 1,
+      "name": it.name,
+      "item": it.url
+    }))
+  }, null, 2) + "\n</script>";
+}
+
+function renderArticle(a, all) {
+  const template = fs.readFileSync(ARTICLE_TEMPLATE, "utf8");
+  const site = DATA.site;
+  const prefix = "../";
+  const canonical = site.domain + "/blog/" + a.slug + ".html";
+  const ogImage = site.domain + "/" + a.coverImage;
+  const related = (a.relatedArticles || []).map((slug) => all.find((x) => x.slug === slug)).filter(Boolean);
+  const relatedSection = related.length
+    ? '<section class="section section-alt" aria-label="Related articles">\n    <div class="wrap">\n      <h2>Related articles</h2>\n      <ul class="related-list">\n' +
+      related.map((r) => '        <li><a href="' + r.slug + '.html">' + escText(r.title) + "</a></li>").join("\n") +
+      "\n      </ul>\n    </div>\n  </section>"
+    : "";
+  // FAQ + sources are appended after the content blocks (same pattern as
+  // the free page: visible text first, JSON-LD built from the same data).
+  let content = renderArticleContent(a);
+  if (a.faqs && a.faqs.length) {
+    content += '\n    <h2>Frequently asked questions</h2>\n    <div class="faq">\n        ' + faqItemsHTML(a.faqs) + "\n    </div>";
+  }
+  if (a.sources && a.sources.length) {
+    content += '\n    <section class="article-sources"><h2>Sources</h2><ul>' +
+      a.sources.map((s) => s.href
+        ? '<li><a href="' + escAttr(s.href) + '" target="_blank" rel="noopener">' + escText(s.text) + "</a></li>"
+        : "<li>" + escText(s.text) + "</li>").join("") +
+      "</ul></section>";
+  }
+  const chrome = chromeFor(prefix, false);
+  const out = template
+    .replaceAll("{{HEADER}}", chrome.header)
+    .replaceAll("{{FOOTER}}", chrome.footer)
+    .replaceAll("{{TITLE}}", escText(a.title))
+    .replaceAll("{{SEO_TITLE}}", escAttr(a.seoTitle))
+    .replaceAll("{{META_DESCRIPTION}}", escAttr(a.metaDescription))
+    .replaceAll("{{CANONICAL_URL}}", canonical)
+    .replaceAll("{{OG_IMAGE_URL}}", ogImage)
+    .replaceAll("{{COVER_IMAGE}}", escAttr(prefix + a.coverImage))
+    .replaceAll("{{COVER_ALT}}", escAttr(a.coverAlt))
+    .replaceAll("{{DATE_PUBLISHED}}", a.datePublished)
+    .replaceAll("{{READING_TIME}}", readingTime(a))
+    .replaceAll("{{CATEGORIES}}", escText(a.category))
+    .replaceAll("{{TAGS}}", escText((a.tags || []).join(", ")))
+    .replaceAll("{{CONTENT_HTML}}", content)
+    .replaceAll("{{RELATED_SECTION}}", relatedSection)
+    .replaceAll("{{ARTICLE_JSONLD}}", articleJsonLd(a, ogImage))
+    .replaceAll("{{BREADCRUMB_JSONLD}}", breadcrumbJsonLd([
+      { name: "Home", url: site.domain + "/" },
+      { name: "Blog", url: site.domain + "/blog/" },
+      { name: a.title, url: canonical },
+    ]))
+    .replaceAll("{{FAQ_JSONLD}}", faqJsonLdScript(a.faqs));
+  const leftover = out.match(/\{\{[A-Z_]+\}\}/);
+  if (leftover) fail("unreplaced token " + leftover[0] + " while rendering blog/" + a.slug);
+  return out;
+}
+
+function renderBlogIndex(articles, blogHome) {
+  const template = fs.readFileSync(BLOG_INDEX_TEMPLATE, "utf8");
+  const site = DATA.site;
+  const sorted = [...articles].sort((x, y) => (y.datePublished < x.datePublished ? -1 : y.datePublished > x.datePublished ? 1 : x.slug.localeCompare(y.slug)));
+  const cards = sorted.map((a) =>
+    '<article class="blog-card"><a class="blog-card-cover" href="' + a.slug + '.html"><img src="../' + a.coverImage + '" alt="' + escAttr(a.coverAlt) + '" width="1200" height="630" loading="lazy"></a>' +
+    '<div class="blog-card-body"><span class="eyebrow">' + escText(a.category) + "</span>" +
+    '<h2><a href="' + a.slug + '.html">' + escText(a.title) + "</a></h2>" +
+    "<p>" + escText(a.excerpt) + "</p>" +
+    '<p class="card-meta"><time datetime="' + a.datePublished + '">' + a.datePublished + "</time> · " + readingTime(a) + "</p></div></article>"
+  ).join("\n");
+  const chrome = chromeFor("../", false);
+  const out = template
+    .replaceAll("{{HEADER}}", chrome.header)
+    .replaceAll("{{FOOTER}}", chrome.footer)
+    .replaceAll("{{SEO_TITLE}}", escAttr(blogHome.seoTitle))
+    .replaceAll("{{META_DESCRIPTION}}", escAttr(blogHome.metaDescription))
+    .replaceAll("{{CANONICAL_URL}}", site.domain + "/blog/")
+    .replaceAll("{{ARTICLE_CARDS}}", cards)
+    .replaceAll("{{BREADCRUMB_JSONLD}}", breadcrumbJsonLd([
+      { name: "Home", url: site.domain + "/" },
+      { name: "Blog", url: site.domain + "/blog/" },
+    ]));
+  const leftover = out.match(/\{\{[A-Z_]+\}\}/);
+  if (leftover) fail("unreplaced token " + leftover[0] + " while rendering blog/index.html");
+  return out;
+}
+
+function renderSitemap(published, site, articles) {
   const lines = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'];
   const url = (loc, lastmod, changefreq, priority) =>
     `  <url><loc>${loc}</loc><lastmod>${lastmod}</lastmod><changefreq>${changefreq}</changefreq><priority>${priority}</priority></url>`;
@@ -373,12 +554,20 @@ function renderSitemap(published, site) {
   const bookLines = published.map((p) =>
     url(site.domain + "/books/" + p.slug + ".html", p.lastmod, "monthly", "0.8")
   );
-  lines.splice(2, 0, home, ...bookLines);
+  // Blog: listing first (priority 0.8, lastmod = latest article), then each
+  // published article (priority 0.7, lastmod = its publication date).
+  const blogLines = [];
+  if (articles && articles.length) {
+    const latest = articles.map((a) => a.datePublished).sort().pop();
+    blogLines.push(url(site.domain + "/blog/", latest, "monthly", "0.8"));
+    for (const a of articles) blogLines.push(url(site.domain + "/blog/" + a.slug + ".html", a.datePublished, "monthly", "0.7"));
+  }
+  lines.splice(2, 0, home, ...bookLines, ...blogLines);
   lines.push("</urlset>", "");
   return lines.join("\n");
 }
 
-function renderLlms(published, site, free) {
+function renderLlms(published, site, free, articles) {
   const parts = [];
   parts.push("# JoJo's Blocks\n");
   parts.push(
@@ -427,6 +616,17 @@ function renderLlms(published, site, free) {
       (free.contents || []).map((c) => c.title).join(", ") + ".\n" +
       "- License: personal and family use only; no resale or redistribution. No sign-up or email address is needed to download it.\n"
     );
+  }
+  if (articles && articles.length) {
+    parts.push("## Blog articles\n");
+    for (const a of articles) {
+      parts.push(
+        "### " + a.title + "\n\n" +
+        "- Article: " + site.domain + "/blog/" + a.slug + ".html\n" +
+        "- Published: " + a.datePublished + "\n" +
+        "- What it is: " + a.excerpt + "\n"
+      );
+    }
   }
   parts.push("## How buying works\n");
   parts.push(
@@ -569,7 +769,7 @@ function main() {
   const onlySlug = mode === "--only" ? args[1] : null;
   const doAll = mode === "--all" || checkOnly;
   if (!mode || (mode !== "--only" && mode !== "--all" && mode !== "--check") || (mode === "--only" && !onlySlug)) {
-    fail("usage: node tools/generate-pages.js --only <slug> | --all | --check");
+    fail("usage: node tools/generate-pages.js --only <slug> | --only article:<slug> | --all | --check");
   }
   if (!fs.existsSync(DATA_FILE)) fail("missing " + DATA_FILE);
   if (!fs.existsSync(NAV_FILE)) fail("missing " + NAV_FILE);
@@ -654,7 +854,74 @@ function main() {
   if (!FREE.contents || FREE.contents.length < 1) fail("data/free-resources.json: contents is required");
   if (!FREE.faqs || FREE.faqs.length < 1) fail("data/free-resources.json: faqs is required");
 
+  // Blog articles (data/articles.json): the blog's single source of truth.
+  if (!fs.existsSync(ARTICLES_FILE)) fail("missing " + ARTICLES_FILE);
+  if (!fs.existsSync(ARTICLE_TEMPLATE)) fail("missing " + ARTICLE_TEMPLATE);
+  if (!fs.existsSync(BLOG_INDEX_TEMPLATE)) fail("missing " + BLOG_INDEX_TEMPLATE);
+  const ARTICLES = JSON.parse(fs.readFileSync(ARTICLES_FILE, "utf8"));
+  if (!ARTICLES.blogHome || !ARTICLES.blogHome.seoTitle || !ARTICLES.blogHome.metaDescription) fail("data/articles.json: blogHome seoTitle/metaDescription are required");
+  if (ARTICLES.blogHome.metaDescription.length < 120 || ARTICLES.blogHome.metaDescription.length > 160) fail("data/articles.json: blogHome metaDescription must be 120-160 characters");
+  const blogCats = (CATS.categories.find((c) => c.id === "blog") || {}).categories || [];
+  if (!blogCats.length) fail("data/categories.json: blog.categories (the fixed category list) is required");
+  const articleSlugs = new Set();
+  for (const a of (ARTICLES.articles || [])) {
+    for (const f of ["slug", "title", "seoTitle", "metaDescription", "datePublished", "category", "coverImage", "coverAlt", "excerpt", "status"]) {
+      if (a[f] === undefined || a[f] === null || a[f] === "") fail("article " + (a.slug || "?") + " is missing required field: " + f);
+    }
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(a.datePublished)) fail("article " + a.slug + ": datePublished must be YYYY-MM-DD");
+    if (a.metaDescription.length < 120 || a.metaDescription.length > 160) fail("article " + a.slug + ": metaDescription must be 120-160 characters (got " + a.metaDescription.length + ")");
+    if (!blogCats.includes(a.category)) fail("article " + a.slug + ": category must be one of the fixed list: " + blogCats.join(", "));
+    if (!a.tags || !a.tags.length) fail("article " + a.slug + ": tags is required");
+    if (!a.coverImage.startsWith("assets/blog/")) fail("article " + a.slug + ": coverImage must live under assets/blog/");
+    if (!fs.existsSync(path.join(ROOT, a.coverImage))) fail("article cover image not found: " + a.coverImage);
+    if (!a.content || !a.content.length) fail("article " + a.slug + ": content is required");
+    for (const b of a.content) {
+      if (!["lead", "h2", "h3", "p", "ul", "cta"].includes(b.t)) fail("article " + a.slug + ": unknown content block type: " + b.t);
+      if (b.t === "ul" && (!b.items || !b.items.length)) fail("article " + a.slug + ": ul block needs items");
+      if (b.t === "cta" && (!b.title || !b.text || !b.links || !b.links.length)) fail("article " + a.slug + ": cta block needs title, text and links");
+    }
+    if (articleSlugs.has(a.slug)) fail("duplicate article slug: " + a.slug);
+    articleSlugs.add(a.slug);
+  }
+  const publishedArticles = (ARTICLES.articles || []).filter((a) => a.status === "published");
+  const draftArticles = (ARTICLES.articles || []).filter((a) => a.status !== "published");
+  if (draftArticles.length) console.log("skipping draft articles (no page, no sitemap entry): " + draftArticles.map((d) => d.slug).join(", "));
+  for (const a of (ARTICLES.articles || [])) {
+    for (const rel of (a.relatedArticles || [])) {
+      if (!articleSlugs.has(rel)) fail("article " + a.slug + ": related article does not exist: " + rel);
+    }
+  }
+  // Inline + CTA links must point at a page this generator writes.
+  const articleFiles = new Set(["blog/index.html"]);
+  for (const a of publishedArticles) articleFiles.add("blog/" + a.slug + ".html");
+  for (const f of articleFiles) writtenFiles.add(f);
+  const linkable = new Set([...writtenFiles]);
+  function checkArticleLink(a, href) {
+    if (href.startsWith("http") || href.startsWith("mailto:") || href.startsWith("#")) fail("article " + a.slug + ": links must be site-relative paths: " + href);
+    let filePart = href.replace(/^\//, "").split("#")[0].split("?")[0];
+    if (filePart === "") filePart = "index.html";
+    if (filePart.endsWith("/")) filePart += "index.html";
+    if (!linkable.has(filePart)) fail("article " + a.slug + ": link points at a file the generator does not write: " + href);
+  }
+  for (const a of (ARTICLES.articles || [])) {
+    const text = JSON.stringify(a.content || []);
+    for (const m of text.matchAll(/\]\(([^)\s]+)\)/g)) checkArticleLink(a, m[1]);
+    for (const b of (a.content || []).filter((x) => x.t === "cta")) {
+      for (const l of (b.links || [])) checkArticleLink(a, l.href);
+    }
+  }
+
   if (onlySlug) {
+    if (onlySlug.startsWith("article:")) {
+      const aslug = onlySlug.slice("article:".length);
+      const a = ARTICLES.articles.find((x) => x.slug === aslug);
+      if (!a) fail("no article with slug '" + aslug + "'");
+      if (a.status !== "published") fail("article '" + aslug + "' is not published (status: " + a.status + ") — nothing generated");
+      writeFile(path.join(ROOT, "blog", a.slug + ".html"), renderArticle(a, ARTICLES.articles), false);
+      writeFile(path.join(ROOT, "blog", "index.html"), renderBlogIndex(publishedArticles, ARTICLES.blogHome), false);
+      console.log("done. 1 article generated: blog/" + a.slug + ".html + blog/index.html (sitemap.xml and llms.txt untouched)");
+      return;
+    }
     const p = products.find((x) => x.slug === onlySlug);
     if (!p) fail("no product with slug '" + onlySlug + "'");
     if (p.status !== "published") fail("product '" + onlySlug + "' is not published (status: " + p.status + ") — nothing generated");
@@ -684,10 +951,17 @@ function main() {
   // Free resources page (free-printables/index.html). Its nav item and
   // category are activated by data/navigation.json + data/categories.json.
   writeFile(path.join(ROOT, "free-printables", "index.html"), renderFreePage(FREE, published), checkOnly);
-  writeFile(path.join(ROOT, "sitemap.xml"), renderSitemap(published, site), checkOnly);
-  writeFile(path.join(ROOT, "llms.txt"), renderLlms(published, site, FREE), checkOnly);
+  // Blog: listing page + one page per published article. The public Blog
+  // navigation stays "soon" until the owner activates it; these pages
+  // exist on the dev branch for preview and review.
+  for (const a of publishedArticles) {
+    writeFile(path.join(ROOT, "blog", a.slug + ".html"), renderArticle(a, ARTICLES.articles), checkOnly);
+  }
+  writeFile(path.join(ROOT, "blog", "index.html"), renderBlogIndex(publishedArticles, ARTICLES.blogHome), checkOnly);
+  writeFile(path.join(ROOT, "sitemap.xml"), renderSitemap(published, site, publishedArticles), checkOnly);
+  writeFile(path.join(ROOT, "llms.txt"), renderLlms(published, site, FREE, publishedArticles), checkOnly);
   writeFile(path.join(ROOT, "js", "products.js"), renderProductsJs(DATA), checkOnly);
-  console.log("done. " + published.length + " book pages + " + statics.length + " static pages + free-printables/index.html + sitemap.xml + llms.txt + js/products.js" + (checkOnly ? " (dry run — nothing written)" : ""));
+  console.log("done. " + published.length + " book pages + " + statics.length + " static pages + free-printables/index.html + " + publishedArticles.length + " article page(s) + blog/index.html + sitemap.xml + llms.txt + js/products.js" + (checkOnly ? " (dry run — nothing written)" : ""));
 }
 
 main();

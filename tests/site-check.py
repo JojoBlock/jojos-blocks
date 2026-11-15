@@ -24,7 +24,8 @@ PAGES = ["index.html"] + [f"books/{s}.html" for s in [
     "my-first-abc-book", "my-first-animal-explorer", "my-little-community-helpers",
     "my-little-space-adventure", "complete-coloring-book-bundle",
 ]] + ["privacy.html", "terms.html", "404.html", "refund-policy.html",
-     "free-printables/index.html"]
+     "free-printables/index.html",
+     "blog/index.html", "blog/benefits-of-coloring-for-preschoolers.html"]
 
 failures = []
 
@@ -181,11 +182,11 @@ def run(base):
               status == 404 and "This page isn" in html and 'href="../index.html"' in html,
               f"status {status}")
 
-    # Sitemap: valid XML, 9 URLs, no 404/refund-policy.
+    # Sitemap: valid XML, 11 URLs, no 404/refund-policy.
     status, sm = fetch(base, "sitemap.xml")
     root = ET.fromstring(sm)
     urls = [u.text for u in root.iter("{http://www.sitemaps.org/schemas/sitemap/0.9}loc")]
-    check("sitemap valid XML with 9 URLs", status == 200 and len(urls) == 9,
+    check("sitemap valid XML with 11 URLs", status == 200 and len(urls) == 11,
           f"status {status}, urls {len(urls)}")
     check("sitemap excludes 404 + refund-policy (draft)",
           not any("404" in u or "refund" in u for u in urls))

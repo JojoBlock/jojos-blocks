@@ -24,6 +24,8 @@ PAGES = [
     "terms.html",
     "404.html",
     "refund-policy.html",
+    "blog/index.html",
+    "blog/benefits-of-coloring-for-preschoolers.html",
 ]
 
 EXPECTED_TITLES = {
@@ -154,12 +156,14 @@ sm = (REPO / "sitemap.xml").read_text()
 check("sitemap is valid XML", sm.startswith('<?xml') and "<urlset" in sm and "</urlset>" in sm)
 for rel in ["", "books/my-first-abc-book.html", "books/my-first-animal-explorer.html",
             "books/my-little-community-helpers.html", "books/my-little-space-adventure.html",
-            "books/complete-coloring-book-bundle.html", "privacy.html", "terms.html"]:
+            "books/complete-coloring-book-bundle.html", "privacy.html", "terms.html",
+            "blog/", "blog/benefits-of-coloring-for-preschoolers.html"]:
     check(f"sitemap includes /{rel}", (BASE + "/" + rel) in sm)
 check("sitemap excludes 404.html", "404.html" not in sm)
 check("sitemap excludes refund-policy.html (draft)", "refund-policy.html" not in sm)
-# 7 = home + 5 book pages + free-printables (added Step 2, 2026-11-15).
-check("sitemap lastmod 2026-11-15 for changed pages", sm.count("<lastmod>2026-11-15</lastmod>") == 7,
+# 9 = home + 5 book pages + free-printables + blog listing + 1 article
+# (all lastmod 2026-11-15: blog pages added Step 3, 2026-11-15).
+check("sitemap lastmod 2026-11-15 for changed pages", sm.count("<lastmod>2026-11-15</lastmod>") == 9,
       f"found {sm.count('<lastmod>2026-11-15</lastmod>')}")
 
 # robots.txt
@@ -180,9 +184,13 @@ for rel in PAGES:
             target = val.split("#")[0].split("?")[0]
             if not target:
                 continue
-            # resolve relative to the page's directory
+            # resolve relative to the page's directory; root-relative
+            # links ("/books/...") resolve against the repository root
             base_dir = (REPO / rel).parent
-            p = (base_dir / target).resolve()
+            if target.startswith("/"):
+                p = (REPO / target.lstrip("/")).resolve()
+            else:
+                p = (base_dir / target).resolve()
             if p in checked:
                 continue
             checked.add(p)
@@ -200,7 +208,10 @@ for rel in PAGES:
             continue
         target = val.split("?")[0]
         base_dir = (REPO / rel).parent
-        p = (base_dir / target).resolve()
+        if target.startswith("/"):
+            p = (REPO / target.lstrip("/")).resolve()
+        else:
+            p = (base_dir / target).resolve()
         if not p.exists():
             assets_missing.append(f"{rel} -> {val}")
 check("all referenced assets exist", not assets_missing,

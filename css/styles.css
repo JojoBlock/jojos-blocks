@@ -239,3 +239,34 @@ footer a:hover{color:#fff;text-decoration:underline}
   .has-dropdown.open:hover .dropdown-menu,.has-dropdown.open:focus-within .dropdown-menu{display:block}
   .nav-soon{padding:9px 13px}
 }
+
+/* Blog (Level 7 Phase 2 Step 3) — additive only. */
+.breadcrumb ol{display:flex;flex-wrap:wrap;gap:6px;list-style:none;margin:0 0 18px;padding:0;font-size:.9rem;color:var(--muted)}
+.breadcrumb li+li::before{content:"›";margin-right:6px;color:var(--muted)}
+.breadcrumb a{color:var(--muted);text-decoration:none}
+.breadcrumb a:hover{color:var(--ink);text-decoration:underline}
+.article-cover{width:100%;height:auto;border-radius:20px;margin:18px 0 8px;box-shadow:var(--shadow)}
+.article p{line-height:1.75}
+.article h2{margin-top:44px}
+.article h3{margin-top:28px}
+.article ul{line-height:1.7}
+.article .faq{margin-top:12px}
+.callout{background:#EAF6F3;border-radius:20px;padding:28px;margin:44px 0 8px}
+.callout h2{margin-top:0}
+.callout-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}
+.article-sources{margin-top:44px}
+.article-sources ul{color:var(--muted);font-size:.92rem;line-height:1.7}
+.blog-list{display:grid;gap:28px;margin-top:32px}
+.blog-card{display:grid;grid-template-columns:minmax(0,420px) 1fr;gap:24px;align-items:start;background:#fff;border-radius:20px;padding:20px;box-shadow:var(--shadow)}
+.blog-card-cover img{width:100%;height:auto;border-radius:14px;display:block}
+.blog-card h2{margin:6px 0 8px;font-size:1.45rem}
+.blog-card h2 a{color:var(--ink);text-decoration:none}
+.blog-card h2 a:hover{color:var(--coral)}
+.blog-card p{color:var(--muted);line-height:1.6}
+.related-list{list-style:none;margin:0;padding:0}
+.related-list li{margin-bottom:10px}
+.related-list a{font-weight:700}
+@media (max-width:760px){
+  .blog-card{grid-template-columns:1fr}
+  .callout{padding:22px}
+}
