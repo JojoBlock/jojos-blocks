@@ -53,6 +53,8 @@ r=document.getElementsByTagName("script")[0];
 r.parentNode.insertBefore(t,r)}}("https://s.pinimg.com/ct/core.js");
 pintrk('load', '2614299974172');
 pintrk('page');
+// PageVisit fix (15 Nov 2026): pintrk('page') sends 'init', not 'pagevisit', in the current tag library — this call records the PageVisit event.
+pintrk('track', 'pagevisit');
 </script>
 <noscript>
 <img height="1" width="1" style="display:none;" alt=""
