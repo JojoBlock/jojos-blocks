@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#FFF9F0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#2B2D42" media="(prefers-color-scheme: dark)">
+<!-- BLOG LISTING TEMPLATE — rendered by tools/generate-pages.js from
+     data/articles.json. Do not list token names in this comment: the
+     generator replaces them everywhere, including inside comments. -->
+<title>{{SEO_TITLE}}</title>
+<meta name="description" content="{{META_DESCRIPTION}}">
+<meta name="author" content="JoJo's Blocks">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="{{CANONICAL_URL}}">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{SEO_TITLE}}">
+<meta property="og:description" content="{{META_DESCRIPTION}}">
+<meta property="og:url" content="{{CANONICAL_URL}}">
+<meta property="og:image" content="https://jojosblocks.online/assets/og-home.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="JoJo's Blocks — Printable Coloring Books for Kids. Covers of the four books: My First ABC Book, My First Animal Explorer, My Little Community Helpers and My Little Space Adventure.">
+<meta property="og:site_name" content="JoJo’s Blocks">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{SEO_TITLE}}">
+<meta name="twitter:description" content="{{META_DESCRIPTION}}">
+<meta name="twitter:image" content="https://jojosblocks.online/assets/og-home.jpg">
+<link rel="icon" type="image/jpeg" href="../assets/profile-logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/styles.css?v=6">
+<!-- Google tag (gtag.js) — Google Analytics 4, JoJo's Blocks (G-PYDBE3YS5S) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PYDBE3YS5S"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PYDBE3YS5S');
+</script>
+<!-- Google AdSense (pub-7967649628220448) — site verification + ad serving -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7967649628220448" crossorigin="anonymous"></script>
+<!-- Pinterest Tag (Tag ID 2614299974172) — page-visit tracking only;
+     purchases happen on Gumroad and are not tracked by this tag -->
+<script>
+!function(e){if(!window.pintrk){window.pintrk = function () {
+window.pintrk.queue.push(Array.prototype.slice.call(arguments))};var
+n=window.pintrk;n.queue=[],n.version="3.0";var
+t=document.createElement("script");t.async=!0,t.src=e;var
+r=document.getElementsByTagName("script")[0];
+r.parentNode.insertBefore(t,r)}}("https://s.pinimg.com/ct/core.js");
+pintrk('load', '2614299974172');
+pintrk('page');
+</script>
+<noscript>
+<img height="1" width="1" style="display:none;" alt=""
+src="https://ct.pinterest.com/v3/?event=init&tid=2614299974172&noscript=1" />
+</noscript>
+<!-- end Pinterest Tag -->
+{{BREADCRUMB_JSONLD}}
+</head>
+<body>
+<a class="skip-link" href="#blog">Skip to articles</a>
+{{HEADER}}
+<main id="blog">
+  <section class="wrap section">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="../index.html">Home</a></li>
+        <li aria-current="page">Blog</li>
+      </ol>
+    </nav>
+    <span class="eyebrow">JoJo's Blocks Blog</span>
+    <h1>Blog</h1>
+    <p class="lead">Simple, practical ideas for parents and preschool educators — coloring, letters, animals, space, and screen-free play for ages 2–7.</p>
+    <div class="blog-list">
+{{ARTICLE_CARDS}}
+    </div>
+  </section>
+</main>
+{{FOOTER}}
+<script src="../js/site.js?v=3"></script>
+</body>
+</html>
