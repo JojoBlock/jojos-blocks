@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Click the Box Game | JoJo's Blocks — Games &amp; Play</title>
+<meta name="description" content="How fast are your reflexes? Click the moving box before time runs out and beat your best score. A free JoJo's Blocks game — no sign-up, no download.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<!--
+  JoJo's Blocks — Click the Box Game
+  Version: v2.1.0 (2026-11-16) · ID: JJB-GAME-20261115-04 · Namespace: JJBClickBox
+  v2.1.0 — UI polish (blobs, overlay pop-in, stat pop, score floater, celebrate) +
+  original energetic-arcade music loop (square lead, driving bass, ~150 BPM)
+  with music toggle/volume.
+  Fix pass 2026-11-15 (readiness audit B1/S1/S2/S4)
+  Original: Click the Box Game, Aarifjojo/JoJo-Games, 15 Feb 2025 (games/click-the-box-game.html)
+  Upgrade history: v2.0.0 — JoJo's Blocks rebrand, start/instructions/pause/game-over screens,
+  3 difficulties (Chill 45s, Normal 30s, Blitz 20s), box shrinks + speeds up as you score,
+  combo counter, best score under a namespaced key, responsive arena (percentage positioning),
+  sound toggle, WebAudio sounds (replaces broken absolute /mp3/ path).
+  BUGS FIXED from original: (1) game auto-started on page load with no start screen;
+  (2) no pause or restart during play; (3) best score used the generic localStorage key
+  "bestScore" shared with any other page — now "jjb-click-the-box-best"; (4) fixed 400×400
+  arena overflowed phones narrower than ~440px; (5) timer interval created without clearing
+  a previous one — now always cleared on start.
+-->
+<style>
+:root{--cream:#FFF9F0;--white:#fff;--ink:#2B2D42;--muted:#5B5E73;--coral:#FF6B6B;--coral-dark:#E85050;--sun:#FFC94D;--teal:#2EC4B6;--lav:#7C6FF0;--pink:#FF8FAB;--mint:#D8F3DC;--radius:20px;--shadow:0 10px 30px rgba(43,45,66,.10)}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Nunito',system-ui,sans-serif;background:var(--cream);color:var(--ink);line-height:1.6;font-size:17px;min-height:100vh}
+h1,h2,h3{font-family:'Fredoka','Nunito',sans-serif;line-height:1.15;margin:0 0 .4em}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:720px;margin:0 auto;padding:16px 20px 0}
+.brand{font-family:'Fredoka',sans-serif;font-weight:700;font-size:1.35rem;text-decoration:none;color:var(--ink);display:inline-flex;align-items:center;min-height:44px}
+.brand span{color:var(--coral)}
+.icon-btn{background:var(--white);border:2px solid var(--ink);border-radius:999px;padding:10px 14px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.95rem;color:var(--ink);cursor:pointer;min-height:44px}
+.icon-btn:hover{background:var(--sun)}
+.topbar{flex-wrap:wrap}
+.top-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.jjb-volume{width:96px;accent-color:var(--coral);cursor:pointer;min-height:44px}
+.jjb-blob{position:fixed;border-radius:50%;filter:blur(70px);opacity:.35;pointer-events:none;z-index:0}
+.jjb-blob.b1{width:340px;height:340px;background:var(--coral);top:-80px;left:-90px;animation:jjb-cb-drift 26s ease-in-out infinite alternate}
+.jjb-blob.b2{width:300px;height:300px;background:var(--teal);bottom:-70px;right:-80px;animation:jjb-cb-drift 32s ease-in-out infinite alternate-reverse}
+@keyframes jjb-cb-drift{from{transform:translate(0,0)}to{transform:translate(60px,40px)}}
+header,main,footer{position:relative;z-index:1}
+main{max-width:720px;margin:0 auto;padding:12px 20px 40px}
+.card{position:relative;background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px 24px;text-align:center}
+.eyebrow{font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);font-size:.85rem;margin:0 0 6px}
+h1{font-size:2rem}
+.lede{color:var(--muted);margin:0 0 16px}
+.stats{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:0 0 16px}
+.stat{background:var(--cream);border-radius:12px;padding:8px 14px;font-weight:800;font-size:.95rem;min-width:92px}
+.stat small{display:block;font-size:.75rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.stat span{display:inline-block;transition:transform .18s ease}
+.jjb-stat-pop{transform:scale(1.18)}
+.jjb-floater{position:absolute;left:50%;top:38%;transform:translateX(-50%);font-family:'Fredoka',sans-serif;font-weight:700;font-size:1.4rem;color:var(--coral);pointer-events:none;z-index:5;animation:jjb-cb-float .9s ease forwards}
+@keyframes jjb-cb-float{from{transform:translate(-50%,0);opacity:1}to{transform:translate(-50%,-46px);opacity:0}}
+.stat.hot{color:var(--coral-dark)}
+.controls-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+.controls-row label{font-weight:800;font-size:.95rem;align-self:center}
+select{padding:10px 12px;font-family:'Nunito',sans-serif;font-weight:700;font-size:1rem;border:2px solid var(--ink);border-radius:12px;background:var(--white);color:var(--ink);cursor:pointer;min-height:44px}
+.timebar{height:10px;background:var(--cream);border-radius:99px;overflow:hidden;margin:6px auto 12px;max-width:460px}
+.timebar>div{height:100%;width:100%;background:linear-gradient(90deg,var(--teal),var(--sun));transition:width 1s linear}
+.arena{position:relative;width:100%;max-width:460px;aspect-ratio:1/1;margin:0 auto;border:3px solid var(--ink);border-radius:16px;background:linear-gradient(135deg,#FFE5D9,#FFF9F0);overflow:hidden;touch-action:manipulation}
+.arena .hint-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:700;padding:20px}
+.box{position:absolute;border:none;border-radius:50%;background:radial-gradient(circle at 35% 35%,#FF8FAB,var(--coral) 60%,var(--coral-dark));cursor:pointer;box-shadow:0 6px 14px rgba(232,80,80,.45);transition:transform .08s ease;-webkit-tap-highlight-color:transparent;padding:0}
+.box:hover{transform:scale(1.1)}
+.box:focus-visible{outline:3px solid var(--lav);outline-offset:2px}
+.box.pop{animation:jjb-cb-pop .18s ease}
+@keyframes jjb-cb-pop{0%{transform:scale(.6)}60%{transform:scale(1.18)}100%{transform:scale(1)}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 22px;border-radius:999px;font-weight:800;font-family:'Nunito',sans-serif;font-size:1rem;border:2px solid transparent;cursor:pointer;text-decoration:none}
+.btn-primary{background:var(--coral);color:var(--ink)}
+.btn-primary:hover{background:var(--coral)}
+.btn-primary{box-shadow:0 4px 14px rgba(255,107,107,.35)}
+.btn:active{transform:scale(.97)}
+.btn-ghost{background:transparent;border-color:var(--ink);color:var(--ink)}
+.btn-ghost:hover{background:var(--sun)}
+.btn-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.overlay{position:fixed;inset:0;background:rgba(43,45,66,.72);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}
+.overlay.open{display:flex}
+.overlay.open .overlay-card{animation:jjb-cb-ovpop .28s ease}
+@keyframes jjb-cb-ovpop{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1}}
+.jjb-celebrate .big{animation:jjb-cb-celeb 1.1s ease-in-out infinite}
+@keyframes jjb-cb-celeb{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.overlay-card{background:var(--white);color:var(--ink);border-radius:var(--radius);max-width:460px;width:100%;padding:30px 26px;text-align:center;box-shadow:var(--shadow);max-height:90vh;overflow:auto}
+.overlay-card h2{font-size:1.7rem}
+.overlay-card p{color:var(--muted)}
+.overlay-card ul{text-align:left;color:var(--muted);margin:0 0 14px;padding-left:22px}
+.overlay-card .big{font-size:3rem}
+footer{max-width:720px;margin:0 auto;padding:0 20px 30px;text-align:center;color:var(--muted);font-size:.85rem}
+footer a{display:inline-flex;align-items:center;min-height:44px;color:var(--coral);font-weight:700}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* v2.1.0 presentation: hero cover + related games (design pass, 2026-11-16) */
+.jjb-hero{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:14px;display:block;margin:0 0 16px}
+.jjb-controls-line{color:var(--muted);font-size:.92rem;font-weight:700;margin:-6px 0 16px}
+.jjb-related{margin-top:22px;text-align:left}
+.jjb-related h2{font-size:1.25rem;text-align:center}
+.jjb-related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:12px}
+.jjb-related a{display:flex;flex-direction:column;gap:6px;align-items:center;text-decoration:none;color:var(--ink);font-weight:800;font-size:.9rem;line-height:1.3;background:var(--white);border-radius:14px;padding:10px;min-height:44px;box-shadow:var(--shadow);text-align:center}
+.jjb-related a img{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:8px;display:block}
+.jjb-related a:hover{background:var(--sun)}
+</style>
+</head>
+<body>
+<div class="jjb-blob b1" aria-hidden="true"></div>
+<div class="jjb-blob b2" aria-hidden="true"></div>
+<header class="topbar">
+  <a class="brand" href="/">🧱 JoJo's <span>Blocks</span></a>
+  <div class="top-controls">
+    <button class="icon-btn" id="jjb-cb-music" type="button" aria-pressed="true" aria-label="Toggle music">🎵 Music on</button>
+    <input class="jjb-volume" id="jjb-cb-volume" type="range" min="0" max="100" value="70" aria-label="Music volume">
+    <button class="icon-btn" id="jjb-cb-sound" type="button" aria-pressed="true" aria-label="Toggle sound">🔊 Sound on</button>
+  </div>
+</header>
+<main>
+  <div class="card">
+    <img class="jjb-hero" src="../thumbs/click-the-box.svg" alt="Click the Box — click the box as fast as you can" width="640" height="360">
+    <p class="eyebrow">Games &amp; Play · Reflex</p>
+    <h1>🎯 Click the Box Game</h1>
+    <p class="lede">Click the box as fast as you can before time runs out. It gets smaller the more you hit it!</p>
+    <p class="jjb-controls-line">Click or tap the box when it appears · Space starts · P pauses</p>
+    <div class="stats" role="status" aria-live="polite">
+      <div class="stat"><small>Score</small><span id="jjb-cb-score">0</span></div>
+      <div class="stat hot"><small>Time left</small><span id="jjb-cb-time">30s</span></div>
+      <div class="stat"><small>Combo</small><span id="jjb-cb-combo">×1</span></div>
+      <div class="stat"><small>Best</small><span id="jjb-cb-best">0</span></div>
+    </div>
+    <div class="controls-row">
+      <label for="jjb-cb-difficulty">Difficulty</label>
+      <select id="jjb-cb-difficulty">
+        <option value="chill">Chill · 45s, big box</option>
+        <option value="normal" selected>Normal · 30s</option>
+        <option value="blitz">Blitz · 20s, fast &amp; small</option>
+      </select>
+    </div>
+    <div class="timebar" aria-hidden="true"><div id="jjb-cb-timebar"></div></div>
+    <div class="arena" id="jjb-cb-arena" aria-label="Game arena">
+      <div class="hint-text" id="jjb-cb-arena-hint">Press Start to play</div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="jjb-cb-start" type="button">▶ Start</button>
+      <button class="btn btn-ghost" id="jjb-cb-pause" type="button" disabled>⏸ Pause</button>
+      <button class="btn btn-ghost" id="jjb-cb-restart" type="button" disabled>↻ Restart</button>
+      <button class="btn btn-ghost" id="jjb-cb-howto" type="button">? How to play</button>
+    </div>
+  </div>
+  <section class="jjb-related" aria-label="Related games">
+    <h2>More games to try</h2>
+    <div class="jjb-related-grid">
+      <a href="../animal-guess/"><img src="../thumbs/animal-guess.svg" alt="" width="640" height="360" loading="lazy">Animal Guess</a>
+      <a href="../memory-match/"><img src="../thumbs/memory-match.svg" alt="" width="640" height="360" loading="lazy">Memory Match</a>
+      <a href="../tic-tac-toe/"><img src="../thumbs/tic-tac-toe.svg" alt="" width="640" height="360" loading="lazy">Tic-Tac-Toe</a>
+      <a href="../flappy-penguin/"><img src="../thumbs/flappy-penguin.svg" alt="" width="640" height="360" loading="lazy">Flappy Penguin</a>
+      <a href="../block-drop/"><img src="../thumbs/block-drop.svg" alt="" width="640" height="360" loading="lazy">Block Drop</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Free to play — no sign-up, no download. · Click the Box v2.1.0 · <strong>JJB-GAME-20261115-04</strong><br>
+  Original: JoJo Games, Feb 2025 · Upgraded for JoJo's Blocks, 15 Nov 2026 · <a href="/games/">← Back to Games &amp; Play</a></p>
+</footer>
+
+<div class="overlay open" id="jjb-cb-intro" role="dialog" aria-modal="true" aria-labelledby="jjb-cb-intro-title">
+  <div class="overlay-card">
+    <div class="big">🎯</div>
+    <h2 id="jjb-cb-intro-title">Click the Box!</h2>
+    <p>A box pops up somewhere in the arena. Click it (or tap it) to score — then it jumps somewhere new.</p>
+    <ul>
+      <li>Every hit scores 1 point. Fast hits in a row build your combo for bonus points.</li>
+      <li>The box shrinks a little with every hit — and in Blitz it starts small.</li>
+      <li>Space starts the game; P pauses it.</li>
+    </ul>
+    <button class="btn btn-primary" id="jjb-cb-intro-start" type="button">▶ Start playing</button>
+  </div>
+</div>
+
+<div class="overlay" id="jjb-cb-howto-ov" role="dialog" aria-modal="true" aria-labelledby="jjb-cb-howto-title">
+  <div class="overlay-card">
+    <h2 id="jjb-cb-howto-title">How to play</h2>
+    <ul>
+      <li>Click or tap the box each time it appears.</li>
+      <li>Combo: hit within 1.5 seconds of your last hit to raise your combo (×2, ×3…) — each hit then scores more.</li>
+      <li>Wait too long and the combo resets to ×1.</li>
+      <li>When the timer hits zero, your score is saved as your best if it beats it.</li>
+    </ul>
+    <button class="btn btn-primary" id="jjb-cb-howto-close" type="button">Got it</button>
+  </div>
+</div>
+
+<div class="overlay" id="jjb-cb-pause-ov" role="dialog" aria-modal="true" aria-labelledby="jjb-cb-pause-title">
+  <div class="overlay-card">
+    <div class="big">⏸</div>
+    <h2 id="jjb-cb-pause-title">Paused</h2>
+    <p>The timer is stopped. Ready when you are.</p>
+    <button class="btn btn-primary" id="jjb-cb-resume" type="button">▶ Resume</button>
+    <button class="btn btn-ghost" id="jjb-cb-pause-restart" type="button">↻ Restart game</button>
+  </div>
+</div>
+
+<div class="overlay" id="jjb-cb-end" role="dialog" aria-modal="true" aria-labelledby="jjb-cb-end-title">
+  <div class="overlay-card jjb-celebrate">
+    <div class="big">⏰</div>
+    <h2 id="jjb-cb-end-title">Time's up!</h2>
+    <p id="jjb-cb-end-text"></p>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="jjb-cb-again" type="button">▶ Play again</button>
+      <button class="btn btn-ghost" id="jjb-cb-end-close" type="button">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+var NS='JJBClickBox';
+var $=function(id){return document.getElementById(id);};
+var arena=$('jjb-cb-arena'),scoreEl=$('jjb-cb-score'),timeEl=$('jjb-cb-time'),comboEl=$('jjb-cb-combo'),bestEl=$('jjb-cb-best'),bar=$('jjb-cb-timebar');
+var DIFF={chill:{time:45,size:64,min:52},normal:{time:30,size:56,min:40},blitz:{time:20,size:48,min:32}};
+var BEST_KEY='jjb-click-the-box-best',SOUND_KEY='jjb-click-the-box-sound';
+var soundOn=localStorage.getItem(SOUND_KEY)!=='off';
+var score=0,timeLeft=0,totalTime=30,best=parseInt(localStorage.getItem(BEST_KEY)||'0',10)||0;
+var timerId=null,running=false,paused=false,combo=1,lastHit=0,boxSize=56,boxEl=null,actx=null;
+bestEl.textContent=best;
+function tone(freq,dur,type,vol,delay){
+  if(!soundOn)return;
+  try{
+    actx=actx||new (window.AudioContext||window.webkitAudioContext)();
+    var t0=actx.currentTime+(delay||0);
+    var o=actx.createOscillator(),g=actx.createGain();
+    o.type=type||'sine';o.frequency.value=freq;
+    g.gain.setValueAtTime(vol||0.12,t0);
+    g.gain.exponentialRampToValueAtTime(0.001,t0+dur);
+    o.connect(g);g.connect(actx.destination);o.start(t0);o.stop(t0+dur);
+  }catch(e){}
+}
+function snd(k){
+  if(k==='hit')tone(700+combo*60,.09,'sine',.12);
+  else if(k==='end'){[523,392,330].forEach(function(f,i){tone(f,.22,'triangle',.12,i*.13);});}
+  else if(k==='click')tone(700,.07,'sine',.1);
+  else if(k==='win'){[523,659,784,1047].forEach(function(f,i){tone(f,.22,'triangle',.12,i*.11);});}
+  else if(k==='lose'){[400,320,240].forEach(function(f,i){tone(f,.22,'triangle',.11,i*.13);});}
+  else tone(520,.08,'sine',.1);
+}
+function refreshSoundBtn(){
+  var b=$('jjb-cb-sound');
+  b.textContent=soundOn?'🔊 Sound on':'🔇 Sound off';
+  b.setAttribute('aria-pressed',String(soundOn));
+}
+$('jjb-cb-sound').addEventListener('click',function(){
+  soundOn=!soundOn;localStorage.setItem(SOUND_KEY,soundOn?'on':'off');refreshSoundBtn();
+  if(soundOn)tone(660,.12,'sine');
+});
+refreshSoundBtn();
+
+/* v2.1.0 music: original energetic-arcade loop, ~150 BPM, square-wave lead
+   + driving eighth-note bass. WebAudio only, nothing downloaded. One light
+   200 ms interval with short notes, so it cannot slow the 30 s timer or clicks.
+   Music is independent of the SFX mute: the sound toggle silences SFX only. */
+var MUSIC_KEY='jjb-click-the-box-music',VOLUME_KEY='jjb-click-the-box-volume';
+var musicOn=localStorage.getItem(MUSIC_KEY)!=='off';
+var musicVol=Math.max(0,Math.min(100,parseInt(localStorage.getItem(VOLUME_KEY)||'70',10)||0))/100;
+var musicTimer=null,musicStep=0;
+var CB_MELODY=[440,0,523.25,659.25,0,587.33,523.25,0,440,0,523.25,659.25,783.99,659.25,587.33,523.25];
+var CB_BASS=[110,110,164.81,110,87.31,87.31,130.81,87.31,130.81,130.81,196,130.81,98,98,146.83,98];
+function musicNote(freq,dur,type,vol){
+  if(!musicOn)return;
+  try{
+    actx=actx||new (window.AudioContext||window.webkitAudioContext)();
+    if(actx.state==='suspended')actx.resume();
+    var t0=actx.currentTime;
+    var o=actx.createOscillator(),g=actx.createGain();
+    o.type=type;o.frequency.value=freq;
+    g.gain.setValueAtTime(vol*musicVol,t0);
+    g.gain.exponentialRampToValueAtTime(0.001,t0+dur);
+    o.connect(g);g.connect(actx.destination);o.start(t0);o.stop(t0+dur+0.05);
+  }catch(e){}
+}
+function musicTick(){
+  if(!musicOn||!running||paused)return;
+  var s=musicStep%16;
+  var m=CB_MELODY[s];
+  if(m)musicNote(m,0.18,'square',0.035);
+  musicNote(CB_BASS[s],0.18,'sine',0.05);
+  musicStep++;
+}
+function startMusic(){
+  if(!musicOn||!running||paused)return;
+  stopMusic();musicStep=0;
+  musicTimer=setInterval(musicTick,200);
+  musicTick();
+}
+function stopMusic(){if(musicTimer){clearInterval(musicTimer);musicTimer=null;}}
+function refreshMusicBtn(){
+  var b=$('jjb-cb-music');
+  b.textContent=musicOn?'🎵 Music on':'🎵 Music off';
+  b.setAttribute('aria-pressed',String(musicOn));
+}
+$('jjb-cb-music').addEventListener('click',function(){
+  musicOn=!musicOn;localStorage.setItem(MUSIC_KEY,musicOn?'on':'off');refreshMusicBtn();
+  if(musicOn)startMusic();else stopMusic();
+});
+$('jjb-cb-volume').addEventListener('input',function(){
+  var v=Math.max(0,Math.min(100,parseInt($('jjb-cb-volume').value,10)||0));
+  musicVol=v/100;localStorage.setItem(VOLUME_KEY,String(v));
+});
+$('jjb-cb-volume').value=String(Math.round(musicVol*100));
+refreshMusicBtn();
+
+function popStat(el){if(!el)return;el.classList.add('jjb-stat-pop');setTimeout(function(){el.classList.remove('jjb-stat-pop');},180);}
+function floater(text){
+  var card=document.querySelector('.card');if(!card)return;
+  var s=document.createElement('span');s.className='jjb-floater';s.textContent=text;
+  card.appendChild(s);
+  var done=false;
+  function rm(){if(!done){done=true;s.remove();}}
+  s.addEventListener('animationend',rm);
+  setTimeout(rm,950);
+}
+function clearTimer(){if(timerId){clearInterval(timerId);timerId=null;}}
+function placeBox(){
+  if(boxEl)boxEl.remove();
+  var d=DIFF[$('jjb-cb-difficulty').value];
+  boxSize=Math.max(d.min,boxSize-1.2);
+  var pct=boxSize/arena.clientWidth*100;
+  var max=100-pct;
+  boxEl=document.createElement('button');
+  boxEl.type='button';boxEl.className='box pop';boxEl.setAttribute('aria-label','Click the box');
+  boxEl.style.width=boxSize+'px';boxEl.style.height=boxSize+'px';
+  boxEl.style.left=(Math.random()*max)+'%';
+  boxEl.style.top=(Math.random()*max)+'%';
+  boxEl.addEventListener('click',hitBox);
+  arena.appendChild(boxEl);
+  boxEl.focus({preventScroll:true});
+}
+function hitBox(){
+  if(!running||paused)return;
+  var now=Date.now();
+  combo=(now-lastHit<1500)?Math.min(combo+1,8):1;
+  lastHit=now;
+  score+=combo;
+  scoreEl.textContent=score;comboEl.textContent='×'+combo;
+  snd('hit');popStat(scoreEl);floater('+'+combo);
+  placeBox();
+}
+function updateTime(){
+  timeEl.textContent=timeLeft+'s';
+  bar.style.width=Math.max(0,timeLeft/totalTime*100)+'%';
+}
+function startGame(){
+  clearTimer();
+  var d=DIFF[$('jjb-cb-difficulty').value];
+  totalTime=d.time;timeLeft=d.time;score=0;combo=1;lastHit=0;boxSize=d.size;
+  running=true;paused=false;
+  scoreEl.textContent='0';comboEl.textContent='×1';
+  $('jjb-cb-arena-hint').style.display='none';
+  $('jjb-cb-start').textContent='▶ Start';
+  $('jjb-cb-pause').disabled=false;$('jjb-cb-restart').disabled=false;
+  $('jjb-cb-end').classList.remove('open');
+  updateTime();placeBox();
+  startMusic();
+  timerId=setInterval(function(){
+    if(paused)return;
+    timeLeft--;updateTime();
+    if(timeLeft<=0)endGame();
+  },1000);
+}
+function endGame(){
+  clearTimer();running=false;stopMusic();
+  if(boxEl){boxEl.remove();boxEl=null;}
+  $('jjb-cb-arena-hint').style.display='flex';
+  $('jjb-cb-arena-hint').textContent='Press Start to play again';
+  $('jjb-cb-pause').disabled=true;$('jjb-cb-restart').disabled=false;
+  snd('end');
+  var isBest=score>best;
+  if(isBest){best=score;localStorage.setItem(BEST_KEY,String(best));bestEl.textContent=best;}
+  $('jjb-cb-end-text').textContent='Your score: '+score+(isBest?' — a new best! 🎉':' (Best: '+best+')');
+  $('jjb-cb-end').classList.add('open');
+}
+function pauseGame(){
+  if(!running||paused)return;
+  paused=true;$('jjb-cb-pause-ov').classList.add('open');
+  stopMusic();
+  if(boxEl)boxEl.style.visibility='hidden';
+}
+function resumeGame(){
+  paused=false;$('jjb-cb-pause-ov').classList.remove('open');
+  startMusic();
+  if(boxEl)boxEl.style.visibility='visible';
+}
+$('jjb-cb-start').addEventListener('click',function(){snd('click');startGame();});
+$('jjb-cb-intro-start').addEventListener('click',function(){snd('click');$('jjb-cb-intro').classList.remove('open');startGame();});
+$('jjb-cb-again').addEventListener('click',function(){snd('click');$('jjb-cb-end').classList.remove('open');startGame();});
+$('jjb-cb-end-close').addEventListener('click',function(){$('jjb-cb-end').classList.remove('open');});
+$('jjb-cb-restart').addEventListener('click',function(){$('jjb-cb-end').classList.remove('open');startGame();});
+$('jjb-cb-pause').addEventListener('click',pauseGame);
+$('jjb-cb-resume').addEventListener('click',function(){snd('click');resumeGame();});
+$('jjb-cb-pause-restart').addEventListener('click',function(){resumeGame();startGame();});
+$('jjb-cb-howto').addEventListener('click',function(){$('jjb-cb-howto-ov').classList.add('open');});
+$('jjb-cb-howto-close').addEventListener('click',function(){$('jjb-cb-howto-ov').classList.remove('open');});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){$('jjb-cb-howto-ov').classList.remove('open');if(paused)resumeGame();}
+  else if((e.key==='p'||e.key==='P')){if(running){paused?resumeGame():pauseGame();}}
+  else if(e.key===' '&&!running&&!$('jjb-cb-intro').classList.contains('open')){e.preventDefault();startGame();}
+});
+updateTime();
+window[NS]={version:'2.1.0',id:'JJB-GAME-20261115-04',start:startGame,musicState:function(){return{on:musicOn,volume:Math.round(musicVol*100),step:musicStep,playing:musicTimer!==null&&musicOn};}};
+})();
+</script>
+</body>
+</html>

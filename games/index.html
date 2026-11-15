@@ -83,6 +83,14 @@ src="https://ct.pinterest.com/v3/?event=init&tid=2614299974172&noscript=1" />
   ]
 }
 </script>
+<!-- v2.1.0 game cards (changeset): 16:9 SVG covers + Play buttons.
+     Scoped to the new cards only; site stylesheet untouched. -->
+<style>
+.game-thumb{aspect-ratio:16/9;padding:0}
+.game-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.game-tags{font-size:.85rem;color:var(--muted);font-weight:700}
+.game-card .btn{align-self:flex-start;margin-top:auto}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#section-content">Skip to content</a>
@@ -121,7 +129,7 @@ src="https://ct.pinterest.com/v3/?event=init&tid=2614299974172&noscript=1" />
     </nav>
     <span class="eyebrow">Games &amp; Play</span>
     <h1>Games &amp; Play</h1>
-    <p class="lead">We're building original browser games — puzzles, memory games, drawing games and learning activities you can play right here, free. The games platform is ready; the first games are in development.</p>
+    <p class="lead">We're building original browser games — puzzles, memory games, drawing games and learning activities you can play right here, free. Six original browser games are ready to play now — free, no download, no account.</p>
 
     <p class="filter-empty" id="section-no-results" hidden>No matches yet — try a different word, or clear the search to see everything again.</p>
 
@@ -129,79 +137,67 @@ src="https://ct.pinterest.com/v3/?event=init&tid=2614299974172&noscript=1" />
 
 
     <div class="section-games">
-      <h2>Games in development</h2>
-      <p class="lead">6 original browser games are in development — free to play here when they are ready. The titles below are working titles; final names and artwork will be added as each game is finished.</p>
+      <h2>Play now — free, no download</h2>
+      <p class="lead">6 original browser games, free to play right here — no download, no account. Pick a game and press Play.</p>
       <div class="games-grid">
-      <article class="game-card coming-soon">
-        <div class="game-thumb" aria-hidden="true">
-          <span class="game-thumb-icon">🦁</span>
-          <span class="game-thumb-note">Artwork coming soon</span>
-        </div>
+      <article class="game-card">
+        <div class="game-thumb"><img src="thumbs/animal-guess.svg" alt="Animal Guess cover art" width="640" height="360" loading="lazy"></div>
         <div class="game-body">
           <h3>Animal Guess</h3>
-          <p>Guess the animal from the clues — a quick guessing game for animal lovers.</p>
-          <span class="game-category">Original Browser Games</span>
-          <span class="soon-pill">Coming Soon</span>
+          <p>One animal is hiding under the tiles. Flip tiles to find it before your attempts run out!</p>
+          <span class="game-category">Puzzle</span>
+          <span class="game-tags">Guessing · Animals · Keyboard friendly</span>
+          <a class="btn btn-primary" href="/games/animal-guess/">▶ Play</a>
         </div>
       </article>
-      <article class="game-card coming-soon">
-        <div class="game-thumb" aria-hidden="true">
-          <span class="game-thumb-icon">🃏</span>
-          <span class="game-thumb-note">Artwork coming soon</span>
-        </div>
+      <article class="game-card">
+        <div class="game-thumb"><img src="thumbs/memory-match.svg" alt="Memory Match cover art" width="640" height="360" loading="lazy"></div>
         <div class="game-body">
           <h3>Memory Match</h3>
-          <p>Flip the cards and find every matching pair in as few moves as you can.</p>
-          <span class="game-category">Original Browser Games</span>
-          <span class="soon-pill">Coming Soon</span>
+          <p>Flip two cards at a time and find all the matching pairs. Fewer moves, faster time — better score!</p>
+          <span class="game-category">Puzzle</span>
+          <span class="game-tags">Memory · Pairs · Timed</span>
+          <a class="btn btn-primary" href="/games/memory-match/">▶ Play</a>
         </div>
       </article>
-      <article class="game-card coming-soon">
-        <div class="game-thumb" aria-hidden="true">
-          <span class="game-thumb-icon">✖️</span>
-          <span class="game-thumb-note">Artwork coming soon</span>
-        </div>
+      <article class="game-card">
+        <div class="game-thumb"><img src="thumbs/tic-tac-toe.svg" alt="Tic-Tac-Toe cover art" width="640" height="360" loading="lazy"></div>
         <div class="game-body">
           <h3>Tic-Tac-Toe</h3>
-          <p>The classic game of noughts and crosses — get three in a row to win.</p>
-          <span class="game-category">Original Browser Games</span>
-          <span class="soon-pill">Coming Soon</span>
+          <p>You are X. Beat JoJo the AI — or play a friend on the same screen.</p>
+          <span class="game-category">Classic</span>
+          <span class="game-tags">Strategy · 2 players · vs AI</span>
+          <a class="btn btn-primary" href="/games/tic-tac-toe/">▶ Play</a>
         </div>
       </article>
-      <article class="game-card coming-soon">
-        <div class="game-thumb" aria-hidden="true">
-          <span class="game-thumb-icon">🖱️</span>
-          <span class="game-thumb-note">Artwork coming soon</span>
-        </div>
+      <article class="game-card">
+        <div class="game-thumb"><img src="thumbs/click-the-box.svg" alt="Click the Box cover art" width="640" height="360" loading="lazy"></div>
         <div class="game-body">
           <h3>Click the Box</h3>
-          <p>Click the box as soon as it appears — a quick game of speed and reflexes.</p>
-          <span class="game-category">Original Browser Games</span>
-          <span class="soon-pill">Coming Soon</span>
+          <p>Click the box as fast as you can before time runs out. It gets smaller the more you hit it!</p>
+          <span class="game-category">Reflex</span>
+          <span class="game-tags">Speed · Reflexes · Combo</span>
+          <a class="btn btn-primary" href="/games/click-the-box/">▶ Play</a>
         </div>
       </article>
-      <article class="game-card coming-soon">
-        <div class="game-thumb" aria-hidden="true">
-          <span class="game-thumb-icon">🐦</span>
-          <span class="game-thumb-note">Artwork coming soon</span>
-        </div>
+      <article class="game-card">
+        <div class="game-thumb"><img src="thumbs/flappy-penguin.svg" alt="Flappy Penguin cover art" width="640" height="360" loading="lazy"></div>
         <div class="game-body">
-          <h3>Bird Flight</h3>
-          <p>Guide the bird through the gaps — a simple one-button flying game.</p>
-          <span class="game-category">Original Browser Games</span>
-          <span class="soon-pill">Coming Soon</span>
+          <h3>Flappy Penguin</h3>
+          <p>Flap JoJo’s penguin through the pipes. One tap too many — or too few — and it’s a splash!</p>
+          <span class="game-category">Arcade</span>
+          <span class="game-tags">Flying · One-button · High score</span>
+          <a class="btn btn-primary" href="/games/flappy-penguin/">▶ Play</a>
         </div>
       </article>
-      <article class="game-card coming-soon">
-        <div class="game-thumb" aria-hidden="true">
-          <span class="game-thumb-icon">🧱</span>
-          <span class="game-thumb-note">Artwork coming soon</span>
-        </div>
+      <article class="game-card">
+        <div class="game-thumb"><img src="thumbs/block-drop.svg" alt="Block Drop cover art" width="640" height="360" loading="lazy"></div>
         <div class="game-body">
-          <h3>Falling Blocks</h3>
-          <p>Stack the falling blocks into complete rows before the pile reaches the top.</p>
-          <span class="game-category">Original Browser Games</span>
-          <span class="soon-pill">Coming Soon</span>
+          <h3>Block Drop</h3>
+          <p>Stack the falling blocks, fill rows to clear them, and don’t let the pile reach the top!</p>
+          <span class="game-category">Puzzle</span>
+          <span class="game-tags">Stacking · Rows · Keyboard + touch</span>
+          <a class="btn btn-primary" href="/games/block-drop/">▶ Play</a>
         </div>
       </article>
       </div>
@@ -214,8 +210,7 @@ src="https://ct.pinterest.com/v3/?event=init&tid=2614299974172&noscript=1" />
         <span class="category-icon" aria-hidden="true">🎮</span>
         <h3>Original Browser Games</h3>
         <p>Our own browser games, made by JoJo's Blocks — play free, no download, no account.</p>
-        <p class="coming-soon-text">Our first original browser game is in development. It will be free to play here.</p>
-        <span class="soon-pill">Coming Soon</span>
+        <p class="coming-soon-text">Six games are live now — Animal Guess, Memory Match, Tic-Tac-Toe, Click the Box, Flappy Penguin and Block Drop.</p>
       </article>
       <article class="category-card coming-soon filter-item">
         <span class="category-icon" aria-hidden="true">🧩</span>
@@ -273,13 +268,13 @@ src="https://ct.pinterest.com/v3/?event=init&tid=2614299974172&noscript=1" />
       </details>
       <details class="accordion-item">
         <summary class="accordion-q">What is coming next<span class="chev" aria-hidden="true">⌄</span></summary>
-        <div class="accordion-a"><p>Our first original browser games are in development: puzzles, memory games, drawing games and learning activities, free to play here, with no download and no account. We will only show a Play button when a game is actually ready — we never use fake previews or buttons that go nowhere. Until then, the colouring books and free printables on this site are the screen-free way to play, and this page will grow as each game is finished.</p></div>
+        <div class="accordion-a"><p>Six original browser games are live now: Animal Guess, Memory Match, Tic-Tac-Toe, Click the Box, Flappy Penguin and Block Drop — puzzles, memory games, strategy and arcade play, free to play here, with no download and no account. We will only show a Play button when a game is actually ready — we never use fake previews or buttons that go nowhere. More games are being built, and this page will grow as each one is finished.</p></div>
       </details>
     </div>
 
     <div class="section-note">
       <h2>Good to know</h2>
-      <p>No games are playable yet. We will only show a Play button when a game is actually ready — we never use fake previews or non-functional Play buttons.</p>
+      <p>Six games are ready to play now — free, no download, no account. We only show a Play button when a game is actually ready; we never use fake previews or non-functional Play buttons.</p>
     </div>
 
   </section>

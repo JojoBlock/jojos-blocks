@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-label="Animal Guess cover art">
+<title>Animal Guess — find the hidden animal</title>
+<rect width="640" height="360" fill="#2EC4B6"/>
+<circle cx="566" cy="58" r="54" fill="#FFC94D"/>
+<circle cx="66" cy="308" r="42" fill="#FF6B6B" opacity=".55"/>
+<circle cx="592" cy="306" r="26" fill="#7C6FF0" opacity=".65"/>
+<circle cx="96" cy="52" r="14" fill="#FFF9F0" opacity=".5"/>
+<g>
+<rect x="196" y="54" width="84" height="84" rx="16" fill="#FFF9F0"/>
+<rect x="292" y="54" width="84" height="84" rx="16" fill="#FFF9F0"/>
+<rect x="388" y="54" width="84" height="84" rx="16" fill="#FFF9F0"/>
+<rect x="196" y="150" width="84" height="84" rx="16" fill="#FFF9F0"/>
+<rect x="292" y="150" width="84" height="84" rx="16" fill="#FFC94D"/>
+<rect x="388" y="150" width="84" height="84" rx="16" fill="#FFF9F0"/>
+<rect x="196" y="246" width="84" height="84" rx="16" fill="#FFF9F0"/>
+<rect x="292" y="246" width="84" height="84" rx="16" fill="#FFF9F0"/>
+<rect x="388" y="246" width="84" height="84" rx="16" fill="#FFF9F0"/>
+</g>
+<g fill="#FF6B6B">
+<ellipse cx="334" cy="202" rx="16" ry="12"/>
+<circle cx="312" cy="184" r="7"/>
+<circle cx="327" cy="176" r="7"/>
+<circle cx="343" cy="176" r="7"/>
+<circle cx="357" cy="184" r="7"/>
+</g>
+<g fill="#2EC4B6">
+<circle cx="238" cy="96" r="8"/>
+<circle cx="430" cy="96" r="8"/>
+<circle cx="238" cy="288" r="8"/>
+<circle cx="430" cy="288" r="8"/>
+</g>
+<g fill="#FFC94D">
+<circle cx="334" cy="96" r="8"/>
+<circle cx="238" cy="192" r="8"/>
+<circle cx="430" cy="192" r="8"/>
+<circle cx="334" cy="288" r="8"/>
+</g>
+<g fill="#FFF9F0" opacity=".9">
+<ellipse cx="92" cy="150" rx="11" ry="8"/>
+<circle cx="78" cy="138" r="5"/>
+<circle cx="88" cy="133" r="5"/>
+<circle cx="98" cy="133" r="5"/>
+<circle cx="106" cy="138" r="5"/>
+</g>
+<g fill="#FF6B6B">
+<ellipse cx="556" cy="180" rx="11" ry="8"/>
+<circle cx="542" cy="168" r="5"/>
+<circle cx="552" cy="163" r="5"/>
+<circle cx="562" cy="163" r="5"/>
+<circle cx="570" cy="168" r="5"/>
+</g>
+</svg>
