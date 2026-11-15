@@ -363,3 +363,41 @@ a.category-card:hover h3{color:var(--coral)}
   .section-head{margin-top:48px}
   .search-box{max-width:100%}
 }
+
+/* ---- Part 5 (15 Nov 2026): free resources library — additive only. ---- */
+/* Resource detail pages: the preview artwork is the printable page. */
+.resource .resource-title{margin-bottom:18px}
+.resource-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px}
+.resource-print{margin:0 0 32px;max-width:720px}
+.resource-print img{width:100%;height:auto;border-radius:16px;box-shadow:var(--shadow);background:#fff}
+.page-landscape .resource-print{max-width:960px}
+.resource-info{max-width:720px}
+.resource-info h2{font-size:1.4rem;margin-top:28px}
+.resource-info .card-features{margin-bottom:8px}
+.resource-card h3 a{color:var(--ink);text-decoration:none}
+.resource-card h3 a:hover{color:var(--coral)}
+.resource-group{margin:36px 0 0;font-size:1.35rem}
+.section-resources{margin-top:44px}
+.section-resources .product-grid{margin-top:20px}
+@media (max-width:560px){
+  .resource-actions{flex-direction:column}
+  .resource-actions .btn{width:100%}
+}
+
+/* Print: only the title + the artwork, on one A4 page. Everything else
+   (header, footer, buttons, breadcrumb, description, licence) is hidden,
+   so the printed output is the artwork itself, not the webpage. */
+@page{size:A4;margin:10mm}
+@page landscape{size:A4 landscape;margin:10mm}
+body.page-landscape{page:landscape}
+@media print{
+  header,footer,.skip-link,.breadcrumb,.resource-actions,.resource-info,.eyebrow{display:none!important}
+  body{background:#fff;font-size:12pt}
+  .wrap{max-width:none;padding:0}
+  .section{padding:0}
+  main>.section:first-child{padding-top:0}
+  .resource .resource-title{display:block;font-size:14pt;margin:0 0 4mm}
+  .resource-print{margin:0;max-width:none;page-break-inside:avoid;break-inside:avoid}
+  .resource-print img{width:auto;max-width:100%;max-height:250mm;margin:0 auto;border-radius:0;box-shadow:none}
+  body.page-landscape .resource-print img{max-height:155mm}
+}

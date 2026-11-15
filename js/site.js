@@ -6,7 +6,7 @@
  * menu, the Explore dropdown, the header shadow, the footer year,
  * Buy Now click tracking, free-download tracking, affiliate outbound
  * click tracking, category filter chips, search boxes and game-start
- * tracking (Part 3).
+ * tracking (Part 3), plus resource print/download tracking (Part 5).
  *
  * Page-specific behavior lives elsewhere: homepage cards, the product
  * modal, the FAQ accordion and the newsletter form are in js/main.js
@@ -199,6 +199,31 @@
       if (!q) searched = false;
     });
   }
+
+  /* Part 5 — resource print + download tracking (Google Analytics 4).
+     print_click fires when the Print button on a resource page is
+     clicked (the button itself calls window.print());
+     resource_download fires when a resource Download button is
+     clicked. One delegated handler each, so neither event can fire
+     twice for one click. */
+  document.addEventListener("click", function (e) {
+    var printBtn = e.target.closest ? e.target.closest("[data-print]") : null;
+    if (printBtn && typeof window.gtag === "function") {
+      window.gtag("event", "print_click", {
+        resource_slug: printBtn.getAttribute("data-print")
+      });
+    }
+  });
+
+  document.addEventListener("click", function (e) {
+    var rdl = e.target.closest ? e.target.closest("a[data-resource-download]") : null;
+    if (rdl && typeof window.gtag === "function") {
+      window.gtag("event", "resource_download", {
+        resource_slug: rdl.getAttribute("data-resource-download"),
+        file_type: rdl.getAttribute("data-file-type") || "pdf"
+      });
+    }
+  });
 
   /* Part 3 — game start (ready for future games). Any button carrying
      data-game-start reports which game was started. There are no

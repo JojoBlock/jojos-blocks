@@ -14,6 +14,8 @@
  *     templates/blog-article.html + data/articles.json)
  *   - <section>/index.html (one per section landing page, from
  *     templates/section.html + data/sections.json — Part 3)
+ *   - free-resources/<slug>/index.html (one per free resource, from
+ *     templates/resource.html + data/resources.json — Part 5)
  *   - privacy.html, terms.html, 404.html, refund-policy.html
  *                         (from templates/<name>.html)
  *   - sitemap.xml         (static pages + published products + blog
@@ -86,6 +88,8 @@ const ARTICLE_TEMPLATE = path.join(ROOT, "templates", "blog-article.html");
 const BLOG_INDEX_TEMPLATE = path.join(ROOT, "templates", "blog-index.html");
 const SECTIONS_FILE = path.join(ROOT, "data", "sections.json");
 const SECTION_TEMPLATE = path.join(ROOT, "templates", "section.html");
+const RESOURCES_FILE = path.join(ROOT, "data", "resources.json");
+const RESOURCE_TEMPLATE = path.join(ROOT, "templates", "resource.html");
 const TEMPLATE_FILE = path.join(ROOT, "templates", "book.html");
 const TEMPLATES_DIR = path.join(ROOT, "templates");
 const PARTIALS_DIR = path.join(TEMPLATES_DIR, "partials");
@@ -633,13 +637,145 @@ function productCardHTML(p, prefix, location) {
     '</article>';
 }
 
+/* Part 5 — free resource detail pages (data/resources.json +
+ * templates/resource.html). One reusable template produces
+ * /free-resources/<slug>/index.html for each resource, with a Print
+ * button (window.print()), a Download button for the real file, and
+ * print CSS (css/styles.css) that prints only the artwork. The
+ * Free Resources landing page lists the resources grouped by
+ * category (resourceListHTML); categories with no real resource stay
+ * Coming Soon and never appear here. */
+function formatFileSize(bytes) {
+  if (bytes >= 1048576) return (bytes / 1048576).toFixed(2).replace(/\.?0+$/, "") + " MB";
+  return Math.round(bytes / 1024) + " KB";
+}
+
+// Anchor ids for the resource groups on the Free Resources landing
+// page — these must match the live category hrefs in
+// data/sections.json (free-resources section).
+const RESOURCE_CATEGORY_ANCHORS = {
+  "Coloring Pages": "coloring-pages",
+  "Sketches & Drawing": "sketches-drawing",
+  "Educational Worksheets": "educational-worksheets",
+  "Planners & Templates": "planners-templates",
+  "Stickers": "stickers",
+  "Creative Sheets": "creative-sheets",
+  "Wallpapers": "wallpapers",
+  "AI Art Resources": "ai-art-resources"
+};
+
+function resourceJsonLd(r, canonical, downloadUrl) {
+  return '<script type="application/ld+json">\n' + JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "name": r.title,
+    "description": r.metaDescription,
+    "url": canonical,
+    "isAccessibleForFree": true,
+    "license": DATA.site.domain + "/terms.html",
+    "encodingFormat": r.is_pdf ? "application/pdf" : "image/jpeg",
+    "contentUrl": downloadUrl,
+    "author": { "@type": "Organization", "name": "JoJo's Blocks" }
+  }, null, 2) + "\n</script>";
+}
+
+function renderResourcePage(r) {
+  const template = fs.readFileSync(RESOURCE_TEMPLATE, "utf8");
+  const site = DATA.site;
+  const prefix = "../../";
+  const canonical = site.domain + "/free-resources/" + r.slug + "/";
+  const ogImage = site.domain + "/" + r.preview;
+  const downloadUrl = site.domain + "/" + r.file;
+  const fileName = r.file.split("/").pop();
+  const fileType = r.is_pdf ? "pdf" : "jpg";
+  const downloadLabel = r.is_pdf ? "Download PDF" : "Download JPG";
+  const fileMeta = r.is_pdf
+    ? "PDF · A4" + (r.page_orientation === "landscape" ? " landscape" : "") + " · " + (r.pages === 1 ? "1 page" : r.pages + " pages") + " · " + formatFileSize(r.file_size_bytes)
+    : "JPG · 1080x1920 · " + formatFileSize(r.file_size_bytes);
+  const usageLi = r.is_pdf
+    ? "<li>Print at home on A4 paper — if your printer uses US Letter, choose \u201cFit to page\u201d so nothing is cut off.</li>" +
+      "<li>" + escText(r.licence) + " only — print as many copies as you need for your own household.</li>" +
+      "<li>No resale or redistribution.</li>"
+    : "<li>Save the JPG to your phone and set it as your wallpaper (1080x1920).</li>" +
+      "<li>" + escText(r.licence) + " only.</li>" +
+      "<li>No resale or redistribution.</li>";
+  const chrome = chromeFor(prefix, false);
+  const out = template
+    .replaceAll("{{HEADER}}", chrome.header)
+    .replaceAll("{{FOOTER}}", chrome.footer)
+    .replaceAll("{{PAGE_CLASS}}", r.page_orientation === "landscape" ? ' class="page-landscape"' : "")
+    .replaceAll("{{TITLE}}", escText(r.title))
+    .replaceAll("{{SEO_TITLE}}", escAttr(r.seoTitle))
+    .replaceAll("{{META_DESCRIPTION}}", escAttr(r.metaDescription))
+    .replaceAll("{{CANONICAL_URL}}", canonical)
+    .replaceAll("{{OG_IMAGE_URL}}", ogImage)
+    .replaceAll("{{CATEGORY}}", escText(r.category))
+    .replaceAll("{{DESCRIPTION}}", escText(r.description))
+    .replaceAll("{{PREVIEW_REL_PATH}}", escAttr(prefix + r.preview))
+    .replaceAll("{{PREVIEW_WIDTH}}", String(r.preview_width))
+    .replaceAll("{{PREVIEW_HEIGHT}}", String(r.preview_height))
+    .replaceAll("{{PREVIEW_ALT}}", escAttr(r.title + " — free printable preview"))
+    .replaceAll("{{FILE_META}}", escText(fileMeta))
+    .replaceAll("{{FILE_REL_PATH}}", escAttr(prefix + r.file))
+    .replaceAll("{{FILE_NAME}}", escAttr(fileName))
+    .replaceAll("{{DOWNLOAD_LABEL}}", escText(downloadLabel))
+    .replaceAll("{{FILE_TYPE}}", fileType)
+    .replaceAll("{{SLUG}}", r.slug)
+    .replaceAll("{{USAGE_LI}}", usageLi)
+    .replaceAll("{{RESOURCE_JSONLD}}", resourceJsonLd(r, canonical, downloadUrl))
+    .replaceAll("{{BREADCRUMB_JSONLD}}", breadcrumbJsonLd([
+      { name: "Home", url: site.domain + "/" },
+      { name: "Free Resources", url: site.domain + "/free-resources/" },
+      { name: r.title, url: canonical },
+    ]));
+  const leftover = out.match(/\{\{[A-Z_]+\}\}/);
+  if (leftover) fail("unreplaced token " + leftover[0] + " while rendering free-resources/" + r.slug);
+  return out;
+}
+
+function resourceCardHTML(r, prefix) {
+  const pageHref = r.slug + "/";
+  const meta = r.is_pdf
+    ? "PDF · A4" + (r.page_orientation === "landscape" ? " landscape" : "") + " · " + (r.pages === 1 ? "1 page" : r.pages + " pages")
+    : "JPG · 1080x1920";
+  return '<article class="card resource-card filter-item" data-category="' + escAttr(r.category) + '">' +
+    '<a class="card-cover" href="' + escAttr(pageHref) + '" aria-label="' + escAttr(r.title) + '"><img src="' + escAttr(prefix + r.preview) + '" alt="' + escAttr(r.title + " — free printable preview") + '" loading="lazy" width="' + r.preview_width + '" height="' + r.preview_height + '"></a>' +
+    '<div class="card-body">' +
+    '<span class="eyebrow">' + escText(r.category) + '</span>' +
+    '<h3><a href="' + escAttr(pageHref) + '">' + escText(r.title) + '</a></h3>' +
+    '<p>' + escText(r.description) + '</p>' +
+    '<p class="card-meta">' + escText(meta) + ' · Free</p>' +
+    '<div class="card-actions"><a class="btn btn-primary" href="' + escAttr(pageHref) + '">View &amp; Print</a></div>' +
+    '</div>' +
+    '</article>';
+}
+
+function resourceListHTML(resources, prefix) {
+  const groups = [];
+  const byCat = new Map();
+  for (const r of resources) {
+    if (!byCat.has(r.category)) { byCat.set(r.category, []); groups.push(r.category); }
+    byCat.get(r.category).push(r);
+  }
+  const parts = ['    <div class="section-resources">\n      <h2>Free downloads</h2>\n      <p class="lead">' + resources.length + ' free resources to download, print and play with — no sign-up, no account, just print and play.</p>'];
+  for (const cat of groups) {
+    const anchor = RESOURCE_CATEGORY_ANCHORS[cat] || cat.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    parts.push('      <h3 class="resource-group" id="' + anchor + '">' + escText(cat) + '</h3>');
+    parts.push('      <div class="product-grid">');
+    for (const r of byCat.get(cat)) parts.push(resourceCardHTML(r, prefix));
+    parts.push('      </div>');
+  }
+  parts.push('    </div>');
+  return parts.join("\n");
+}
+
 /* Part 3 — section landing pages (data/sections.json + templates/section.html).
  * One generic renderer for every section landing page. A category with
  * status "live" becomes a linked card; status "soon" becomes a Coming
  * Soon card with NO link and NO download/buy/play button. The featured
  * block is either the real products (type "products"), one real resource
  * (type "resource"), or absent. */
-function renderSectionPage(section, products) {
+function renderSectionPage(section, products, resources) {
   const template = fs.readFileSync(SECTION_TEMPLATE, "utf8");
   const site = DATA.site;
   const prefix = "../";
@@ -676,6 +812,12 @@ function renderSectionPage(section, products) {
   const note = section.note
     ? '    <div class="section-note">\n      <h2>Good to know</h2>\n      <p>' + escText(section.note) + '</p>\n    </div>\n'
     : "";
+  // Part 5 — the Free Resources landing page lists the real downloads
+  // grouped by category; every other section renders no list ("").
+  let resourceList = "";
+  if (section.id === "free-resources" && resources && resources.length) {
+    resourceList = resourceListHTML(resources, prefix);
+  }
   const chrome = chromeFor(prefix, false);
   const out = template
     .replaceAll("{{HEADER}}", chrome.header)
@@ -689,6 +831,7 @@ function renderSectionPage(section, products) {
     .replaceAll("{{HEADING}}", escText(section.heading))
     .replaceAll("{{INTRO}}", escText(section.intro))
     .replaceAll("{{FEATURED_HTML}}", featured)
+    .replaceAll("{{RESOURCE_LIST_HTML}}", resourceList)
     .replaceAll("{{GUIDE_HTML}}", guide)
     .replaceAll("{{CATEGORY_CARDS}}", cards)
     .replaceAll("{{NOTE_HTML}}", note)
@@ -701,7 +844,7 @@ function renderSectionPage(section, products) {
   return out;
 }
 
-function renderSitemap(published, site, articles, sections) {
+function renderSitemap(published, site, articles, sections, resources) {
   const lines = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'];
   const url = (loc, lastmod, changefreq, priority) =>
     `  <url><loc>${loc}</loc><lastmod>${lastmod}</lastmod><changefreq>${changefreq}</changefreq><priority>${priority}</priority></url>`;
@@ -732,12 +875,16 @@ function renderSitemap(published, site, articles, sections) {
   const sectionLines = (sections || []).map((s) =>
     url(site.domain + "/" + s.path.replace(/index\.html$/, ""), s.lastmod, "monthly", "0.8")
   );
-  lines.splice(2, 0, home, ...bookLines, ...blogLines, ...sectionLines);
+  // Part 5 free resource detail pages (only real pages that exist).
+  const resourceLines = (resources || []).map((r) =>
+    url(site.domain + "/free-resources/" + r.slug + "/", r.lastmod, "monthly", "0.7")
+  );
+  lines.splice(2, 0, home, ...bookLines, ...blogLines, ...sectionLines, ...resourceLines);
   lines.push("</urlset>", "");
   return lines.join("\n");
 }
 
-function renderLlms(published, site, free, articles, sections) {
+function renderLlms(published, site, free, articles, sections, resources) {
   const parts = [];
   parts.push("# JoJo's Blocks\n");
   parts.push(
@@ -805,6 +952,21 @@ function renderLlms(published, site, free, articles, sections) {
         "### " + s.title + "\n\n" +
         "- Page: " + site.domain + "/" + s.path.replace(/index\.html$/, "") + "\n" +
         "- What it is: " + s.intro + "\n"
+      );
+    }
+  }
+  if (resources && resources.length) {
+    parts.push("## Free resources\n");
+    parts.push(
+      "Free printables, coloring pages, worksheets and creative downloads — no sign-up or email address is needed to download them. License: personal and family use only; no resale or redistribution.\n"
+    );
+    for (const r of resources) {
+      parts.push(
+        "### " + r.title + "\n\n" +
+        "- Resource page: " + site.domain + "/free-resources/" + r.slug + "/\n" +
+        "- File: " + r.file + " (" + formatFileSize(r.file_size_bytes) + ")\n" +
+        "- Category: " + r.category + "\n" +
+        "- What it is: " + r.description + "\n"
       );
     }
   }
@@ -1018,6 +1180,38 @@ function main() {
     }
     writtenFiles.add(s.path);
   }
+  // Part 5 — free resources (data/resources.json): the free resources
+  // library. Every file must exist under assets/free-resources/ and
+  // its byte size must match the data file, or the build fails — so a
+  // paid PDF can never be published as a free download by mistake.
+  if (!fs.existsSync(RESOURCES_FILE)) fail("missing " + RESOURCES_FILE);
+  if (!fs.existsSync(RESOURCE_TEMPLATE)) fail("missing " + RESOURCE_TEMPLATE);
+  const RESOURCES_DATA = JSON.parse(fs.readFileSync(RESOURCES_FILE, "utf8"));
+  const RESOURCE_CATEGORIES = RESOURCES_DATA.categories || [];
+  const RESOURCES = RESOURCES_DATA.resources || [];
+  if (!RESOURCES.length) fail("data/resources.json: resources array is required");
+  const resourceSlugs = new Set();
+  for (const r of RESOURCES) {
+    for (const f of ["slug", "title", "description", "category", "file", "file_size_bytes", "preview", "preview_width", "preview_height", "page_orientation", "pages", "licence", "is_pdf", "seoTitle", "metaDescription", "lastmod"]) {
+      if (r[f] === undefined || r[f] === null || r[f] === "") fail("resource " + (r.slug || "?") + " is missing required field: " + f);
+    }
+    if (resourceSlugs.has(r.slug)) fail("duplicate resource slug: " + r.slug);
+    resourceSlugs.add(r.slug);
+    if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(r.slug)) fail("resource slug must be lowercase kebab-case: " + r.slug);
+    if (!RESOURCE_CATEGORIES.includes(r.category)) fail("resource " + r.slug + ": category must be one of the fixed list: " + RESOURCE_CATEGORIES.join(", "));
+    if (r.metaDescription.length < 120 || r.metaDescription.length > 160) fail("resource " + r.slug + ": metaDescription must be 120-160 characters (got " + r.metaDescription.length + ")");
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(r.lastmod)) fail("resource " + r.slug + ": lastmod must be YYYY-MM-DD");
+    if (r.page_orientation !== "portrait" && r.page_orientation !== "landscape") fail("resource " + r.slug + ": page_orientation must be 'portrait' or 'landscape'");
+    if (typeof r.is_pdf !== "boolean") fail("resource " + r.slug + ": is_pdf must be true or false");
+    if (!r.file.startsWith("assets/free-resources/")) fail("resource " + r.slug + ": file must live under assets/free-resources/ (got: " + r.file + ")");
+    if (!r.preview.startsWith("assets/free-resources/")) fail("resource " + r.slug + ": preview must live under assets/free-resources/ (got: " + r.preview + ")");
+    const resPath = path.join(ROOT, r.file);
+    if (!fs.existsSync(resPath)) fail("resource file not found: " + r.file);
+    const resSize = fs.statSync(resPath).size;
+    if (resSize !== r.file_size_bytes) fail("resource file size mismatch: " + r.file + " is " + resSize + " bytes, data/resources.json says " + r.file_size_bytes);
+    if (!fs.existsSync(path.join(ROOT, r.preview))) fail("resource preview not found: " + r.preview);
+    writtenFiles.add("free-resources/" + r.slug + "/index.html");
+  }
   function navCategoryIds() {
     const ids = [];
     for (const item of (NAV.explore || [])) ids.push(item.id);
@@ -1174,12 +1368,16 @@ function main() {
   writeFile(path.join(ROOT, "blog", "index.html"), renderBlogIndex(publishedArticles, ARTICLES.blogHome, (CATS.categories.find((c) => c.id === "blog") || {}).categories || []), checkOnly);
   // Part 3 section landing pages (data/sections.json).
   for (const s of SECTIONS.sections) {
-    writeFile(path.join(ROOT, s.path), renderSectionPage(s, published), checkOnly);
+    writeFile(path.join(ROOT, s.path), renderSectionPage(s, published, RESOURCES), checkOnly);
   }
-  writeFile(path.join(ROOT, "sitemap.xml"), renderSitemap(published, site, publishedArticles, SECTIONS.sections), checkOnly);
-  writeFile(path.join(ROOT, "llms.txt"), renderLlms(published, site, FREE, publishedArticles, SECTIONS.sections), checkOnly);
+  // Part 5 free resource detail pages (data/resources.json).
+  for (const r of RESOURCES) {
+    writeFile(path.join(ROOT, "free-resources", r.slug, "index.html"), renderResourcePage(r), checkOnly);
+  }
+  writeFile(path.join(ROOT, "sitemap.xml"), renderSitemap(published, site, publishedArticles, SECTIONS.sections, RESOURCES), checkOnly);
+  writeFile(path.join(ROOT, "llms.txt"), renderLlms(published, site, FREE, publishedArticles, SECTIONS.sections, RESOURCES), checkOnly);
   writeFile(path.join(ROOT, "js", "products.js"), renderProductsJs(DATA), checkOnly);
-  console.log("done. " + published.length + " book pages + index.html + " + statics.length + " static pages + free-printables/index.html + " + publishedArticles.length + " article page(s) + blog/index.html + " + SECTIONS.sections.length + " section page(s) + sitemap.xml + llms.txt + js/products.js" + (checkOnly ? " (dry run — nothing written)" : ""));
+  console.log("done. " + published.length + " book pages + index.html + " + statics.length + " static pages + free-printables/index.html + " + publishedArticles.length + " article page(s) + blog/index.html + " + SECTIONS.sections.length + " section page(s) + " + RESOURCES.length + " resource page(s) + sitemap.xml + llms.txt + js/products.js" + (checkOnly ? " (dry run — nothing written)" : ""));
 }
 
 main();

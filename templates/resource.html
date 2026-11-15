@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#FFF9F0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#2B2D42" media="(prefers-color-scheme: dark)">
+<!-- RESOURCE DETAIL TEMPLATE (Part 5) — rendered by tools/generate-pages.js
+     from data/resources.json. One template drives every free resource
+     page at /free-resources/<slug>/. Do not list token names in this
+     comment: the generator replaces them everywhere, including inside
+     comments. -->
+<title>{{SEO_TITLE}}</title>
+<meta name="description" content="{{META_DESCRIPTION}}">
+<meta name="author" content="JoJo's Blocks">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="{{CANONICAL_URL}}">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{SEO_TITLE}}">
+<meta property="og:description" content="{{META_DESCRIPTION}}">
+<meta property="og:url" content="{{CANONICAL_URL}}">
+<meta property="og:image" content="{{OG_IMAGE_URL}}">
+<meta property="og:image:alt" content="{{PREVIEW_ALT}}">
+<meta property="og:site_name" content="JoJo’s Blocks">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{SEO_TITLE}}">
+<meta name="twitter:description" content="{{META_DESCRIPTION}}">
+<meta name="twitter:image" content="{{OG_IMAGE_URL}}">
+<meta name="twitter:image:alt" content="{{PREVIEW_ALT}}">
+<link rel="icon" type="image/jpeg" href="../../assets/profile-logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/styles.css?v=9">
+<!-- Google tag (gtag.js) — Google Analytics 4, JoJo's Blocks (G-PYDBE3YS5S) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PYDBE3YS5S"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PYDBE3YS5S');
+</script>
+<!-- Google AdSense (pub-7967649628220448) — site verification + ad serving -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7967649628220448" crossorigin="anonymous"></script>
+<!-- Pinterest Tag (Tag ID 2614299974172) — page-visit tracking only;
+     purchases happen on Gumroad and are not tracked by this tag -->
+<script>
+!function(e){if(!window.pintrk){window.pintrk = function () {
+window.pintrk.queue.push(Array.prototype.slice.call(arguments))};var
+n=window.pintrk;n.queue=[],n.version="3.0";var
+t=document.createElement("script");t.async=!0,t.src=e;var
+r=document.getElementsByTagName("script")[0];
+r.parentNode.insertBefore(t,r)}}("https://s.pinimg.com/ct/core.js");
+pintrk('load', '2614299974172');
+pintrk('page');
+// PageVisit fix (15 Nov 2026): pintrk('page') sends 'init', not 'pagevisit', in the current tag library — this call records the PageVisit event.
+pintrk('track', 'pagevisit');
+</script>
+<noscript>
+<img height="1" width="1" style="display:none;" alt=""
+src="https://ct.pinterest.com/v3/?event=init&tid=2614299974172&noscript=1" />
+</noscript>
+<!-- end Pinterest Tag -->
+{{RESOURCE_JSONLD}}
+{{BREADCRUMB_JSONLD}}
+</head>
+<body{{PAGE_CLASS}}>
+<a class="skip-link" href="#resource">Skip to resource</a>
+{{HEADER}}
+<main id="resource">
+  <article class="wrap section resource">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="../../index.html">Home</a></li>
+        <li><a href="../index.html">Free Resources</a></li>
+        <li aria-current="page">{{TITLE}}</li>
+      </ol>
+    </nav>
+    <span class="eyebrow">{{CATEGORY}}</span>
+    <h1 class="resource-title">{{TITLE}}</h1>
+    <div class="resource-actions">
+      <button type="button" class="btn btn-primary" data-print="{{SLUG}}" onclick="window.print()">🖨 Print</button>
+      <a class="btn btn-outline" href="{{FILE_REL_PATH}}" download="{{FILE_NAME}}" data-resource-download="{{SLUG}}" data-file-type="{{FILE_TYPE}}">{{DOWNLOAD_LABEL}} ↓</a>
+    </div>
+    <figure class="resource-print">
+      <img src="{{PREVIEW_REL_PATH}}" alt="{{PREVIEW_ALT}}" width="{{PREVIEW_WIDTH}}" height="{{PREVIEW_HEIGHT}}">
+    </figure>
+    <div class="resource-info">
+      <p class="lead">{{DESCRIPTION}}</p>
+      <p class="card-meta">{{FILE_META}}</p>
+      <h2>How to use it</h2>
+      <ul class="card-features">
+{{USAGE_LI}}
+      </ul>
+      <p class="modal-note">See the <a href="../../terms.html">Terms &amp; Conditions</a> for the full licence.</p>
+      <p><a href="../index.html">← Back to all free resources</a></p>
+    </div>
+  </article>
+</main>
+{{FOOTER}}
+<script src="../../js/site.js?v=5"></script>
+</body>
+</html>
