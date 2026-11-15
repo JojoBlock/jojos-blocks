@@ -1,9 +1,12 @@
 /* JoJo's Blocks — shared site chrome (js/site.js).
  *
  * Loaded by EVERY page (homepage, book pages, Privacy, Terms, 404,
- * Refund Policy). It owns only the parts that are identical on all
- * pages: the mobile menu, the Explore dropdown, the header shadow,
- * the footer year, Buy Now click tracking and free-download tracking.
+ * Refund Policy, section landing pages, blog listing and articles).
+ * It owns only the parts that are identical on all pages: the mobile
+ * menu, the Explore dropdown, the header shadow, the footer year,
+ * Buy Now click tracking, free-download tracking, affiliate outbound
+ * click tracking, category filter chips, search boxes and game-start
+ * tracking (Part 3).
  *
  * Page-specific behavior lives elsewhere: homepage cards, the product
  * modal, the FAQ accordion and the newsletter form are in js/main.js
@@ -123,6 +126,90 @@
       window.gtag("event", "free_sample_download", {
         resource_slug: dl.getAttribute("data-free-download"),
         location: dl.getAttribute("data-location") || "page"
+      });
+    }
+  });
+
+  /* Part 3 — affiliate outbound click tracking (Google Analytics 4).
+     Any link carrying data-affiliate reports which recommendation was
+     clicked and where. There are NO affiliate links on the site right
+     now (the physical + digital-tools sections are Coming Soon), so
+     this handler fires only once a real recommendation is published. */
+  document.addEventListener("click", function (e) {
+    var aff = e.target.closest ? e.target.closest("a[data-affiliate]") : null;
+    if (aff && typeof window.gtag === "function") {
+      window.gtag("event", "affiliate_outbound_click", {
+        item: aff.getAttribute("data-affiliate"),
+        location: aff.getAttribute("data-location") || "page"
+      });
+    }
+  });
+
+  /* Part 3 — category filter chips (blog listing). Clicking a chip
+     shows only cards whose data-category matches, hides the rest, and
+     updates the pressed state. Fires one GA4 filter_use event per
+     click (no duplicate firing — a single delegated handler). */
+  var filterBar = document.querySelector(".filter-bar");
+  if (filterBar) {
+    filterBar.addEventListener("click", function (e) {
+      var chip = e.target.closest ? e.target.closest(".chip[data-filter]") : null;
+      if (!chip) return;
+      var value = chip.getAttribute("data-filter");
+      filterBar.querySelectorAll(".chip[data-filter]").forEach(function (c) {
+        var active = c === chip;
+        c.classList.toggle("is-active", active);
+        c.setAttribute("aria-pressed", active ? "true" : "false");
+      });
+      var visible = 0;
+      document.querySelectorAll(".filter-item[data-category]").forEach(function (item) {
+        var show = value === "all" || item.getAttribute("data-category") === value;
+        item.hidden = !show;
+        if (show) visible++;
+      });
+      var empty = document.querySelector(".filter-empty");
+      if (empty) empty.hidden = visible > 0;
+      if (typeof window.gtag === "function") {
+        window.gtag("event", "filter_use", { filter_value: value, page: window.location.pathname });
+      }
+    });
+  }
+
+  /* Part 3 — search boxes (section landing pages). Filters the
+     .filter-item cards on the page by their visible text as the user
+     types. Fires one GA4 search_use event per search session (the
+     first keystroke), reporting only that a search happened — never
+     the query text — so no personal data leaves the page. */
+  var searchBox = document.querySelector(".search-box");
+  if (searchBox) {
+    var searched = false;
+    searchBox.addEventListener("input", function () {
+      var q = searchBox.value.trim().toLowerCase();
+      var visible = 0;
+      document.querySelectorAll(".filter-item").forEach(function (item) {
+        var show = !q || item.textContent.toLowerCase().indexOf(q) !== -1;
+        item.hidden = !show;
+        if (show) visible++;
+      });
+      var empty = document.querySelector(".filter-empty");
+      if (empty) empty.hidden = visible > 0;
+      if (q && !searched && typeof window.gtag === "function") {
+        searched = true;
+        window.gtag("event", "search_use", { page: window.location.pathname });
+      }
+      if (!q) searched = false;
+    });
+  }
+
+  /* Part 3 — game start (ready for future games). Any button carrying
+     data-game-start reports which game was started. There are no
+     playable games on the site right now (the Games section is Coming
+     Soon), so this handler fires only once a real game is published. */
+  document.addEventListener("click", function (e) {
+    var game = e.target.closest ? e.target.closest("[data-game-start]") : null;
+    if (game && typeof window.gtag === "function") {
+      window.gtag("event", "game_start", {
+        game_slug: game.getAttribute("data-game-start"),
+        location: game.getAttribute("data-location") || "page"
       });
     }
   });

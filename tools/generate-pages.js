@@ -12,10 +12,14 @@
  *     + data/articles.json)
  *   - blog/<slug>.html    (one per published article, from
  *     templates/blog-article.html + data/articles.json)
+ *   - <section>/index.html (one per section landing page, from
+ *     templates/section.html + data/sections.json — Part 3)
  *   - privacy.html, terms.html, 404.html, refund-policy.html
  *                         (from templates/<name>.html)
- *   - sitemap.xml         (static pages + published products + blog)
- *   - llms.txt            (product list for AI systems + blog articles)
+ *   - sitemap.xml         (static pages + published products + blog
+ *     + section landing pages)
+ *   - llms.txt            (product list for AI systems + blog articles
+ *     + section landing pages)
  *   - js/products.js      (homepage card/modal data, same values as data/products.json)
  *
  * Every page shares ONE header and ONE footer, from
@@ -57,8 +61,13 @@
  *     category must be one of the fixed list in data/categories.json
  *     (blog.categories), related articles must exist, and inline links
  *     must point at a page this generator writes — or the build fails.
- *     The public Blog navigation stays "soon" until the owner activates
- *     it; these pages exist on the dev branch for preview and review.
+ *   - Section landing pages live in data/sections.json and are rendered
+ *     by renderSectionPage() into <section>/index.html (Part 3). A
+ *     category with status "soon" renders as a Coming Soon card with no
+ *     link and no download/buy/play button. A live category must have a
+ *     real href. Section meta descriptions must be 120-160 characters.
+ *     New sections must be added to writtenFiles + renderSitemap, or
+ *     the nav validation / sitemap will fail or silently omit them.
  */
 "use strict";
 
@@ -74,6 +83,8 @@ const FREE_TEMPLATE = path.join(ROOT, "templates", "free-resources.html");
 const ARTICLES_FILE = path.join(ROOT, "data", "articles.json");
 const ARTICLE_TEMPLATE = path.join(ROOT, "templates", "blog-article.html");
 const BLOG_INDEX_TEMPLATE = path.join(ROOT, "templates", "blog-index.html");
+const SECTIONS_FILE = path.join(ROOT, "data", "sections.json");
+const SECTION_TEMPLATE = path.join(ROOT, "templates", "section.html");
 const TEMPLATE_FILE = path.join(ROOT, "templates", "book.html");
 const TEMPLATES_DIR = path.join(ROOT, "templates");
 const PARTIALS_DIR = path.join(TEMPLATES_DIR, "partials");
@@ -160,7 +171,9 @@ function navItemsHTML(prefix, isHome) {
   const lines = [];
   for (const item of nav.top) {
     if (item.status === "menu") {
-      // Explore dropdown: live children link out, soon children are text.
+      // Dropdown menu: the button label comes from the menu item itself
+      // (Part 3 — was hardcoded "Explore"). Live children link out,
+      // soon children are text.
       const kids = nav.explore.map((c) => {
         if (c.status === "live") {
           if (!c.href) fail("navigation.json: live category '" + c.id + "' has no href");
@@ -170,7 +183,7 @@ function navItemsHTML(prefix, isHome) {
         return '        <li class="dropdown-soon"><strong>' + escText(c.label) + ' <span class="soon-pill">Soon</span></strong><small>' + escText(c.description || "") + '</small></li>';
       }).join("\n");
       lines.push('        <li class="has-dropdown">');
-      lines.push('          <button class="dropdown-toggle" id="explore-toggle" aria-expanded="false" aria-haspopup="true" aria-controls="explore-menu">Explore <span class="chev" aria-hidden="true">⌄</span></button>');
+      lines.push('          <button class="dropdown-toggle" id="explore-toggle" aria-expanded="false" aria-haspopup="true" aria-controls="explore-menu">' + escText(item.label) + ' <span class="chev" aria-hidden="true">⌄</span></button>');
       lines.push('          <ul class="dropdown-menu" id="explore-menu">');
       lines.push(kids);
       lines.push('          </ul>');
@@ -238,6 +251,33 @@ function renderStaticPage(templateName, outName, prefix, isHome) {
     .replaceAll("{{FOOTER}}", chrome.footer);
   const leftover = out.match(/\{\{[A-Z_]+\}\}/);
   if (leftover) fail("unreplaced token " + leftover[0] + " while rendering " + outName);
+  return out;
+}
+
+/* Part 3 — homepage (templates/index.html) with the latest articles
+ * injected. The template carries a {{LATEST_ARTICLES}} placeholder in
+ * its "Latest from the blog" section; the generator fills it with the
+ * three newest published articles (same card pattern as the blog
+ * listing). If the placeholder is absent, the homepage renders without
+ * it — the leftover-token check still passes. */
+function renderHome(articles) {
+  const template = fs.readFileSync(path.join(TEMPLATES_DIR, "index.html"), "utf8");
+  const site = DATA.site;
+  const chrome = chromeFor("", true);
+  const sorted = [...articles].sort((x, y) => (y.datePublished < x.datePublished ? -1 : y.datePublished > x.datePublished ? 1 : x.slug.localeCompare(y.slug))).slice(0, 3);
+  const cards = sorted.map((a) =>
+    '<article class="blog-card"><a class="blog-card-cover" href="blog/' + a.slug + '.html"><img src="' + a.coverImage + '" alt="' + escAttr(a.coverAlt) + '" width="1200" height="630" loading="lazy"></a>' +
+    '<div class="blog-card-body"><span class="eyebrow">' + escText(a.category) + "</span>" +
+    '<h2><a href="blog/' + a.slug + '.html">' + escText(a.title) + "</a></h2>" +
+    "<p>" + escText(a.excerpt) + "</p>" +
+    '<p class="card-meta"><time datetime="' + a.datePublished + '">' + a.datePublished + "</time> · " + readingTime(a) + "</p></div></article>"
+  ).join("\n");
+  const out = template
+    .replaceAll("{{HEADER}}", chrome.header)
+    .replaceAll("{{FOOTER}}", chrome.footer)
+    .replaceAll("{{LATEST_ARTICLES}}", cards);
+  const leftover = out.match(/\{\{[A-Z_]+\}\}/);
+  if (leftover) fail("unreplaced token " + leftover[0] + " while rendering index.html");
   return out;
 }
 
@@ -513,17 +553,32 @@ function renderArticle(a, all) {
   return out;
 }
 
-function renderBlogIndex(articles, blogHome) {
+/* Part 3 — blog listing with a category browse + filter. Each card
+ * carries data-category so site.js can filter client-side. Categories
+ * with no articles yet render as disabled "Soon" chips (no fake
+ * articles, no dead links). The fixed category list comes from
+ * data/categories.json (the blog taxonomy entry). */
+function renderBlogIndex(articles, blogHome, blogCategories) {
   const template = fs.readFileSync(BLOG_INDEX_TEMPLATE, "utf8");
   const site = DATA.site;
   const sorted = [...articles].sort((x, y) => (y.datePublished < x.datePublished ? -1 : y.datePublished > x.datePublished ? 1 : x.slug.localeCompare(y.slug)));
   const cards = sorted.map((a) =>
-    '<article class="blog-card"><a class="blog-card-cover" href="' + a.slug + '.html"><img src="../' + a.coverImage + '" alt="' + escAttr(a.coverAlt) + '" width="1200" height="630" loading="lazy"></a>' +
+    '<article class="blog-card filter-item" data-category="' + escAttr(a.category) + '"><a class="blog-card-cover" href="' + a.slug + '.html"><img src="../' + a.coverImage + '" alt="' + escAttr(a.coverAlt) + '" width="1200" height="630" loading="lazy"></a>' +
     '<div class="blog-card-body"><span class="eyebrow">' + escText(a.category) + "</span>" +
     '<h2><a href="' + a.slug + '.html">' + escText(a.title) + "</a></h2>" +
     "<p>" + escText(a.excerpt) + "</p>" +
     '<p class="card-meta"><time datetime="' + a.datePublished + '">' + a.datePublished + "</time> · " + readingTime(a) + "</p></div></article>"
   ).join("\n");
+  const counts = {};
+  for (const a of articles) counts[a.category] = (counts[a.category] || 0) + 1;
+  const filterChips = '<button type="button" class="chip is-active" data-filter="all" aria-pressed="true">All <span class="chip-count">' + articles.length + "</span></button>" +
+    (blogCategories || []).map((cat) => {
+      const n = counts[cat] || 0;
+      if (n > 0) return '<button type="button" class="chip" data-filter="' + escAttr(cat) + '" aria-pressed="false">' + escText(cat) + ' <span class="chip-count">' + n + "</span></button>";
+      return '<span class="chip is-soon" aria-disabled="true">' + escText(cat) + ' <span class="soon-pill">Soon</span></span>';
+    }).join("");
+  const categoryFilter = '<div class="filter-bar" role="group" aria-label="Filter articles by category">' + filterChips + "</div>" +
+    '<p class="filter-empty" hidden>No articles in this category yet — check back soon.</p>';
   const chrome = chromeFor("../", false);
   const out = template
     .replaceAll("{{HEADER}}", chrome.header)
@@ -532,6 +587,7 @@ function renderBlogIndex(articles, blogHome) {
     .replaceAll("{{META_DESCRIPTION}}", escAttr(blogHome.metaDescription))
     .replaceAll("{{CANONICAL_URL}}", site.domain + "/blog/")
     .replaceAll("{{ARTICLE_CARDS}}", cards)
+    .replaceAll("{{CATEGORY_FILTER}}", categoryFilter)
     .replaceAll("{{BREADCRUMB_JSONLD}}", breadcrumbJsonLd([
       { name: "Home", url: site.domain + "/" },
       { name: "Blog", url: site.domain + "/blog/" },
@@ -541,7 +597,94 @@ function renderBlogIndex(articles, blogHome) {
   return out;
 }
 
-function renderSitemap(published, site, articles) {
+function productCardHTML(p, prefix, location) {
+  // Server-rendered product card for the free resources page, mirroring
+  // the homepage card in js/main.js (same classes, same data) — but
+  // without the "reveal" class (main.js is homepage-only, so a reveal
+  // card would stay invisible) and with a plain "View Book" link instead
+  // of the modal button (the modal lives in main.js too).
+  // location (Part 3) labels the GA4 buy_now_click event so the same
+  // card can be reused on the Products landing page.
+  const loc = location || "free-resources";
+  const featuresLi = (p.features || [])
+    .map((f) => "<li>" + escText(f) + "</li>")
+    .join("");
+  return '<article class="card filter-item">' +
+    '<div class="card-cover"><img src="' + escAttr(prefix + p.cover) + '" alt="' + escAttr(p.coverAlt) + '" loading="lazy" width="600" height="849">' +
+    '<span class="card-badge">' + escText(p.slot) + '</span></div>' +
+    '<div class="card-body">' +
+    '<h3>' + escText(p.title) + '</h3>' +
+    '<p class="card-theme">' + escText(p.theme) + '</p>' +
+    '<p>' + escText(p.description) + '</p>' +
+    '<p class="card-meta">' + escText(cardMeta(p)) + '</p>' +
+    '<p class="card-price price-block">' + priceBlock(p, DATA.site.discountCode) + '</p>' +
+    '<ul class="card-features">' + featuresLi + '</ul>' +
+    '<div class="card-actions">' +
+    '<a class="btn btn-outline" href="' + escAttr(prefix + "books/" + p.slug + ".html") + '">View Book</a>' +
+    '<a class="btn btn-primary" href="' + escAttr(p.gumroadUrl) + '" target="_blank" rel="noopener" data-book="' + escAttr(p.slug) + '" data-location="' + escAttr(loc) + '">Buy Now on Gumroad</a>' +
+    '</div>' +
+    '</div>' +
+    '</article>';
+}
+
+/* Part 3 — section landing pages (data/sections.json + templates/section.html).
+ * One generic renderer for every section landing page. A category with
+ * status "live" becomes a linked card; status "soon" becomes a Coming
+ * Soon card with NO link and NO download/buy/play button. The featured
+ * block is either the real products (type "products"), one real resource
+ * (type "resource"), or absent. */
+function renderSectionPage(section, products) {
+  const template = fs.readFileSync(SECTION_TEMPLATE, "utf8");
+  const site = DATA.site;
+  const prefix = "../";
+  const canonical = site.domain + "/" + section.path.replace(/index\.html$/, "");
+  // Featured block.
+  let featured = "";
+  if (section.featured && section.featured.type === "products") {
+    const cards = products.filter((p) => p.status === "published").map((p) => productCardHTML(p, prefix, section.id)).join("\n");
+    featured = '    <div class="section-featured" id="products">\n      <h2>' + escText(section.featured.title) + '</h2>\n      <p class="lead">' + escText(section.featured.description) + '</p>\n      <div class="product-grid">\n' + cards + '\n      </div>\n    </div>\n';
+  } else if (section.featured && section.featured.type === "resource") {
+    const f = section.featured;
+    featured = '    <div class="section-featured">\n      <article class="feature-card filter-item">\n        <span class="feature-icon" aria-hidden="true">🎁</span>\n        <h2>' + escText(f.title) + '</h2>\n        <p>' + escText(f.description) + '</p>\n        <p class="card-meta">' + escText(f.meta) + '</p>\n        <a class="btn btn-primary" href="' + escAttr(hrefFor(f.href, prefix, false)) + '" data-free-download="taster-pack" data-location="' + escAttr(section.id) + '">' + escText(f.buttonText) + '</a>\n      </article>\n    </div>\n';
+  }
+  // Category cards.
+  const cards = (section.categories || []).map((c) => {
+    if (c.status === "live") {
+      if (!c.href) fail("data/sections.json: live category '" + c.id + "' has no href");
+      return '      <a class="category-card filter-item" href="' + escAttr(hrefFor(c.href, prefix, false)) + '">\n        <span class="category-icon" aria-hidden="true">' + escText(c.icon || "✦") + '</span>\n        <h3>' + escText(c.label) + '</h3>\n        <p>' + escText(c.description) + '</p>\n        <span class="category-cta">Browse →</span>\n      </a>';
+    }
+    if (c.href) fail("data/sections.json: soon category '" + c.id + "' must not have an href");
+    return '      <article class="category-card coming-soon filter-item">\n        <span class="category-icon" aria-hidden="true">' + escText(c.icon || "✦") + '</span>\n        <h3>' + escText(c.label) + '</h3>\n        <p>' + escText(c.description) + '</p>\n        <p class="coming-soon-text">' + escText(c.comingSoon || "More coming soon.") + '</p>\n        <span class="soon-pill">Coming Soon</span>\n      </article>';
+  }).join("\n");
+  // Optional note / affiliate disclosure.
+  const note = section.note
+    ? '    <div class="section-note">\n      <h2>Good to know</h2>\n      <p>' + escText(section.note) + '</p>\n    </div>\n'
+    : "";
+  const chrome = chromeFor(prefix, false);
+  const out = template
+    .replaceAll("{{HEADER}}", chrome.header)
+    .replaceAll("{{FOOTER}}", chrome.footer)
+    .replaceAll("{{PREFIX}}", prefix)
+    .replaceAll("{{SEO_TITLE}}", escAttr(section.seoTitle))
+    .replaceAll("{{META_DESCRIPTION}}", escAttr(section.metaDescription))
+    .replaceAll("{{CANONICAL_URL}}", canonical)
+    .replaceAll("{{TITLE}}", escText(section.title))
+    .replaceAll("{{EYEBROW}}", escText(section.eyebrow))
+    .replaceAll("{{HEADING}}", escText(section.heading))
+    .replaceAll("{{INTRO}}", escText(section.intro))
+    .replaceAll("{{FEATURED_HTML}}", featured)
+    .replaceAll("{{CATEGORY_CARDS}}", cards)
+    .replaceAll("{{NOTE_HTML}}", note)
+    .replaceAll("{{BREADCRUMB_JSONLD}}", breadcrumbJsonLd([
+      { name: "Home", url: site.domain + "/" },
+      { name: section.title, url: canonical },
+    ]));
+  const leftover = out.match(/\{\{[A-Z_]+\}\}/);
+  if (leftover) fail("unreplaced token " + leftover[0] + " while rendering " + section.path);
+  return out;
+}
+
+function renderSitemap(published, site, articles, sections) {
   const lines = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'];
   const url = (loc, lastmod, changefreq, priority) =>
     `  <url><loc>${loc}</loc><lastmod>${lastmod}</lastmod><changefreq>${changefreq}</changefreq><priority>${priority}</priority></url>`;
@@ -562,12 +705,17 @@ function renderSitemap(published, site, articles) {
     blogLines.push(url(site.domain + "/blog/", latest, "monthly", "0.8"));
     for (const a of articles) blogLines.push(url(site.domain + "/blog/" + a.slug + ".html", a.datePublished, "monthly", "0.7"));
   }
-  lines.splice(2, 0, home, ...bookLines, ...blogLines);
+  // Part 3 section landing pages (only real pages that exist — Coming Soon
+  // category cards are not separate pages, so they never appear here).
+  const sectionLines = (sections || []).map((s) =>
+    url(site.domain + "/" + s.path.replace(/index\.html$/, ""), s.lastmod, "monthly", "0.8")
+  );
+  lines.splice(2, 0, home, ...bookLines, ...blogLines, ...sectionLines);
   lines.push("</urlset>", "");
   return lines.join("\n");
 }
 
-function renderLlms(published, site, free, articles) {
+function renderLlms(published, site, free, articles, sections) {
   const parts = [];
   parts.push("# JoJo's Blocks\n");
   parts.push(
@@ -625,6 +773,16 @@ function renderLlms(published, site, free, articles) {
         "- Article: " + site.domain + "/blog/" + a.slug + ".html\n" +
         "- Published: " + a.datePublished + "\n" +
         "- What it is: " + a.excerpt + "\n"
+      );
+    }
+  }
+  if (sections && sections.length) {
+    parts.push("## Sections\n");
+    for (const s of sections) {
+      parts.push(
+        "### " + s.title + "\n\n" +
+        "- Page: " + site.domain + "/" + s.path.replace(/index\.html$/, "") + "\n" +
+        "- What it is: " + s.intro + "\n"
       );
     }
   }
@@ -804,6 +962,36 @@ function main() {
   })(CATS.categories);
   const writtenFiles = new Set(["index.html", "privacy.html", "terms.html", "404.html", "refund-policy.html", "sitemap.xml", "llms.txt", "free-printables/index.html"]);
   for (const p of (DATA.products || [])) writtenFiles.add("books/" + p.slug + ".html");
+  // Part 3 section landing pages (data/sections.json): loaded early so
+  // their paths are in writtenFiles before the nav href check below.
+  // A live category must have a real href; a soon category must not.
+  // Meta descriptions must be 120-160 characters.
+  if (!fs.existsSync(SECTIONS_FILE)) fail("missing " + SECTIONS_FILE);
+  if (!fs.existsSync(SECTION_TEMPLATE)) fail("missing " + SECTION_TEMPLATE);
+  const SECTIONS = JSON.parse(fs.readFileSync(SECTIONS_FILE, "utf8"));
+  if (!SECTIONS.sections || !Array.isArray(SECTIONS.sections)) fail("data/sections.json: sections array is required");
+  const sectionIds = new Set();
+  for (const s of SECTIONS.sections) {
+    for (const f of ["id", "path", "title", "seoTitle", "metaDescription", "eyebrow", "heading", "intro", "lastmod"]) {
+      if (s[f] === undefined || s[f] === null || s[f] === "") fail("section " + (s.id || "?") + " is missing required field: " + f);
+    }
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(s.lastmod)) fail("section " + s.id + ": lastmod must be YYYY-MM-DD");
+    if (s.metaDescription.length < 120 || s.metaDescription.length > 160) fail("section " + s.id + ": metaDescription must be 120-160 characters (got " + s.metaDescription.length + ")");
+    if (!s.path.endsWith("/index.html")) fail("section " + s.id + ": path must end with /index.html (got " + s.path + ")");
+    if (sectionIds.has(s.id)) fail("duplicate section id: " + s.id);
+    sectionIds.add(s.id);
+    if (s.featured && s.featured.type !== "products" && s.featured.type !== "resource") fail("section " + s.id + ": featured.type must be 'products' or 'resource'");
+    const catIds2 = new Set();
+    for (const c of (s.categories || [])) {
+      if (!c.id || !c.label || !c.description || !c.status) fail("section " + s.id + ": every category needs id, label, description and status");
+      if (catIds2.has(c.id)) fail("section " + s.id + ": duplicate category id: " + c.id);
+      catIds2.add(c.id);
+      if (c.status !== "live" && c.status !== "soon") fail("section " + s.id + ": category " + c.id + " has invalid status: " + c.status);
+      if (c.status === "live" && !c.href) fail("section " + s.id + ": live category '" + c.id + "' has no href");
+      if (c.status === "soon" && c.href) fail("section " + s.id + ": soon category '" + c.id + "' must not have an href");
+    }
+    writtenFiles.add(s.path);
+  }
   function navCategoryIds() {
     const ids = [];
     for (const item of (NAV.explore || [])) ids.push(item.id);
@@ -938,8 +1126,10 @@ function main() {
   // from templates/ so the chrome can never drift between pages.
   // refund-policy.html stays a draft: generated, but unlinked from the
   // footer and absent from the sitemap until approved + legally reviewed.
+  // The homepage is rendered by renderHome (Part 3) so its "Latest from
+  // the blog" section always shows the three newest articles.
+  writeFile(path.join(ROOT, "index.html"), renderHome(publishedArticles), checkOnly);
   const statics = [
-    ["index.html", "index.html", "", true],
     ["privacy.html", "privacy.html", "", false],
     ["terms.html", "terms.html", "", false],
     ["404.html", "404.html", "", false],
@@ -951,17 +1141,19 @@ function main() {
   // Free resources page (free-printables/index.html). Its nav item and
   // category are activated by data/navigation.json + data/categories.json.
   writeFile(path.join(ROOT, "free-printables", "index.html"), renderFreePage(FREE, published), checkOnly);
-  // Blog: listing page + one page per published article. The public Blog
-  // navigation stays "soon" until the owner activates it; these pages
-  // exist on the dev branch for preview and review.
+  // Blog: listing page + one page per published article.
   for (const a of publishedArticles) {
     writeFile(path.join(ROOT, "blog", a.slug + ".html"), renderArticle(a, ARTICLES.articles), checkOnly);
   }
-  writeFile(path.join(ROOT, "blog", "index.html"), renderBlogIndex(publishedArticles, ARTICLES.blogHome), checkOnly);
-  writeFile(path.join(ROOT, "sitemap.xml"), renderSitemap(published, site, publishedArticles), checkOnly);
-  writeFile(path.join(ROOT, "llms.txt"), renderLlms(published, site, FREE, publishedArticles), checkOnly);
+  writeFile(path.join(ROOT, "blog", "index.html"), renderBlogIndex(publishedArticles, ARTICLES.blogHome, (CATS.categories.find((c) => c.id === "blog") || {}).categories || []), checkOnly);
+  // Part 3 section landing pages (data/sections.json).
+  for (const s of SECTIONS.sections) {
+    writeFile(path.join(ROOT, s.path), renderSectionPage(s, published), checkOnly);
+  }
+  writeFile(path.join(ROOT, "sitemap.xml"), renderSitemap(published, site, publishedArticles, SECTIONS.sections), checkOnly);
+  writeFile(path.join(ROOT, "llms.txt"), renderLlms(published, site, FREE, publishedArticles, SECTIONS.sections), checkOnly);
   writeFile(path.join(ROOT, "js", "products.js"), renderProductsJs(DATA), checkOnly);
-  console.log("done. " + published.length + " book pages + " + statics.length + " static pages + free-printables/index.html + " + publishedArticles.length + " article page(s) + blog/index.html + sitemap.xml + llms.txt + js/products.js" + (checkOnly ? " (dry run — nothing written)" : ""));
+  console.log("done. " + published.length + " book pages + index.html + " + statics.length + " static pages + free-printables/index.html + " + publishedArticles.length + " article page(s) + blog/index.html + " + SECTIONS.sections.length + " section page(s) + sitemap.xml + llms.txt + js/products.js" + (checkOnly ? " (dry run — nothing written)" : ""));
 }
 
 main();
