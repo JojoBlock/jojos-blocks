@@ -204,11 +204,15 @@ def run(base):
         status, _ = fetch(base, img.split("?")[0])
         check(f"image {img} returns 200", status == 200, f"got {status}")
 
-    # US English: zero UK spellings in repo files (aria-labelledby excluded).
+    # US English: zero UK spellings in our own wording (aria-labelledby
+    # excluded). URLs are stripped first: a third-party resource's
+    # filename can carry a UK spelling that is not our wording (the NEO
+    # Kids handout PDF is literally named "Early Colouring Skills").
     bad = []
     for f in ROOT.rglob("*"):
         if f.is_file() and ".git" not in f.parts and f.suffix in (".html", ".js", ".json", ".md", ".txt", ".xml"):
             text = f.read_text(encoding="utf-8", errors="ignore")
+            text = re.sub(r"https?://[^\s\"']+", " ", text)
             for w in ["colour", "favourite", "licence"]:
                 if re.search(w, text, re.I):
                     bad.append((str(f.relative_to(ROOT)), w))
