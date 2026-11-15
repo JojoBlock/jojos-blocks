@@ -26,6 +26,13 @@ PAGES = [
     "refund-policy.html",
     "blog/index.html",
     "blog/benefits-of-coloring-for-preschoolers.html",
+    "blog/easy-alphabet-activities-for-toddlers-at-home.html",
+    "blog/fun-animal-facts-for-kids.html",
+    "blog/screen-free-activities-for-kids-on-rainy-days.html",
+    "blog/what-do-community-helpers-do.html",
+    "blog/how-coloring-helps-your-child-learn-the-alphabet.html",
+    "blog/space-facts-for-preschoolers.html",
+    "blog/homeschool-preschool-daily-routine-with-printables.html",
 ]
 
 EXPECTED_TITLES = {
@@ -157,13 +164,21 @@ check("sitemap is valid XML", sm.startswith('<?xml') and "<urlset" in sm and "</
 for rel in ["", "books/my-first-abc-book.html", "books/my-first-animal-explorer.html",
             "books/my-little-community-helpers.html", "books/my-little-space-adventure.html",
             "books/complete-coloring-book-bundle.html", "privacy.html", "terms.html",
-            "blog/", "blog/benefits-of-coloring-for-preschoolers.html"]:
+            "blog/", "blog/benefits-of-coloring-for-preschoolers.html",
+            "blog/easy-alphabet-activities-for-toddlers-at-home.html",
+            "blog/fun-animal-facts-for-kids.html",
+            "blog/screen-free-activities-for-kids-on-rainy-days.html",
+            "blog/what-do-community-helpers-do.html",
+            "blog/how-coloring-helps-your-child-learn-the-alphabet.html",
+            "blog/space-facts-for-preschoolers.html",
+            "blog/homeschool-preschool-daily-routine-with-printables.html"]:
     check(f"sitemap includes /{rel}", (BASE + "/" + rel) in sm)
 check("sitemap excludes 404.html", "404.html" not in sm)
 check("sitemap excludes refund-policy.html (draft)", "refund-policy.html" not in sm)
-# 9 = home + 5 book pages + free-printables + blog listing + 1 article
-# (all lastmod 2026-11-15: blog pages added Step 3, 2026-11-15).
-check("sitemap lastmod 2026-11-15 for changed pages", sm.count("<lastmod>2026-11-15</lastmod>") == 9,
+# 16 = home + 5 book pages + free-printables + blog listing + 8 articles
+# (all lastmod 2026-11-15: blog pages added Step 3 + the 7 remaining
+# articles, 2026-11-15).
+check("sitemap lastmod 2026-11-15 for changed pages", sm.count("<lastmod>2026-11-15</lastmod>") == 16,
       f"found {sm.count('<lastmod>2026-11-15</lastmod>')}")
 
 # robots.txt
