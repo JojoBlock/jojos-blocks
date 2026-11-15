@@ -732,8 +732,8 @@ function resourceGuideAccordionsHTML(section) {
 // Free Resources guide accordions above, but the item headings are
 // used as-is (no retitling) and there is no licence accordion: the
 // three guide items move out of the full-text block at the top of the
-// page into collapsed accordions above the category grid, so the
-// discovery area follows a compact collapsed block.
+// page into collapsed accordions below the category grid, so the
+// discovery area comes first and the guidance second.
 function sectionGuideAccordionsHTML(section) {
   const guide = section.guide;
   if (!guide || !guide.items || !guide.items.length) return "";
@@ -894,14 +894,18 @@ function renderSectionPage(section, products, resources) {
   // list), so the resources sit near the top of the page.
   let guide = "";
   let guideAccordions = "";
+  let guideAccordionsAfter = "";
   let filterBar = "";
   if (section.id === "free-resources") {
     guideAccordions = resourceGuideAccordionsHTML(section);
     if (resources && resources.length) filterBar = resourceFilterBarHTML(resources);
   } else if (section.id === "games") {
-    // UI/UX Pass 2: the games guide renders as collapsed accordions
-    // (sectionGuideAccordionsHTML), not as full text at the top.
-    guideAccordions = sectionGuideAccordionsHTML(section);
+    // UI/UX Pass 2 (final adjustment, 15 Nov 2026): the games guide
+    // renders as collapsed accordions BELOW the category grid, so
+    // discovering the games comes first and guidance second. Free
+    // Resources keeps its accordions above its Browse categories
+    // (guideAccordions), unchanged.
+    guideAccordionsAfter = sectionGuideAccordionsHTML(section);
   } else if (section.guide && section.guide.items && section.guide.items.length) {
     guide = '\n    <div class="section-guide">\n      <h2>' + escText(section.guide.title) + '</h2>\n' +
       section.guide.items.map((it) => '      <h3>' + escText(it.h) + '</h3>\n      <p>' + escText(it.text) + '</p>').join("\n") +
@@ -944,6 +948,7 @@ function renderSectionPage(section, products, resources) {
     .replaceAll("{{RESOURCE_LIST_HTML}}", resourceList)
     .replaceAll("{{GUIDE_HTML}}", guide)
     .replaceAll("{{GUIDE_ACCORDIONS_HTML}}", guideAccordions)
+    .replaceAll("{{GUIDE_ACCORDIONS_AFTER_HTML}}", guideAccordionsAfter)
     .replaceAll("{{SEARCH_HTML}}", searchHtml)
     .replaceAll("{{FILTER_BAR_HTML}}", filterBar)
     .replaceAll("{{CATEGORY_CARDS}}", cards)
