@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-label="Memory Match cover art">
+<title>Memory Match — flip the cards and find the pairs</title>
+<rect width="640" height="360" fill="#7C6FF0"/>
+<circle cx="64" cy="56" r="30" fill="#FFC94D" opacity=".8"/>
+<circle cx="588" cy="312" r="36" fill="#2EC4B6" opacity=".8"/>
+<circle cx="596" cy="48" r="16" fill="#FF6B6B" opacity=".8"/>
+<circle cx="52" cy="308" r="12" fill="#FFF9F0" opacity=".7"/>
+<g>
+<rect x="107" y="22" width="96" height="96" rx="14" fill="#FF6B6B"/>
+<rect x="217" y="22" width="96" height="96" rx="14" fill="#FFC94D"/>
+<rect x="327" y="22" width="96" height="96" rx="14" fill="#2EC4B6"/>
+<rect x="437" y="22" width="96" height="96" rx="14" fill="#FF6B6B"/>
+<rect x="107" y="132" width="96" height="96" rx="14" fill="#2EC4B6"/>
+<rect x="217" y="132" width="96" height="96" rx="14" fill="#FF6B6B"/>
+<rect x="327" y="132" width="96" height="96" rx="14" fill="#FFC94D"/>
+<rect x="437" y="132" width="96" height="96" rx="14" fill="#2EC4B6"/>
+<rect x="107" y="242" width="96" height="96" rx="14" fill="#FF6B6B"/>
+<rect x="217" y="242" width="96" height="96" rx="14" fill="#2EC4B6"/>
+<rect x="327" y="242" width="96" height="96" rx="14" fill="#FF6B6B"/>
+<rect x="437" y="242" width="96" height="96" rx="14" fill="#2EC4B6"/>
+</g>
+<g fill="#FFF9F0" opacity=".85">
+<circle cx="155" cy="70" r="9"/>
+<circle cx="375" cy="70" r="9"/>
+<circle cx="485" cy="70" r="9"/>
+<circle cx="155" cy="180" r="9"/>
+<circle cx="265" cy="180" r="9"/>
+<circle cx="485" cy="180" r="9"/>
+<circle cx="155" cy="290" r="9"/>
+<circle cx="265" cy="290" r="9"/>
+<circle cx="375" cy="290" r="9"/>
+<circle cx="485" cy="290" r="9"/>
+</g>
+<g fill="#2EC4B6">
+<polygon points="265,44 273,62 291,70 273,78 265,96 257,78 239,70 257,62"/>
+<polygon points="375,154 383,172 401,180 383,188 375,206 367,188 349,180 367,172"/>
+</g>
+</svg>
