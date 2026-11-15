@@ -727,6 +727,25 @@ function resourceGuideAccordionsHTML(section) {
   return '    <div class="guide-accordions">\n      <h2>' + escText(guide.title) + '</h2>\n' + items + '\n' + licence + '\n    </div>\n';
 }
 
+// Guide accordions for the Games & Play landing page
+// (15 Nov 2026 UI/UX Pass 2). Same collapsed <details> pattern as the
+// Free Resources guide accordions above, but the item headings are
+// used as-is (no retitling) and there is no licence accordion: the
+// three guide items move out of the full-text block at the top of the
+// page into collapsed accordions above the category grid, so the
+// discovery area follows a compact collapsed block.
+function sectionGuideAccordionsHTML(section) {
+  const guide = section.guide;
+  if (!guide || !guide.items || !guide.items.length) return "";
+  const items = guide.items.map((it) =>
+    '      <details class="accordion-item">\n' +
+    '        <summary class="accordion-q">' + escText(it.h) + '<span class="chev" aria-hidden="true">⌄</span></summary>\n' +
+    '        <div class="accordion-a"><p>' + escText(it.text) + '</p></div>\n' +
+    '      </details>'
+  ).join("\n");
+  return '    <div class="guide-accordions">\n      <h2>' + escText(guide.title) + '</h2>\n' + items + '\n    </div>\n';
+}
+
 function resourceJsonLd(r, canonical, downloadUrl) {
   return '<script type="application/ld+json">\n' + JSON.stringify({
     "@context": "https://schema.org",
@@ -879,6 +898,10 @@ function renderSectionPage(section, products, resources) {
   if (section.id === "free-resources") {
     guideAccordions = resourceGuideAccordionsHTML(section);
     if (resources && resources.length) filterBar = resourceFilterBarHTML(resources);
+  } else if (section.id === "games") {
+    // UI/UX Pass 2: the games guide renders as collapsed accordions
+    // (sectionGuideAccordionsHTML), not as full text at the top.
+    guideAccordions = sectionGuideAccordionsHTML(section);
   } else if (section.guide && section.guide.items && section.guide.items.length) {
     guide = '\n    <div class="section-guide">\n      <h2>' + escText(section.guide.title) + '</h2>\n' +
       section.guide.items.map((it) => '      <h3>' + escText(it.h) + '</h3>\n      <p>' + escText(it.text) + '</p>').join("\n") +
@@ -896,6 +919,15 @@ function renderSectionPage(section, products, resources) {
   }
   // Nav current-page id: the Products landing page is the nav's
   // "Digital Products" child, not the "Products" menu itself.
+  // UI/UX Pass 2: the search box is dead UI on Games (js/site.js only
+  // filters .filter-item:not(.category-card), and every games card is
+  // a category card), so it renders empty there and byte-identical
+  // markup everywhere else.
+  const searchHtml = section.id === "games" ? "" :
+    '\n    <div class="section-search" role="search">\n' +
+    '      <label class="visually-hidden" for="section-search">Search this section</label>\n' +
+    '      <input type="search" id="section-search" class="search-box" placeholder="Search ' + escText(section.title) + '…" autocomplete="off">\n' +
+    '    </div>';
   const chrome = chromeFor(prefix, false, section.id === "products" ? "digital-products" : section.id);
   const out = template
     .replaceAll("{{HEADER}}", chrome.header)
@@ -912,6 +944,7 @@ function renderSectionPage(section, products, resources) {
     .replaceAll("{{RESOURCE_LIST_HTML}}", resourceList)
     .replaceAll("{{GUIDE_HTML}}", guide)
     .replaceAll("{{GUIDE_ACCORDIONS_HTML}}", guideAccordions)
+    .replaceAll("{{SEARCH_HTML}}", searchHtml)
     .replaceAll("{{FILTER_BAR_HTML}}", filterBar)
     .replaceAll("{{CATEGORY_CARDS}}", cards)
     .replaceAll("{{NOTE_HTML}}", note)
