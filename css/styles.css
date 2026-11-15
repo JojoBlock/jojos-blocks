@@ -129,6 +129,11 @@ img.logo-mark{display:block;object-fit:cover}
 html.js .faq-a{max-height:0;overflow:hidden;transition:max-height .25s ease}
 html.js .faq-item.open .faq-a{max-height:480px}
 .faq-a p{padding:0 22px 20px;margin:0;color:var(--muted)}
+/* Free resources page FAQ uses native <details>/<summary> (no JavaScript):
+   hide the default disclosure marker and rotate the chevron when open. */
+details.faq-item summary{list-style:none}
+details.faq-item summary::-webkit-details-marker{display:none}
+details.faq-item[open ] .faq-q .chev{transform:rotate(180deg)}
 
 /* Newsletter */
 .newsletter{background:linear-gradient(135deg,var(--lav),#9B8CFF);border-radius:28px;padding:48px 40px;color:#fff;text-align:center;box-shadow:var(--shadow-lg)}

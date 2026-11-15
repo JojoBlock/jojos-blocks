@@ -6,6 +6,8 @@
  * the website's generated files from templates:
  *   - index.html          (homepage, from templates/index.html)
  *   - books/<slug>.html   (one per published product, from templates/book.html)
+ *   - free-printables/index.html (free resources page, from
+ *     templates/free-resources.html + data/free-resources.json)
  *   - privacy.html, terms.html, 404.html, refund-policy.html
  *                         (from templates/<name>.html)
  *   - sitemap.xml         (static pages + published products)
@@ -38,9 +40,11 @@
  *   - refund-policy.html is generated but is a DRAFT (unlinked from the
  *     footer, not in the sitemap) until the owner approves it and it gets
  *     qualified legal review. 404.html is never in the sitemap.
- *   - Free resources are NOT in this file: they live in data/free-resources.json
- *     (created when the first free resource exists) and are generated separately,
- *     so a paid PDF can never be published as a free download by mistake.
+ *   - Free resources live in data/free-resources.json and are rendered by
+ *     renderFreePage() into free-printables/index.html. The PDF itself must
+ *     already exist under assets/free-resources/ and its byte size must match
+ *     the data file, or the build fails — so a paid PDF can never be
+ *     published as a free download by mistake.
  *   - Paid PDF files are never stored in this repository. The only purchase
  *     link is each product's gumroadUrl.
  *   - Existing URLs are preserved: a product page is always books/<slug>.html
@@ -57,6 +61,8 @@ const ROOT = path.resolve(__dirname, "..");
 const DATA_FILE = path.join(ROOT, "data", "products.json");
 const NAV_FILE = path.join(ROOT, "data", "navigation.json");
 const CATEGORIES_FILE = path.join(ROOT, "data", "categories.json");
+const FREE_DATA_FILE = path.join(ROOT, "data", "free-resources.json");
+const FREE_TEMPLATE = path.join(ROOT, "templates", "free-resources.html");
 const TEMPLATE_FILE = path.join(ROOT, "templates", "book.html");
 const TEMPLATES_DIR = path.join(ROOT, "templates");
 const PARTIALS_DIR = path.join(TEMPLATES_DIR, "partials");
@@ -273,6 +279,87 @@ function renderBook(p, all) {
   return out;
 }
 
+function productCardHTML(p, prefix) {
+  // Server-rendered product card for the free resources page, mirroring
+  // the homepage card in js/main.js (same classes, same data) — but
+  // without the "reveal" class (main.js is homepage-only, so a reveal
+  // card would stay invisible) and with a plain "View Book" link instead
+  // of the modal button (the modal lives in main.js too).
+  const featuresLi = (p.features || [])
+    .map((f) => "<li>" + escText(f) + "</li>")
+    .join("");
+  return '<article class="card">' +
+    '<div class="card-cover"><img src="' + escAttr(prefix + p.cover) + '" alt="' + escAttr(p.coverAlt) + '" loading="lazy" width="600" height="849">' +
+    '<span class="card-badge">' + escText(p.slot) + '</span></div>' +
+    '<div class="card-body">' +
+    '<h3>' + escText(p.title) + '</h3>' +
+    '<p class="card-theme">' + escText(p.theme) + '</p>' +
+    '<p>' + escText(p.description) + '</p>' +
+    '<p class="card-meta">' + escText(cardMeta(p)) + '</p>' +
+    '<p class="card-price price-block">' + priceBlock(p, DATA.site.discountCode) + '</p>' +
+    '<ul class="card-features">' + featuresLi + '</ul>' +
+    '<div class="card-actions">' +
+    '<a class="btn btn-outline" href="' + escAttr(prefix + "books/" + p.slug + ".html") + '">View Book</a>' +
+    '<a class="btn btn-primary" href="' + escAttr(p.gumroadUrl) + '" target="_blank" rel="noopener" data-book="' + escAttr(p.slug) + '" data-location="free-resources">Buy Now on Gumroad</a>' +
+    '</div>' +
+    '</div>' +
+    '</article>';
+}
+
+function renderFreePage(free, published) {
+  const template = fs.readFileSync(FREE_TEMPLATE, "utf8");
+  const site = DATA.site;
+  const prefix = "../";
+  const canonical = site.domain + "/free-printables/";
+  const pdfRel = prefix + free.file;
+  const whatsInside = (free.contents || []).map((c) =>
+    '<article class="feature"><div class="icon icon-mint" aria-hidden="true">' + escText(c.icon) + '</div><h3>' + escText(c.title) + '</h3><p>' + escText(c.text) + '</p><p class="card-meta">' + escText(c.book) + '</p></article>'
+  ).join("\n        ");
+  const printSteps = (free.printSteps || []).map((s, i) =>
+    '<article class="step"><div class="step-num">' + (i + 1) + '</div><h3>' + escText(s.title) + '</h3><p>' + escText(s.text) + '</p></article>'
+  ).join("\n        ");
+  const licenseLi = (free.license || []).map((l) => "<li>" + escText(l) + "</li>").join("");
+  // The FAQ uses native <details>/<summary> (no JavaScript): the homepage
+  // accordion lives in js/main.js, which this page does not load.
+  const faqItems = (free.faqs || []).map((f) =>
+    '<details class="faq-item"><summary class="faq-q">' + escText(f.q) + '<span class="chev" aria-hidden="true">⌄</span></summary><div class="faq-a"><p>' + escText(f.a) + '</p></div></details>'
+  ).join("\n        ");
+  const faqJsonLd = '<script type="application/ld+json">\n' + JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": (free.faqs || []).map((f) => ({
+      "@type": "Question",
+      "name": f.q,
+      "acceptedAnswer": { "@type": "Answer", "text": f.a }
+    }))
+  }, null, 2) + '\n</script>';
+  const cards = published.map((p) => productCardHTML(p, prefix)).join("\n        ");
+  const chrome = chromeFor(prefix, false);
+  const out = template
+    .replaceAll("{{HEADER}}", chrome.header)
+    .replaceAll("{{FOOTER}}", chrome.footer)
+    .replaceAll("{{SEO_TITLE}}", escAttr(free.seoTitle))
+    .replaceAll("{{META_DESCRIPTION}}", escAttr(free.metaDescription))
+    .replaceAll("{{CANONICAL_URL}}", canonical)
+    .replaceAll("{{OG_IMAGE_URL}}", site.domain + "/assets/og-home.jpg")
+    .replaceAll("{{HERO_HEADING}}", escText(free.heroHeading))
+    .replaceAll("{{HERO_INTRO}}", escText(free.heroIntro))
+    .replaceAll("{{PDF_REL_PATH}}", escAttr(pdfRel))
+    .replaceAll("{{PAGES}}", String(free.pages))
+    .replaceAll("{{FORMAT}}", escText(free.format))
+    .replaceAll("{{AGES}}", escText(free.ages))
+    .replaceAll("{{FILE_SIZE}}", escText(free.fileSize))
+    .replaceAll("{{WHATS_INSIDE}}", whatsInside)
+    .replaceAll("{{PRINT_STEPS}}", printSteps)
+    .replaceAll("{{LICENSE_LI}}", licenseLi)
+    .replaceAll("{{PRODUCT_CARDS}}", cards)
+    .replaceAll("{{FAQ_ITEMS}}", faqItems)
+    .replaceAll("{{FAQ_JSONLD}}", faqJsonLd);
+  const leftover = out.match(/\{\{[A-Z_]+\}\}/);
+  if (leftover) fail("unreplaced token " + leftover[0] + " while rendering free-printables");
+  return out;
+}
+
 function renderSitemap(published, site) {
   const lines = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'];
   const url = (loc, lastmod, changefreq, priority) =>
@@ -291,7 +378,7 @@ function renderSitemap(published, site) {
   return lines.join("\n");
 }
 
-function renderLlms(published, site) {
+function renderLlms(published, site, free) {
   const parts = [];
   parts.push("# JoJo's Blocks\n");
   parts.push(
@@ -327,6 +414,18 @@ function renderLlms(published, site) {
       "- Price: " + p.price + " (" + p.salePrice + " with " + site.discountCode + ")\n" +
       "- Format: " + p.llmsFormat + "\n" +
       "- What it is: " + p.llmsSummary + "\n"
+    );
+  }
+  if (free) {
+    parts.push("## Free sample\n");
+    parts.push(
+      "### " + free.title + "\n\n" +
+      "- Free download: " + site.domain + "/free-printables/\n" +
+      "- File: " + free.file + " (" + free.pages + " pages, " + free.format + ", " + free.fileSize + ")\n" +
+      "- Ages: " + free.ages + "\n" +
+      "- What it is: one sample activity from each of the four books — " +
+      (free.contents || []).map((c) => c.title).join(", ") + ".\n" +
+      "- License: personal and family use only; no resale or redistribution. No sign-up or email address is needed to download it.\n"
     );
   }
   parts.push("## How buying works\n");
@@ -456,6 +555,7 @@ function writeFile(file, content, checkOnly) {
     return "changed";
   }
   const tmp = file + ".tmp";
+  fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(tmp, content, "utf8");
   fs.renameSync(tmp, file);
   console.log("wrote: " + rel);
@@ -502,7 +602,7 @@ function main() {
       if (c.children) walkCats(c.children);
     }
   })(CATS.categories);
-  const writtenFiles = new Set(["index.html", "privacy.html", "terms.html", "404.html", "refund-policy.html", "sitemap.xml", "llms.txt"]);
+  const writtenFiles = new Set(["index.html", "privacy.html", "terms.html", "404.html", "refund-policy.html", "sitemap.xml", "llms.txt", "free-printables/index.html"]);
   for (const p of (DATA.products || [])) writtenFiles.add("books/" + p.slug + ".html");
   function navCategoryIds() {
     const ids = [];
@@ -536,6 +636,24 @@ function main() {
   const drafts = products.filter((p) => p.status !== "published");
   if (drafts.length) console.log("skipping drafts (no page, no sitemap entry): " + drafts.map((d) => d.slug).join(", "));
 
+  // Free resources (data/free-resources.json): the free sample pack.
+  // The PDF must exist under assets/free-resources/ and its byte size
+  // must match the data file, or the build fails — so a paid PDF can
+  // never be published as a free download by mistake.
+  if (!fs.existsSync(FREE_DATA_FILE)) fail("missing " + FREE_DATA_FILE);
+  if (!fs.existsSync(FREE_TEMPLATE)) fail("missing " + FREE_TEMPLATE);
+  const FREE = JSON.parse(fs.readFileSync(FREE_DATA_FILE, "utf8"));
+  for (const f of ["slug", "title", "file", "pages", "ages", "format", "fileSize", "fileBytes", "seoTitle", "metaDescription", "heroHeading", "heroIntro", "lastmod"]) {
+    if (FREE[f] === undefined || FREE[f] === null || FREE[f] === "") fail("data/free-resources.json is missing required field: " + f);
+  }
+  if (!FREE.file.startsWith("assets/free-resources/")) fail("data/free-resources.json: file must live under assets/free-resources/ (got: " + FREE.file + ")");
+  const pdfPath = path.join(ROOT, FREE.file);
+  if (!fs.existsSync(pdfPath)) fail("free PDF not found: " + FREE.file);
+  const pdfSize = fs.statSync(pdfPath).size;
+  if (pdfSize !== FREE.fileBytes) fail("free PDF size mismatch: " + FREE.file + " is " + pdfSize + " bytes, data/free-resources.json says " + FREE.fileBytes);
+  if (!FREE.contents || FREE.contents.length < 1) fail("data/free-resources.json: contents is required");
+  if (!FREE.faqs || FREE.faqs.length < 1) fail("data/free-resources.json: faqs is required");
+
   if (onlySlug) {
     const p = products.find((x) => x.slug === onlySlug);
     if (!p) fail("no product with slug '" + onlySlug + "'");
@@ -563,10 +681,13 @@ function main() {
   for (const [templateName, outName, prefix, isHome] of statics) {
     writeFile(path.join(ROOT, outName), renderStaticPage(templateName, outName, prefix, isHome), checkOnly);
   }
+  // Free resources page (free-printables/index.html). Its nav item and
+  // category are activated by data/navigation.json + data/categories.json.
+  writeFile(path.join(ROOT, "free-printables", "index.html"), renderFreePage(FREE, published), checkOnly);
   writeFile(path.join(ROOT, "sitemap.xml"), renderSitemap(published, site), checkOnly);
-  writeFile(path.join(ROOT, "llms.txt"), renderLlms(published, site), checkOnly);
+  writeFile(path.join(ROOT, "llms.txt"), renderLlms(published, site, FREE), checkOnly);
   writeFile(path.join(ROOT, "js", "products.js"), renderProductsJs(DATA), checkOnly);
-  console.log("done. " + published.length + " book pages + " + statics.length + " static pages + sitemap.xml + llms.txt + js/products.js" + (checkOnly ? " (dry run — nothing written)" : ""));
+  console.log("done. " + published.length + " book pages + " + statics.length + " static pages + free-printables/index.html + sitemap.xml + llms.txt + js/products.js" + (checkOnly ? " (dry run — nothing written)" : ""));
 }
 
 main();

@@ -1,5 +1,5 @@
 {
-  "_readme": "JoJo's Blocks — CENTRAL PRODUCT DATA. This is the single source of truth for every product on the website. Edit this file to add or change a book; never edit a generated book page by hand. Generated files: books/*.html, sitemap.xml, llms.txt (and later js/products.js). Generator: tools/generate-pages.js — run 'node tools/generate-pages.js --only <slug>' for one page or '--all' for everything. Paid PDF files are NEVER stored in this repository: the only purchase link is gumroadUrl. Free resources will live in a separate data/free-resources.json (not created until the first free resource exists) so paid and free products are never mixed. Fields marked null are UNKNOWN, not zero — do not guess them. Status 'published' means 'listed on the live website'. Contact email set 2026-11-14: jojobusiness0101@gmail.com. Pinterest profile verified 2026-11-14: https://www.pinterest.com/JoJosBlocks/ . Instagram @rz.views is intentionally NOT linked: its profile publicly displays the owner's first name, which conflicts with the brand-only identity rule. License default (owner-approved proposal, 2026-11-14): personal-family (Personal + Family Use); Single-Classroom Use is a future add-on, not a separate product yet. Ages APPROVED and published 2026-11-14 (owner decision): Animal Explorer 3-6, Community Helpers 4-7, Bundle 2-7. License wording (Personal + Family) is kept as proposed, pending qualified legal review — do not treat it as legally final. Single-Classroom license NOT offered at this stage (owner decision 2026-11-14). US English throughout since 2026-11-14 (coloring, favorite, license).",
+  "_readme": "JoJo's Blocks — CENTRAL PRODUCT DATA. This is the single source of truth for every product on the website. Edit this file to add or change a book; never edit a generated book page by hand. Generated files: books/*.html, sitemap.xml, llms.txt (and later js/products.js). Generator: tools/generate-pages.js — run 'node tools/generate-pages.js --only <slug>' for one page or '--all' for everything. Paid PDF files are NEVER stored in this repository: the only purchase link is gumroadUrl. Free resources live in a separate data/free-resources.json (created 2026-11-15 for the Free Taster Pack) so paid and free products are never mixed. Fields marked null are UNKNOWN, not zero — do not guess them. Status 'published' means 'listed on the live website'. Contact email set 2026-11-14: jojobusiness0101@gmail.com. Pinterest profile verified 2026-11-14: https://www.pinterest.com/JoJosBlocks/ . Instagram @rz.views is intentionally NOT linked: its profile publicly displays the owner's first name, which conflicts with the brand-only identity rule. License default (owner-approved proposal, 2026-11-14): personal-family (Personal + Family Use); Single-Classroom Use is a future add-on, not a separate product yet. Ages APPROVED and published 2026-11-14 (owner decision): Animal Explorer 3-6, Community Helpers 4-7, Bundle 2-7. License wording (Personal + Family) is kept as proposed, pending qualified legal review — do not treat it as legally final. Single-Classroom license NOT offered at this stage (owner decision 2026-11-14). US English throughout since 2026-11-14 (coloring, favorite, license).",
   "products": [
     {
       "age": "Ages 2–4",
@@ -270,6 +270,12 @@
       "lastmod": "2026-11-15",
       "path": "/",
       "priority": "1.0"
+    },
+    {
+      "changefreq": "monthly",
+      "lastmod": "2026-11-15",
+      "path": "/free-printables/",
+      "priority": "0.9"
     },
     {
       "changefreq": "yearly",

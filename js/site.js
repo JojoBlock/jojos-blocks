@@ -3,7 +3,7 @@
  * Loaded by EVERY page (homepage, book pages, Privacy, Terms, 404,
  * Refund Policy). It owns only the parts that are identical on all
  * pages: the mobile menu, the Explore dropdown, the header shadow,
- * the footer year, and Buy Now click tracking.
+ * the footer year, Buy Now click tracking and free-download tracking.
  *
  * Page-specific behavior lives elsewhere: homepage cards, the product
  * modal, the FAQ accordion and the newsletter form are in js/main.js
@@ -106,6 +106,23 @@
       window.gtag("event", "buy_now_click", {
         book_slug: buy.getAttribute("data-book"),
         location: buy.getAttribute("data-location") || "page"
+      });
+    }
+  });
+
+  /* Free sample download tracking (Google Analytics 4). One handler for
+     the whole site: any link carrying data-free-download reports which
+     free resource was downloaded and where the click happened. The
+     download itself is a plain same-site file link, so it works even
+     when analytics is blocked. Mark free_sample_download as a key event
+     in the GA4 console to count downloads (the owner does this in the
+     console; no code change is needed here). */
+  document.addEventListener("click", function (e) {
+    var dl = e.target.closest ? e.target.closest("a[data-free-download]") : null;
+    if (dl && typeof window.gtag === "function") {
+      window.gtag("event", "free_sample_download", {
+        resource_slug: dl.getAttribute("data-free-download"),
+        location: dl.getAttribute("data-location") || "page"
       });
     }
   });
