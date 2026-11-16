@@ -87,7 +87,7 @@ function runSearch(ms, q) {
 }
 function renderSuggestions(box, results, q) {
   if (!q.trim()) { box.classList.remove('open'); box.innerHTML = ''; return; }
-  const groups = ['Products', 'Free resources', 'Games', 'Articles'];
+  const groups = ['Products', 'Free resources', 'Games', 'Articles', 'Recommended'];
   const byGroup = {};
   results.forEach(r => { (byGroup[r.type] = byGroup[r.type] || []).push(r); });
   let html = '';
@@ -168,13 +168,24 @@ if ($('#tabSearch')) $('#tabSearch').addEventListener('click', e => { e.preventD
         + '<p class="meta">' + (it.pages || '') + ' pages · ' + (it.ageLabel || '') + '</p>' + price + buy + '</div></article>';
     }
     if (kind === 'resources') {
-      return '<article class="res-item" data-cat="' + it.filterKey + '"><span class="tag">' + it.tag + '</span><h3>' + it.title + '</h3><p>' + (it.desc || '') + '</p>'
-        + '<a href="' + JB.root + it.url + '">View &amp; download →</a></article>';
+      const thumb = it.thumb ? '<div class="rthumb"><img src="' + it.thumb + '" alt="' + it.title.replace(/"/g, '&quot;') + ' preview" loading="lazy"></div>' : '';
+      return '<article class="res-item" data-cat="' + it.filterKey + '">' + thumb + '<div class="rbody"><span class="tag">' + it.tag + '</span><h3>' + it.title + '</h3><p>' + (it.desc || '') + '</p>'
+        + '<a href="' + JB.root + it.url + '">View &amp; download →</a></div></article>';
     }
     if (kind === 'games') {
       return '<article class="gcard"><div class="gthumb"><img src="' + it.thumb + '" alt="' + it.title.replace(/"/g, '&quot;') + ' game" width="640" height="360" loading="lazy"></div>'
         + '<h3>' + it.title + '</h3><p class="meta">' + (it.categoryName || '') + '</p>'
         + '<a href="' + JB.root + it.url + '">Play free →</a></article>';
+    }
+    if (kind === 'affiliates') {
+      const price = it.price ? '<div class="price-row"><span class="price">' + it.price + '</span></div>' : '';
+      const thumb = it.thumb ? '<img src="' + it.thumb + '" alt="' + it.title.replace(/"/g, '&quot;') + '" loading="lazy">' : '';
+      return '<article class="card af-card" id="af-' + it.key + '" data-cat="' + it.filterKey + '">'
+        + '<div class="cover">' + thumb + '</div>'
+        + '<div class="body"><span class="tag">' + it.categoryName + ' · ' + it.merchant + '</span>'
+        + '<h3>' + it.title + '</h3><p class="meta">' + (it.desc || '') + '</p>' + price
+        + '<div class="actions"><a class="btn btn-ink" href="' + it.affiliateUrl + '" target="_blank" rel="sponsored noopener">Visit ' + it.merchant + ' →</a></div>'
+        + '<p class="af-note"><span class="af-label">Affiliate link</span> ' + (it.disclosure || '') + '</p></div></article>';
     }
     return '<article class="bcard"><div class="bcover"><img src="' + it.thumb + '" alt="' + it.title.replace(/"/g, '&quot;') + '" width="1200" height="675" loading="lazy"></div>'
       + '<div class="body"><span class="tag">' + it.tag + '</span><h3><a href="' + JB.root + it.url + '">' + it.title + '</a></h3><p>' + (it.desc || '') + '</p>'
@@ -404,7 +415,7 @@ if (JB.page === 'search') {
       box.innerHTML = '<p class="sec-sub">No matches for "' + query.replace(/</g, '&lt;') + '". Try "animals" or browse free printables.</p>';
       return;
     }
-    const groups = ['Products', 'Free resources', 'Games', 'Articles'];
+    const groups = ['Products', 'Free resources', 'Games', 'Articles', 'Recommended'];
     const byGroup = {};
     results.forEach(r => { (byGroup[r.type] = byGroup[r.type] || []).push(r); });
     let html = '';

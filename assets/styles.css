@@ -17,6 +17,8 @@
 html{scroll-behavior:smooth}
 body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--paper);color:var(--ink);font-size:16px;line-height:1.55;-webkit-text-size-adjust:100%}
 a{color:var(--ink);text-decoration:none}
+/* [hidden] must win over display rules on buttons etc. (Load more fix) */
+[hidden]{display:none !important}
 a:hover{text-decoration:underline}
 h1,h2,h3{font-family:'Archivo',sans-serif;color:var(--ink);font-weight:800;line-height:1.12;letter-spacing:-.02em}
 button{font-family:inherit;cursor:pointer}
@@ -41,8 +43,9 @@ img{display:block;max-width:100%}
 /* ---------- header ---------- */
 header.site{position:sticky;top:0;z-index:70;background:rgba(250,249,246,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 .hd{max-width:1200px;margin:0 auto;padding:0 32px;height:72px;display:flex;align-items:center;gap:16px}
-.logo{font-family:'Archivo',sans-serif;font-size:24px;font-weight:800;color:var(--ink);white-space:nowrap;flex:none;line-height:1.1}
-.logo small{display:block;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;letter-spacing:.06em;color:var(--muted);margin-top:2px}
+.logo{display:inline-flex;align-items:center;gap:10px;font-family:'Archivo',sans-serif;font-size:24px;font-weight:800;color:var(--ink);white-space:nowrap;flex:none;line-height:1.1}
+.logo:hover{text-decoration:none}
+.logo-mark{height:40px;width:auto;display:block;border-radius:8px;flex:none}
 .search{flex:1;display:flex;height:44px;border:1.5px solid var(--line);border-radius:9px;overflow:hidden;background:#fff;min-width:180px;max-width:560px;margin:0 auto;position:relative}
 .search input{flex:1;border:0;padding:0 14px;font-size:16px;min-width:0;color:var(--ink);font-family:inherit;background:transparent}
 .search input:focus{outline:none}
@@ -69,8 +72,11 @@ header.site{position:sticky;top:0;z-index:70;background:rgba(250,249,246,.97);ba
 .dept .wrap{display:flex;gap:2px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;padding:0 26px}
 .dept .wrap::-webkit-scrollbar{display:none}
 .dept a{color:#fff;font-family:'Archivo',sans-serif;font-size:15px;font-weight:700;white-space:nowrap;padding:13px 14px;min-height:48px;display:inline-flex;align-items:center;scroll-snap-align:start;border-radius:6px}
-.dept a:hover{background:rgba(255,255,255,.12);color:#fff;text-decoration:none}
-.dept a.on{background:rgba(255,255,255,.14);color:#fff}
+/* White hover is for top-level dept-bar links only (dark bar). Flyout links
+   live on a light background — their own rule below keeps them dark. */
+.dept .wrap > a:hover,.dept .wrap > .has-fly > a:hover{background:rgba(255,255,255,.12);color:#fff;text-decoration:none}
+.dept .wrap > a.on,.dept .wrap > .has-fly > a.on{background:rgba(255,255,255,.14);color:#fff}
+.dept a:focus-visible{outline-color:#fff}
 /* ---------- hero ---------- */
 .hero{padding:44px 0 52px;border-bottom:1px solid var(--line)}
 .hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
@@ -117,6 +123,9 @@ section.block{padding:64px 0;border-bottom:1px solid var(--line)}
 .card:hover{border-color:var(--ink)}
 .card .cover{aspect-ratio:1/1;background:var(--tile);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
 .card .cover img{width:100%;height:100%;object-fit:contain}
+/* The cover image sits inside an <a>: the anchor must fill the tile or the
+   image's 100% height resolves against an auto-sized box and clips. */
+.card .cover a{display:block;width:100%;height:100%}
 .card .badge{position:absolute;top:10px;left:10px;background:var(--ink);color:var(--paper);font-family:'Archivo',sans-serif;font-size:13px;font-weight:700;padding:4px 10px;border-radius:999px;z-index:2}
 .card .body{padding:14px;display:flex;flex-direction:column;gap:6px;flex:1}
 .card h3{font-size:18px;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -133,20 +142,28 @@ section.block{padding:64px 0;border-bottom:1px solid var(--line)}
 .card.soon h3{font-size:18px}
 .card.soon .body p{font-size:14px;color:var(--muted)}
 .card[hidden]{display:none}
+/* ---------- affiliate cards (same tokens, same voice) ---------- */
+.af-card .tag{font-family:'Archivo',sans-serif;font-size:13px;font-weight:700;color:var(--ink)}
+.af-note{font-size:13px;color:var(--muted);margin-top:8px}
+.af-label{font-weight:700;color:var(--ink)}
 /* ---------- free resources ---------- */
 .taster{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:28px;margin-bottom:24px;box-shadow:var(--shadow)}
 .taster .art{min-height:200px;border-radius:var(--radius);background:var(--tile);color:var(--ink);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;padding:24px;text-align:center}
 .taster .art .big{font-family:'Archivo',sans-serif;font-size:32px;font-weight:800;line-height:1.15}
+.taster .art img{width:100%;max-height:280px;object-fit:contain;background:var(--tile);border-radius:var(--radius);display:block}
 .taster .art span:last-child{font-size:14px;color:var(--muted)}
 .taster h3{font-size:26px;margin-bottom:8px}
 .taster p{margin-bottom:16px}
 .res-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.res-item{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px;display:flex;flex-direction:column;gap:6px;min-height:180px;box-shadow:var(--shadow)}
+.res-item{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:0;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow)}
 .res-item:hover{border-color:var(--ink)}
+.res-item .rthumb{aspect-ratio:4/3;background:var(--tile);overflow:hidden;flex:none}
+.res-item .rthumb img{width:100%;height:100%;object-fit:contain;display:block}
+.res-item .rbody{padding:18px;display:flex;flex-direction:column;gap:6px;flex:1}
 .res-item .tag{font-family:'Archivo',sans-serif;font-size:13px;font-weight:700;color:var(--ink)}
 .res-item h3{font-size:17px;line-height:1.3}
 .res-item p{font-size:14px;color:var(--muted)}
-.res-item a{margin-top:auto;font-size:14px;font-weight:700;font-family:'Archivo',sans-serif}
+.res-item .rbody a{margin-top:auto;font-size:14px;font-weight:700;font-family:'Archivo',sans-serif}
 .res-item[hidden]{display:none}
 html.js .res-item.extra{display:none}
 html.js .res-grid.expanded .res-item.extra{display:flex}
@@ -202,6 +219,9 @@ footer.site h3{color:#fff;font-size:19px;margin-bottom:12px}
 footer.site h4{color:#fff;font-size:14px;margin-bottom:12px}
 footer.site a{color:var(--foot);font-size:14px;display:block;padding:4px 0}
 footer.site a:hover{color:#fff}
+footer.site a:focus-visible{outline-color:#fff}
+footer.site a.pin-link{display:inline-flex;align-items:center;gap:8px}
+.pin-icon{width:19px;height:19px;flex:none}
 footer.site p{font-size:14px}
 footer.site .fine{border-top:1px solid #26282C;padding-top:20px;font-size:13px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 /* ---------- bottom tab bar (mobile only) ---------- */
@@ -271,7 +291,7 @@ body.tab-hidden .tabbar{display:none}
   .wrap{padding:0 16px}
   .hd{padding:0 16px;height:56px;gap:10px}
   .logo{font-size:20px}
-  .logo small{display:none}
+  .logo-mark{height:34px}
   .search{display:none}
   .search-icon-btn{display:inline-flex}
   .dept .wrap{padding:0 10px}
@@ -290,7 +310,6 @@ body.tab-hidden .tabbar{display:none}
   .spot .sprice{font-size:18px}
   .sec-head h2{font-size:24px}
   .pgrid{grid-template-columns:repeat(2,1fr);gap:12px}
-  .card .cover{max-height:140px}
   .card .body{padding:8px 10px;gap:4px}
   .card h3{font-size:16px;line-height:1.2}
   .card .price{font-size:18px;line-height:1.2}
@@ -335,7 +354,7 @@ body.tab-hidden .tabbar{display:none}
 .dept .has-fly{position:relative}
 .flyout{display:none;position:absolute;top:100%;left:0;z-index:75;background:var(--surface);border:1px solid var(--line);border-radius:0 0 10px 10px;box-shadow:var(--shadow-lg);padding:10px 0;min-width:230px}
 .flyout a{display:flex;color:var(--ink);font-size:15px;font-weight:700;padding:11px 18px;min-height:44px;align-items:center;white-space:nowrap}
-.flyout a:hover{background:var(--paper);text-decoration:none}
+.flyout a:hover{background:var(--paper);color:var(--ink);text-decoration:none}
 .flyout a.viewall{color:var(--muted);border-top:1px solid var(--line)}
 .dept .has-fly:hover .flyout,.dept .has-fly:focus-within .flyout{display:block}
 /* Facet bar + active filters */
@@ -347,6 +366,7 @@ body.tab-hidden .tabbar{display:none}
 .af-chip{display:inline-flex;align-items:center;gap:8px;font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;background:var(--ink);color:var(--paper);border-radius:999px;padding:8px 8px 8px 14px;min-height:36px}
 .af-chip button{background:none;border:0;color:var(--paper);font-size:16px;line-height:1;cursor:pointer;min-width:28px;min-height:28px;border-radius:50%}
 .af-chip button:hover{background:rgba(255,255,255,.2)}
+.af-chip button:focus-visible{outline-color:#fff}
 /* Pagination + load more */
 .pager{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;margin:28px 0 8px}
 .pager a,.pager span{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;color:var(--ink);background:#fff}
@@ -421,6 +441,14 @@ body.tab-hidden .tabbar{display:none}
 }
 /* Dept flyout needs visible overflow on desktop (bar only scrolls on small screens) */
 @media (min-width:1024px){.dept .wrap{overflow:visible}}
+/* Mobile: dropdowns are disabled where the dept bar scrolls (below 1024px).
+   Tapping a parent link navigates directly instead of opening its flyout:
+   an open flyout extends the bar's scrollable area and shifts the bar, so
+   the tapped link slides out from under the finger and the tap is lost
+   (seen on Blog at 390px). Desktop keeps the hover/focus flyout. */
+@media (max-width:1023px){
+  .dept .has-fly:hover .flyout,.dept .has-fly:focus-within .flyout{display:none}
+}
 /* Print: resource pages print the content only */
 @media print{
   .strip,header.site,.dept,.tabbar,footer.site,.search-overlay,.modal-back,.skip-link,.filters-btn,.facet-bar,.pager,.loadmore-wrap{display:none !important}

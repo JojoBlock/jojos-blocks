@@ -1,4 +1,1 @@
-{
-  "affiliates": [],
-  "note": "No affiliate recommendations yet. The affiliate band stays a slim coming-soon band until at least six genuine, reviewed recommendations exist."
-}
+{"affiliates":[],"note":"Affiliate marketplace (data-driven). Add an item here and it appears on /recommended/, in search and in the sitemap with no code edits. Fields: slug, name, description, category (one of digital-tools, software, ai-tools, creative-tools, technology, physical-products), merchant, price (number, ONLY when verified — omit the field or use null when unknown, never invent one), affiliateUrl, disclosure, thumb (image URL), tags (topic tags), dateAdded (YYYY-MM-DD), featuredRank, status (live or coming-soon). A category chip renders only when it holds >=1 live item; the Affiliate Products nav item is permanent (owner decision 2026-11-16, supersedes the old >=6-items gate). No fake products, links, prices, ratings or reviews."}
