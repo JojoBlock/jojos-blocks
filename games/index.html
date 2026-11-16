@@ -17,7 +17,7 @@
 <!-- header -->
 <header class="site">
   <div class="hd">
-    <a class="logo" href="../">JoJo's Blocks<small>Digital Products • Creative Resources • Games</small></a>
+    <a class="logo" href="../"><img class="logo-mark" src="../assets/logo-mark.jpg" alt="JoJo's Blocks logo" width="82" height="40">JoJo's Blocks</a>
     <form class="search" id="headSearch" role="search" aria-label="Search the store" action="../search/" method="get">
       <input id="searchInput" name="q" type="search" placeholder="Search books, free printables, games…" aria-label="Search books, free resources, games and articles" autocomplete="off">
       <button type="submit">Search</button>
@@ -106,7 +106,7 @@
   </div>
   <div class="empty" id="listingEmpty" role="status"></div>
   <nav class="pager" id="pager" aria-label="Pagination"></nav>
-  <div class="loadmore-wrap"><button class="btn btn-ghost" id="loadMoreBtn" type="button" hidden>Load more</button></div>
+  
   
   <script type="application/json" id="page-data">{"kind":"games","countNoun":"game","pageSize":24,"showAge":false,"lockFilter":false,"filterLabel":{"all":"All","puzzle":"Puzzle","arcade":"Arcade","casual":"Casual","educational":"Educational"},"items":[{"key":"animal-guess","title":"Animal Guess Game","url":"games/animal-guess/","thumb":"https://jojosblocks.online/games/thumbs/animal-guess.svg","tag":"Educational","desc":"Find the hidden animal! Pick an animal, flip the tiles and find it before your attempts run out. A free JoJo's Blocks game — no sign-up, no download.","text":"Find the hidden animal! Pick an animal, flip the tiles and find it before your attempts run out. A free JoJo's Blocks game — no sign-up, no download.","filterKey":"educational","category":"educational","categoryName":"Educational","tags":["learning"],"dateAdded":"2026-11-16","featuredRank":1},{"key":"memory-match","title":"Memory Match Game","url":"games/memory-match/","thumb":"https://jojosblocks.online/games/thumbs/memory-match.svg","tag":"Puzzle","desc":"Flip the cards and match the pairs! A free JoJo's Blocks memory game with three difficulties, best times and a timer that starts when you do. No sign-up, no download.","text":"Flip the cards and match the pairs! A free JoJo's Blocks memory game with three difficulties, best times and a timer that starts when you do. No sign-up, no download.","filterKey":"puzzle","category":"puzzle","categoryName":"Puzzle","tags":[],"dateAdded":"2026-11-16","featuredRank":2},{"key":"tic-tac-toe","title":"Tic-Tac-Toe vs JoJo","url":"games/tic-tac-toe/","thumb":"https://jojosblocks.online/games/thumbs/tic-tac-toe.svg","tag":"Casual","desc":"Play Tic-Tac-Toe against JoJo the AI — or a friend. Three difficulties, score tally, and a fair game: JoJo's wins count as JoJo's wins. Free, no sign-up, no download.","text":"Play Tic-Tac-Toe against JoJo the AI — or a friend. Three difficulties, score tally, and a fair game: JoJo's wins count as JoJo's wins. Free, no sign-up, no download.","filterKey":"casual","category":"casual","categoryName":"Casual","tags":[],"dateAdded":"2026-11-16","featuredRank":3},{"key":"click-the-box","title":"Click the Box Game","url":"games/click-the-box/","thumb":"https://jojosblocks.online/games/thumbs/click-the-box.svg","tag":"Arcade","desc":"How fast are your reflexes? Click the moving box before time runs out and beat your best score. A free JoJo's Blocks game — no sign-up, no download.","text":"How fast are your reflexes? Click the moving box before time runs out and beat your best score. A free JoJo's Blocks game — no sign-up, no download.","filterKey":"arcade","category":"arcade","categoryName":"Arcade","tags":[],"dateAdded":"2026-11-16","featuredRank":4},{"key":"flappy-penguin","title":"Flappy Penguin","url":"games/flappy-penguin/","thumb":"https://jojosblocks.online/games/thumbs/flappy-penguin.svg","tag":"Arcade","desc":"Flap JoJo's penguin through the pipes! Tap, click or press Space. A free JoJo's Blocks game — no sign-up, no download.","text":"Flap JoJo's penguin through the pipes! Tap, click or press Space. A free JoJo's Blocks game — no sign-up, no download.","filterKey":"arcade","category":"arcade","categoryName":"Arcade","tags":[],"dateAdded":"2026-11-16","featuredRank":5},{"key":"block-drop","title":"Block Drop","url":"games/block-drop/","thumb":"https://jojosblocks.online/games/thumbs/block-drop.svg","tag":"Puzzle","desc":"Stack the falling blocks, clear lines and chase your best score. A free JoJo's Blocks puzzle game — no sign-up, no download.","text":"Stack the falling blocks, clear lines and chase your best score. A free JoJo's Blocks puzzle game — no sign-up, no download.","filterKey":"puzzle","category":"puzzle","categoryName":"Puzzle","tags":[],"dateAdded":"2026-11-16","featuredRank":6}]}</script>
 </div></section>
@@ -116,7 +116,7 @@
     <div>
       <h3>JoJo's Blocks</h3>
       <p>Digital products, free resources and games for creating, learning and play.</p>
-      <p style="margin-top:12px"><a href="https://www.pinterest.com/JoJosBlocks/" target="_blank" rel="noopener">Pinterest — @JoJosBlocks</a></p>
+      <p style="margin-top:12px"><a class="pin-link" href="https://www.pinterest.com/JoJosBlocks/" target="_blank" rel="noopener"><svg class="pin-icon" viewBox="0 0 24 24" width="19" height="19" aria-hidden="true" fill="#E60023"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.39 18.592.026 11.985.026L12.017 0z"/></svg>Pinterest — @JoJosBlocks</a></p>
     </div>
     <div>
       <h4>Shop</h4>
@@ -139,7 +139,7 @@
     </div>
   </div>
   <div class="fine">
-    <span>© 2026 JoJo's Blocks. All rights reserved. — Preview: Round 2, scalable platform preview.</span>
+    <span>© 2026 JoJo's Blocks. All rights reserved.</span>
     <span>Sales are completed securely on Gumroad.</span>
   </div>
 </div></footer>
