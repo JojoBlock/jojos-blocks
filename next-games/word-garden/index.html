@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Word Garden — JoJo's Blocks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============ Word Garden — original design, palette per DESIGN-SYSTEM.md ============ */
+:root{
+  --cream:#FFF9F0; --ink:#2B2D42; --coral:#FF6B6B; --sun:#FFC94D;
+  --teal:#2EC4B6; --lavender:#7C6FF0;
+  --teal-dark:#157A6E;   /* shade of teal, white text >= 4.5:1 */
+  --teal-mid:#1E9C8C;    /* shade of teal */
+  --slate:#5B6072;       /* ink/lavender tint, white text >= 4.5:1 */
+  --slate-light:#8E93A6;
+  --panel:#FFFFFF;
+  --shadow:0 10px 28px rgba(43,45,66,.16);
+  --shadow-sm:0 4px 12px rgba(43,45,66,.14);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color:var(--ink); background:#BFE8E2;
+  overscroll-behavior:none;
+  display:flex; justify-content:center;
+}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+button:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--sun);outline-offset:2px;border-radius:8px}
+
+#app{
+  width:100%; max-width:560px; min-height:100dvh; position:relative; overflow:hidden;
+  background:
+    radial-gradient(120px 60px at 12% 8%, rgba(255,201,77,.55), transparent 70%),
+    radial-gradient(160px 90px at 88% 14%, rgba(255,255,255,.75), transparent 70%),
+    linear-gradient(180deg,#D9F2EC 0%, #C4EAE0 34%, #FFF9F0 62%, #FFF9F0 100%);
+  display:flex; flex-direction:column;
+}
+/* drifting clouds (CSS shapes, palette tints only) */
+.cloud{position:absolute;background:rgba(255,255,255,.85);border-radius:999px;opacity:.9;pointer-events:none;z-index:0;animation:drift 46s linear infinite}
+.cloud::before,.cloud::after{content:"";position:absolute;background:inherit;border-radius:50%}
+.cloud.c1{width:90px;height:26px;top:46px;left:-110px}
+.cloud.c1::before{width:44px;height:44px;top:-22px;left:14px}
+.cloud.c1::after{width:30px;height:30px;top:-14px;left:52px}
+.cloud.c2{width:64px;height:20px;top:120px;left:-90px;animation-duration:64s;animation-delay:-22s;opacity:.7}
+.cloud.c2::before{width:32px;height:32px;top:-16px;left:10px}
+.cloud.c2::after{width:22px;height:22px;top:-10px;left:36px}
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(760px)}}
+
+/* ---------- shared bits ---------- */
+.screen{position:relative;z-index:1;display:none;flex-direction:column;align-items:center;flex:1;padding:16px 16px 12px}
+.screen.active{display:flex}
+h1,h2,h3,.display{font-family:'Fredoka','Comic Sans MS',system-ui,sans-serif}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  min-height:52px;min-width:52px;padding:12px 26px;border-radius:999px;
+  font-family:'Fredoka','Comic Sans MS',system-ui,sans-serif;font-weight:700;font-size:19px;
+  color:var(--ink);background:linear-gradient(180deg,#FF8A7A,#FF6B6B);
+  border:2px solid var(--ink);box-shadow:0 5px 0 var(--ink),0 10px 20px rgba(43,45,66,.22);
+  transition:transform .15s ease-out, box-shadow .15s ease-out, filter .15s;
+}
+.btn:hover{filter:brightness(1.05)}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--ink),0 4px 10px rgba(43,45,66,.2)}
+.btn.teal{background:linear-gradient(180deg,#3ED6C6,#2EC4B6);color:var(--ink)}
+.btn.sun{background:linear-gradient(180deg,#FFD97A,#FFC94D);color:var(--ink)}
+.btn.lav{background:linear-gradient(180deg,#6A5AE0,#5B4BD6);color:#fff}
+.btn.ghost{background:#fff;color:var(--ink)}
+.btn.small{min-height:44px;padding:8px 18px;font-size:16px}
+.icon-btn{
+  width:48px;height:48px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+  font-size:22px;background:#fff;border:2px solid var(--ink);box-shadow:0 3px 0 var(--ink);
+  transition:transform .15s ease-out, box-shadow .15s;
+}
+.icon-btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ink)}
+.chip{
+  display:inline-flex;align-items:center;gap:6px;background:rgba(255,249,240,.92);
+  border:2px solid var(--ink);border-radius:999px;padding:6px 12px;min-height:40px;
+  font-family:'Fredoka',system-ui,sans-serif;font-weight:700;font-size:15px;box-shadow:var(--shadow-sm);
+}
+.chip .num{font-size:17px}
+.card{
+  background:var(--panel);border:2px solid var(--ink);border-radius:20px;box-shadow:var(--shadow);
+  padding:20px;position:relative;
+}
+.card::before{content:"";position:absolute;inset:0 0 auto 0;height:8px;border-radius:20px 20px 0 0;
+  background:linear-gradient(90deg,var(--teal),var(--sun),var(--coral),var(--lavender));opacity:.85}
+.footer{position:relative;z-index:1;text-align:center;font-size:12px;color:#4A4D63;padding:10px 8px 14px;line-height:1.5}
+.footer b{font-family:'Fredoka',system-ui,sans-serif}
+.back-link{display:inline-flex;align-items:center;gap:6px;font-weight:800;color:var(--ink);text-decoration:none;
+  background:rgba(255,255,255,.85);border:2px solid var(--ink);border-radius:999px;padding:8px 14px;min-height:44px;font-size:14px}
+.back-link:hover{background:#fff}
+
+/* ---------- menu ---------- */
+#menu-screen{justify-content:center;text-align:center;gap:0}
+.hero{width:min(300px,72vw);margin:6px auto 0;animation:bob 3.4s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-9px) rotate(1.5deg)}}
+.game-title{font-size:clamp(34px,9vw,46px);font-weight:700;line-height:1.02;letter-spacing:.5px;margin-top:4px}
+.game-title .w1{color:var(--teal-dark)}
+.game-title .w2{color:var(--coral)}
+.tagline{font-size:17px;font-weight:700;color:#4A4D63;margin:8px 0 18px;max-width:420px}
+.menu-buttons{display:flex;flex-direction:column;gap:12px;width:min(320px,86vw);margin:0 auto}
+.menu-buttons .btn{width:100%}
+.menu-row{display:flex;gap:12px}
+.menu-row .btn{flex:1}
+.streak-banner{margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.pulse{animation:pulseGlow 1.8s ease-in-out infinite}
+@keyframes pulseGlow{0%,100%{box-shadow:0 5px 0 var(--ink),0 10px 20px rgba(43,45,66,.22)}50%{box-shadow:0 5px 0 var(--ink),0 0 0 6px rgba(46,196,182,.35),0 10px 24px rgba(43,45,66,.28)}}
+.menu-garden{margin-top:18px;width:100%;max-width:420px}
+.menu-garden .label{font-family:'Fredoka',system-ui,sans-serif;font-weight:600;font-size:14px;color:#4A4D63;margin-bottom:4px}
+.garden-bed{
+  display:flex;align-items:flex-end;justify-content:center;gap:4px;min-height:64px;
+  background:linear-gradient(180deg,#8FE3D4 0%,#5CC9B6 55%,#3FA98F 100%);
+  border:2px solid var(--ink);border-radius:16px 16px 12px 12px;padding:8px 10px 4px;
+  box-shadow:inset 0 -8px 0 rgba(43,45,66,.12), var(--shadow-sm);overflow:hidden;
+}
+.garden-bed .flower{flex:0 0 auto;animation:sway 3.2s ease-in-out infinite}
+.garden-bed .flower:nth-child(2n){animation-delay:-.8s}
+.garden-bed .flower:nth-child(3n){animation-delay:-1.6s}
+@keyframes sway{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+.garden-empty{font-size:14px;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(43,45,66,.35);padding:14px 6px}
+
+/* ---------- game screen ---------- */
+#game-screen{padding:10px 12px 8px;gap:8px}
+.topbar{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.topbar .title{font-size:24px;font-weight:700;white-space:nowrap}
+.topbar .title span{color:var(--coral)}
+.top-actions{display:flex;gap:8px}
+.hud{width:100%;display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.mode-pill{background:linear-gradient(180deg,#6A5AE0,#5B4BD6);color:#fff}
+#status-line{min-height:26px;font-weight:800;font-size:15px;text-align:center;color:#4A4D63}
+#status-line.err{color:#C93A3A;animation:shake .35s ease}
+#status-line.good{color:var(--teal-dark)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+#grid{display:flex;flex-direction:column;gap:6px;touch-action:none;user-select:none}
+.grow{display:flex;gap:6px}
+.tile{
+  width:52px;height:52px;border-radius:12px;position:relative;
+  background:#fff;border:2px solid #C9CBD8;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Fredoka',system-ui,sans-serif;font-weight:700;font-size:28px;color:var(--ink);
+  text-transform:uppercase;transition:transform .12s ease-out, background .2s, border-color .2s;
+}
+.tile.filled{border-color:var(--ink);animation:pop .14s ease-out}
+@keyframes pop{0%{transform:scale(1)}55%{transform:scale(1.12)}100%{transform:scale(1)}}
+.tile.flip{animation:flip .5s ease forwards}
+@keyframes flip{0%{transform:rotateX(0)}50%{transform:rotateX(90deg)}100%{transform:rotateX(0)}}
+.tile.correct{background:var(--teal-dark);border-color:var(--teal-dark);color:#fff}
+.tile.present{background:var(--sun);border-color:#D9A41F;color:var(--ink)}
+.tile.absent{background:var(--slate);border-color:var(--slate);color:#fff}
+.tile .bloom{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0}
+.tile.correct .bloom,.tile.present .bloom{animation:bloomIn .55s cubic-bezier(.2,1.4,.4,1) .42s forwards}
+@keyframes bloomIn{0%{opacity:0;transform:scale(.2) rotate(-40deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+.tile .sprout{position:absolute;bottom:2px;left:50%;transform:translateX(-50%);opacity:0}
+.tile.absent .sprout{animation:fadeIn .4s ease .42s forwards}
+@keyframes fadeIn{to{opacity:.85}}
+.tile .letter{position:relative;z-index:2;text-shadow:0 1px 0 rgba(43,45,66,.15)}
+.tile.correct .letter,.tile.present .letter{animation:letterRise .45s ease .42s forwards}
+@keyframes letterRise{from{transform:translateY(4px)}to{transform:translateY(-9px)}}
+
+/* keyboard */
+#keyboard{width:100%;max-width:500px;display:flex;flex-direction:column;gap:6px;touch-action:manipulation}
+.krow{display:flex;gap:5px;justify-content:center}
+.key{
+  flex:1 1 0;min-width:0;height:52px;border-radius:10px;
+  background:#fff;border:2px solid var(--ink);box-shadow:0 3px 0 var(--ink);
+  font-family:'Fredoka',system-ui,sans-serif;font-weight:700;font-size:18px;color:var(--ink);
+  display:flex;align-items:center;justify-content:center;text-transform:uppercase;
+  transition:transform .1s ease-out, box-shadow .1s, background .2s, color .2s;user-select:none;
+}
+.key:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ink)}
+.key.wide{flex:1.6 1 0;font-size:14px}
+.key.correct{background:var(--teal-dark);border-color:var(--teal-dark);color:#fff}
+.key.present{background:var(--sun);border-color:#D9A41F;color:var(--ink)}
+.key.absent{background:var(--slate);border-color:var(--slate);color:#fff;opacity:.85}
+
+/* garden strip under keyboard */
+#garden-strip{width:100%;max-width:500px}
+#garden-strip .label{font-family:'Fredoka',system-ui,sans-serif;font-weight:600;font-size:13px;color:#4A4D63;text-align:center;margin-bottom:3px}
+#garden-strip .garden-bed{min-height:56px}
+
+/* ---------- overlays ---------- */
+.overlay{
+  position:absolute;inset:0;z-index:20;display:none;align-items:center;justify-content:center;
+  background:rgba(43,45,66,.45);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:16px;
+}
+.overlay.active{display:flex}
+/* How-to can open on top of the pause overlay: it must paint above it.
+   All overlays share z-index 20, so DOM order otherwise leaves How-to
+   underneath Pause (later in the DOM) and unclickable — found by browser
+   verification 2026-11-16. */
+#howto-overlay{z-index:30}
+.panel{
+  width:100%;max-width:440px;max-height:calc(100dvh - 40px);overflow-y:auto;
+  background:var(--panel);border:2px solid var(--ink);border-radius:24px;box-shadow:var(--shadow);
+  padding:24px 20px 20px;text-align:center;position:relative;
+  animation:panelIn .3s ease-out;
+}
+.panel::before{content:"";position:absolute;inset:0 0 auto 0;height:8px;border-radius:24px 24px 0 0;
+  background:linear-gradient(90deg,var(--teal),var(--sun),var(--coral),var(--lavender))}
+@keyframes panelIn{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+.panel h2{font-size:30px;margin:6px 0 8px}
+.panel p{font-size:16px;line-height:1.5;color:#4A4D63;margin-bottom:12px}
+.panel .btnrow{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.panel .btnrow .btn{width:100%}
+.panel .btnrow.two{flex-direction:row}
+.panel .btnrow.two .btn{flex:1}
+.big-flower{width:150px;margin:0 auto;animation:growFlower 1s cubic-bezier(.2,1.3,.4,1) both}
+@keyframes growFlower{0%{transform:scale(.1) rotate(-30deg);opacity:0}70%{transform:scale(1.12) rotate(6deg);opacity:1}100%{transform:scale(1) rotate(0)}}
+.score-big{font-family:'Fredoka',system-ui,sans-serif;font-size:44px;font-weight:700;line-height:1}
+.score-label{font-size:14px;font-weight:800;color:#4A4D63;text-transform:uppercase;letter-spacing:1px}
+.stat-grid{display:flex;gap:10px;justify-content:center;margin:14px 0 4px;flex-wrap:wrap}
+.stat{background:var(--cream);border:2px solid var(--ink);border-radius:14px;padding:10px 14px;min-width:86px}
+.stat .v{font-family:'Fredoka',system-ui,sans-serif;font-size:26px;font-weight:700}
+.stat .k{font-size:12px;font-weight:800;color:#4A4D63;text-transform:uppercase;letter-spacing:.5px}
+.share-box{
+  background:var(--cream);border:2px dashed var(--teal-dark);border-radius:14px;
+  padding:12px;font-family:ui-monospace,monospace;font-size:15px;line-height:1.7;white-space:pre-wrap;
+  word-break:break-word;text-align:center;margin:10px 0 4px;
+}
+.rules-list{text-align:left;margin:6px auto 4px;max-width:340px;font-size:16px;line-height:1.55;color:#4A4D63}
+.rules-list li{margin-bottom:8px;list-style:none}
+.rules-list .demo{display:inline-flex;gap:4px;vertical-align:middle;margin-left:4px}
+.demo-tile{width:26px;height:26px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;
+  font-family:'Fredoka',system-ui,sans-serif;font-weight:700;font-size:15px;color:#fff}
+.demo-tile.c{background:var(--teal-dark)}
+.demo-tile.p{background:var(--sun);color:var(--ink)}
+.demo-tile.a{background:var(--slate)}
+/* animated how-to demo: a guess blooming tile by tile, looping */
+.howto-demo{display:flex;gap:5px;justify-content:center;margin:12px 0 4px}
+.demo-tile-lg{width:44px;height:44px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;
+  font-family:'Fredoka',system-ui,sans-serif;font-weight:700;font-size:24px;border:2px solid var(--ink);
+  background:#fff;color:var(--ink);animation:demoCycleC 5s ease-in-out infinite}
+.demo-tile-lg.p{animation-name:demoCycleP}
+.demo-tile-lg.a{animation-name:demoCycleA}
+.demo-tile-lg:nth-child(2){animation-delay:.25s}.demo-tile-lg:nth-child(3){animation-delay:.5s}
+.demo-tile-lg:nth-child(4){animation-delay:.75s}.demo-tile-lg:nth-child(5){animation-delay:1s}
+@keyframes demoCycleC{0%,18%{background:#fff;color:var(--ink);border-color:var(--ink)}32%,82%{background:var(--teal-dark);border-color:var(--teal-dark);color:#fff}100%{background:#fff;color:var(--ink);border-color:var(--ink)}}
+@keyframes demoCycleP{0%,18%{background:#fff;color:var(--ink);border-color:var(--ink)}32%,82%{background:var(--sun);border-color:#D9A41F;color:var(--ink)}100%{background:#fff;color:var(--ink);border-color:var(--ink)}}
+@keyframes demoCycleA{0%,18%{background:#fff;color:var(--ink);border-color:var(--ink)}32%,82%{background:var(--slate);border-color:var(--slate);color:#fff}100%{background:#fff;color:var(--ink);border-color:var(--ink)}}
+.demo-caption{font-size:14px !important;margin-bottom:4px}
+/* settings */
+.set-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 4px;border-bottom:1px dashed #D8D5E8;font-size:17px;font-weight:700}
+.set-row:last-of-type{border-bottom:none}
+.toggle{
+  width:64px;height:36px;border-radius:999px;border:2px solid var(--ink);background:#E4E2EF;position:relative;flex:0 0 auto;
+  transition:background .2s;
+}
+.toggle::after{content:"";position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#fff;border:2px solid var(--ink);transition:left .2s}
+.toggle[aria-pressed="true"]{background:var(--teal)}
+.toggle[aria-pressed="true"]::after{left:29px}
+input[type="range"]{width:150px;accent-color:var(--teal-dark);height:44px}
+/* calendar */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:10px 0}
+.cal-dow{font-size:11px;font-weight:800;color:#4A4D63;text-transform:uppercase}
+.cal-day{
+  aspect-ratio:1;border-radius:9px;border:2px solid #E4E2EF;background:#fff;
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;min-height:36px;
+}
+.cal-day.today{border-color:var(--coral);color:var(--coral)}
+.cal-day.won{background:#DFF7F2;border-color:var(--teal-dark);color:var(--teal-dark)}
+.cal-day.lost{background:#FDECEC;border-color:var(--coral);color:#C93A3A}
+.cal-day.empty{background:transparent;border-color:transparent}
+/* petals / confetti */
+.petal{position:absolute;top:-20px;z-index:30;pointer-events:none;border-radius:50% 0 50% 50%;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110dvh) rotate(560deg);opacity:.7}}
+#toast{
+  position:absolute;left:50%;bottom:96px;transform:translateX(-50%) translateY(20px);z-index:40;
+  background:var(--ink);color:#fff;font-weight:800;font-size:15px;padding:12px 20px;border-radius:999px;
+  opacity:0;pointer-events:none;transition:opacity .25s, transform .25s;white-space:nowrap;box-shadow:var(--shadow);
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- responsive ---------- */
+@media (max-width:380px){
+  .tile{width:46px;height:46px;font-size:25px}
+  .key{height:48px;font-size:16px}
+  .topbar .title{font-size:21px}
+  .panel{padding:20px 14px 16px}
+}
+@media (max-width:340px){
+  .tile{width:42px;height:42px;font-size:23px}
+  .grow{gap:4px}#grid{gap:4px}
+}
+@media (min-width:561px){
+  .tile{width:56px;height:56px;font-size:30px}
+}
+/* compact heights: fit 800px-tall desktop + 844px mobile without scrolling */
+@media (max-height: 860px){
+  .hero{width:min(240px,60vw)}
+  .tagline{margin:4px 0 8px;font-size:16px}
+  .menu-buttons{gap:10px}
+  .tile{width:48px;height:48px;font-size:26px}
+  .key{height:46px}
+  #game-screen{gap:6px}
+  #garden-strip .garden-bed{min-height:46px}
+  .big-flower{width:110px}
+  .panel{padding:18px 18px 16px}
+  .footer{padding:6px 8px 8px}
+  /* menu must fit 800px-tall screens without scrolling: shrink hero + gaps.
+     Measured 811px fresh at 1280x800 before this fix (footer bottom 799 +
+     12px screen padding) — hero 200->180 saves ~13px, tagline/menu-garden
+     tightening ~8px, leaving ~10px margin for font-metric differences. */
+  #menu-screen{justify-content:flex-start;padding-top:8px;padding-bottom:8px}
+  #menu-screen .hero{width:min(170px,52vw)}
+  #menu-screen .menu-garden{margin-top:8px}
+  #menu-screen .streak-banner{margin-top:10px}
+  #menu-screen .menu-buttons{gap:8px}
+  #menu-screen .garden-bed{min-height:52px}
+}
+/* reduced motion */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+  .cloud{display:none}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="cloud c1" aria-hidden="true"></div>
+  <div class="cloud c2" aria-hidden="true"></div>
+
+  <!-- ============ MENU ============ -->
+  <section id="menu-screen" class="screen active" aria-label="Word Garden menu">
+    <div style="display:flex;justify-content:space-between;width:100%;align-items:center">
+      <a class="back-link" href="/games/" aria-label="Back to JoJo's Blocks games">← Games</a>
+      <button class="icon-btn" id="menu-mute-btn" aria-label="Mute or unmute sound" title="Sound">🔊</button>
+    </div>
+    <div class="hero" aria-hidden="true">
+      <svg viewBox="0 0 300 190" width="100%" role="img" aria-label="A sunny garden with blooming flowers spelling out the word garden">
+        <defs>
+          <linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#BDEBE2"/><stop offset="1" stop-color="#FFF9F0"/></linearGradient>
+        </defs>
+        <rect x="4" y="4" width="292" height="182" rx="22" fill="url(#skyG)" stroke="#2B2D42" stroke-width="3"/>
+        <circle cx="252" cy="38" r="22" fill="#FFC94D" stroke="#2B2D42" stroke-width="3"/>
+        <g stroke="#FFC94D" stroke-width="4" stroke-linecap="round">
+          <line x1="252" y1="6" x2="252" y2="0"/><line x1="252" y1="70" x2="252" y2="76"/>
+          <line x1="220" y1="38" x2="214" y2="38"/><line x1="284" y1="38" x2="290" y2="38"/>
+        </g>
+        <ellipse cx="60" cy="46" rx="26" ry="12" fill="#fff" opacity=".9"/>
+        <ellipse cx="120" cy="30" rx="20" ry="10" fill="#fff" opacity=".8"/>
+        <path d="M10 186 Q40 130 90 150 Q150 168 190 142 Q240 122 296 150 L296 186 Z" fill="#7ED8C6"/>
+        <path d="M10 186 Q60 150 120 164 Q200 182 296 158 L296 186 Z" fill="#2EC4B6"/>
+        <!-- flowers spelling the garden -->
+        <g id="hero-flowers">
+          <g transform="translate(52,132)"><path d="M0 0 Q-4 22 0 44" stroke="#157A6E" stroke-width="4" fill="none"/><path d="M0 22 Q-16 16 -20 4 Q-6 8 0 22" fill="#2EC4B6"/><g><circle cx="0" cy="-14" r="9" fill="#FF6B6B"/><circle cx="-13" cy="-4" r="9" fill="#FF6B6B"/><circle cx="13" cy="-4" r="9" fill="#FF6B6B"/><circle cx="-8" cy="8" r="9" fill="#FF6B6B"/><circle cx="8" cy="8" r="9" fill="#FF6B6B"/><circle cx="0" cy="-2" r="8" fill="#FFC94D" stroke="#2B2D42" stroke-width="2"/></g></g>
+          <g transform="translate(110,140)"><path d="M0 0 Q4 18 0 36" stroke="#157A6E" stroke-width="4" fill="none"/><path d="M0 18 Q16 12 20 0 Q6 4 0 18" fill="#2EC4B6"/><g><circle cx="0" cy="-12" r="8" fill="#7C6FF0"/><circle cx="-11" cy="-3" r="8" fill="#7C6FF0"/><circle cx="11" cy="-3" r="8" fill="#7C6FF0"/><circle cx="-7" cy="7" r="8" fill="#7C6FF0"/><circle cx="7" cy="7" r="8" fill="#7C6FF0"/><circle cx="0" cy="-1" r="7" fill="#FFC94D" stroke="#2B2D42" stroke-width="2"/></g></g>
+          <g transform="translate(168,128)"><path d="M0 0 Q-4 24 0 46" stroke="#157A6E" stroke-width="4" fill="none"/><path d="M0 24 Q-16 18 -20 6 Q-6 10 0 24" fill="#2EC4B6"/><g><circle cx="0" cy="-15" r="10" fill="#FFC94D"/><circle cx="-14" cy="-4" r="10" fill="#FFC94D"/><circle cx="14" cy="-4" r="10" fill="#FFC94D"/><circle cx="-9" cy="9" r="10" fill="#FFC94D"/><circle cx="9" cy="9" r="10" fill="#FFC94D"/><circle cx="0" cy="-2" r="8" fill="#FF6B6B" stroke="#2B2D42" stroke-width="2"/></g></g>
+          <g transform="translate(228,140)"><path d="M0 0 Q4 18 0 36" stroke="#157A6E" stroke-width="4" fill="none"/><path d="M0 18 Q16 12 20 0 Q6 4 0 18" fill="#2EC4B6"/><g><circle cx="0" cy="-12" r="8" fill="#2EC4B6"/><circle cx="-11" cy="-3" r="8" fill="#2EC4B6"/><circle cx="11" cy="-3" r="8" fill="#2EC4B6"/><circle cx="-7" cy="7" r="8" fill="#2EC4B6"/><circle cx="7" cy="7" r="8" fill="#2EC4B6"/><circle cx="0" cy="-1" r="7" fill="#FFC94D" stroke="#2B2D42" stroke-width="2"/></g></g>
+        </g>
+        <g transform="translate(196,52)"><ellipse cx="0" cy="0" rx="12" ry="7" fill="#7C6FF0" transform="rotate(-30)"/><ellipse cx="0" cy="0" rx="12" ry="7" fill="#FF6B6B" transform="rotate(30)"/><circle cx="0" cy="0" r="5" fill="#2B2D42"/></g>
+      </svg>
+    </div>
+    <h1 class="game-title"><span class="w1">Word</span> <span class="w2">Garden</span></h1>
+    <p class="tagline">Guess the five-letter word in six tries — every right letter blooms. Win days in a row and grow your very own garden. 🌷</p>
+    <div class="menu-buttons">
+      <button class="btn teal pulse" id="btn-daily">🌼 Play today's word</button>
+      <button class="btn sun" id="btn-practice">🌱 Practice mode</button>
+      <div class="menu-row">
+        <button class="btn ghost" id="btn-howto">📖 How to play</button>
+        <button class="btn ghost" id="btn-calendar">📅 Calendar</button>
+      </div>
+      <div class="menu-row">
+        <button class="btn lav" id="btn-settings">⚙️ Settings</button>
+        <button class="btn ghost" id="btn-share-menu">📣 Share</button>
+      </div>
+    </div>
+    <div class="streak-banner" id="menu-streaks"></div>
+    <div class="menu-garden">
+      <div class="label">🌷 Your garden — every win plants a flower</div>
+      <div class="garden-bed" id="menu-garden-bed"></div>
+    </div>
+    <div class="footer"><b>Word Garden</b> · JJB-GAME-20261116-15 · v1.1.0 · JoJo's Blocks</div>
+  </section>
+
+  <!-- ============ GAME ============ -->
+  <section id="game-screen" class="screen" aria-label="Word Garden game">
+    <div class="topbar">
+      <a class="back-link" href="/games/" aria-label="Back to games">←</a>
+      <div class="title">Word <span>Garden</span></div>
+      <div class="top-actions">
+        <button class="icon-btn" id="btn-mute" aria-label="Mute or unmute sound" title="Sound">🔊</button>
+        <button class="icon-btn" id="btn-pause" aria-label="Pause game" title="Pause (P)">⏸</button>
+      </div>
+    </div>
+    <div class="hud" aria-label="Game status">
+      <span class="chip mode-pill" id="hud-mode">🌼 Daily</span>
+      <span class="chip">🔥 <span class="num" id="hud-streak">0</span> streak</span>
+      <span class="chip">🌱 <span class="num" id="hud-left">6</span> tries left</span>
+      <span class="chip">🏆 Best <span class="num" id="hud-best">0</span></span>
+    </div>
+    <div id="status-line" aria-live="polite"></div>
+    <div id="grid" role="group" aria-label="Guess grid"></div>
+    <div id="keyboard" aria-label="On-screen keyboard"></div>
+    <div id="garden-strip">
+      <div class="label">🌷 Your garden</div>
+      <div class="garden-bed" id="game-garden-bed"></div>
+    </div>
+    <div class="footer"><b>Word Garden</b> · JJB-GAME-20261116-15 · v1.1.0</div>
+  </section>
+
+  <!-- ============ HOW TO PLAY ============ -->
+  <div class="overlay" id="howto-overlay" role="dialog" aria-modal="true" aria-labelledby="howto-title">
+    <div class="panel">
+      <h2 id="howto-title">🌼 How to play</h2>
+      <ul class="rules-list">
+        <li>🌱 <b>Guess a five-letter word</b> in six tries. Type with your keyboard or tap the letters below the garden.</li>
+        <li>🌷 <b>Green bloom</b> — the letter is right <i>and</i> in the right spot.
+          <span class="demo"><span class="demo-tile c">B</span></span></li>
+        <li>🌼 <b>Yellow bloom</b> — the letter is in the word, but in the wrong spot.
+          <span class="demo"><span class="demo-tile p">L</span></span></li>
+        <li>🥀 <b>Grey sprout</b> — the letter is not in the word at all.
+          <span class="demo"><span class="demo-tile a">X</span></span></li>
+        <li>📅 <b>Daily puzzle:</b> everyone gets the same word each day. Come back tomorrow for a fresh one!</li>
+        <li>🌱 <b>Practice mode:</b> endless words, no pressure — perfect for warming up.</li>
+        <li>🏆 Win days in a row to grow your <b>streak</b> and plant a new flower in your garden. Share your garden with friends!</li>
+        <li>📱 <b>On your phone:</b> tap the letters on the on-screen keyboard below the garden.</li>
+        <li>💻 <b>On a computer:</b> type with your physical keyboard — letters to type · <b>Enter</b> to guess · <b>Backspace</b> to erase · <b>P</b> pause · <b>R</b> restart (P/R work on an empty row — while typing a word they are just letters).</li>
+      </ul>
+      <div class="howto-demo" aria-label="Animated example: the guess SLATE against the hidden word PLANT">
+        <span class="demo-tile-lg a">S</span><span class="demo-tile-lg p">L</span><span class="demo-tile-lg c">A</span><span class="demo-tile-lg p">T</span><span class="demo-tile-lg a">E</span>
+      </div>
+      <p class="demo-caption">Watch a guess bloom: <b>SLATE</b> against the hidden word <b>PLANT</b> — S and E are not in it, L and T are in it but misplaced, A is exactly right.</p>
+      <div class="btnrow">
+        <button class="btn teal" id="howto-play-btn">▶ Play now</button>
+        <button class="btn ghost" id="howto-close-btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PRACTICE DIFFICULTY ============ -->
+  <div class="overlay" id="practice-overlay" role="dialog" aria-modal="true" aria-labelledby="practice-title">
+    <div class="panel">
+      <h2 id="practice-title">🌱 Practice mode</h2>
+      <p>Endless words, no pressure — your streak is safe here. Pick your garden:</p>
+      <div class="btnrow">
+        <button class="btn teal" id="practice-easy-btn">🌼 Easy garden — everyday words</button>
+        <button class="btn sun" id="practice-tricky-btn">🌶️ Tricky garden — rarer words</button>
+        <button class="btn ghost" id="practice-cancel-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PAUSE ============ -->
+  <div class="overlay" id="pause-overlay" role="dialog" aria-modal="true" aria-labelledby="pause-title">
+    <div class="panel">
+      <h2 id="pause-title">⏸ Paused</h2>
+      <p>Your garden is waiting patiently. Take a breath, smell the flowers.</p>
+      <div class="btnrow">
+        <button class="btn teal" id="pause-resume-btn">▶ Resume</button>
+        <button class="btn sun" id="pause-restart-btn">🔄 Restart word</button>
+        <button class="btn ghost" id="pause-howto-btn">📖 How to play</button>
+        <button class="btn ghost" id="pause-settings-btn">⚙️ Settings</button>
+        <button class="btn lav" id="pause-menu-btn">🏠 Main menu</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ RESULT ============ -->
+  <div class="overlay" id="result-overlay" role="dialog" aria-modal="true" aria-labelledby="result-title">
+    <div class="panel">
+      <div id="result-flower" aria-hidden="true"></div>
+      <h2 id="result-title">🌷 You did it!</h2>
+      <p id="result-sub">The word bloomed!</p>
+      <div class="score-big" id="result-word">BLOOM</div>
+      <div class="score-label" id="result-word-label">the word</div>
+      <div class="stat-grid">
+        <div class="stat"><div class="v" id="stat-tries">0</div><div class="k">Tries</div></div>
+        <div class="stat"><div class="v" id="stat-streak">0</div><div class="k">Streak 🔥</div></div>
+        <div class="stat"><div class="v" id="stat-best">0</div><div class="k">Best 🏆</div></div>
+        <div class="stat"><div class="v" id="stat-wins">0</div><div class="k">Wins 🌷</div></div>
+      </div>
+      <div class="share-box" id="share-preview" aria-label="Share text preview"></div>
+      <div class="btnrow">
+        <button class="btn teal" id="result-share-btn">📣 Share my garden</button>
+        <button class="btn sun" id="result-next-btn">🌱 Next word</button>
+        <button class="btn ghost" id="result-menu-btn">🏠 Main menu</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SETTINGS ============ -->
+  <div class="overlay" id="settings-overlay" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+    <div class="panel">
+      <h2 id="settings-title">⚙️ Settings</h2>
+      <div class="set-row"><span>🎵 Music</span><button class="toggle" id="set-music" aria-pressed="true" aria-label="Toggle music"></button></div>
+      <div class="set-row"><span>🔔 Sound effects</span><button class="toggle" id="set-sfx" aria-pressed="true" aria-label="Toggle sound effects"></button></div>
+      <div class="set-row"><span>🔊 Volume</span><input type="range" id="set-volume" min="0" max="100" value="70" aria-label="Volume"></div>
+      <p style="margin-top:14px">Sound starts only after you tap or press a key. Your settings, streak and garden are saved on this device.</p>
+      <div class="btnrow"><button class="btn teal" id="settings-close-btn">Done</button></div>
+    </div>
+  </div>
+
+  <!-- ============ CALENDAR ============ -->
+  <div class="overlay" id="calendar-overlay" role="dialog" aria-modal="true" aria-labelledby="calendar-title">
+    <div class="panel">
+      <h2 id="calendar-title">📅 Daily puzzle calendar</h2>
+      <p id="calendar-month-label"></p>
+      <div class="cal-grid" id="calendar-grid"></div>
+      <p>🌷 = solved that day &nbsp;·&nbsp; 🥀 = tried, not solved &nbsp;·&nbsp; a new word blooms every day!</p>
+      <div class="btnrow">
+        <button class="btn teal" id="calendar-play-btn">🌼 Play today's word</button>
+        <button class="btn ghost" id="calendar-close-btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+  <div class="sr-only" aria-live="polite" id="sr-status"></div>
+</div>
+
+<script>
+"use strict";
+/* =====================================================================
+   Word Garden — JJB-GAME-20261116-15 — 100% original code.
+   Daily 5-letter word puzzle: guess in 6 tries; correct letters bloom.
+   ===================================================================== */
+const JJBWordGarden = (function(){
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+
+/* ---------- word lists (own curation, v1.1.0) ----------
+   ANSWERS (788): common words only — daily puzzle + Easy practice.
+   GUESS_WORDS (2,328): every answer + 1,540 further common words, plurals,
+   past-tense and -er/-y forms — the allowed-guess list. Hand-written from
+   the author's vocabulary, each entry dictionary-checked (exactly 5 letters
+   A–Z). A guess is rejected only when it is not a real English word.
+   TRICKY_WORDS (143): less-common-but-fair words — Tricky practice only.
+   Not copied from any game or repo. ---------- */
+const WORDS = ("about above abuse actor acute admit adopt adult after again agent agree ahead alarm album alert alike alive allow alone along aloud alpha alter among anger angle angry apart apple apply arena argue arise armed armor aroma around arrow aside asset atlas audio audit avoid awake award aware awful bacon badge badly baker basic basin basis beach beard beast begin begun behalf behave behind being belief belly below bench berry beside beyond bible birth black blade blame blank blast blaze blend bless blind block blood bloom board boast boat body boil bold bolt bomb bond bone book boost booth born boss both bound bowl brain brand brave bread break brick bride brief bright bring broad broke brook broom brown brush buddy build bulb bulk bull bump bunch bunny burst bury bush busy cabin cable cake calm camp canal candy cap cape card care carry cart case cash cat catch cause cave cell chair chalk chance chaos chart chase cheap check chef chest chief child chill chip choice chop church circle city civil claim class clean clear clerk click cliff climb clock close cloth cloud club coach coal coast coat code coin cold color comb come comic cook cool copy corn cost couch cough could count court cover crack craft crash crazy cream creek crew crime crisp crop cross crowd crown cruel crush cry cup cure curve cute cycle daily dance dare dark data date dawn day dead deal dear death debt deep deer delay dense deny depth desk detail devil diary die diet dig dinner direct dirt dirty dish dive divide doctor dog doll domain door dose dot double doubt down dozen draft drag drama draw dream dress drink drive drop drug drum dry duck due dull dump dust duty each eager eagle early earn earth east easy eat edge edit eight elbow elder elect else email empty end enemy energy engine enjoy enter entry equal error essay even event ever every exact exam exist exit extra eye face fact fail fair faith fall false fan fancy far farm fast fat fate fault favor fear feather feature fee feed feel fence fever few fiber field fifth fifty fight figure file fill film final find fine finger finish fire firm first fish fit five fix flag flame flash flat flee fleet flesh float flood floor flour flow fluent fluid fly focus fog fold folk food fool foot force forest forget fork form forth forty forum found four frame free freeze fresh friend frog from front frost fruit fuel full fun fund funny future gain game gap garden garlic gas gate gather gay gear gene gentle gesture get ghost giant gift girl give glad glance glass glory glove glow goal goat god gold golf good grab grace grade grain grand grant grape graph grasp grass grave gray great green greet grey grief grin grip group grow guard guess guest guide guitar gun guy habit hair half hall hand hang happen happy hard harm hat hate have head heal hear heart heat heavy hello help hence her here hero hers hey hide high hill him hint hip hire his hit hobby hold hole holy home honest honey honor hope horn horse host hotel hour house huge human humor hunt hurry hurt ice icon idea ideal idle ignore ill image imagine impact imply import inch income indeed index indoor infant inform input insect inside insist inspire install instance instead instrument insure intact intake intend intense intent intro invite involve iron island issue item itself jacket jazz jeans jet jewel job join joint joke journal journey joy judge juice july jump june jury just keen keep key kick kid kill kind king kiss knee knife knock know lab label lack lady lake lamp land lane large laser last late laugh launch law lawn layer lazy lead leaf league lean learn least leave lecture left leg legal lemon lend lens less lesson let letter level lever liar liberal liberty library license lid lie life lift light like limb limit line link lion lip liquid list listen little live load loan local lock log logic lonely long look loose lose loss lot loud love low lower luck lunch lung machine mad magic mail main major make male mall manage manner many map march mark market marry mask mass master match mate math matter may maybe mayor meal mean measure meat media medical medium meet member memory mental mention menu mere mess metal meter method middle might mild mile milk mind mine minor minute mirror miss mistake mix mode model modern modest mom moment money monitor month mood moon moral more morning most mother motion motor mouse mouth move movie much murder muscle museum music must mutual my myself mystery nail name narrow nation native natural nature near nearly neat neck need needle negative neighbor neither nerve net network neutral never new news next nice night nine no noble nod noise none nor normal north nose not note notice notion now nuclear number nurse nut oak object obtain obvious occasion occupy occur ocean odd of off offer office officer official often oh oil ok old on once one only onto open opera opinion option or orange order organ origin other ought our out outcome outer output outside oven over overall owe own owner pace pack page pain paint pair palace pale panel panic paper parade parent park part party pass past paste path patience patient pattern pause pay peace peach peak pear pen pencil people pepper per perfect perform perhaps period permanent permit person personal pet phase phone photo phrase piano pick picture piece pig pile pilot pin pink pipe pitch pity place plain plan plane planet plant plastic plate play player please pleasure plot plus pocket poem poet point police policy poll pool poor pop popular port pose position positive possible post pot potato pound pour powder power practical praise pray precise predict prefer prepare presence present press pressure pretty prevent previous price pride prime print prior prison private prize probably problem proceed process produce product profile profit program progress project promise prompt proof proper property proposal protect proud prove provide public publish pull pulse pump punch pupil purchase pure purple purpose pursue push put quality quarter queen question quick quiet quit quite quote race radio rail rain raise range rank rapid rare rate raw reach react read ready real reason receive recent recipe recognize record recover red reduce refer reflect reform refuse regard region register regular relate release relief rely remain remember remind remote remove rent repair repeat replace reply represent request require rescue research reserve resident resist resource respect respond rest result retain retire return reveal review reward rice rich ride right ring rise risk river road rock role roll roof room root rope rose rough round route row royal rub rude rug rule run rural rush sad safe sail salad sale salt same sand save say scale scan scare scene school science scope score scrap sea search season seat second secret section secure see seed seek seem select self sell send senior sense separate series serious serve service set settle seven several severe sex shade shadow shake shall shame shape share sharp she sheep sheet shelf shell shift shine ship shirt shock shoe shoot shop shore short should shout show shower shut sick side sigh sight sign silence silk silly silver similar simple since sing single sink sir sister sit site six size ski skill skin skirt sky sleep slice slide slight slip slope slow small smart smell smile smoke snake snow so soap soccer social society sock soft soil solar solid solve some son song soon sorry sort soul sound soup south space spare speak special speed spell spend spider spin spirit split spoke spoon sport spot spread spring square stable staff stage stair stand star stare start state station stay steal steam steel steep stem step stick still stir stock stone stop store storm story stove strange straw stream street stress stretch strict strike string strong student study stuff style subject submit success such sudden suffer sugar suggest suit summer sun super support suppose sure surface surprise surround survey survive suspect sweet swim swing switch symbol system table tackle tail take tale talk tall tank tap tape target task taste tax tea teach team tear tell ten tend tent term test text than thank that the their them theme then theory there these they thick thin thing think third this those though thought thousand threat three throat through throw thumb thus ticket tie tight time tin tiny tip tired title to toast today toe together toilet tomato tomorrow tone tongue tonight too tool tooth top topic total touch tough tour toward towel tower town toy trace track trade train transfer transform translate transport travel treat tree trend trial tribe trick trip troop truck true trust truth try tube tune turn twelve twenty twice twin two type ugly ultimate unable uncle under unit united universe until up upon upper upset urban us use used user usual vacation valid valley value van various vegetable vehicle vendor venture verb version very vessel veteran via victim video view village violate violence virtual virus visible vision visit visual voice volume vote wait wake walk wall want war warm warn wash waste watch water wave way weak wealth weapon wear weather web wedding week weekend weigh welcome well west wet what wheel when where which while white who whole whom whose why wide wife wild will win wind window wine wing winter wipe wire wise wish with within without witness wolf woman wonder wood wool word work world worry worth would wound wrap wrist write wrong yard year yellow yes yesterday yet yield you young your youth zero zone zoo").split(" ").filter(w=>w.length===5);
+const ANS_ADD = ("booby civic crane eerie fable facet farce feast ferry fetch fetus ficus fiery finch fines finis fitch fitly fjord flack flail flair flask fleck flint flock flora floss flown fluff flyer foamy focal foyer frail frank fraud freak freed freer frier fries frill frisk frock frond froze fudge fugue fungi funky furry fussy fusty gable gaily gains gales gamer games gamma gavel gazed gecko geese genes genus germs ghoul giddy girth given giver glace gland glare glaze gleam glide glint gloat gloom gloss glued gnats gnome goads goals gofer golly gonad gongs goofy goose gored gorge gouge gourd grate grays greed grids grill grime grind grips grist groan groin groom gross grove growl grubs gruel gruff grunt guava guile guise gulch gulls gulps gumbo gunny gushy gusty gutsy gypsy hacks hails hairs halts halve handy haply hardy hares harks harms harps harsh hasps hasty hatch hauls haunt hawks hazed heady heals heaps heard heath hedge heeds heels heirs helms herbs herds hewed hicks hides highs hikes hills hilts hints hired hires hitch hoard hoary hocks hoist holes holly hones hooks horde hosed hosts hound hover howls hulls humid humps hunts hurls hurts husky hussy hyena hymns ivory jelly joker jolly koala llama mamma mango peppy pizza quilt radar sassy tiger ultra valve vivid vowel waltz whale xenon yacht zebra zesty").split(" ").filter(w=>w.length===5);
+const ANSWERS = [...new Set([...WORDS, ...ANS_ADD])];
+const GUESS_ADD = ("abbey abbot abide abuzz aches acorn acres acrid adept adobe adore adorn" +
+  "afire agate agave agile aglow agony aider aisle alibi alien align alley" +
+  "allot aloft amble amino amiss amity angst anime anvil aphid apish arson" +
+  "artsy ashen ashes asked atoll avian await awoke baggy baked balls balms" +
+  "balmy bands banjo banks bares barks barns baron based bases baths beads" +
+  "beaks beams beans beats beech beefs beers beets beige belch bells belts" +
+  "bends bents berth bests betas bevel biker bikes bills binds binge birds" +
+  "bites blimp blink bliss blitz blond blows blues bluff blunt blurs blush" +
+  "boats boggy boils bolts bombs bonds bones bongs bonny bonus books booms" +
+  "boons boots booze bored bossy bough bowls boxed boxes brace brags brake" +
+  "brass brawl brink brisk broth bucks budge bulbs bulks bulls bully bumps" +
+  "buses bushy busts buyer cabby cache cadet cairn cakes calls calms cameo" +
+  "camps canny canoe caper cards cared cares cargo carol carps carts cased" +
+  "cases casts cater caves cedar cells cents champ chant charm chasm cheat" +
+  "cheek cheer chefs chess chews chick chime chins chips chirp choir chops" +
+  "chord chore chuck cider cigar cinch cited cites clams claps clash claws" +
+  "clays cleat cleft cling clips cloak clone clout clubs clues clump clung" +
+  "coals coats coded coder codes coils coins cokes colts combs comet comma" +
+  "conch cones cooks cools coops copes cords cored cores corks corns costs" +
+  "covet cower coyly crank crate crawl craze creak creep cribs croak crops" +
+  "crude crust cubby cubed cubes cuffs cults cupid curbs cured cures curls" +
+  "curry curse daddy dairy daisy dames damps dandy dared dares darts dated" +
+  "dates dawns dazed dazes deals dears debit debts debug debut decal decay" +
+  "decks deeds deems deeps deers delis delta delve demos dents derby desks" +
+  "deter dials diced dices diets dimes dined diner dines dings dirts ditch" +
+  "dived diver dives dizzy docks dogma doled dolls domed domes dooms doors" +
+  "dosed doses doves dowel downs dowry dozed dozes drags drain drank drape" +
+  "draws dread dried drift drill drips droll drone drool drops drums drunk" +
+  "ducks duets dunes dusks dusts dusty eased eases easts eater echos edged" +
+  "edges edits egged eject elude emits ended ensue envoy epics epoch equip" +
+  "erred erupt ether ethic evens evils exams excel exits expel exult faced" +
+  "faces facts faddy faded fades fails faint fairs faked faker falls famed" +
+  "fames fangs fared fares farms fasts fated fates fatty fauna faxed fazed" +
+  "fears fecal feeds feels feint fella fells felon felts femur fends ferns" +
+  "fetal fetid feuds fiats fibre fiend fifes filed files fills filly films" +
+  "filmy filth finds fined fired fires firms fists fives fixed fixer fixes" +
+  "flags flake flaky flank flaps flare flats flaws fleas flick flies fling" +
+  "flips flirt flits flops flows fluke flung flush flute foams foggy foils" +
+  "folds folks fonts foods fools foots fords fores forks forms forts fowls" +
+  "frees frets friar fried frogs froth frown fuels fulls funds funks furor" +
+  "fused fuses fuzzy gaits galas gamed gaped gapes gases gasps gassy gated" +
+  "gates gauge gears geeks genre gifts gills gimme girls gives glads glean" +
+  "glows glues goats godly golds golfs goods gores gowns grabs graze grins" +
+  "grits grows guild guilt gulfs gurus gusts hairy hales halls halos hands" +
+  "hangs hanks hated hater hates haves hazes heads hears heats hells helps" +
+  "hiked hiker hived hives holds holed homed homes honed honks hoods hoofs" +
+  "hoped hopes hoppy horns hoses hours hunch icily icons ideas idled idles" +
+  "idols igloo iller imbue impel inane incus inert ingot inked inlet inset" +
+  "irate irked irons irony isles itchy items jaded jaggy jails japed jazzy" +
+  "jeeps jerky jests jiffy jingo jinks jived jocks joins joked jokes jolts" +
+  "jorum joust jowls joyed juicy jumbo jumps jumpy junta juror jutes kales" +
+  "keeps ketch keyed kicks kills kilns kilts kinds kings kinks kiosk kited" +
+  "kites kitty klutz knack knave kneed kneel knees knell knelt knits knobs" +
+  "knots known knows kudos labor laced lacks ladle lairs laked lakes lambs" +
+  "lamps lance lands lanes lanky lapel lapse larch larks larva lases lasso" +
+  "lasts latch later latex lathe laths latin lawns laxer lazed leads leafy" +
+  "leaks leans leaps leapt lease leash leeks leers lefts leggy lemur lends" +
+  "liars licks lifts liked likes lilac lilly limbs limps lined lines links" +
+  "lions liras lists lithe lived liven liver lives livid loads loafs loams" +
+  "loans loath locks lofts loggy loins loner longs looks looms loops loped" +
+  "lords loser loses lotus louse lousy loved lover loves lowed lowly loyal" +
+  "lucid lucks lucky lulls lumpy lunge lungs lurch lured lures lurid lurks" +
+  "lutes lyric macaw maces madam magma mails maims mains maize maker makes" +
+  "males malls malts mambo mania manly manor marcs mares marks marls marsh" +
+  "marts masks masts mated mates maths matte mauve mayed mazes meads meals" +
+  "meant meats meaty medal melts memos mends menus mercy merge merit merry" +
+  "meted metro mewed micas micks midge midst miffs milky mills minds mined" +
+  "mines minks mints minus mires mirth miser misty mixed moans moats mocks" +
+  "modal modem modes moist moles molts mommy monks moods moody moons moors" +
+  "moose moped mopes moron morph mossy moths motif motto mould mound mount" +
+  "mourn moved mover mowed mower moxie muddy muffs mules mulls mummy mumps" +
+  "mural mused mushy musty muted mutts myrrh myths nails naive naked named" +
+  "names nasal nasty natal naves nears necks needs neigh nerds nerdy nests" +
+  "newel newsy newts niche nicks niece nifty nines ninja nippy noddy nodes" +
+  "noels noisy nomad noose norms nosed noses notch noted notes novel noway" +
+  "nowed nudge nulls numbs nutty oakum oared oases oasis oaths obeys oboes" +
+  "oddly odors offal ogres oiled olden olive omega omits onion oomph opals" +
+  "opens opine opium opted optic orbit osier ounce outed ovens overs overt" +
+  "owned oxide ozone paced paces packs paged pages pails pains pairs paled" +
+  "pangs pansy pants papal paras parch parks parse parts patch paths patio" +
+  "patty paved pawed payed payer peaks pears peats pecks peeks peels peers" +
+  "pelts penny peons perky pesky pests picks picky piety piled piles pined" +
+  "pines pings pinks pinto pious piped pipes pixel plaid plans plays plaza" +
+  "plead pleas plied plods plots plows plumb plump plush poach poems poets" +
+  "poise polar poles polls polyp ponds pooch pools poops poppy pores ports" +
+  "posed posts prank prays preys prick prink prism prong props prose prowl" +
+  "prune puffs puffy pumps punks puppy purge purse putty quack quail quake" +
+  "qualm quark quart query quest queue quill quirk quota quoth rabbi racer" +
+  "raged rages rails rainy rajah rally ramps ranch randy rated raved raven" +
+  "rayed razor realm reams rears rebel recap reefs reels regal reign reins" +
+  "relic remap remit renal rerun reset resin retch retro reuse rheum rhyme" +
+  "rider rides ridge rifle rigid riled rills rimes rings riped rises risks" +
+  "ritzy rival roach roads roams roast robes robin rocks rocky rogue roils" +
+  "roles rolls romps roofs rooms roomy roost roots ropes roses rotor rouse" +
+  "roved rower ruins ruler rules rummy rungs rusks rusts rusty sacks sadly" +
+  "safes sages sails saint sales salsa salts salty salvo samba sands sandy" +
+  "sappy satin sauce saute saved saver saves sawed scads scalp scamp scans" +
+  "scarf scars scent scoff scold scone scoop scorn scour scowl scram screw" +
+  "scrip scrub scull scurf seals seats sects seeds seedy seeks sells sends" +
+  "sewer shady shaft shaky shank shard shark shave shawl shear shied ships" +
+  "shoal shoes shone shops shots shown shows shred shrew shrub sides signs" +
+  "silky sings sinks siren sites sixes sizes skate skied skier skies skiff" +
+  "skins skips skull slabs slack slams slash slate sleek sleet slept slick" +
+  "slime slimy sling slips slots slows slugs smack smash smear smelt smirk" +
+  "smith smoky snack snail snare snarl snide sniff snipe snore snort snout" +
+  "snows snowy soaks soaps soapy socks sodas soggy soils soled soles solos" +
+  "songs sonic sorts souls soups sours sowed spark spear speck spent spice" +
+  "spicy spies spill spine spins spire spite spoof spool spots spout spray" +
+  "sprig spurt squad squat squid stack stain stake stale stall stamp stark" +
+  "stars stash stave stays stead steak steed steer stems steps stiff sting" +
+  "stink stint stirs stole stood stool stoop stops stout stray strip strut" +
+  "stubs studs stunt suave sucks suede suite suits sulky sumac sunny surfs" +
+  "surge surly swans swaps swarm swath sways swear sweat sweep swell swept" +
+  "swift swims swine swipe swirl swish sword swore sworn swung syrup tails" +
+  "taker takes tales talks tamer tangy tanks taped tapes tarot tasks tasty" +
+  "tatty tawny taxes teams tears teary tease tells tents terms tests testy" +
+  "texts theft thigh thins thong thorn threw throb thump tides tiles tills" +
+  "timer times tinge tipsy tires tolls tones tools topaz tours towns trail" +
+  "trait tread trees tried trips troll tromp trout trunk tubes tulip tunes" +
+  "turns tutor twang tweak tweed twins twirl twist types umbra unity upped" +
+  "utter vague vamps vanes vapor vases veins venue verbs verge verse vials" +
+  "views villa vines vinyl viola viper visas vital vocal vodka vogue voter" +
+  "votes vowed wacky wader wades wafer waged wages wagon wails waist waits" +
+  "wakes walks walls wands wants warms warns wasps waves waxed wears weary" +
+  "weave wedge weeds weeks weird wells welsh wench wends wheat whips whisk" +
+  "whoop wicks wides wilds wills wince winds windy wines wings winks wipes" +
+  "wires woken woods wools words works worms wraps wreck wroth wryer xebec" +
+  "xeric xylem yanks yards yearn years yeast yells yodel yokes yowls zebus" +
+  "zippy zoned zones zooms").match(/[a-z]{5}/g);
+const GUESS_WORDS = [...new Set([...ANSWERS, ...GUESS_ADD])];
+const TRICKY_WORDS = ("abbey abbot abuzz acorn acrid adept adobe agate agave aglow aisle alibi alien alley allot aloft amble amino amiss amity angst anvil aphid apish arson artsy ashen atoll avian await awoke baggy balmy banjo baron beech beige belch berth bevel binge blimp blink bliss blitz blond bluff blunt blush boggy bonny bonus booze bough brace brake brass brawl brink brisk broth budge bully cache cadet cairn cameo canny canoe caper cargo carol cater cedar champ chant chasm cheat cheek cheer chess chick chime chirp choir chord chore chuck cider cigar cinch clash cleat cleft cling cloak clone clout clump clung comet comma conch covet cower coyly crank crate crawl craze creak creep croak crude crust cubby cupid curry debit debug debut decal decay delay delta delve deter diner ditch dizzy dogma dowel dowry drain drape dread dried drift drill drive droll drone drool").split(" ").filter(w=>w.length===5);
+const WORD_SET = new Set(GUESS_WORDS);
+
+/* ---------- persistence keys ---------- */
+const K = {
+  best:'jjb-word-garden-best', music:'jjb-word-garden-music', sfx:'jjb-word-garden-sfx',
+  volume:'jjb-word-garden-volume', streak:'jjb-word-garden-streak',
+  garden:'jjb-word-garden-garden', stats:'jjb-word-garden-stats',
+  daily:'jjb-word-garden-daily-', practiceSeen:'jjb-word-garden-practice-seen'
+};
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem(k); return v===null ? d : JSON.parse(v); }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+};
+
+/* ---------- state ---------- */
+const state = {
+  mode:'daily', difficulty:'easy', answer:'', guesses:[], current:'', over:false, won:false,
+  streak: store.get(K.streak, 0), best: store.get(K.best, 0),
+  garden: store.get(K.garden, []),
+  stats: store.get(K.stats, {played:0, wins:0}),
+  paused:false, musicOn: store.get(K.music,'on')==='on', sfxOn: store.get(K.sfx,'on')==='on',
+  volume: store.get(K.volume, 70), audioReady:false, revealed:false
+};
+
+/* ---------- date / deterministic daily word ---------- */
+let roundId = 0; /* bumped on every newGame; pending flip/result timers check it so a fast restart can't repaint the fresh board */
+function dateStr(d){ d = d || new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function hashStr(s){ let h = 2166136261; for(let i=0;i<s.length;i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+function dailyWord(ds){ return ANSWERS[hashStr('word-garden:'+ds) % ANSWERS.length]; }
+
+/* ---------- audio (procedural WebAudio, original motif) ---------- */
+let actx=null, musicGain=null, sfxGain=null, musicTimer=null, musicStep=0;
+const MELODY = [523.25, 587.33, 659.25, 783.99, 659.25, 587.33, 523.25, 0, 440.00, 523.25, 659.25, 587.33, 523.25, 0, 392.00, 440.00];
+const BASS   = [130.81, 0, 164.81, 0, 196.00, 0, 164.81, 0, 130.81, 0, 146.83, 0, 196.00, 0, 174.61, 0];
+function ensureAudio(){
+  if(actx) { if(actx.state==='suspended') actx.resume(); return; }
+  try{
+    actx = new (window.AudioContext||window.webkitAudioContext)();
+    musicGain = actx.createGain(); musicGain.connect(actx.destination);
+    sfxGain = actx.createGain(); sfxGain.connect(actx.destination);
+    applyGains(); state.audioReady = true;
+  }catch(e){ actx = null; }
+}
+function applyGains(){
+  if(!actx) return;
+  const v = state.volume/100;
+  musicGain.gain.value = state.musicOn ? v*0.35 : 0;
+  sfxGain.gain.value = state.sfxOn ? v : 0;
+}
+function tone(freq, dur, type, vol, when, dest){
+  if(!actx) return;
+  const o = actx.createOscillator(), g = actx.createGain();
+  o.type = type||'sine'; o.frequency.value = freq;
+  const t = actx.currentTime + (when||0);
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(Math.max(vol||0.2, 0.001), t+0.02);
+  g.gain.exponentialRampToValueAtTime(0.0001, t+dur);
+  o.connect(g); g.connect(dest||sfxGain);
+  o.start(t); o.stop(t+dur+0.05);
+}
+function sfx(name){
+  if(!actx || !state.sfxOn) return;
+  if(actx.state==='suspended') actx.resume();
+  switch(name){
+    case 'key':   tone(660, .07, 'triangle', .18); break;
+    case 'erase': tone(330, .08, 'triangle', .15); break;
+    case 'flip':  tone(880, .06, 'sine', .12); break;
+    case 'bloom': tone(523.25,.18,'sine',.22); tone(659.25,.18,'sine',.22,.07); tone(783.99,.28,'sine',.22,.14); break;
+    case 'error': tone(160, .22, 'sawtooth', .14); tone(120, .25, 'sawtooth', .12, .05); break;
+    case 'win':   [523.25,659.25,783.99,1046.5,1318.5].forEach((f,i)=>tone(f,.35,'sine',.22,i*.11)); break;
+    case 'lose':  [392,349.23,311.13,261.63].forEach((f,i)=>tone(f,.3,'triangle',.18,i*.14)); break;
+    case 'click': tone(740, .06, 'triangle', .16); break;
+    case 'share': tone(587.33,.12,'sine',.2); tone(880,.2,'sine',.2,.09); break;
+  }
+}
+function startMusic(){
+  if(!actx || musicTimer) return;
+  musicStep = 0;
+  musicTimer = setInterval(()=>{
+    if(!state.musicOn || state.paused) { /* keep playing softly; pause overlay stops it */ }
+    if(state.paused) return;
+    const m = MELODY[musicStep % MELODY.length], b = BASS[musicStep % BASS.length];
+    if(m) tone(m, .5, 'sine', .10, 0, musicGain);
+    if(b && musicStep % 2 === 0) tone(b, .9, 'triangle', .07, 0, musicGain);
+    musicStep++;
+  }, 300);
+}
+function stopMusic(){ if(musicTimer){ clearInterval(musicTimer); musicTimer = null; } }
+
+/* ---------- flowers (original inline SVG) ---------- */
+const PETALS = ['#FF6B6B','#FFC94D','#2EC4B6','#7C6FF0','#FF8A7A','#3ED6C6'];
+function flowerSVG(color, size){
+  size = size || 40;
+  const petals = [0,72,144,216,288].map(a=>{
+    const r = a*Math.PI/180, x = Math.cos(r)*11, y = Math.sin(r)*11;
+    return `<ellipse cx="${20+x}" cy="${16+y}" rx="7.5" ry="7.5" fill="${color}"/>`;
+  }).join('');
+  return `<svg class="flower" width="${size}" height="${size}" viewBox="0 0 40 40" aria-hidden="true">
+    <path d="M20 22 Q18 30 20 38" stroke="#157A6E" stroke-width="2.6" fill="none"/>
+    <path d="M20 30 Q12 28 9 21 Q17 22 20 30" fill="#2EC4B6"/>
+    ${petals}<circle cx="20" cy="16" r="6" fill="#FFC94D" stroke="#2B2D42" stroke-width="1.6"/>
+    <circle cx="18" cy="14" r="1.3" fill="#2B2D42"/><circle cx="22" cy="14" r="1.3" fill="#2B2D42"/>
+    <path d="M18 17 Q20 18.6 22 17" stroke="#2B2D42" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+  </svg>`;
+}
+function renderGarden(){
+  const html = state.garden.length
+    ? state.garden.slice(-14).map(f=>flowerSVG(f.color, 40)).join('')
+    : '<div class="garden-empty">Win a word to plant your first flower! 🌷</div>';
+  $('#menu-garden-bed').innerHTML = html;
+  $('#game-garden-bed').innerHTML = html;
+}
+function plantFlower(fixedColor){
+  const color = fixedColor || PETALS[Math.floor(Math.random()*PETALS.length)];
+  state.garden.push({color, date: dateStr()});
+  if(state.garden.length > 40) state.garden = state.garden.slice(-40);
+  store.set(K.garden, state.garden);
+  renderGarden();
+}
+
+/* ---------- screens / overlays ---------- */
+function showScreen(id){
+  $$('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+}
+function openOverlay(id){ $(id).classList.add('active'); const f=$(id).querySelector('button'); if(f) f.focus(); }
+function closeOverlay(id){ $(id).classList.remove('active'); }
+function closeAllOverlays(){ $$('.overlay').forEach(o=>o.classList.remove('active')); }
+let toastTimer=null;
+function toast(msg){
+  const t=$('#toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'), 2200);
+}
+function setStatus(msg, kind){
+  const el=$('#status-line'); el.textContent=msg; el.className = kind||'';
+  $('#sr-status').textContent=msg;
+}
+
+/* ---------- grid & keyboard ---------- */
+const ROWS=6, COLS=5;
+function buildGrid(){
+  const g=$('#grid'); g.innerHTML='';
+  for(let r=0;r<ROWS;r++){
+    const row=document.createElement('div'); row.className='grow'; row.setAttribute('role','row');
+    for(let c=0;c<COLS;c++){
+      const t=document.createElement('div'); t.className='tile'; t.id=`tile-${r}-${c}`;
+      t.setAttribute('role','gridcell'); t.setAttribute('aria-label',`Row ${r+1}, letter ${c+1}`);
+      t.innerHTML='<span class="letter"></span><span class="bloom" aria-hidden="true"></span><span class="sprout" aria-hidden="true"><svg width="18" height="14" viewBox="0 0 18 14"><path d="M9 13 Q9 7 9 3" stroke="#8E93A6" stroke-width="2" fill="none"/><path d="M9 7 Q3 6 2 1 Q8 2 9 7" fill="#8E93A6"/><path d="M9 7 Q15 6 16 1 Q10 2 9 7" fill="#8E93A6"/></svg></span>';
+      row.appendChild(t);
+    }
+    g.appendChild(row);
+  }
+}
+const KEY_ROWS=[['Q','W','E','R','T','Y','U','I','O','P'],['A','S','D','F','G','H','J','K','L'],['ENTER','Z','X','C','V','B','N','M','BACK']];
+function buildKeyboard(){
+  const kb=$('#keyboard'); kb.innerHTML='';
+  KEY_ROWS.forEach(row=>{
+    const r=document.createElement('div'); r.className='krow';
+    row.forEach(k=>{
+      const b=document.createElement('button');
+      b.className='key'+(k.length>1?' wide':''); b.dataset.key=k; b.type='button';
+      b.textContent = k==='BACK' ? '⌫' : k;
+      b.setAttribute('aria-label', k==='ENTER'?'Enter guess':k==='BACK'?'Delete letter':'Letter '+k);
+      b.addEventListener('click', ()=>{ ensureAudio(); handleKey(k); });
+      r.appendChild(b);
+    });
+    kb.appendChild(r);
+  });
+}
+function keyState(letter){
+  let best='';
+  state.guesses.forEach(g=>{
+    g.eval.forEach((e,i)=>{ if(g.word[i]===letter){ if(e==='correct') best='correct'; else if(e==='present' && best!=='correct') best='present'; else if(e==='absent' && !best) best='absent'; } });
+  });
+  return best;
+}
+function refreshKeyboard(){
+  $$('#keyboard .key').forEach(b=>{
+    const k=b.dataset.key; if(k.length!==1) return;
+    b.classList.remove('correct','present','absent');
+    const s=keyState(k.toLowerCase()); if(s) b.classList.add(s);
+  });
+}
+
+/* ---------- evaluation (Wordle-style, duplicate-safe) ---------- */
+function evaluate(guess, answer){
+  const res=Array(COLS).fill('absent'), counts={};
+  for(let i=0;i<COLS;i++) counts[answer[i]]=(counts[answer[i]]||0)+1;
+  for(let i=0;i<COLS;i++){ if(guess[i]===answer[i]){ res[i]='correct'; counts[guess[i]]--; } }
+  for(let i=0;i<COLS;i++){ if(res[i]==='correct') continue; if(counts[guess[i]]>0){ res[i]='present'; counts[guess[i]]--; } }
+  return res;
+}
+
+/* ---------- game flow ---------- */
+function newGame(mode, difficulty){
+  closeAllOverlays();
+  state.mode=mode; if(difficulty) state.difficulty=difficulty; state.guesses=[]; state.current=''; state.over=false; state.won=false; state.paused=false; state.revealed=false;
+  roundId++;
+  if(mode==='daily'){
+    state.answer=dailyWord(dateStr());
+    const saved=store.get(K.daily+dateStr(), null);
+    if(saved && saved.word===state.answer){
+      state.guesses=saved.guesses; state.over=saved.over; state.won=saved.won;
+    }
+  } else {
+    let w, seen=store.get(K.practiceSeen,[]);
+    const pool = state.difficulty==='tricky' ? TRICKY_WORDS : ANSWERS;
+    do{ w=pool[Math.floor(Math.random()*pool.length)]; }while(w===dailyWord(dateStr()) || seen.slice(-12).includes(w));
+    state.answer=w; seen.push(w); store.set(K.practiceSeen, seen.slice(-40));
+  }
+  buildGrid(); buildKeyboard();
+  $('#hud-mode').textContent = mode==='daily' ? '🌼 Daily · '+dateStr() : (state.difficulty==='tricky' ? '🌶️ Practice · Tricky' : '🌱 Practice · Easy');
+  updateHUD();
+  renderGarden();
+  showScreen('#game-screen');
+  // restore saved daily board
+  state.guesses.forEach((g,r)=>paintRow(r, g.word, g.eval, true));
+  refreshKeyboard();
+  if(state.over){ finishGame(true); }
+  else setStatus(mode==='daily' ? 'Guess today’s word — 6 tries!' : 'Practice word — guess away!');
+}
+function updateHUD(){
+  $('#hud-streak').textContent=state.streak;
+  $('#hud-best').textContent=state.best;
+  $('#hud-left').textContent=Math.max(0, ROWS-state.guesses.length);
+}
+function paintRow(r, word, evals, instant){
+  const rid=roundId;
+  for(let c=0;c<COLS;c++){
+    const t=$('#tile-'+r+'-'+c);
+    t.querySelector('.letter').textContent=word[c];
+    t.classList.add('filled');
+    if(instant){ t.classList.add(evals[c]); }
+    else{
+      setTimeout(()=>{ if(rid!==roundId) return; t.classList.add('flip'); sfx('flip'); }, c*90);
+      setTimeout(()=>{
+        if(rid!==roundId) return;
+        t.classList.add(evals[c]);
+        if(evals[c]==='correct') t.querySelector('.bloom').innerHTML=flowerSVG('#FF6B6B', 26);
+        if(evals[c]==='present') t.querySelector('.bloom').innerHTML=flowerSVG('#FFC94D', 24);
+      }, c*90+260);
+    }
+  }
+}
+function typeLetter(ch){
+  if(state.over || state.paused) return;
+  if(state.current.length>=COLS) return;
+  state.current+=ch;
+  const r=state.guesses.length, c=state.current.length-1;
+  const t=$('#tile-'+r+'-'+c);
+  t.querySelector('.letter').textContent=ch; t.classList.add('filled');
+  sfx('key');
+}
+function eraseLetter(){
+  if(state.over || state.paused) return;
+  if(!state.current.length) return;
+  const r=state.guesses.length, c=state.current.length-1;
+  state.current=state.current.slice(0,-1);
+  const t=$('#tile-'+r+'-'+c);
+  t.querySelector('.letter').textContent=''; t.classList.remove('filled');
+  sfx('erase');
+}
+function submitGuess(){
+  if(state.over || state.paused) return;
+  if(state.current.length<COLS){ setStatus('Not enough letters — need 5!', 'err'); sfx('error'); return; }
+  const guess=state.current.toLowerCase();
+  if(!WORD_SET.has(guess)){ setStatus('“'+guess.toUpperCase()+'” is not in the word list — try another!', 'err'); sfx('error'); return; }
+  const r=state.guesses.length;
+  const evals=evaluate(guess, state.answer);
+  state.guesses.push({word:guess, eval:evals});
+  state.current='';
+  paintRow(r, guess, evals, false);
+  const rid=roundId;
+  setTimeout(()=>{
+    if(rid!==roundId) return;
+    refreshKeyboard(); updateHUD();
+    const won=evals.every(e=>e==='correct');
+    if(won){ sfx('bloom'); winGame(); }
+    else if(state.guesses.length>=ROWS){ loseGame(); }
+    else{
+      const greens=evals.filter(e=>e==='correct').length;
+      setStatus(greens? greens+' letter'+(greens>1?'s':'')+' bloomed! Keep going 🌷' : 'No blooms yet — try a new word!', greens?'good':'');
+      $('#sr-status').textContent='Guess '+state.guesses.length+' of 6 submitted. '+greens+' correct letters.';
+    }
+  }, COLS*90+320);
+}
+function handleKey(k){
+  if(k==='ENTER') submitGuess();
+  else if(k==='BACK') eraseLetter();
+  else if(/^[A-Z]$/.test(k)) typeLetter(k.toLowerCase());
+}
+function saveDaily(){
+  if(state.mode!=='daily') return;
+  store.set(K.daily+dateStr(), {word:state.answer, guesses:state.guesses, over:state.over, won:state.won});
+}
+function winGame(){
+  state.over=true; state.won=true;
+  state.stats.played++; state.stats.wins++;
+  state.streak++; if(state.streak>state.best) state.best=state.streak;
+  store.set(K.stats, state.stats); store.set(K.streak, state.streak); store.set(K.best, state.best);
+  if(state.streak>0 && state.streak%7===0){ plantFlower('#7C6FF0'); toast('🌈 '+state.streak+'-day streak! A magic flower blooms!'); }
+  else if(state.streak>0 && state.streak%3===0){ plantFlower('#FFC94D'); toast('🔥 '+state.streak+'-day streak! A golden flower blooms!'); }
+  else plantFlower();
+  saveDaily(); updateHUD();
+  sfx('win'); petalBurst();
+  setTimeout(()=>showResult(true), 700);
+}
+function loseGame(){
+  state.over=true; state.won=false;
+  state.stats.played++;
+  if(state.mode==='daily'){ state.streak=0; store.set(K.streak, 0); }
+  store.set(K.stats, state.stats); saveDaily(); updateHUD();
+  sfx('lose');
+  setTimeout(()=>showResult(false), 700);
+}
+function shareText(){
+  const rows=state.guesses.map(g=>g.eval.map(e=>e==='correct'?'🟩':e==='present'?'🟨':'⬜').join('')).join('\n');
+  const modeLabel=state.mode==='daily' ? 'Daily '+dateStr() : 'Practice';
+  const score=state.won ? (state.guesses.length+'/6') : 'X/6';
+  return '🌷 Word Garden — '+modeLabel+'\n'+score+'\n'+rows+'\n🔥 Streak: '+state.streak+' · 🌷 Garden: '+state.garden.length+' flowers\nPlay at JoJo\'s Blocks';
+}
+function showResult(won){
+  state.revealed=true;
+  $('#result-title').textContent = won ? '🌷 You did it!' : '🥀 So close!';
+  $('#result-sub').textContent = won
+    ? 'The word bloomed in '+state.guesses.length+' '+(state.guesses.length===1?'try':'tries')+' — a new flower joins your garden!'
+    : 'The word was hiding in the soil. Your garden still loves you.';
+  $('#result-word').textContent=state.answer.toUpperCase();
+  $('#result-word-label').textContent='the word';
+  $('#stat-tries').textContent=state.won?state.guesses.length:'6';
+  $('#stat-streak').textContent=state.streak;
+  $('#stat-best').textContent=state.best;
+  $('#stat-wins').textContent=state.stats.wins;
+  $('#share-preview').textContent=shareText();
+  $('#result-flower').innerHTML = won
+    ? '<div class="big-flower">'+flowerSVG('#FF6B6B', 150)+'</div>'
+    : '<div class="big-flower" style="filter:grayscale(.6) opacity(.75)">'+flowerSVG('#8E93A6', 150)+'</div>';
+  $('#result-next-btn').textContent = state.mode==='daily' ? '🌱 Practice a new word' : '🌱 Next word';
+  openOverlay('#result-overlay');
+  if(won) petalBurst();
+}
+function finishGame(restore){
+  // re-show a completed daily board (restored from storage)
+  state.over=true; state.won=state.guesses.length && state.guesses[state.guesses.length-1].eval.every(e=>e==='correct');
+  updateHUD();
+  setStatus(state.won ? 'You already solved today’s word! 🌷' : 'Today’s word is done — come back tomorrow!', state.won?'good':'');
+  if(restore) setTimeout(()=>showResult(state.won), 400);
+}
+function petalBurst(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const app=$('#app');
+  for(let i=0;i<26;i++){
+    const p=document.createElement('div'); p.className='petal';
+    const s=8+Math.random()*10;
+    p.style.cssText='left:'+(Math.random()*100)+'%;width:'+s+'px;height:'+s+'px;background:'+PETALS[i%PETALS.length]+';animation-duration:'+(1.6+Math.random()*1.6)+'s;animation-delay:'+(Math.random()*.5)+'s';
+    app.appendChild(p); setTimeout(()=>p.remove(), 3800);
+  }
+}
+
+/* ---------- pause ---------- */
+function pauseGame(){
+  if(!$('#game-screen').classList.contains('active') || state.over) return;
+  state.paused=true; openOverlay('#pause-overlay');
+}
+function resumeGame(){
+  state.paused=false; closeOverlay('#pause-overlay');
+  setStatus('Back in the garden! 🌷');
+}
+
+/* ---------- settings ---------- */
+function applySettingsUI(){
+  $('#set-music').setAttribute('aria-pressed', String(state.musicOn));
+  $('#set-sfx').setAttribute('aria-pressed', String(state.sfxOn));
+  $('#set-volume').value=state.volume;
+  $('#menu-mute-btn').textContent = (state.musicOn||state.sfxOn) ? '🔊' : '🔇';
+  $('#btn-mute').textContent = (state.musicOn||state.sfxOn) ? '🔊' : '🔇';
+}
+function persistSettings(){
+  store.set(K.music, state.musicOn?'on':'off');
+  store.set(K.sfx, state.sfxOn?'on':'off');
+  store.set(K.volume, state.volume);
+  applyGains(); applySettingsUI();
+}
+
+/* ---------- calendar ---------- */
+function buildCalendar(){
+  const now=new Date(), y=now.getFullYear(), m=now.getMonth();
+  const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  $('#calendar-month-label').textContent=months[m]+' '+y+' — daily puzzle results';
+  const first=new Date(y,m,1).getDay(), days=new Date(y,m+1,0).getDate();
+  const grid=$('#calendar-grid'); grid.innerHTML='';
+  ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(d=>{ const e=document.createElement('div'); e.className='cal-dow'; e.textContent=d; grid.appendChild(e); });
+  for(let i=0;i<first;i++){ const e=document.createElement('div'); e.className='cal-day empty'; grid.appendChild(e); }
+  for(let d=1;d<=days;d++){
+    const ds=y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    const rec=store.get(K.daily+ds, null);
+    const e=document.createElement('div');
+    e.className='cal-day'+(d===now.getDate()?' today':'')+(rec?(rec.won?' won':' lost'):'');
+    e.textContent=rec ? (rec.won?'🌷':'🥀') : d;
+    e.setAttribute('aria-label', ds+(rec?(rec.won?' solved':' attempted'):''));
+    grid.appendChild(e);
+  }
+}
+
+/* ---------- share ---------- */
+async function shareResult(){
+  const text=shareText();
+  try{ await navigator.clipboard.writeText(text); toast('Copied! Paste it anywhere to share 🌷'); sfx('share'); }
+  catch(e){
+    const ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); toast('Copied! Paste it anywhere to share 🌷'); }catch(e2){ toast('Copy failed — long-press the preview to copy'); }
+    ta.remove();
+  }
+}
+
+/* ---------- menu streak banner ---------- */
+function renderMenu(){
+  const chips=[];
+  chips.push('<span class="chip">🔥 Streak <span class="num">'+state.streak+'</span></span>');
+  chips.push('<span class="chip">🏆 Best <span class="num">'+state.best+'</span></span>');
+  chips.push('<span class="chip">🌷 Garden <span class="num">'+state.garden.length+'</span></span>');
+  chips.push('<span class="chip">🎮 Played <span class="num">'+state.stats.played+'</span></span>');
+  $('#menu-streaks').innerHTML=chips.join('');
+  renderGarden();
+  showScreen('#menu-screen');
+}
+
+/* ---------- wiring ---------- */
+let pendingKey=null, pendingTimer=null;
+function armPending(k){
+  pendingKey=k;
+  pendingTimer=setTimeout(()=>{
+    pendingKey=null;
+    if(k==='P') pauseGame(); else if(!state.over) newGame(state.mode);
+  }, 250);
+}
+function bind(){
+  $('#btn-daily').addEventListener('click', ()=>{ ensureAudio(); sfx('click'); startMusic(); newGame('daily'); });
+  $('#btn-practice').addEventListener('click', ()=>{ ensureAudio(); sfx('click'); openOverlay('#practice-overlay'); });
+  $('#practice-easy-btn').addEventListener('click', ()=>{ ensureAudio(); sfx('click'); startMusic(); closeOverlay('#practice-overlay'); newGame('practice','easy'); });
+  $('#practice-tricky-btn').addEventListener('click', ()=>{ ensureAudio(); sfx('click'); startMusic(); closeOverlay('#practice-overlay'); newGame('practice','tricky'); });
+  $('#practice-cancel-btn').addEventListener('click', ()=>{ sfx('click'); closeOverlay('#practice-overlay'); });
+  $('#btn-howto').addEventListener('click', ()=>{ ensureAudio(); sfx('click'); openOverlay('#howto-overlay'); });
+  $('#btn-calendar').addEventListener('click', ()=>{ ensureAudio(); sfx('click'); buildCalendar(); openOverlay('#calendar-overlay'); });
+  $('#btn-settings').addEventListener('click', ()=>{ ensureAudio(); sfx('click'); openOverlay('#settings-overlay'); });
+  $('#btn-share-menu').addEventListener('click', ()=>{ ensureAudio(); shareResult(); });
+  $('#howto-play-btn').addEventListener('click', ()=>{ ensureAudio(); sfx('click'); startMusic(); closeOverlay('#howto-overlay'); newGame('daily'); });
+  $('#howto-close-btn').addEventListener('click', ()=>{ sfx('click'); closeOverlay('#howto-overlay'); });
+  $('#calendar-play-btn').addEventListener('click', ()=>{ ensureAudio(); sfx('click'); startMusic(); closeOverlay('#calendar-overlay'); newGame('daily'); });
+  $('#calendar-close-btn').addEventListener('click', ()=>{ sfx('click'); closeOverlay('#calendar-overlay'); });
+  $('#settings-close-btn').addEventListener('click', ()=>{ sfx('click'); closeOverlay('#settings-overlay'); });
+  $('#btn-pause').addEventListener('click', ()=>{ ensureAudio(); sfx('click'); pauseGame(); });
+  $('#btn-mute').addEventListener('click', ()=>{ ensureAudio(); state.musicOn=!state.musicOn; state.sfxOn=state.musicOn; persistSettings(); toast(state.musicOn?'Sound on 🔊':'Sound off 🔇'); });
+  $('#menu-mute-btn').addEventListener('click', ()=>{ ensureAudio(); state.musicOn=!state.musicOn; state.sfxOn=state.musicOn; persistSettings(); toast(state.musicOn?'Sound on 🔊':'Sound off 🔇'); });
+  $('#pause-resume-btn').addEventListener('click', ()=>{ sfx('click'); resumeGame(); });
+  $('#pause-restart-btn').addEventListener('click', ()=>{ sfx('click'); resumeGame(); newGame(state.mode); });
+  $('#pause-howto-btn').addEventListener('click', ()=>{ sfx('click'); openOverlay('#howto-overlay'); });
+  $('#pause-settings-btn').addEventListener('click', ()=>{ sfx('click'); openOverlay('#settings-overlay'); });
+  $('#pause-menu-btn').addEventListener('click', ()=>{ sfx('click'); state.paused=false; closeAllOverlays(); renderMenu(); });
+  $('#result-share-btn').addEventListener('click', ()=>{ shareResult(); });
+  $('#result-next-btn').addEventListener('click', ()=>{ sfx('click'); closeOverlay('#result-overlay'); newGame(state.mode==='daily'?'practice':state.mode); });
+  $('#result-menu-btn').addEventListener('click', ()=>{ sfx('click'); closeAllOverlays(); renderMenu(); });
+  $('#set-music').addEventListener('click', ()=>{ ensureAudio(); state.musicOn=!state.musicOn; persistSettings(); sfx('click'); });
+  $('#set-sfx').addEventListener('click', ()=>{ ensureAudio(); state.sfxOn=!state.sfxOn; persistSettings(); sfx('click'); });
+  $('#set-volume').addEventListener('input', e=>{ ensureAudio(); state.volume=+e.target.value; persistSettings(); });
+  document.addEventListener('keydown', e=>{
+    if(e.metaKey||e.ctrlKey||e.altKey) return;
+    const overlayOpen = $$('.overlay.active').length>0;
+    const gameActive = $('#game-screen').classList.contains('active');
+    /* P/R are letters too: a lone P/R on an empty row is ARMED as a shortcut
+       for 250ms. If the player keeps typing, the armed key becomes a letter
+       instead — so PAPER, RIVER, PLANT etc. type normally, while a deliberate
+       single P/R still pauses / restarts. */
+    if(pendingKey && !overlayOpen && gameActive){
+      if(/^[a-zA-Z]$/.test(e.key) || e.key==='Enter' || e.key==='Backspace'){
+        clearTimeout(pendingTimer);
+        const pk=pendingKey; pendingKey=null;
+        typeLetter(pk.toLowerCase());
+        /* fall through: process this key normally below */
+      } else if(e.key==='Escape'){
+        clearTimeout(pendingTimer); pendingKey=null;
+      }
+    }
+    if(e.key==='Escape'){
+      if($('#pause-overlay').classList.contains('active')){ resumeGame(); return; }
+      if(!overlayOpen && gameActive){ pauseGame(); return; }
+    }
+    if((e.key==='p' || e.key==='P') && state.current==='' && !pendingKey){
+      if($('#pause-overlay').classList.contains('active')){ resumeGame(); return; }
+      if(!overlayOpen && gameActive){ armPending('P'); return; }
+    }
+    if((e.key==='r'||e.key==='R') && state.current==='' && !pendingKey && gameActive && !overlayOpen && !state.over){ armPending('R'); return; }
+    if(!gameActive || overlayOpen || state.paused) return;
+    if(e.key==='Enter'){ ensureAudio(); handleKey('ENTER'); }
+    else if(e.key==='Backspace'){ ensureAudio(); handleKey('BACK'); }
+    else if(/^[a-zA-Z]$/.test(e.key)){ ensureAudio(); handleKey(e.key.toUpperCase()); }
+  });
+  document.addEventListener('visibilitychange', ()=>{ if(document.hidden) stopMusic(); else if(state.audioReady && (state.musicOn)) startMusic(); });
+}
+
+/* ---------- init ---------- */
+function init(){
+  buildGrid(); buildKeyboard();
+  applySettingsUI(); renderMenu(); bind();
+}
+init();
+})();
+</script>
+</body>
+</html>

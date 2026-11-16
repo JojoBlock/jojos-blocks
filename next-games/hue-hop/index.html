@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Hue Hop — JoJo's Blocks</title>
+<meta name="description" content="Hue Hop: a colour-logic puzzle from JoJo's Blocks. Tap tiles to cycle colours and make every row and column a perfect rainbow — no repeats!">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============ Hue Hop — JoJo's Blocks next collection ============
+   100% original code, art and music. Palette: cream/ink/coral/sun/
+   teal/lavender + tints & shades of those six only. */
+:root{
+  --cream:#FFF9F0; --ink:#2B2D42; --coral:#FF6B6B; --sun:#FFC94D;
+  --teal:#2EC4B6; --lav:#7C6FF0;
+  --coral-dark:#E14E5A; --sun-dark:#E8A91F; --teal-dark:#1E9C8F; --lav-dark:#5B4EDB;
+  --leaf:#34B37A; --sky:#4D8DE0; /* teal-shade green, lavender-shade blue */
+  --card:#FFFFFF; --shadow:0 10px 30px rgba(43,45,66,.16);
+  --shadow-sm:0 4px 14px rgba(43,45,66,.14);
+  --r-lg:22px; --r-md:16px;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(1200px 600px at 85% -10%, rgba(124,111,240,.28), transparent 60%),
+    radial-gradient(900px 500px at -10% 30%, rgba(46,196,182,.22), transparent 60%),
+    radial-gradient(800px 500px at 60% 110%, rgba(255,201,77,.30), transparent 60%),
+    linear-gradient(180deg,#FDF3FF 0%, #FFF9F0 45%, #FFF3D6 100%);
+  min-height:100dvh; overscroll-behavior:none;
+  overflow-x:hidden;
+}
+/* floating colour blobs — the rainbow garden */
+.blob{position:fixed;border-radius:50%;filter:blur(2px);opacity:.5;pointer-events:none;z-index:0;
+  animation:drift 9s ease-in-out infinite alternate;}
+.blob.b1{width:90px;height:90px;background:var(--coral);top:6%;left:-30px;}
+.blob.b2{width:64px;height:64px;background:var(--sun);top:22%;right:-18px;animation-delay:-3s;}
+.blob.b3{width:74px;height:74px;background:var(--teal);bottom:18%;left:-24px;animation-delay:-5s;}
+.blob.b4{width:56px;height:56px;background:var(--lav);bottom:8%;right:6%;animation-delay:-7s;}
+@keyframes drift{from{transform:translateY(-12px) rotate(-4deg);}to{transform:translateY(14px) rotate(6deg);}}
+h1,h2,h3,.display{font-family:'Fredoka','Comic Sans MS',system-ui,sans-serif;}
+button{font-family:inherit;cursor:pointer;}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px;border-radius:8px;}
+
+/* ---------- stage & screens ---------- */
+.stage{position:relative;z-index:1;max-width:560px;margin:0 auto;padding:16px 16px 28px;min-height:100dvh;display:flex;flex-direction:column;}
+.screen{display:none;flex-direction:column;gap:16px;animation:screenIn .35s ease-out;}
+.screen.active{display:flex;}
+@keyframes screenIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.brand{font-family:'Fredoka','Comic Sans MS',system-ui,sans-serif;font-weight:700;font-size:20px;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:8px;min-height:44px;padding:6px 4px;}
+.brand .mini-tile{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--coral),var(--sun) 45%,var(--teal) 75%,var(--lav));box-shadow:var(--shadow-sm);display:inline-block;}
+.icon-btn{min-width:44px;min-height:44px;border-radius:999px;border:2px solid rgba(43,45,66,.14);background:rgba(255,255,255,.85);font-size:20px;line-height:1;display:inline-flex;align-items:center;justify-content:center;box-shadow:var(--shadow-sm);color:var(--ink);padding:0 10px;}
+.icon-btn[aria-pressed="true"]{background:var(--ink);color:var(--cream);}
+.icon-btn:active{transform:translateY(2px);}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:12px 26px;border-radius:999px;border:2px solid var(--ink);
+  font-family:'Fredoka','Comic Sans MS',system-ui,sans-serif;font-weight:700;font-size:18px;color:var(--ink);text-decoration:none;
+  box-shadow:0 5px 0 rgba(43,45,66,.9);transition:transform .15s ease-out, box-shadow .15s ease-out, filter .15s;touch-action:manipulation;}
+.btn:hover{filter:brightness(1.05);}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(43,45,66,.9);}
+.btn-sun{background:linear-gradient(135deg,#FFD97A,var(--sun) 55%,#FFB63D);}
+.btn-coral{background:linear-gradient(135deg,#FF8A8A,var(--coral) 60%,#F2545B);}
+.btn-teal{background:linear-gradient(135deg,#8FE8DF,var(--teal) 60%,#25B3A5);}
+.btn-lav{background:linear-gradient(135deg,#5B4EDB,#4A3ECB 70%);color:#fff;text-shadow:0 1px 2px rgba(43,45,66,.35);}
+.btn-ghost{background:var(--card);box-shadow:0 5px 0 rgba(43,45,66,.18);}
+.btn-block{width:100%;}
+.btn-sm{min-height:44px;padding:8px 18px;font-size:16px;}
+.btn[disabled]{opacity:.55;cursor:not-allowed;}
+.pulse{animation:pulse 2.2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 5px 0 rgba(43,45,66,.9), 0 0 0 0 rgba(255,201,77,.55);}50%{box-shadow:0 5px 0 rgba(43,45,66,.9), 0 0 0 12px rgba(255,201,77,0);}}
+
+/* ---------- cards & panels ---------- */
+.card{background:var(--card);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:20px;border:2px solid rgba(43,45,66,.06);position:relative;overflow:hidden;}
+.card::before{content:"";position:absolute;inset:0 0 auto 0;height:6px;background:linear-gradient(90deg,var(--coral),var(--sun),var(--teal),var(--lav));opacity:.9;}
+.hero{text-align:center;padding:26px 20px 22px;}
+.hero-art{width:190px;height:150px;margin:0 auto 6px;}
+.hero h1{font-size:40px;line-height:1.05;margin:6px 0 4px;letter-spacing:.5px;}
+.hero h1 .hop{color:var(--coral);}
+.hero h1 .hue{color:var(--teal);}
+.tagline{font-size:17px;font-weight:700;color:#4A4C66;margin:0 0 4px;}
+.sub{font-size:14.5px;color:#5A5C74;margin:0;}
+.bob{animation:bob 2.6s ease-in-out infinite;}
+@keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
+.menu-actions{display:flex;flex-direction:column;gap:12px;}
+.menu-row{display:flex;gap:12px;flex-wrap:wrap;}
+.menu-row .btn{flex:1;white-space:nowrap;}
+.panel-actions .row .btn{white-space:nowrap;}
+.streak-strip{display:flex;align-items:center;gap:10px;justify-content:space-between;}
+.streak-flame{font-size:26px;line-height:1;}
+.streak-num{font-family:'Fredoka',sans-serif;font-weight:700;font-size:24px;}
+.streak-label{font-size:13px;font-weight:800;color:#5A5C74;}
+.week-dots{display:flex;gap:6px;}
+.week-dot{width:26px;height:26px;border-radius:50%;border:2px solid rgba(43,45,66,.2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;background:#fff;color:#8A8CA3;}
+.week-dot.done{background:var(--teal);border-color:var(--teal-dark);color:#fff;}
+.week-dot.today{border-color:var(--coral);box-shadow:0 0 0 3px rgba(255,107,107,.25);}
+.best-line{text-align:center;font-weight:800;font-size:15px;color:#4A4C66;}
+.best-line b{color:var(--ink);}
+
+/* ---------- HUD ---------- */
+.hud{display:flex;gap:8px;flex-wrap:wrap;}
+.chip{flex:1;min-width:0;background:rgba(255,255,255,.88);border-radius:999px;box-shadow:var(--shadow-sm);padding:7px 10px;display:flex;align-items:center;gap:7px;justify-content:center;border:2px solid rgba(43,45,66,.07);}
+.chip .ic{font-size:17px;line-height:1;}
+.chip .val{font-family:'Fredoka',sans-serif;font-weight:700;font-size:18px;line-height:1;}
+.chip .lbl{font-size:11px;font-weight:800;color:#6A6C85;letter-spacing:.4px;text-transform:uppercase;}
+.level-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.level-title{font-family:'Fredoka',sans-serif;font-weight:700;font-size:21px;margin:0;}
+.level-sub{font-size:13.5px;font-weight:700;color:#5A5C74;margin:2px 0 0;}
+.hud-actions{display:flex;gap:8px;}
+
+/* ---------- board ---------- */
+.board-wrap{background:rgba(255,255,255,.72);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:14px;border:2px solid rgba(43,45,66,.06);}
+.board{display:grid;gap:7px;touch-action:none;user-select:none;-webkit-user-select:none;}
+.board.size-3{grid-template-columns:repeat(3,1fr);}
+.board.size-4{grid-template-columns:repeat(4,1fr);}
+.board.size-6{grid-template-columns:repeat(6,1fr);}
+.tile{position:relative;aspect-ratio:1/1;border-radius:15px;border:3px solid rgba(43,45,66,.16);padding:0;min-width:44px;min-height:44px;
+  display:flex;align-items:center;justify-content:center;transition:transform .14s ease-out, box-shadow .14s ease-out, background-color .18s ease-out;
+  box-shadow:0 3px 0 rgba(43,45,66,.22);}
+.tile:active{transform:scale(.93);}
+.tile svg{width:62%;height:62%;filter:drop-shadow(0 1px 0 rgba(43,45,66,.35));pointer-events:none;}
+.tile.empty{background:#FFFDF7;border-style:dashed;border-color:rgba(43,45,66,.35);box-shadow:none;}
+.tile.empty::after{content:"?";font-family:'Fredoka',sans-serif;font-weight:700;font-size:22px;color:rgba(43,45,66,.28);}
+.tile.locked{box-shadow:0 3px 0 rgba(43,45,66,.28), inset 0 0 0 2px rgba(255,255,255,.55);}
+.tile.locked::before{content:"🔒";position:absolute;top:1px;right:3px;font-size:10px;line-height:1;z-index:2;}
+.tile.pop{animation:pop .22s ease-out;}
+@keyframes pop{40%{transform:scale(1.14);}100%{transform:scale(1);}}
+.tile.conflict{border-color:var(--coral-dark);box-shadow:0 0 0 3px rgba(255,107,107,.55), 0 3px 0 rgba(225,78,90,.6);animation:shake .3s ease-out;}
+@keyframes shake{20%{transform:translateX(-4px);}45%{transform:translateX(4px);}70%{transform:translateX(-3px);}90%{transform:translateX(2px);}}
+.tile.hint-glow{box-shadow:0 0 0 4px var(--sun), 0 3px 0 rgba(43,45,66,.22);animation:hintPulse 1s ease-in-out 3;}
+@keyframes hintPulse{50%{transform:scale(1.08);}}
+.tile.c0{background:linear-gradient(145deg,#FF8585,var(--coral));}
+.tile.c1{background:linear-gradient(145deg,#FFD97A,var(--sun));}
+.tile.c2{background:linear-gradient(145deg,#5ED8CC,var(--teal));}
+.tile.c3{background:linear-gradient(145deg,#A79CFF,var(--lav));}
+.tile.c4{background:linear-gradient(145deg,#5CCB96,var(--leaf));}
+.tile.c5{background:linear-gradient(145deg,#7FB2F2,var(--sky));}
+.tile.c1 svg{filter:drop-shadow(0 1px 0 rgba(43,45,66,.5));}
+
+/* palette / brush */
+.palette{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.swatch{min-width:44px;min-height:44px;width:48px;height:48px;border-radius:14px;border:3px solid rgba(43,45,66,.18);display:flex;align-items:center;justify-content:center;padding:0;box-shadow:0 3px 0 rgba(43,45,66,.2);transition:transform .14s ease-out;}
+.swatch svg{width:70%;height:70%;pointer-events:none;}
+.swatch.active{transform:translateY(-3px) scale(1.08);border-color:var(--ink);box-shadow:0 0 0 3px var(--sun), 0 4px 0 rgba(43,45,66,.3);}
+.swatch.c0{background:linear-gradient(145deg,#FF8585,var(--coral));}
+.swatch.c1{background:linear-gradient(145deg,#FFD97A,var(--sun));}
+.swatch.c2{background:linear-gradient(145deg,#5ED8CC,var(--teal));}
+.swatch.c3{background:linear-gradient(145deg,#A79CFF,var(--lav));}
+.swatch.c4{background:linear-gradient(145deg,#5CCB96,var(--leaf));}
+.swatch.c5{background:linear-gradient(145deg,#7FB2F2,var(--sky));}
+.brush-note{text-align:center;font-size:13.5px;font-weight:700;color:#5A5C74;margin:0;}
+.game-tools{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.tool-btn{min-height:44px;padding:9px 16px;border-radius:999px;border:2px solid rgba(43,45,66,.14);background:#fff;font-weight:800;font-size:14.5px;color:var(--ink);box-shadow:var(--shadow-sm);display:inline-flex;align-items:center;gap:6px;touch-action:manipulation;}
+.tool-btn:active{transform:translateY(2px);}
+.tool-btn[disabled]{opacity:.5;}
+.tutor-hint{background:linear-gradient(135deg,#FFF3C4,#FFE9A8);border:2px solid var(--sun-dark);border-radius:var(--r-md);padding:12px 14px;font-weight:700;font-size:15px;line-height:1.45;box-shadow:var(--shadow-sm);}
+.tutor-hint .mascot{font-size:19px;}
+
+/* ---------- overlays ---------- */
+.overlay{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(43,45,66,.5);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);}
+.overlay.active{display:flex;}
+.panel{background:var(--card);border-radius:26px;box-shadow:0 24px 60px rgba(43,45,66,.35);padding:26px 22px;max-width:480px;width:100%;max-height:88dvh;overflow-y:auto;text-align:center;animation:panelIn .3s ease-out;position:relative;border:2px solid rgba(43,45,66,.06);}
+.panel::before{content:"";position:absolute;inset:0 0 auto 0;height:6px;border-radius:26px 26px 0 0;background:linear-gradient(90deg,var(--coral),var(--sun),var(--teal),var(--lav));}
+@keyframes panelIn{from{opacity:0;transform:translateY(18px) scale(.97);}to{opacity:1;transform:none;}}
+.panel h2{font-size:30px;margin:8px 0 6px;}
+.panel p{font-size:15.5px;line-height:1.55;color:#4A4C66;margin:8px 0;}
+.panel .big-emoji{font-size:52px;line-height:1;}
+.panel-actions{display:flex;flex-direction:column;gap:10px;margin-top:18px;}
+.panel-actions .row{display:flex;gap:10px;}
+.panel-actions .row .btn{flex:1;}
+.stars-row{font-size:44px;letter-spacing:6px;margin:6px 0 2px;}
+.stars-row .star-off{color:#D8D5E8;filter:grayscale(1);opacity:.6;}
+.stars-row .star-on{color:var(--sun);text-shadow:0 3px 10px rgba(255,201,77,.7);animation:starPop .5s ease-out backwards;}
+.stars-row .star-on:nth-child(2){animation-delay:.15s;}
+.stars-row .star-on:nth-child(3){animation-delay:.3s;}
+@keyframes starPop{from{transform:scale(0) rotate(-30deg);}70%{transform:scale(1.35) rotate(8deg);}to{transform:scale(1);}}
+.score-big{font-family:'Fredoka',sans-serif;font-weight:700;font-size:46px;line-height:1;color:var(--ink);}
+.score-label{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#6A6C85;}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0 4px;}
+.stat-cell{background:#F6F1FF;border-radius:14px;padding:10px 6px;}
+.stat-cell .v{font-family:'Fredoka',sans-serif;font-weight:700;font-size:21px;}
+.stat-cell .l{font-size:11.5px;font-weight:800;color:#6A6C85;text-transform:uppercase;letter-spacing:.4px;}
+.howto-steps{text-align:left;display:flex;flex-direction:column;gap:12px;margin:14px 0;}
+.howto-step{display:flex;gap:12px;align-items:flex-start;background:#F8F5FF;border-radius:14px;padding:12px;}
+.howto-step .n{flex:0 0 34px;width:34px;height:34px;border-radius:50%;background:var(--lav);color:#fff;font-family:'Fredoka',sans-serif;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:17px;}
+.howto-step p{margin:0;font-size:14.5px;color:var(--ink);}
+.howto-demo{display:flex;gap:6px;justify-content:center;margin:6px 0 2px;}
+.howto-demo .mini{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:700;font-size:18px;color:#fff;text-shadow:0 1px 2px rgba(43,45,66,.4);box-shadow:0 2px 0 rgba(43,45,66,.25);}
+.howto-demo-tile{width:52px;height:52px;border-radius:14px;border:3px solid rgba(43,45,66,.2);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 0 rgba(43,45,66,.25);transition:background .3s ease-out;}
+.howto-demo-tile svg{width:70%;height:70%;filter:drop-shadow(0 1px 0 rgba(43,45,66,.35));pointer-events:none;}
+.howto-demo-tile.dc0{background:linear-gradient(145deg,#FF8585,#FF6B6B);}
+.howto-demo-tile.dc1{background:linear-gradient(145deg,#FFD97A,#FFC94D);}
+.howto-demo-tile.dc2{background:linear-gradient(145deg,#5ED8CC,#2EC4B6);}
+.howto-demo-tile.dc3{background:linear-gradient(145deg,#A79CFF,#7C6FF0);}
+.howto-demo-tile.dc4{background:linear-gradient(145deg,#5CCB96,#34B37A);}
+.howto-demo-tile.dc5{background:linear-gradient(145deg,#7FB2F2,#4D8DE0);}
+.demo-caption{font-size:13.5px;font-weight:800;color:#5A5C74;text-align:center;margin:4px 0 0;}
+.howto-controls{text-align:left;background:#F8F5FF;border-radius:14px;padding:12px 14px;font-size:14.5px;line-height:1.55;margin:10px 0 0;}
+.howto-controls b{color:var(--ink);}
+.chip.danger .val,.chip.danger .lbl{color:var(--coral-dark);}
+.ach-toast{display:none;background:linear-gradient(135deg,#FFF3C4,#FFE9A8);border:2px solid var(--sun-dark);border-radius:14px;padding:10px 12px;font-weight:800;font-size:15px;margin:12px 0 0;box-shadow:var(--shadow-sm);}
+.ach-toast.show{display:block;animation:starPop .5s ease-out;}
+.ach-list{display:flex;flex-direction:column;gap:10px;text-align:left;margin:14px 0;}
+.ach-item{display:flex;gap:12px;align-items:flex-start;background:#F8F5FF;border-radius:14px;padding:12px;border:2px solid rgba(43,45,66,.08);}
+.ach-item.unlocked{border-color:var(--sun-dark);background:#FFF8E1;}
+.ach-item .aic{font-size:26px;line-height:1;flex:0 0 30px;text-align:center;}
+.ach-item b{display:block;font-size:15px;}
+.ach-item span{font-size:13.5px;color:#5A5C74;font-weight:700;line-height:1.4;}
+.ach-item.locked{opacity:.6;}
+.level-card .req{font-size:11.5px;font-weight:800;color:#6A6C85;font-family:'Nunito',sans-serif;line-height:1.3;}
+.level-card .best{font-size:12px;font-weight:800;color:var(--lav-dark);font-family:'Nunito',sans-serif;}
+.settings-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 2px;border-bottom:1px solid rgba(43,45,66,.09);}
+.settings-row:last-of-type{border-bottom:none;}
+.settings-row label{font-weight:800;font-size:15.5px;}
+.toggle{min-width:64px;min-height:44px;border-radius:999px;border:2px solid var(--ink);background:#E9E6F7;font-family:'Fredoka',sans-serif;font-weight:700;font-size:15px;color:var(--ink);padding:6px 14px;}
+.toggle[aria-pressed="true"]{background:var(--teal);color:#fff;}
+input[type="range"]{width:150px;accent-color:var(--teal);height:44px;}
+.level-pick{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0;}
+.level-card{border:2px solid rgba(43,45,66,.14);border-radius:16px;background:#FBF8FF;padding:12px 8px;min-height:96px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-family:'Fredoka',sans-serif;font-weight:700;}
+.level-card .lv{font-size:19px;}
+.level-card .ds{font-size:12px;font-weight:800;color:#6A6C85;font-family:'Nunito',sans-serif;}
+.level-card .st{font-size:15px;color:var(--sun);letter-spacing:2px;}
+.level-card.sel{border-color:var(--ink);background:#FFF3C4;box-shadow:0 0 0 3px var(--sun);}
+.level-card.locked{opacity:.55;}
+.diff-pick{display:flex;gap:10px;justify-content:center;margin:14px 0;}
+.diff-btn{flex:1;min-height:52px;border-radius:16px;border:2px solid rgba(43,45,66,.14);background:#FBF8FF;font-family:'Fredoka',sans-serif;font-weight:700;font-size:16px;}
+.diff-btn.sel{border-color:var(--ink);background:#D9F7F3;box-shadow:0 0 0 3px var(--teal);}
+.footer{margin-top:auto;padding-top:20px;text-align:center;font-size:12.5px;font-weight:700;color:#6A6C85;}
+.footer a{color:var(--lav-dark);font-weight:800;}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;}
+/* confetti */
+.confetti{position:fixed;top:-20px;z-index:15;width:12px;height:18px;border-radius:3px;pointer-events:none;animation:fall linear forwards;}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.9;}}
+/* floating +pts */
+.float-score{position:fixed;z-index:30;font-family:'Fredoka',sans-serif;font-weight:700;font-size:22px;color:var(--sun-dark);text-shadow:0 2px 0 #fff;pointer-events:none;animation:floatUp 1s ease-out forwards;}
+@keyframes floatUp{from{opacity:1;transform:translateY(0);}to{opacity:0;transform:translateY(-46px);}}
+/* responsive */
+@media (max-width:480px){
+  .hero h1{font-size:32px;}
+  .hero-art{width:160px;height:128px;}
+  .chip .lbl{display:none;}
+  .board{gap:5px;}
+  .tile{border-radius:12px;}
+  .panel h2{font-size:26px;}
+  .score-big{font-size:40px;}
+  .menu-row .btn{font-size:15px;padding:12px 12px;}
+}
+@media (max-width:360px){
+  .stage{padding:12px 10px 22px;}
+  .board-wrap{padding:8px;}
+  .board{gap:3px;}
+  .tile{border-radius:10px;}
+  .btn{font-size:16px;padding:12px 18px;}
+  .menu-row .btn{flex:1 1 40%;font-size:15px;padding:12px 10px;}
+}
+/* reduced motion */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
+  .blob{display:none;}
+}
+</style>
+</head>
+<body>
+<div class="blob b1" aria-hidden="true"></div>
+<div class="blob b2" aria-hidden="true"></div>
+<div class="blob b3" aria-hidden="true"></div>
+<div class="blob b4" aria-hidden="true"></div>
+
+<div class="stage">
+  <!-- ================= START SCREEN ================= -->
+  <section class="screen active" id="screen-menu" aria-label="Hue Hop main menu">
+    <div class="topbar">
+      <a class="brand" href="/games/" aria-label="Back to JoJo's Blocks games"><span class="mini-tile" aria-hidden="true"></span>JoJo's Blocks</a>
+      <div style="display:flex;gap:8px;">
+        <button class="icon-btn" id="btn-music-menu" aria-label="Toggle music" aria-pressed="true">🎵</button>
+        <button class="icon-btn" id="btn-sfx-menu" aria-label="Toggle sound effects" aria-pressed="true">🔊</button>
+      </div>
+    </div>
+
+    <div class="card hero">
+      <!-- Original mascot: Hue, the hopping rainbow tile -->
+      <svg class="hero-art bob" viewBox="0 0 200 150" role="img" aria-label="Hue, a happy rainbow tile character hopping between coloured tiles">
+        <ellipse cx="100" cy="138" rx="62" ry="8" fill="rgba(43,45,66,.12)"/>
+        <g transform="rotate(-8 52 108)"><rect x="22" y="78" width="60" height="60" rx="14" fill="#FF6B6B"/><circle cx="52" cy="108" r="16" fill="#fff"/><circle cx="45" cy="105" r="3" fill="#2B2D42"/><circle cx="59" cy="105" r="3" fill="#2B2D42"/><path d="M45 114 Q52 119 59 114" stroke="#2B2D42" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>
+        <g transform="rotate(6 148 104)"><rect x="118" y="74" width="60" height="60" rx="14" fill="#2EC4B6"/><path d="M148 90 L160 112 L136 112 Z" fill="#fff"/><circle cx="141" cy="101" r="2.6" fill="#2B2D42"/><circle cx="155" cy="101" r="2.6" fill="#2B2D42"/><path d="M143 108 Q148 112 153 108" stroke="#2B2D42" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>
+        <g><rect x="70" y="34" width="60" height="60" rx="14" fill="#FFC94D"/><path d="M100 46 L104 56 L115 56 L106 63 L109 74 L100 67 L91 74 L94 63 L85 56 L96 56 Z" fill="#fff"/><circle cx="93" cy="60" r="2.8" fill="#2B2D42"/><circle cx="107" cy="60" r="2.8" fill="#2B2D42"/><path d="M93 68 Q100 74 107 68" stroke="#2B2D42" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>
+        <g transform="rotate(10 168 44)"><rect x="146" y="20" width="44" height="44" rx="12" fill="#7C6FF0"/><rect x="158" y="32" width="20" height="20" rx="4" fill="#fff" transform="rotate(45 168 42)"/></g>
+        <g transform="rotate(-12 26 40)"><rect x="8" y="20" width="40" height="40" rx="12" fill="#34B37A"/><path d="M28 30 C36 36 36 46 28 52 C20 46 20 36 28 30 Z" fill="#fff"/></g>
+        <circle cx="176" cy="96" r="5" fill="#FFC94D"/><circle cx="16" cy="66" r="5" fill="#7C6FF0"/><circle cx="188" cy="130" r="4" fill="#FF6B6B"/>
+      </svg>
+      <h1><span class="hue">Hue</span> <span class="hop">Hop</span></h1>
+      <p class="tagline">Hop the colours. Crack the rainbow.</p>
+      <p class="sub">Tap tiles to cycle colours — make every row &amp; column a perfect set, with no repeats. Every colour has its own shape, so everyone can play.</p>
+    </div>
+
+    <div class="card streak-strip" id="streak-card">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="streak-flame" aria-hidden="true">🔥</span>
+        <div><div class="streak-num" id="streak-num">0</div><div class="streak-label">day streak</div></div>
+      </div>
+      <div class="week-dots" id="week-dots" aria-label="Daily puzzle progress this week"></div>
+    </div>
+
+    <div class="menu-actions">
+      <button class="btn btn-sun btn-block pulse" id="btn-play-daily">▶&nbsp; Play today's puzzle</button>
+      <div class="menu-row">
+        <button class="btn btn-teal" id="btn-practice">🧩 Practice</button>
+        <button class="btn btn-lav" id="btn-tutorial">🎓 Tutorial</button>
+        <button class="btn btn-coral" id="btn-levels">🏆 Levels</button>
+      </div>
+      <div class="menu-row">
+        <button class="btn btn-ghost" id="btn-howto">📖 How to play</button>
+        <button class="btn btn-ghost" id="btn-settings">⚙️ Settings</button>
+      </div>
+    </div>
+
+    <p class="best-line">🏆 Best score: <b id="best-menu">0</b> &nbsp;·&nbsp; 🧩 Puzzles solved: <b id="solved-menu">0</b><br>🎖️ Levels: <b id="levels-menu">0/12</b> &nbsp;·&nbsp; 🏅 <a href="#" id="ach-link">Achievements: <b id="ach-menu">0/5</b></a></p>
+    <div class="footer">Hue Hop · JJB-GAME-20261116-08 · v1.1.0<br><a href="/games/">← All JoJo's Blocks games</a></div>
+  </section>
+
+  <!-- ================= GAME SCREEN ================= -->
+  <section class="screen" id="screen-game" aria-label="Hue Hop puzzle">
+    <div class="topbar">
+      <a class="brand" href="#" id="btn-quit-menu" aria-label="Quit to menu"><span class="mini-tile" aria-hidden="true"></span>Hue Hop</a>
+      <div class="hud-actions">
+        <button class="icon-btn" id="btn-music-game" aria-label="Toggle music" aria-pressed="true">🎵</button>
+        <button class="icon-btn" id="btn-sfx-game" aria-label="Toggle sound effects" aria-pressed="true">🔊</button>
+        <button class="icon-btn" id="btn-pause" aria-label="Pause game">⏸</button>
+      </div>
+    </div>
+
+    <div class="hud" role="group" aria-label="Game stats">
+      <div class="chip"><span class="ic" aria-hidden="true">👆</span><span class="val" id="hud-moves">0</span><span class="lbl">Moves</span></div>
+      <div class="chip"><span class="ic" aria-hidden="true">💥</span><span class="val" id="hud-mistakes">0</span><span class="lbl">Mistakes</span></div>
+      <div class="chip"><span class="ic" aria-hidden="true">⏱</span><span class="val" id="hud-time">0:00</span><span class="lbl">Time</span></div>
+      <div class="chip"><span class="ic" aria-hidden="true">⭐</span><span class="val" id="hud-stars">–</span><span class="lbl">Stars</span></div>
+    </div>
+
+    <div class="level-bar">
+      <div><h2 class="level-title" id="level-title">Daily Puzzle</h2><p class="level-sub" id="level-sub">No repeats in any row or column</p></div>
+      <button class="tool-btn" id="btn-restart" aria-label="Restart puzzle">↻ Restart</button>
+    </div>
+
+    <div class="tutor-hint" id="tutor-hint" hidden><span class="mascot" aria-hidden="true">🌈</span> <span id="tutor-text"></span></div>
+
+    <div class="board-wrap">
+      <div class="board size-6" id="board" role="grid" aria-label="Puzzle board"></div>
+    </div>
+
+    <p class="brush-note" id="brush-note">Tap a tile to cycle its colour · or pick a colour below, then tap a tile to paint it</p>
+    <div class="palette" id="palette" role="group" aria-label="Colour palette"></div>
+
+    <div class="game-tools">
+      <button class="tool-btn" id="btn-undo" aria-label="Undo last move">↩ Undo</button>
+      <button class="tool-btn" id="btn-hint" aria-label="Use a hint">💡 Hint <span id="hint-count">(3)</span></button>
+      <button class="tool-btn" id="btn-check" aria-label="Check the board">✓ Check</button>
+    </div>
+
+    <div class="footer">Hue Hop · JJB-GAME-20261116-08 · v1.1.0</div>
+  </section>
+</div>
+
+<!-- ================= OVERLAYS ================= -->
+<div class="overlay" id="overlay-howto" role="dialog" aria-modal="true" aria-labelledby="howto-title">
+  <div class="panel">
+    <div class="big-emoji" aria-hidden="true">🌈</div>
+    <h2 id="howto-title">How to play</h2>
+    <div class="howto-steps">
+      <div class="howto-step"><span class="n">1</span><p><b>Tap a tile</b> to cycle its colour — each tap hops to the next colour of the rainbow. Every colour also has its own shape, so you never have to rely on colour alone.</p></div>
+      <div class="howto-step"><span class="n">2</span><p><b>Fill the board</b> so every row and every column holds each colour <b>exactly once</b> — no repeats anywhere.</p></div>
+      <div class="howto-step"><span class="n">3</span><p>Tiles that clash <b>glow red</b> and shake. Tap them again to fix the clash. Locked tiles 🔒 are givens — they never change.</p></div>
+      <div class="howto-step"><span class="n">4</span><p>Finish with <b>zero mistakes</b> for 3 stars. A new <b>daily puzzle</b> arrives every day — solve it daily to grow your 🔥 streak!</p></div>
+    </div>
+    <div class="howto-demo" aria-hidden="true">
+      <span class="mini" style="background:#FF6B6B">●</span><span class="mini" style="background:#FFC94D">★</span><span class="mini" style="background:#2EC4B6">▲</span><span class="mini" style="background:#7C6FF0">◆</span><span class="mini" style="background:#34B37A">♥</span><span class="mini" style="background:#4D8DE0">⬢</span>
+    </div>
+    <p class="demo-caption">Watch one tile hop through the rainbow:</p>
+    <div class="howto-demo" aria-hidden="true">
+      <span class="howto-demo-tile dc0" id="howto-demo-tile"></span>
+    </div>
+    <p class="demo-caption" id="howto-demo-label">Coral ● — tap again to hop to the next colour</p>
+    <div class="howto-controls">
+      <b>📱 On phones &amp; tablets:</b> tap a tile to cycle its colour, or tap a colour swatch first and then tap tiles to paint them.<br>
+      <b>🖥️ On desktop:</b> click a tile to cycle · keys <b>1–6</b> paint a colour · <b>arrow keys</b> move between tiles · <b>Space / Enter</b> cycles · <b>P</b> pause · <b>R</b> restart · <b>M</b> music.
+    </div>
+    <p>⌨️ Keyboard: <b>arrows</b> move · <b>Space / Enter</b> cycles · <b>1–6</b> paints a colour · <b>P</b> pause · <b>R</b> restart</p>
+    <div class="panel-actions">
+      <button class="btn btn-sun btn-block" id="btn-howto-play">Got it — let's hop!</button>
+      <button class="btn btn-ghost btn-block" id="btn-howto-close">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay-pause" role="dialog" aria-modal="true" aria-labelledby="pause-title">
+  <div class="panel">
+    <div class="big-emoji" aria-hidden="true">⏸️</div>
+    <h2 id="pause-title">Paused</h2>
+    <p>Take a breath — the rainbow will wait. Your timer is frozen.</p>
+    <div class="panel-actions">
+      <button class="btn btn-sun btn-block" id="btn-resume">▶ Resume</button>
+      <button class="btn btn-teal btn-block" id="btn-pause-restart">↻ Restart puzzle</button>
+      <div class="row">
+        <button class="btn btn-ghost" id="btn-pause-howto">📖 How to play</button>
+        <button class="btn btn-ghost" id="btn-pause-settings">⚙️ Settings</button>
+      </div>
+      <button class="btn btn-coral btn-block" id="btn-giveup">🏳️ Give up</button>
+      <button class="btn btn-ghost btn-block" id="btn-pause-menu">Quit to menu</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay-results" role="dialog" aria-modal="true" aria-labelledby="results-title">
+  <div class="panel">
+    <div class="big-emoji" id="results-emoji" aria-hidden="true">🎉</div>
+    <h2 id="results-title">Rainbow complete!</h2>
+    <div class="stars-row" id="results-stars" aria-label="Stars earned"></div>
+    <div class="score-label">Score</div>
+    <div class="score-big" id="results-score">0</div>
+    <p id="results-msg"></p>
+    <div class="stat-grid">
+      <div class="stat-cell"><div class="v" id="res-moves">0</div><div class="l">Moves</div></div>
+      <div class="stat-cell"><div class="v" id="res-mistakes">0</div><div class="l">Mistakes</div></div>
+      <div class="stat-cell"><div class="v" id="res-time">0:00</div><div class="l">Time</div></div>
+    </div>
+    <p class="best-line" id="results-best"></p>
+    <div class="ach-toast" id="ach-toast" role="status"></div>
+    <div class="panel-actions">
+      <button class="btn btn-sun btn-block" id="btn-next">➡ Next puzzle</button>
+      <div class="row">
+        <button class="btn btn-teal" id="btn-replay">↻ Replay</button>
+        <button class="btn btn-ghost" id="btn-results-menu">Menu</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay-settings" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+  <div class="panel">
+    <div class="big-emoji" aria-hidden="true">⚙️</div>
+    <h2 id="settings-title">Settings</h2>
+    <div style="text-align:left;">
+      <div class="settings-row"><label for="set-music">🎵 Music</label><button class="toggle" id="set-music" aria-pressed="true">On</button></div>
+      <div class="settings-row"><label for="set-sfx">🔊 Sound effects</label><button class="toggle" id="set-sfx" aria-pressed="true">On</button></div>
+      <div class="settings-row"><label for="set-volume">🔈 Volume <span id="vol-val">70</span>%</label><input type="range" id="set-volume" min="0" max="100" value="70" aria-label="Volume"></div>
+    </div>
+    <p style="font-size:13.5px;">Settings are saved on this device and apply to every Hue Hop puzzle.</p>
+    <div class="panel-actions">
+      <button class="btn btn-sun btn-block" id="btn-settings-close">Done</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay-levels" role="dialog" aria-modal="true" aria-labelledby="levels-title">
+  <div class="panel">
+    <div class="big-emoji" aria-hidden="true">🏆</div>
+    <h2 id="levels-title">Rainbow Levels</h2>
+    <p>Climb the ladder! Each level adds a real twist — fewer givens, a clash limit, or a ticking clock. Finish a level to unlock the next and earn its stars.</p>
+    <div class="level-pick" id="levels-list"></div>
+    <div class="panel-actions">
+      <button class="btn btn-ghost btn-block" id="btn-levels-close">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay-achievements" role="dialog" aria-modal="true" aria-labelledby="ach-title">
+  <div class="panel">
+    <div class="big-emoji" aria-hidden="true">🏅</div>
+    <h2 id="ach-title">Achievements</h2>
+    <p>Hop your way to every badge. Unlocked badges are saved on this device.</p>
+    <div class="ach-list" id="ach-list"></div>
+    <div class="panel-actions">
+      <button class="btn btn-ghost btn-block" id="btn-ach-close">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay-modes" role="dialog" aria-modal="true" aria-labelledby="modes-title">
+  <div class="panel">
+    <div class="big-emoji" aria-hidden="true">🧩</div>
+    <h2 id="modes-title">Choose your puzzle</h2>
+    <p id="modes-sub">Pick a challenge — or come back every day for the daily puzzle.</p>
+    <div class="diff-pick" role="group" aria-label="Practice difficulty">
+      <button class="diff-btn sel" data-diff="easy">😊 Easy</button>
+      <button class="diff-btn" data-diff="medium">🙂 Medium</button>
+      <button class="diff-btn" data-diff="hard">😤 Hard</button>
+    </div>
+    <div class="panel-actions">
+      <button class="btn btn-teal btn-block" id="btn-start-practice">▶ Start practice puzzle</button>
+      <button class="btn btn-ghost btn-block" id="btn-modes-close">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay-tutorial" role="dialog" aria-modal="true" aria-labelledby="tutorial-title">
+  <div class="panel">
+    <div class="big-emoji" aria-hidden="true">🎓</div>
+    <h2 id="tutorial-title">Tutorial</h2>
+    <p>Three tiny lessons with Hue. Finish all three and you're a rainbow master!</p>
+    <div class="level-pick" id="tutorial-levels"></div>
+    <div class="panel-actions">
+      <button class="btn btn-ghost btn-block" id="btn-tutorial-close">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="sr-only" aria-live="polite" id="live-status"></div>
+
+<script>
+"use strict";
+/* ================================================================
+   Hue Hop — JJB-GAME-20261116-08 · JJBHueHop · v1.1.0
+   100% original vanilla JS. No libraries, no copied code.
+   ================================================================ */
+window.JJBHueHop = (function(){
+
+/* ---------- constants ---------- */
+var NS = 'JJBHueHop';
+var LS = {
+  best:'jjb-hue-hop-best', music:'jjb-hue-hop-music', sfx:'jjb-hue-hop-sfx',
+  volume:'jjb-hue-hop-volume', solved:'jjb-hue-hop-solved',
+  streak:'jjb-hue-hop-streak', dailyLast:'jjb-hue-hop-daily-last',
+  dailyDone:'jjb-hue-hop-daily-done', tutorial:'jjb-hue-hop-tutorial',
+  tutorialStars:'jjb-hue-hop-tutorial-stars', dailyBest:'jjb-hue-hop-daily-best',
+  levelStars:'jjb-hue-hop-levels-stars', levelBest:'jjb-hue-hop-levels-best',
+  achievements:'jjb-hue-hop-achievements'
+};
+/* Six palette-derived colours; each has a distinct shape + name (never colour alone).
+   Coral/Sun/Teal/Lavender are the brand palette; Leaf = teal shade, Sky = lavender shade. */
+var COLOURS = [
+  {name:'Coral',   hex:'#FF6B6B', shape:'circle',   svg:'<circle cx="20" cy="20" r="13" fill="#fff"/>'},
+  {name:'Sun',     hex:'#FFC94D', shape:'star',     svg:'<path d="M20 6 L23.6 15.4 L33.5 15.6 L25.6 21.6 L28.4 31.2 L20 25.6 L11.6 31.2 L14.4 21.6 L6.5 15.6 L16.4 15.4 Z" fill="#fff"/>'},
+  {name:'Teal',    hex:'#2EC4B6', shape:'triangle', svg:'<path d="M20 6 L34 31 L6 31 Z" fill="#fff"/>'},
+  {name:'Lavender',hex:'#7C6FF0', shape:'diamond',  svg:'<path d="M20 5 L34 20 L20 35 L6 20 Z" fill="#fff"/>'},
+  {name:'Leaf',    hex:'#34B37A', shape:'heart',    svg:'<path d="M20 33 C8 25 7 15 13 11 C17 8 20 11 20 14 C20 11 23 8 27 11 C33 15 32 25 20 33 Z" fill="#fff"/>'},
+  {name:'Sky',     hex:'#4D8DE0', shape:'hexagon',  svg:'<path d="M20 5 L32.5 12.5 L32.5 27.5 L20 35 L7.5 27.5 L7.5 12.5 Z" fill="#fff"/>'}
+];
+var PENTA = [0, 2, 4, 7, 9, 12, 14, 16, 19, 21, 24]; /* C major pentatonic steps */
+var REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- tiny utils ---------- */
+function $(id){ return document.getElementById(id); }
+function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
+function fmtTime(s){ s = Math.max(0, Math.floor(s)); var m = Math.floor(s/60); return m + ':' + String(s%60).padStart(2,'0'); }
+function todayStr(d){ d = d || new Date(); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+function addDaysStr(ds, n){ var p = ds.split('-').map(Number); var d = new Date(p[0], p[1]-1, p[2]); d.setDate(d.getDate()+n); return todayStr(d); }
+function hashStr(s){ var h = 2166136261; for (var i=0;i<s.length;i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+function mulberry32(seed){ var a = seed >>> 0; return function(){ a |= 0; a = (a + 0x6D2B79F5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+function shuffle(arr, rnd){ for (var i=arr.length-1;i>0;i--){ var j = Math.floor(rnd()*(i+1)); var t=arr[i]; arr[i]=arr[j]; arr[j]=t; } return arr; }
+
+/* ---------- persistence ---------- */
+function lsGet(k, def){ try { var v = localStorage.getItem(k); return v === null ? def : v; } catch(e){ return def; } }
+function lsSet(k, v){ try { localStorage.setItem(k, v); } catch(e){} }
+function lsNum(k, def){ var v = parseInt(lsGet(k, ''), 10); return isNaN(v) ? def : v; }
+var settings = {
+  music: lsGet(LS.music, 'on') !== 'off',
+  sfx:   lsGet(LS.sfx, 'on') !== 'off',
+  volume: clamp(lsNum(LS.volume, 70), 0, 100)
+};
+function saveSettings(){
+  lsSet(LS.music, settings.music ? 'on' : 'off');
+  lsSet(LS.sfx, settings.sfx ? 'on' : 'off');
+  lsSet(LS.volume, String(settings.volume));
+}
+
+/* ---------- audio: one AudioContext, procedural WebAudio only ---------- */
+var AudioMod = {
+  ctx:null, musicGain:null, sfxGain:null, musicTimer:null, step:0, started:false,
+  ensure:function(){
+    if (this.ctx) { if (this.ctx.state === 'suspended') this.ctx.resume(); return; }
+    try {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      this.ctx = new AC();
+      this.musicGain = this.ctx.createGain();
+      this.sfxGain = this.ctx.createGain();
+      this.musicGain.connect(this.ctx.destination);
+      this.sfxGain.connect(this.ctx.destination);
+      this.applySettings();
+    } catch(e){ this.ctx = null; }
+  },
+  applySettings:function(){
+    if (!this.ctx) return;
+    var v = settings.volume / 100;
+    this.musicGain.gain.value = settings.music ? v * 0.5 : 0;
+    this.sfxGain.gain.value = settings.sfx ? v : 0;
+  },
+  noteFreq:function(midi){ return 440 * Math.pow(2, (midi - 69) / 12); },
+  tone:function(freq, dur, type, vol, when, dest){
+    if (!this.ctx) return;
+    var t = when || this.ctx.currentTime;
+    var o = this.ctx.createOscillator(), g = this.ctx.createGain();
+    o.type = type || 'sine'; o.frequency.value = freq;
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(Math.max(0.0001, vol || 0.2), t + 0.015);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(dest || this.sfxGain);
+    o.start(t); o.stop(t + dur + 0.05);
+  },
+  /* tile tap: a bright pentatonic pluck, pitch rises with colour + row */
+  tap:function(colourIdx, row){
+    if (!this.ctx || !settings.sfx) return;
+    var midi = 72 + PENTA[(colourIdx + row) % PENTA.length];
+    this.tone(this.noteFreq(midi), 0.35, 'triangle', 0.28);
+    this.tone(this.noteFreq(midi) * 2, 0.18, 'sine', 0.08);
+  },
+  lock:function(){ if (this.ctx && settings.sfx) this.tone(180, 0.12, 'square', 0.08); },
+  error:function(){
+    if (!this.ctx || !settings.sfx) return;
+    this.tone(160, 0.22, 'sawtooth', 0.10);
+    this.tone(120, 0.28, 'sawtooth', 0.10, this.ctx.currentTime + 0.08);
+  },
+  win:function(){
+    if (!this.ctx || !settings.sfx) return;
+    var seq = [0, 4, 7, 12, 16, 19, 24];
+    for (var i=0;i<seq.length;i++){
+      this.tone(this.noteFreq(72 + seq[i]), 0.5, 'triangle', 0.22, this.ctx.currentTime + i * 0.09);
+    }
+  },
+  hint:function(){ if (this.ctx && settings.sfx){ this.tone(this.noteFreq(84), 0.4, 'sine', 0.2); this.tone(this.noteFreq(88), 0.4, 'sine', 0.14, this.ctx.currentTime + 0.08); } },
+  click:function(){ if (this.ctx && settings.sfx) this.tone(660, 0.08, 'sine', 0.12); },
+  /* gentle original loop: soft pentatonic melody over a warm bass, ~96 bpm */
+  startMusic:function(){
+    if (!this.ctx || this.musicTimer || !settings.music) return;
+    var self = this;
+    var melody = [0,2,4,7,4,2,0,-1, 0,2,4,9,7,4,2,0, 0,4,7,9,12,9,7,4, 7,4,2,0,-1,0,-1];
+    /* -1 = rest; values are pentatonic steps from C5 */
+    this.step = 0;
+    var beatMs = 60000 / 96 / 2; /* eighth notes */
+    this.musicTimer = setInterval(function(){
+      if (!self.ctx || !settings.music) return;
+      var now = self.ctx.currentTime;
+      var s = melody[self.step % melody.length];
+      if (s >= 0) self.tone(self.noteFreq(72 + PENTA[s % PENTA.length]), 0.5, 'triangle', 0.10, now, self.musicGain);
+      if (self.step % 8 === 0) self.tone(self.noteFreq(48), 1.4, 'sine', 0.16, now, self.musicGain);
+      if (self.step % 8 === 4) self.tone(self.noteFreq(55), 1.2, 'sine', 0.12, now, self.musicGain);
+      self.step++;
+    }, beatMs);
+  },
+  stopMusic:function(){ if (this.musicTimer){ clearInterval(this.musicTimer); this.musicTimer = null; } }
+};
+
+/* ---------- puzzle generation: Latin squares, seeded ---------- */
+function makeLatinSquare(n, rnd){
+  var base = []; for (var i=0;i<n;i++) base.push(i);
+  shuffle(base, rnd);
+  var rows = [], cols = [];
+  for (var k=0;k<n;k++){ rows.push(k); cols.push(k); }
+  shuffle(rows, rnd); shuffle(cols, rnd);
+  var grid = [];
+  for (var r=0;r<n;r++){ grid.push([]); for (var c=0;c<n;c++){ grid[r].push(base[(rows[r] + cols[c]) % n]); } }
+  return grid;
+}
+function makePuzzle(n, givens, rnd){
+  var solution = makeLatinSquare(n, rnd);
+  var cells = [];
+  for (var r=0;r<n;r++) for (var c=0;c<n;c++) cells.push([r,c]);
+  shuffle(cells, rnd);
+  var keep = {};
+  for (var i=0;i<givens && i<cells.length;i++){ keep[cells[i][0]+','+cells[i][1]] = true; }
+  var grid = [], locked = {};
+  for (var rr=0;rr<n;rr++){
+    grid.push([]);
+    for (var cc=0;cc<n;cc++){
+      if (keep[rr+','+cc]){ grid[rr].push(solution[rr][cc]); locked[rr+','+cc] = true; }
+      else grid[rr].push(null);
+    }
+  }
+  return { solution:solution, grid:grid, locked:locked, size:n };
+}
+function dailySeed(dateStr){ return hashStr('hue-hop-daily-' + dateStr); }
+function dailyPuzzleFor(dateStr){
+  var rnd = mulberry32(dailySeed(dateStr));
+  return makePuzzle(6, 18, rnd);
+}
+var DIFFS = { easy:{givens:24, label:'Easy'}, medium:{givens:18, label:'Medium'}, hard:{givens:13, label:'Hard'} };
+
+/* ---------- tutorial levels (fixed, hand-designed) ---------- */
+var TUTORIALS = [
+  {
+    title:'Tutorial 1 · Tap to hop', sub:'A tiny 3×3 rainbow',
+    hint:'Tap a tile to hop its colour. Fill the board so each row and column has a ● ★ ▲ — no repeats!',
+    puzzle:(function(){ return { size:3, solution:[[0,1,2],[1,2,0],[2,0,1]],
+      grid:[[0,1,null],[null,2,0],[2,null,1]], locked:{'0,0':1,'0,1':1,'1,1':1,'1,2':1,'2,0':1,'2,2':1} }; })()
+  },
+  {
+    title:'Tutorial 2 · Rows & columns', sub:'A 4×4 rainbow',
+    hint:'Now watch the columns too! A tile that clashes glows red — tap it again to fix it. Locked tiles 🔒 never change.',
+    puzzle:(function(){ return { size:4, solution:[[0,1,2,3],[1,3,0,2],[2,0,3,1],[3,2,1,0]],
+      grid:[[0,null,2,3],[1,3,null,2],[null,0,3,1],[3,2,1,null]], locked:{'0,0':1,'0,2':1,'0,3':1,'1,0':1,'1,1':1,'1,3':1,'2,1':1,'2,2':1,'2,3':1,'3,0':1,'3,1':1,'3,2':1} }; })()
+  },
+  {
+    title:'Tutorial 3 · The full hop', sub:'A gentle 6×6 rainbow',
+    hint:'The full rainbow! Every row and column needs all six colours and shapes. Use the Hint button (💡) if you get stuck.',
+    puzzle:(function(){ var p = makePuzzle(6, 26, mulberry32(20261116)); return p; })()
+  }
+];
+
+/* ---------- level ladder (v1.1.0): 12 levels, real progression ----------
+   Each level adds a genuine challenge: fewer givens, then a clash (mistake)
+   limit, then a ticking clock on top. Levels unlock in order; each keeps its
+   own star rating + best score. */
+var LEVELS = [
+  { givens:26, mistakesMax:0,  timeLimit:0,   name:'First Hop',     rule:'A gentle start — 26 tiles given.' },
+  { givens:24, mistakesMax:0,  timeLimit:0,   name:'Rainbow Walk',  rule:'24 given · find your rhythm.' },
+  { givens:22, mistakesMax:0,  timeLimit:0,   name:'Colour Climb',  rule:'22 given · fewer freebies.' },
+  { givens:20, mistakesMax:5,  timeLimit:0,   name:'Careful Hop',   rule:'20 given · max 5 clashes!' },
+  { givens:18, mistakesMax:5,  timeLimit:0,   name:'Steady Eyes',   rule:'18 given · max 5 clashes!' },
+  { givens:16, mistakesMax:4,  timeLimit:0,   name:'Tightrope',     rule:'16 given · max 4 clashes!' },
+  { givens:15, mistakesMax:3,  timeLimit:0,   name:'Sharp Hop',     rule:'15 given · max 3 clashes!' },
+  { givens:14, mistakesMax:3,  timeLimit:0,   name:'Rainbow Rush',  rule:'14 given · max 3 clashes!' },
+  { givens:13, mistakesMax:3,  timeLimit:240, name:'Against Time',  rule:'13 given · max 3 clashes · 4:00 clock!' },
+  { givens:12, mistakesMax:2,  timeLimit:180, name:'Master Hop',    rule:'12 given · max 2 clashes · 3:00 clock!' },
+  { givens:11, mistakesMax:2,  timeLimit:150, name:'Rainbow Pro',   rule:'11 given · max 2 clashes · 2:30 clock!' },
+  { givens:10, mistakesMax:2,  timeLimit:120, name:'Hue Legend',    rule:'10 given · max 2 clashes · 2:00 clock!' }
+];
+function levelStarsMap(){ try { return JSON.parse(lsGet(LS.levelStars, '{}')); } catch(e){ return {}; } }
+function levelBestMap(){ try { return JSON.parse(lsGet(LS.levelBest, '{}')); } catch(e){ return {}; } }
+function levelsCompleted(){
+  var s = levelStarsMap(), n = 0;
+  for (var i=0;i<LEVELS.length;i++) if (s[i] > 0) n++;
+  return n;
+}
+/* ---------- achievements (v1.1.0): 5 badges, checked on every win ---------- */
+var ACHIEVEMENTS = [
+  { id:'first',    icon:'🌈', title:'First Rainbow',  desc:'Solve your very first Hue Hop puzzle.' },
+  { id:'flawless', icon:'✨', title:'Flawless Hop',   desc:'Finish a puzzle with zero mistakes.' },
+  { id:'speedster',icon:'⚡', title:'Speedster',      desc:'Solve the daily puzzle in under 60 seconds.' },
+  { id:'streak7',  icon:'🔥', title:'Week of Rainbows', desc:'Reach a 7-day daily streak.' },
+  { id:'master',   icon:'👑', title:'Rainbow Master', desc:'Complete all 12 Rainbow Levels.' }
+];
+function achievementsMap(){ try { return JSON.parse(lsGet(LS.achievements, '{}')); } catch(e){ return {}; } }
+function unlockAchievement(id){
+  var a = achievementsMap();
+  if (a[id]) return null;
+  a[id] = todayStr();
+  lsSet(LS.achievements, JSON.stringify(a));
+  var def = null;
+  ACHIEVEMENTS.forEach(function(x){ if (x.id === id) def = x; });
+  return def;
+}
+function checkAchievements(score, stars){
+  var newly = [];
+  var solved = lsNum(LS.solved, 0);
+  if (solved >= 1){ var d = unlockAchievement('first'); if (d) newly.push(d); }
+  if (state.mistakes === 0 && state.over){ var d2 = unlockAchievement('flawless'); if (d2) newly.push(d2); }
+  if (state.mode === 'daily' && state.elapsed < 60){ var d3 = unlockAchievement('speedster'); if (d3) newly.push(d3); }
+  if (lsNum(LS.streak, 0) >= 7){ var d4 = unlockAchievement('streak7'); if (d4) newly.push(d4); }
+  if (levelsCompleted() >= LEVELS.length){ var d5 = unlockAchievement('master'); if (d5) newly.push(d5); }
+  return newly;
+}
+
+/* ---------- game state ---------- */
+var state = {
+  screen:'menu', mode:null, /* 'daily' | 'practice' | 'tutorial' | 'level' */
+  diff:'easy', tutorialIdx:0, levelIdx:0,
+  mistakesMax:0, timeLimit:0, failReason:null,
+  size:6, grid:[], solution:[], locked:{},
+  moves:0, mistakes:0, hintsLeft:3, history:[],
+  startTs:0, elapsed:0, timerId:null, paused:false, over:false,
+  brush:null, /* selected palette colour index, or null = cycle mode */
+  par:0, dailyDate:null
+};
+function emptyCells(){ var n=0; for (var r=0;r<state.size;r++) for (var c=0;c<state.size;c++) if (state.grid[r][c]===null) n++; return n; }
+function isComplete(){
+  for (var r=0;r<state.size;r++) for (var c=0;c<state.size;c++) if (state.grid[r][c]===null) return false;
+  return findConflicts().length === 0;
+}
+function findConflicts(){
+  var bad = {}, n = state.size;
+  function scan(cells){
+    var seen = {};
+    cells.forEach(function(rc){
+      var v = state.grid[rc[0]][rc[1]];
+      if (v === null) return;
+      if (seen[v] !== undefined){ bad[rc[0]+','+rc[1]] = true; bad[seen[v]] = true; }
+      else seen[v] = rc[0]+','+rc[1];
+    });
+  }
+  for (var r=0;r<n;r++){ var row=[]; for (var c=0;c<n;c++) row.push([r,c]); scan(row); }
+  for (var c2=0;c2<n;c2++){ var col=[]; for (var r2=0;r2<n;r2++) col.push([r2,c2]); scan(col); }
+  return Object.keys(bad);
+}
+function scoreNow(){
+  return Math.max(100, 1200 - state.moves*5 - state.mistakes*30 - Math.floor(state.elapsed)*2);
+}
+function starsNow(){
+  if (state.mistakes === 0 && state.moves <= state.par + 3) return 3;
+  if (state.mistakes <= 3 && state.moves <= state.par + 12) return 2;
+  return 1;
+}
+function live(msg){ $('live-status').textContent = msg; }
+
+/* ---------- screens & overlays ---------- */
+function showScreen(name){
+  state.screen = name;
+  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+  var el = $('screen-' + name);
+  if (el) el.classList.add('active');
+  window.scrollTo(0,0);
+}
+function openOverlay(id){ var el = $('overlay-' + id); if (el) el.classList.add('active'); }
+function closeOverlay(id){ var el = $('overlay-' + id); if (el) el.classList.remove('active'); }
+function closeAllOverlays(){ document.querySelectorAll('.overlay').forEach(function(o){ o.classList.remove('active'); }); stopHowtoDemo(); }
+
+/* ---------- board rendering ---------- */
+var tileEls = {};
+function tileSvg(colourIdx){
+  return '<svg viewBox="0 0 40 40" aria-hidden="true">' + COLOURS[colourIdx].svg + '</svg>';
+}
+function renderBoard(){
+  var board = $('board');
+  board.className = 'board size-' + state.size;
+  board.innerHTML = '';
+  tileEls = {};
+  for (var r=0;r<state.size;r++){
+    for (var c=0;c<state.size;c++){
+      (function(r,c){
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'tile';
+        b.setAttribute('role','gridcell');
+        b.dataset.r = r; b.dataset.c = c;
+        b.setAttribute('aria-label', tileLabel(r,c));
+        b.addEventListener('click', function(){ onTileTap(r,c); });
+        b.addEventListener('keydown', onTileKey);
+        board.appendChild(b);
+        tileEls[r+','+c] = b;
+        paintTile(r,c);
+      })(r,c);
+    }
+  }
+  updateConflicts();
+}
+function tileLabel(r,c){
+  var v = state.grid[r][c];
+  var locked = state.locked[r+','+c] ? ', locked' : '';
+  var col = v === null ? 'empty' : COLOURS[v].name + ' ' + COLOURS[v].shape;
+  return 'Row ' + (r+1) + ' column ' + (c+1) + ', ' + col + locked + '. Tap to change colour.';
+}
+function paintTile(r,c){
+  var el = tileEls[r+','+c]; if (!el) return;
+  var v = state.grid[r][c];
+  el.className = 'tile' + (v === null ? ' empty' : ' c' + v) + (state.locked[r+','+c] ? ' locked' : '');
+  el.innerHTML = v === null ? '' : tileSvg(v);
+  el.setAttribute('aria-label', tileLabel(r,c));
+}
+function renderPalette(){
+  var pal = $('palette'); pal.innerHTML = '';
+  for (var i=0;i<state.size;i++){
+    (function(i){
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'swatch c' + i;
+      b.setAttribute('aria-label', 'Paint with ' + COLOURS[i].name + ' ' + COLOURS[i].shape + ' (key ' + (i+1) + ')');
+      b.setAttribute('aria-pressed', state.brush === i ? 'true' : 'false');
+      b.innerHTML = tileSvg(i);
+      b.addEventListener('click', function(){
+        AudioMod.ensure(); AudioMod.click();
+        state.brush = (state.brush === i) ? null : i;
+        renderPalette();
+        $('brush-note').textContent = state.brush === null
+          ? 'Tap a tile to cycle its colour · or pick a colour below, then tap a tile to paint it'
+          : 'Painting with ' + COLOURS[i].name + ' ' + COLOURS[i].shape + ' — tap a tile to paint it. Tap the swatch again to go back to cycling.';
+      });
+      pal.appendChild(b);
+    })(i);
+  }
+}
+function updateConflicts(){
+  var bad = findConflicts();
+  var badSet = {};
+  bad.forEach(function(k){ badSet[k] = true; });
+  for (var k in tileEls){
+    tileEls[k].classList.toggle('conflict', !!badSet[k]);
+  }
+  return bad;
+}
+function updateHUD(){
+  $('hud-moves').textContent = state.moves;
+  $('hud-mistakes').textContent = state.mistakesMax > 0 ? state.mistakes + '/' + state.mistakesMax : state.mistakes;
+  $('hud-time').textContent = state.timeLimit > 0 ? fmtTime(Math.max(0, state.timeLimit - state.elapsed)) : fmtTime(state.elapsed);
+  var timeChip = $('hud-time').closest('.chip');
+  if (timeChip) timeChip.classList.toggle('danger', state.timeLimit > 0 && (state.timeLimit - state.elapsed) <= 30);
+  $('hud-stars').textContent = state.over ? '★'.repeat(starsNow()) : '–';
+  $('hint-count').textContent = '(' + state.hintsLeft + ')';
+  $('btn-hint').disabled = state.hintsLeft <= 0 || state.over;
+  $('btn-undo').disabled = state.history.length === 0 || state.over;
+}
+
+/* ---------- timer ---------- */
+function startTimer(){
+  stopTimer();
+  state.startTs = Date.now() - state.elapsed * 1000;
+  state.timerId = setInterval(function(){
+    if (state.paused || state.over) return;
+    state.elapsed = (Date.now() - state.startTs) / 1000;
+    if (state.timeLimit > 0){
+      $('hud-time').textContent = fmtTime(Math.max(0, state.timeLimit - state.elapsed));
+      var timeChip = $('hud-time').closest('.chip');
+      if (timeChip) timeChip.classList.toggle('danger', (state.timeLimit - state.elapsed) <= 30);
+      if (state.elapsed >= state.timeLimit){ timeUp(); return; }
+    } else {
+      $('hud-time').textContent = fmtTime(state.elapsed);
+    }
+  }, 500);
+}
+function stopTimer(){ if (state.timerId){ clearInterval(state.timerId); state.timerId = null; } }
+
+/* ---------- gameplay actions ---------- */
+function onTileTap(r,c){
+  if (state.over || state.paused) return;
+  if (state.locked[r+','+c]){ AudioMod.ensure(); AudioMod.lock(); live('That tile is locked — it is a given.'); return; }
+  AudioMod.ensure();
+  var prev = state.grid[r][c];
+  var next;
+  if (state.brush !== null && state.brush < state.size) next = state.brush;
+  else next = (prev === null) ? 0 : (prev + 1) % state.size;
+  if (next === prev){ renderPalette(); return; }
+  state.history.push({r:r, c:c, prev:prev});
+  state.grid[r][c] = next;
+  state.moves++;
+  paintTile(r,c);
+  var el = tileEls[r+','+c];
+  el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
+  AudioMod.tap(next, r);
+  var before = state.mistakes;
+  var bad = updateConflicts();
+  if (bad.indexOf(r+','+c) !== -1 && state.mistakes === before){
+    state.mistakes++;
+    AudioMod.error();
+    live('Clash! ' + COLOURS[next].name + ' already appears in that row or column.');
+    if (state.mistakesMax > 0 && state.mistakes >= state.mistakesMax){
+      updateHUD();
+      failPuzzle('mistakes');
+      return;
+    }
+  } else if (state.grid[r][c] !== null){
+    live(COLOURS[next].name + ' ' + COLOURS[next].shape + ' placed at row ' + (r+1) + ', column ' + (c+1) + '.');
+  }
+  updateHUD();
+  if (isComplete()) winPuzzle();
+}
+function onTileKey(e){
+  var r = parseInt(e.currentTarget.dataset.r, 10), c = parseInt(e.currentTarget.dataset.c, 10);
+  var nr = r, nc = c;
+  if (e.key === 'ArrowUp') nr = Math.max(0, r-1);
+  else if (e.key === 'ArrowDown') nr = Math.min(state.size-1, r+1);
+  else if (e.key === 'ArrowLeft') nc = Math.max(0, c-1);
+  else if (e.key === 'ArrowRight') nc = Math.min(state.size-1, c+1);
+  else if (e.key >= '1' && e.key <= String(state.size)){
+    e.preventDefault();
+    var idx = parseInt(e.key, 10) - 1;
+    if (!state.locked[r+','+c] && !state.over && !state.paused){
+      state.brush = idx; renderPalette();
+      onTileTap(r,c);
+    }
+    return;
+  }
+  else return;
+  e.preventDefault();
+  var target = tileEls[nr+','+nc];
+  if (target) target.focus();
+}
+function doUndo(){
+  if (state.over || state.paused || !state.history.length) return;
+  var h = state.history.pop();
+  state.grid[h.r][h.c] = h.prev;
+  paintTile(h.r, h.c);
+  updateConflicts();
+  AudioMod.ensure(); AudioMod.click();
+  updateHUD();
+  live('Undid last move.');
+}
+function doHint(){
+  if (state.over || state.paused || state.hintsLeft <= 0) return;
+  var target = null;
+  for (var r=0;r<state.size && !target;r++) for (var c=0;c<state.size;c++){
+    if (!state.locked[r+','+c] && state.grid[r][c] !== state.solution[r][c]){ target = [r,c]; break; }
+  }
+  if (!target) return;
+  state.hintsLeft--;
+  state.history.push({r:target[0], c:target[1], prev:state.grid[target[0]][target[1]]});
+  state.grid[target[0]][target[1]] = state.solution[target[0]][target[1]];
+  state.moves++;
+  paintTile(target[0], target[1]);
+  var el = tileEls[target[0]+','+target[1]];
+  el.classList.remove('hint-glow'); void el.offsetWidth; el.classList.add('hint-glow');
+  AudioMod.ensure(); AudioMod.hint();
+  updateConflicts(); updateHUD();
+  live('Hint: row ' + (target[0]+1) + ', column ' + (target[1]+1) + ' is ' + COLOURS[state.solution[target[0]][target[1]]].name + '.');
+  if (isComplete()) winPuzzle();
+}
+function doCheck(){
+  if (state.over || state.paused) return;
+  var bad = updateConflicts();
+  AudioMod.ensure();
+  if (bad.length){
+    AudioMod.error();
+    live(bad.length + ' clashing tiles glow red. Tap them to fix the repeats.');
+    $('brush-note').textContent = '⚠️ ' + bad.length + ' tile' + (bad.length>1?'s':'') + ' clash' + (bad.length>1?'':'es') + ' — glowing red. Tap a glowing tile to change it.';
+  } else {
+    AudioMod.click();
+    live('Looking good — no clashes on the board. Keep going!');
+    $('brush-note').textContent = '✅ No clashes — looking good! Fill the empty tiles to finish.';
+  }
+}
+
+/* ---------- puzzle lifecycle ---------- */
+function startPuzzle(opts){
+  state.mode = opts.mode;
+  state.size = opts.puzzle.size;
+  state.solution = opts.puzzle.solution;
+  state.grid = opts.puzzle.grid.map(function(row){ return row.slice(); });
+  state.locked = opts.puzzle.locked;
+  state.moves = 0; state.mistakes = 0; state.hintsLeft = 3; state.history = [];
+  state.elapsed = 0; state.over = false; state.paused = false; state.brush = null;
+  state.mistakesMax = opts.mistakesMax || 0; state.timeLimit = opts.timeLimit || 0;
+  state.failReason = null;
+  state.dailyDate = opts.dailyDate || null;
+  state.par = emptyCells();
+  $('level-title').textContent = opts.title;
+  $('level-sub').textContent = opts.sub;
+  var hintBox = $('tutor-hint');
+  if (opts.hint){ hintBox.hidden = false; $('tutor-text').textContent = opts.hint; }
+  else hintBox.hidden = true;
+  $('brush-note').textContent = 'Tap a tile to cycle its colour · or pick a colour below, then tap a tile to paint it';
+  renderBoard(); renderPalette(); updateHUD();
+  closeAllOverlays();
+  showScreen('game');
+  AudioMod.ensure(); AudioMod.startMusic();
+  startTimer();
+  live(opts.title + ' started. ' + opts.sub);
+}
+function restartPuzzle(){
+  AudioMod.ensure(); AudioMod.click();
+  if (state.mode === 'daily') startDaily();
+  else if (state.mode === 'tutorial') startTutorial(state.tutorialIdx);
+  else if (state.mode === 'level') startLevel(state.levelIdx);
+  else startPractice(state.diff);
+}
+function pauseGame(){
+  if (state.over || state.screen !== 'game') return;
+  state.paused = true;
+  openOverlay('pause');
+  live('Game paused.');
+}
+function resumeGame(){
+  state.paused = false;
+  state.startTs = Date.now() - state.elapsed * 1000;
+  closeOverlay('pause');
+  live('Game resumed.');
+}
+function quitToMenu(){
+  stopTimer(); AudioMod.stopMusic();
+  state.paused = false; state.over = false;
+  closeAllOverlays();
+  refreshMenu();
+  showScreen('menu');
+}
+
+/* ---------- win / give up / results ---------- */
+function winPuzzle(){
+  state.over = true;
+  stopTimer();
+  var score = scoreNow();
+  var stars = starsNow();
+  var best = lsNum(LS.best, 0);
+  var isNewBest = score > best;
+  if (isNewBest){ lsSet(LS.best, String(score)); best = score; }
+  lsSet(LS.solved, String(lsNum(LS.solved, 0) + 1));
+  if (state.mode === 'daily' && state.dailyDate){
+    markDailyDone(state.dailyDate);
+    var db = lsNum(LS.dailyBest, 0);
+    if (score > db) lsSet(LS.dailyBest, String(score));
+  }
+  if (state.mode === 'tutorial'){
+    var done = lsNum(LS.tutorial, 0);
+    if (state.tutorialIdx + 1 > done) lsSet(LS.tutorial, String(state.tutorialIdx + 1));
+    var ts = {};
+    try { ts = JSON.parse(lsGet(LS.tutorialStars, '{}')); } catch(e){}
+    ts[state.tutorialIdx] = Math.max(ts[state.tutorialIdx] || 0, stars);
+    lsSet(LS.tutorialStars, JSON.stringify(ts));
+  }
+  if (state.mode === 'level'){
+    var lStars = levelStarsMap();
+    lStars[state.levelIdx] = Math.max(lStars[state.levelIdx] || 0, stars);
+    lsSet(LS.levelStars, JSON.stringify(lStars));
+    var lBest = levelBestMap();
+    if (score > (lBest[state.levelIdx] || 0)){ lBest[state.levelIdx] = score; lsSet(LS.levelBest, JSON.stringify(lBest)); }
+  }
+  var newAch = checkAchievements(score, stars);
+  AudioMod.win();
+  showResults(true, score, stars, isNewBest, newAch);
+  if (!REDUCED) setTimeout(confettiBurst, 350);
+  live('Puzzle complete! ' + stars + ' star' + (stars>1?'s':'') + ', score ' + score + '.');
+}
+function failPuzzle(reason){
+  if (state.over) return;
+  state.over = true;
+  state.failReason = reason;
+  stopTimer();
+  AudioMod.error();
+  showResults(false, 0, 0, false, []);
+  live(reason === 'time' ? 'Time ran out!' : 'Too many clashes — level failed.');
+}
+function timeUp(){ failPuzzle('time'); }
+function giveUp(){
+  state.over = true;
+  state.failReason = 'giveup';
+  stopTimer();
+  AudioMod.error();
+  showResults(false, 0, 0, false, []);
+  live('Puzzle given up. Better luck next hop!');
+}
+function showResults(won, score, stars, isNewBest, newAch){
+  newAch = newAch || [];
+  $('results-emoji').textContent = won ? (stars === 3 ? '🌈' : '🎉') : (state.failReason === 'time' ? '⏰' : state.failReason === 'mistakes' ? '💥' : '💪');
+  $('results-title').textContent = won
+    ? (state.mode === 'daily' ? 'Daily rainbow complete!' : state.mode === 'tutorial' ? 'Lesson complete!' : state.mode === 'level' ? 'Level ' + (state.levelIdx + 1) + ' complete!' : 'Rainbow complete!')
+    : (state.failReason === 'time' ? "Time's up!" : state.failReason === 'mistakes' ? 'Too many clashes!' : 'Puzzle incomplete');
+  var sr = $('results-stars');
+  sr.innerHTML = '';
+  for (var i=0;i<3;i++){
+    var s = document.createElement('span');
+    s.textContent = '★';
+    s.className = i < stars ? 'star-on' : 'star-off';
+    sr.appendChild(s);
+  }
+  sr.setAttribute('aria-label', stars + ' out of 3 stars');
+  $('res-moves').textContent = state.moves;
+  $('res-mistakes').textContent = state.mistakes;
+  $('res-time').textContent = fmtTime(state.elapsed);
+  $('results-msg').textContent = won
+    ? (stars === 3 ? 'Flawless hopping! Not a single clash — Hue is doing a happy dance.'
+      : stars === 2 ? 'Beautiful rainbow! A couple of clashes, but you fixed them all.'
+      : 'You cracked it! Try again for more stars — zero mistakes is the golden hop.')
+    : (state.failReason === 'time' ? 'The clock beat you this time — the rainbow was so close! Tap Replay to try this level again.'
+      : state.failReason === 'mistakes' ? 'That was clash number ' + state.mistakesMax + ' — this level only allows ' + state.mistakesMax + '. Slow down, check the rows, and try again!'
+      : 'No worries — every rainbow takes practice. Tap Next puzzle for a fresh board, or Replay to try this one again.');
+  $('results-best').innerHTML = won
+    ? (isNewBest ? '🏆 <b>New best score!</b> ' : '') + 'Best score: <b>' + lsNum(LS.best, 0) + '</b>' + (state.mode === 'daily' ? ' · 🔥 Streak: <b>' + lsNum(LS.streak, 0) + ' day' + (lsNum(LS.streak,0)===1?'':'s') + '</b>' : '')
+    : 'Best score: <b>' + lsNum(LS.best, 0) + '</b>';
+  var toast = $('ach-toast');
+  if (won && newAch.length){
+    toast.innerHTML = '🏅 <b>New achievement' + (newAch.length > 1 ? 's' : '') + '!</b> ' +
+      newAch.map(function(a){ return a.icon + ' ' + a.title; }).join(' · ');
+    toast.classList.add('show');
+  } else {
+    toast.classList.remove('show');
+    toast.innerHTML = '';
+  }
+  $('btn-next').textContent = state.mode === 'tutorial'
+    ? (state.tutorialIdx < 2 ? '➡ Next lesson' : '➡ Play a real puzzle')
+    : state.mode === 'level'
+      ? (state.levelIdx < LEVELS.length - 1 ? '➡ Next level' : '➡ Back to levels')
+      : '➡ Next puzzle';
+  openOverlay('results');
+  /* animated count-up */
+  var target = score, shown = 0, el = $('results-score');
+  el.textContent = '0';
+  if (REDUCED || target === 0){ el.textContent = String(target); return; }
+  var step = Math.max(1, Math.ceil(target / 40));
+  var iv = setInterval(function(){
+    shown += step;
+    if (shown >= target){ shown = target; clearInterval(iv); }
+    el.textContent = String(shown);
+  }, 25);
+}
+function confettiBurst(){
+  var colours = ['#FF6B6B','#FFC94D','#2EC4B6','#7C6FF0','#34B37A','#4D8DE0'];
+  for (var i=0;i<48;i++){
+    var d = document.createElement('div');
+    d.className = 'confetti';
+    d.style.left = (Math.random()*100) + 'vw';
+    d.style.background = colours[i % colours.length];
+    d.style.animationDuration = (1.6 + Math.random()*1.8) + 's';
+    d.style.animationDelay = (Math.random()*0.5) + 's';
+    d.style.transform = 'rotate(' + (Math.random()*360) + 'deg)';
+    document.body.appendChild(d);
+    (function(el){ setTimeout(function(){ el.remove(); }, 4200); })(d);
+  }
+}
+
+/* ---------- modes ---------- */
+function startDaily(dateOverride){
+  var ds = dateOverride || todayStr();
+  var p = dailyPuzzleFor(ds);
+  startPuzzle({
+    mode:'daily', puzzle:p, dailyDate:ds,
+    title:'Daily Puzzle', sub:'Puzzle for ' + ds + ' · same board for everyone today',
+    hint:null
+  });
+}
+function startPractice(diff){
+  state.diff = diff;
+  var rnd = mulberry32((Date.now() ^ Math.floor(Math.random()*1e9)) >>> 0);
+  var p = makePuzzle(6, DIFFS[diff].givens, rnd);
+  startPuzzle({
+    mode:'practice', puzzle:p,
+    title:'Practice · ' + DIFFS[diff].label, sub:'A fresh random rainbow — ' + DIFFS[diff].givens + ' tiles given',
+    hint:null
+  });
+}
+function startTutorial(idx){
+  state.tutorialIdx = idx;
+  var t = TUTORIALS[idx];
+  startPuzzle({
+    mode:'tutorial', puzzle:{ size:t.puzzle.size, solution:t.puzzle.solution,
+      grid:t.puzzle.grid.map(function(r){ return r.slice(); }), locked:t.puzzle.locked },
+    title:t.title, sub:t.sub, hint:t.hint
+  });
+}
+function startLevel(idx){
+  state.levelIdx = idx;
+  var lv = LEVELS[idx];
+  var rnd = mulberry32((Date.now() ^ Math.floor(Math.random()*1e9) ^ (idx * 7919)) >>> 0);
+  var p = makePuzzle(6, lv.givens, rnd);
+  startPuzzle({
+    mode:'level', puzzle:p,
+    title:'Level ' + (idx + 1) + ' · ' + lv.name,
+    sub:lv.rule,
+    mistakesMax:lv.mistakesMax, timeLimit:lv.timeLimit,
+    hint:null
+  });
+}
+function nextPuzzle(){
+  closeOverlay('results');
+  if (state.mode === 'tutorial'){
+    if (state.tutorialIdx < 2) startTutorial(state.tutorialIdx + 1);
+    else startPractice('easy');
+  } else if (state.mode === 'level'){
+    if (state.levelIdx < LEVELS.length - 1) startLevel(state.levelIdx + 1);
+    else { refreshMenu(); showScreen('menu'); renderLevels(); openOverlay('levels'); }
+  } else if (state.mode === 'daily'){
+    startPractice('medium');
+  } else {
+    startPractice(state.diff);
+  }
+}
+function renderLevels(){
+  var wrap = $('levels-list'); if (!wrap) return;
+  wrap.innerHTML = '';
+  var stars = levelStarsMap(), best = levelBestMap();
+  var unlocked = levelsCompleted(); /* levels 0..unlocked are playable */
+  for (var i=0;i<LEVELS.length;i++){
+    (function(i){
+      var lv = LEVELS[i];
+      var locked = i > unlocked;
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'level-card' + (locked ? ' locked' : '');
+      var st = stars[i] || 0;
+      b.innerHTML = '<span class="lv">Level ' + (i+1) + '</span><span class="ds">' + lv.name + '</span>' +
+        '<span class="st">' + (st ? '★'.repeat(st) + '☆'.repeat(3-st) : '—') + '</span>' +
+        '<span class="req">' + lv.rule + '</span>' +
+        (best[i] ? '<span class="best">Best ' + best[i] + '</span>' : '');
+      b.disabled = locked;
+      b.setAttribute('aria-label', 'Level ' + (i+1) + ', ' + lv.name + ', ' + lv.rule + (locked ? ', locked — finish the previous level first' : (st ? ', ' + st + ' stars' : '')));
+      b.addEventListener('click', function(){ AudioMod.ensure(); AudioMod.click(); closeOverlay('levels'); startLevel(i); });
+      wrap.appendChild(b);
+    })(i);
+  }
+}
+function renderAchievements(){
+  var wrap = $('ach-list'); if (!wrap) return;
+  wrap.innerHTML = '';
+  var got = achievementsMap();
+  ACHIEVEMENTS.forEach(function(a){
+    var div = document.createElement('div');
+    div.className = 'ach-item ' + (got[a.id] ? 'unlocked' : 'locked');
+    div.innerHTML = '<span class="aic" aria-hidden="true">' + (got[a.id] ? a.icon : '🔒') + '</span>' +
+      '<div><b>' + a.title + '</b><span>' + a.desc + (got[a.id] ? ' — unlocked ' + got[a.id] : '') + '</span></div>';
+    wrap.appendChild(div);
+  });
+}
+
+/* ---------- daily streak ---------- */
+function markDailyDone(dateStr){
+  var done = [];
+  try { done = JSON.parse(lsGet(LS.dailyDone, '[]')); } catch(e){}
+  if (done.indexOf(dateStr) === -1){ done.push(dateStr); lsSet(LS.dailyDone, JSON.stringify(done.slice(-60))); }
+  var last = lsGet(LS.dailyLast, '');
+  var streak = lsNum(LS.streak, 0);
+  if (last === dateStr){ /* already counted today */ }
+  else if (last === addDaysStr(dateStr, -1)){ streak += 1; }
+  else { streak = 1; }
+  lsSet(LS.streak, String(streak));
+  lsSet(LS.dailyLast, dateStr);
+}
+function refreshMenu(){
+  $('best-menu').textContent = lsNum(LS.best, 0);
+  $('solved-menu').textContent = lsNum(LS.solved, 0);
+  $('levels-menu').textContent = levelsCompleted() + '/' + LEVELS.length;
+  $('ach-menu').textContent = Object.keys(achievementsMap()).length + '/' + ACHIEVEMENTS.length;
+  $('streak-num').textContent = lsNum(LS.streak, 0);
+  var done = [];
+  try { done = JSON.parse(lsGet(LS.dailyDone, '[]')); } catch(e){}
+  var dots = $('week-dots'); dots.innerHTML = '';
+  var today = todayStr();
+  for (var i=6;i>=0;i--){
+    var ds = addDaysStr(today, -i);
+    var d = document.createElement('span');
+    d.className = 'week-dot' + (done.indexOf(ds) !== -1 ? ' done' : '') + (ds === today ? ' today' : '');
+    d.textContent = done.indexOf(ds) !== -1 ? '✓' : new Date(ds + 'T12:00:00').toLocaleDateString('en-US', {weekday:'narrow'});
+    d.title = ds + (done.indexOf(ds) !== -1 ? ' — daily puzzle solved' : '');
+    dots.appendChild(d);
+  }
+  renderTutorialLevels();
+}
+function renderTutorialLevels(){
+  var wrap = $('tutorial-levels'); if (!wrap) return;
+  wrap.innerHTML = '';
+  var done = lsNum(LS.tutorial, 0);
+  var stars = {};
+  try { stars = JSON.parse(lsGet(LS.tutorialStars, '{}')); } catch(e){}
+  for (var i=0;i<3;i++){
+    (function(i){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'level-card' + (i > done ? ' locked' : '');
+      var st = stars[i] || 0;
+      b.innerHTML = '<span class="lv">Lesson ' + (i+1) + '</span><span class="ds">' +
+        (i===0 ? '3×3 · Tap to hop' : i===1 ? '4×4 · Rows & columns' : '6×6 · The full hop') +
+        '</span><span class="st">' + (st ? '★'.repeat(st) + '☆'.repeat(3-st) : '—') + '</span>';
+      b.disabled = i > done;
+      b.setAttribute('aria-label', 'Tutorial lesson ' + (i+1) + (i > done ? ', locked — finish the previous lesson first' : ''));
+      b.addEventListener('click', function(){ AudioMod.ensure(); AudioMod.click(); startTutorial(i); });
+      wrap.appendChild(b);
+    })(i);
+  }
+}
+
+/* ---------- how-to demo: one tile hopping through the rainbow (v1.1.0) ---------- */
+var howtoReturn = 'menu'; /* 'menu' | 'pause' — where How to Play was opened from */
+var demoTimer = null, demoIdx = 0;
+function demoTileSvg(i){
+  return '<svg viewBox="0 0 40 40" aria-hidden="true">' + COLOURS[i].svg + '</svg>';
+}
+function startHowtoDemo(){
+  stopHowtoDemo();
+  var tile = $('howto-demo-tile'), label = $('howto-demo-label');
+  if (!tile) return;
+  demoIdx = 0;
+  function paint(){
+    tile.className = 'howto-demo-tile dc' + demoIdx;
+    tile.innerHTML = demoTileSvg(demoIdx);
+    if (label) label.textContent = COLOURS[demoIdx].name + ' ' + shapeGlyph(demoIdx) + ' — tap again to hop to the next colour';
+  }
+  function shapeGlyph(i){ return ['●','★','▲','◆','♥','⬢'][i]; }
+  paint();
+  if (REDUCED) return;
+  demoTimer = setInterval(function(){
+    demoIdx = (demoIdx + 1) % COLOURS.length;
+    paint();
+  }, 700);
+}
+function stopHowtoDemo(){ if (demoTimer){ clearInterval(demoTimer); demoTimer = null; } }
+function openHowto(from){
+  howtoReturn = from || 'menu';
+  openOverlay('howto');
+  startHowtoDemo();
+}
+function closeHowto(){
+  stopHowtoDemo();
+  closeOverlay('howto');
+  if (howtoReturn === 'pause' && state.screen === 'game' && state.paused) openOverlay('pause');
+}
+
+/* ---------- settings UI ---------- */
+function syncSettingsUI(){
+  var musicBtns = [$('btn-music-menu'), $('btn-music-game')];
+  musicBtns.forEach(function(b){ if (b) b.setAttribute('aria-pressed', String(settings.music)); });
+  var sfxBtns = [$('btn-sfx-menu'), $('btn-sfx-game')];
+  sfxBtns.forEach(function(b){ if (b) b.setAttribute('aria-pressed', String(settings.sfx)); });
+  $('set-music').setAttribute('aria-pressed', String(settings.music));
+  $('set-music').textContent = settings.music ? 'On' : 'Off';
+  $('set-sfx').setAttribute('aria-pressed', String(settings.sfx));
+  $('set-sfx').textContent = settings.sfx ? 'On' : 'Off';
+  $('set-volume').value = settings.volume;
+  $('vol-val').textContent = settings.volume;
+  AudioMod.applySettings();
+  if (settings.music && state.screen === 'game' && !state.over) AudioMod.startMusic();
+  else if (!settings.music) AudioMod.stopMusic();
+}
+function toggleMusic(){
+  AudioMod.ensure();
+  settings.music = !settings.music;
+  saveSettings(); syncSettingsUI();
+  live('Music ' + (settings.music ? 'on' : 'off') + '.');
+}
+function toggleSfx(){
+  AudioMod.ensure();
+  settings.sfx = !settings.sfx;
+  saveSettings(); syncSettingsUI();
+  if (settings.sfx) AudioMod.click();
+  live('Sound effects ' + (settings.sfx ? 'on' : 'off') + '.');
+}
+
+/* ---------- wiring ---------- */
+function bind(){
+  $('btn-play-daily').addEventListener('click', function(){ AudioMod.ensure(); AudioMod.click(); startDaily(); });
+  $('btn-practice').addEventListener('click', function(){ AudioMod.ensure(); AudioMod.click(); openOverlay('modes'); });
+  $('btn-tutorial').addEventListener('click', function(){ AudioMod.ensure(); AudioMod.click(); renderTutorialLevels(); openOverlay('tutorial'); });
+  $('btn-howto').addEventListener('click', function(){ AudioMod.ensure(); AudioMod.click(); openHowto('menu'); });
+  $('btn-howto-play').addEventListener('click', function(){
+    var fromPause = (howtoReturn === 'pause');
+    closeHowto();
+    AudioMod.ensure(); AudioMod.click();
+    if (!fromPause) startDaily();
+  });
+  $('btn-howto-close').addEventListener('click', function(){ closeHowto(); });
+  $('btn-levels').addEventListener('click', function(){ AudioMod.ensure(); AudioMod.click(); renderLevels(); openOverlay('levels'); });
+  $('btn-levels-close').addEventListener('click', function(){ closeOverlay('levels'); });
+  $('ach-link').addEventListener('click', function(e){ e.preventDefault(); AudioMod.ensure(); AudioMod.click(); renderAchievements(); openOverlay('achievements'); });
+  $('btn-ach-close').addEventListener('click', function(){ closeOverlay('achievements'); });
+  $('btn-settings').addEventListener('click', function(){ AudioMod.ensure(); AudioMod.click(); syncSettingsUI(); openOverlay('settings'); });
+  $('btn-settings-close').addEventListener('click', function(){
+    closeOverlay('settings');
+    /* if Settings was opened from the pause screen, return there — the game is still paused */
+    if (state.paused && state.screen === 'game') openOverlay('pause');
+  });
+  $('btn-pause-settings').addEventListener('click', function(){ closeOverlay('pause'); syncSettingsUI(); openOverlay('settings'); });
+  $('btn-pause-howto').addEventListener('click', function(){ closeOverlay('pause'); openHowto('pause'); });
+  $('btn-music-menu').addEventListener('click', toggleMusic);
+  $('btn-music-game').addEventListener('click', toggleMusic);
+  $('btn-sfx-menu').addEventListener('click', toggleSfx);
+  $('btn-sfx-game').addEventListener('click', toggleSfx);
+  $('set-music').addEventListener('click', toggleMusic);
+  $('set-sfx').addEventListener('click', toggleSfx);
+  $('set-volume').addEventListener('input', function(e){
+    settings.volume = clamp(parseInt(e.target.value, 10) || 0, 0, 100);
+    saveSettings(); syncSettingsUI();
+  });
+  $('btn-pause').addEventListener('click', function(){ AudioMod.ensure(); AudioMod.click(); pauseGame(); });
+  $('btn-resume').addEventListener('click', function(){ AudioMod.ensure(); AudioMod.click(); resumeGame(); });
+  $('btn-restart').addEventListener('click', restartPuzzle);
+  $('btn-pause-restart').addEventListener('click', function(){ closeOverlay('pause'); state.paused = false; restartPuzzle(); });
+  $('btn-giveup').addEventListener('click', function(){ closeOverlay('pause'); state.paused = false; giveUp(); });
+  $('btn-pause-menu').addEventListener('click', quitToMenu);
+  $('btn-quit-menu').addEventListener('click', function(e){ e.preventDefault(); quitToMenu(); });
+  $('btn-undo').addEventListener('click', doUndo);
+  $('btn-hint').addEventListener('click', doHint);
+  $('btn-check').addEventListener('click', doCheck);
+  $('btn-next').addEventListener('click', function(){ AudioMod.ensure(); AudioMod.click(); nextPuzzle(); });
+  $('btn-replay').addEventListener('click', function(){ AudioMod.ensure(); AudioMod.click(); closeOverlay('results'); restartPuzzle(); });
+  $('btn-results-menu').addEventListener('click', quitToMenu);
+  $('btn-modes-close').addEventListener('click', function(){ closeOverlay('modes'); });
+  $('btn-tutorial-close').addEventListener('click', function(){ closeOverlay('tutorial'); });
+  $('btn-start-practice').addEventListener('click', function(){ closeOverlay('modes'); startPractice(state.diff); });
+  document.querySelectorAll('.diff-btn').forEach(function(b){
+    b.addEventListener('click', function(){
+      document.querySelectorAll('.diff-btn').forEach(function(x){ x.classList.remove('sel'); });
+      b.classList.add('sel');
+      state.diff = b.dataset.diff;
+      AudioMod.ensure(); AudioMod.click();
+    });
+  });
+  /* first gesture unlocks audio (music starts on Play, never before) */
+  document.addEventListener('pointerdown', function once(){
+    AudioMod.ensure();
+    document.removeEventListener('pointerdown', once);
+  }, { once:true });
+  /* global keys */
+  document.addEventListener('keydown', function(e){
+    if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+    if (e.key === 'Escape' || e.key === 'p' || e.key === 'P'){
+      if (state.screen === 'game'){
+        if ($('overlay-results').classList.contains('active')) return;
+        if (state.paused) resumeGame(); else pauseGame();
+      } else if (document.querySelector('.overlay.active')){
+        closeAllOverlays();
+        if (state.screen === 'game' && state.paused) resumeGame();
+      }
+    }
+    if ((e.key === 'r' || e.key === 'R') && state.screen === 'game' && !state.over && !state.paused) restartPuzzle();
+    if ((e.key === 'm' || e.key === 'M') && state.screen === 'game') toggleMusic();
+  });
+  /* pause music scheduling when tab hidden; resume cleanly */
+  document.addEventListener('visibilitychange', function(){
+    if (document.hidden && state.screen === 'game' && !state.over && !state.paused) pauseGame();
+  });
+}
+
+/* ---------- init ---------- */
+bind();
+syncSettingsUI();
+refreshMenu();
+showScreen('menu');
+
+/* ---------- test/debug hooks (read-only state + deterministic daily gen) ---------- */
+return {
+  version:'1.1.0',
+  id:'JJB-GAME-20261116-08',
+  dailyPuzzleFor:dailyPuzzleFor,
+  levels:function(){ return LEVELS.map(function(l, i){ return { idx:i, givens:l.givens, mistakesMax:l.mistakesMax, timeLimit:l.timeLimit, name:l.name }; }); },
+  levelStars:function(){ return levelStarsMap(); },
+  achievements:function(){ return { defs:ACHIEVEMENTS, unlocked:achievementsMap() }; },
+  audioState:function(){
+    return {
+      hasCtx: !!AudioMod.ctx,
+      ctxState: AudioMod.ctx ? AudioMod.ctx.state : null,
+      musicTimer: !!AudioMod.musicTimer,
+      music: settings.music, sfx: settings.sfx, volume: settings.volume,
+      musicGain: AudioMod.musicGain ? AudioMod.musicGain.gain.value : null,
+      sfxGain: AudioMod.sfxGain ? AudioMod.sfxGain.gain.value : null
+    };
+  },
+  /* test-only hook: advance the puzzle clock without waiting in real time */
+  advanceTime:function(seconds){
+    state.elapsed += seconds;
+    state.startTs = Date.now() - state.elapsed * 1000;
+    updateHUD();
+  },
+  getState:function(){
+    return {
+      screen:state.screen, mode:state.mode, size:state.size,
+      grid:state.grid.map(function(r){ return r.slice(); }),
+      solution:state.solution.map(function(r){ return r.slice(); }),
+      locked:Object.keys(state.locked).length,
+      moves:state.moves, mistakes:state.mistakes, hintsLeft:state.hintsLeft,
+      elapsed:state.elapsed, paused:state.paused, over:state.over,
+      brush:state.brush, par:state.par, dailyDate:state.dailyDate,
+      score:scoreNow(), stars:starsNow(), conflicts:findConflicts().length,
+      complete:isComplete(),
+      levelIdx:state.levelIdx, mistakesMax:state.mistakesMax,
+      timeLimit:state.timeLimit, failReason:state.failReason,
+      levelsCompleted:levelsCompleted()
+    };
+  },
+  startDaily:startDaily, startPractice:startPractice, startTutorial:startTutorial, startLevel:startLevel,
+  settings:function(){ return { music:settings.music, sfx:settings.sfx, volume:settings.volume }; }
+};
+})();
+</script>
+</body>
+</html>

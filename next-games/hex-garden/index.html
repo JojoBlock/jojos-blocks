@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Hex Garden — JoJo's Blocks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FFF9F0; --ink:#2B2D42; --coral:#FF6B6B; --sun:#FFC94D; --teal:#2EC4B6; --lav:#7C6FF0;
+  --leaf:#3FA34D; --leaf2:#7BC96F; --soil:#8B5E3C; --cell:44px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color:var(--ink); background:#BFE8C9;
+  background-image:
+    radial-gradient(circle at 12% 8%, rgba(255,201,77,.55) 0 70px, transparent 71px),
+    radial-gradient(circle at 88% 14%, rgba(255,255,255,.7) 0 46px, transparent 47px),
+    radial-gradient(circle at 78% 22%, rgba(255,255,255,.55) 0 30px, transparent 31px),
+    linear-gradient(180deg,#CDEFD6 0%,#A8DFAE 34%,#8FD09A 62%,#6FBF7E 100%);
+  min-height:100vh; overflow-x:hidden; overscroll-behavior:none;
+  -webkit-tap-highlight-color:transparent;
+}
+/* decorative garden ground */
+body::before{content:"";position:fixed;inset:auto 0 0 0;height:120px;pointer-events:none;z-index:0;
+  background:radial-gradient(circle at 8% 100%, #3FA34D 0 60px, transparent 61px),
+  radial-gradient(circle at 28% 100%, #57B25E 0 46px, transparent 47px),
+  radial-gradient(circle at 52% 100%, #3FA34D 0 70px, transparent 71px),
+  radial-gradient(circle at 74% 100%, #57B25E 0 52px, transparent 53px),
+  radial-gradient(circle at 94% 100%, #3FA34D 0 64px, transparent 65px);}
+body::after{content:"🌼 🌷 🌻";position:fixed;left:10px;bottom:6px;font-size:22px;letter-spacing:14px;z-index:0;opacity:.85;pointer-events:none}
+.stage{position:relative;z-index:1;max-width:560px;margin:0 auto;padding:16px 16px 28px;min-height:100vh;display:flex;flex-direction:column}
+@media(min-width:640px){.stage{padding:24px 24px 32px}}
+h1,h2,h3,.display{font-family:'Fredoka','Comic Sans MS',system-ui,sans-serif}
+a{color:var(--ink)}
+button{font-family:'Fredoka','Comic Sans MS',system-ui,sans-serif;cursor:pointer;border:none;touch-action:manipulation;min-height:44px}
+button:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;min-width:44px;
+  padding:12px 26px;border-radius:999px;font-size:18px;font-weight:700;color:var(--ink);
+  background:linear-gradient(180deg,#FF8A7A,#FF6B6B);border:2px solid var(--ink);
+  box-shadow:0 4px 0 var(--ink),0 8px 18px rgba(43,45,66,.25);transition:transform .15s ease-out,box-shadow .15s ease-out}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(2px);box-shadow:0 2px 0 var(--ink),0 4px 10px rgba(43,45,66,.2)}
+.btn-teal{background:linear-gradient(180deg,#4ED8C8,#2EC4B6);color:var(--ink)}
+.btn-sun{background:linear-gradient(180deg,#FFD97A,#FFC94D);color:var(--ink)}
+.btn-lav{background:linear-gradient(180deg,#6A5CE0,#5B4BC4);color:#fff}
+.btn-ghost{background:var(--cream);color:var(--ink);box-shadow:0 4px 0 var(--ink),0 8px 18px rgba(43,45,66,.15)}
+.btn-small{padding:10px 18px;font-size:16px;min-height:44px}
+.icon-btn{width:48px;height:48px;min-width:48px;padding:0;border-radius:50%;font-size:22px;display:inline-flex;align-items:center;justify-content:center;
+  background:var(--cream);color:var(--ink);border:2px solid var(--ink);box-shadow:0 3px 0 var(--ink)}
+.icon-btn[aria-pressed="true"]{background:var(--sun)}
+/* header / HUD */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.brand{font-size:20px;font-weight:700;color:var(--ink);text-decoration:none;background:rgba(255,249,240,.85);
+  padding:8px 14px;border-radius:999px;border:2px solid var(--ink);box-shadow:0 3px 0 var(--ink);min-height:44px;display:inline-flex;align-items:center}
+.brand span{color:#2E7D32}
+.top-actions{display:flex;gap:8px}
+.hud{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+.chip{background:rgba(255,249,240,.95);border:2px solid var(--ink);border-radius:999px;padding:8px 14px;
+  box-shadow:0 3px 0 rgba(43,45,66,.9);display:flex;align-items:center;gap:7px;font-weight:800;font-size:15px;min-height:44px}
+.chip .ic{font-size:18px}
+.chip b{font-family:'Fredoka',sans-serif;font-size:19px}
+.chip.score b{color:#C0392B}.chip.best b{color:#5B4BC4}.chip.lines b{color:#0F766E}
+/* board */
+.board-wrap{position:relative;background:linear-gradient(180deg,#FFF3D6,#FFE9B8);
+  border:3px solid var(--ink);border-radius:24px;box-shadow:0 6px 0 var(--ink),0 14px 30px rgba(43,45,66,.25);
+  padding:10px;margin-bottom:12px;overflow:hidden}
+.board-wrap::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background:radial-gradient(circle at 20% 90%, rgba(63,163,77,.25) 0 40px, transparent 41px),
+  radial-gradient(circle at 85% 10%, rgba(255,201,77,.35) 0 36px, transparent 37px)}
+#board{position:relative;width:100%;max-width:380px;height:380px;margin:0 auto;touch-action:none;user-select:none;-webkit-user-select:none}
+.hex-cell{position:absolute;width:56px;height:64px;transform:translate(-50%,-50%);cursor:pointer;
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  background:#E7D3A7;border:none;display:flex;align-items:center;justify-content:center;
+  transition:transform .15s ease-out, background .15s ease-out, filter .15s ease-out}
+.hex-cell::after{content:"";position:absolute;inset:6px;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);background:rgba(255,249,240,.55);pointer-events:none}
+.hex-cell:hover,.hex-cell.cursor{filter:brightness(1.08)}
+.hex-cell.filled{background:#7BC96F;cursor:default}
+.hex-cell.filled::after{background:transparent}
+.hex-cell .flower{position:relative;z-index:2;width:82%;height:82%;pointer-events:none;animation:popIn .25s ease-out;display:flex;align-items:center;justify-content:center}
+.hex-cell .flower svg{width:100% !important;height:100% !important}
+@keyframes popIn{0%{transform:scale(.3)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
+.hex-cell.preview-valid{background:#2EC4B6;filter:brightness(1.1)}
+.hex-cell.preview-valid::after{background:rgba(255,255,255,.35)}
+.hex-cell.preview-invalid{background:#FF6B6B;animation:shake .3s ease-out}
+.hex-cell.blooming{animation:bloom .7s ease-out}
+@keyframes bloom{0%{transform:translate(-50%,-50%) scale(1)}35%{transform:translate(-50%,-50%) scale(1.35) rotate(12deg)}100%{transform:translate(-50%,-50%) scale(1)}}
+.hex-cell.blooming .flower{animation:bloomFlower .7s ease-out}
+@keyframes bloomFlower{0%{transform:scale(.6) rotate(0)}50%{transform:scale(1.5) rotate(40deg)}100%{transform:scale(1) rotate(0)}}
+@keyframes shake{0%,100%{transform:translate(-50%,-50%)}25%{transform:translate(calc(-50% - 4px),-50%)}75%{transform:translate(calc(-50% + 4px),-50%)}}
+.shake{animation:shake .3s ease-out}
+/* bee */
+#bee{position:absolute;z-index:30;width:64px;height:52px;pointer-events:none;opacity:0;left:0;top:0}
+#bee.flying{opacity:1;animation:beeFly 1.6s ease-in-out forwards}
+@keyframes beeFly{0%{transform:translate(0,40px) scale(.6);opacity:0}15%{opacity:1}50%{transform:translate(150px,-30px) scale(1.05)}85%{opacity:1}100%{transform:translate(300px,10px) scale(.9);opacity:0}}
+#bee .wings{animation:flap .12s infinite alternate;transform-origin:center}
+@keyframes flap{from{transform:scaleY(1)}to{transform:scaleY(.4)}}
+.float-text{position:absolute;z-index:40;font-family:'Fredoka',sans-serif;font-weight:700;font-size:22px;color:#B45309;
+  text-shadow:0 2px 0 #fff;pointer-events:none;animation:floatUp 1.4s ease-out forwards;white-space:nowrap}
+@keyframes floatUp{0%{opacity:0;transform:translateY(8px)}20%{opacity:1}100%{opacity:0;transform:translateY(-46px)}}
+/* tray */
+.tray-label{text-align:center;font-weight:800;font-size:15px;margin:2px 0 6px;color:#1E4620;text-shadow:0 1px 0 rgba(255,255,255,.6)}
+#tray{display:flex;gap:10px;justify-content:center;align-items:stretch}
+.tray-slot{flex:1;max-width:160px;min-height:104px;background:rgba(255,249,240,.92);border:2px dashed #7A9A6A;border-radius:20px;
+  display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 3px 0 rgba(43,45,66,.35)}
+.tray-piece{width:100%;height:100%;min-height:96px;border-radius:18px;display:flex;align-items:center;justify-content:center;
+  cursor:grab;touch-action:none;position:relative;background:transparent}
+.tray-piece.selected{outline:3px solid var(--sun);outline-offset:2px;background:rgba(255,201,77,.35)}
+.tray-piece.used{visibility:hidden}
+.tray-piece .mini{position:absolute;left:50%;top:50%;width:0;height:0}
+.tray-piece{overflow:hidden}
+.mini-hex{position:absolute;width:34px;height:39px;transform:translate(-50%,-50%);
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  display:flex;align-items:center;justify-content:center}
+.mini-hex svg{width:26px;height:26px}
+.tray-hint{font-size:12px;font-weight:700;color:#5B6B5B;text-align:center;margin-top:4px}
+#drag-ghost{position:fixed;z-index:99;pointer-events:none;opacity:.92;display:none;filter:drop-shadow(0 8px 10px rgba(0,0,0,.3))}
+#drag-ghost .mini{position:absolute;left:0;top:0;width:0;height:0}
+.rotate-row{display:flex;justify-content:center;gap:10px;margin-top:10px}
+/* overlays */
+.overlay{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;padding:16px;
+  background:rgba(43,45,66,.55);backdrop-filter:blur(4px)}
+.overlay.open{display:flex}
+.panel{background:var(--cream);border:3px solid var(--ink);border-radius:24px;box-shadow:0 8px 0 var(--ink),0 20px 40px rgba(0,0,0,.3);
+  max-width:480px;width:100%;max-height:92vh;overflow-y:auto;padding:26px 22px;text-align:center;animation:panelIn .3s ease-out}
+@keyframes panelIn{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+.panel h1{font-size:36px;line-height:1.05;margin:8px 0 6px}
+.panel h2{font-size:30px;margin-bottom:8px}
+.panel p{font-size:16px;line-height:1.5;margin-bottom:12px}
+.hero{width:100%;max-width:340px;height:auto;margin:0 auto;display:block;animation:bob 3s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.tagline{font-size:17px;font-weight:700;color:#4A5D4A}
+.btn-col{display:flex;flex-direction:column;gap:10px;align-items:center;margin-top:14px}
+.btn-col .btn{width:100%;max-width:300px}
+.btn-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.rules{text-align:left;font-size:15px;line-height:1.55;background:#fff;border:2px solid #E8DCC3;border-radius:16px;padding:14px 16px;margin:12px 0}
+.rules li{margin:6px 0 6px 18px}
+.score-big{font-family:'Fredoka',sans-serif;font-size:54px;font-weight:700;color:#C0392B;line-height:1}
+.grade{font-size:44px;margin:6px 0}
+.stat-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:14px 0}
+.stat{background:#fff;border:2px solid #E8DCC3;border-radius:16px;padding:10px 16px;min-width:104px}
+.stat .v{font-family:'Fredoka',sans-serif;font-size:26px;font-weight:700}
+.stat .l{font-size:13px;font-weight:800;color:#546854;text-transform:uppercase;letter-spacing:.5px}
+.settings-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 4px;border-bottom:1px dashed #E0D5B8;font-weight:700}
+.settings-row label{font-size:16px}
+input[type=range]{width:150px;accent-color:var(--teal);min-height:44px}
+.toggle{min-width:64px}
+footer{margin-top:auto;padding-top:16px;text-align:center;font-size:13px;font-weight:700;color:#2B2D42;text-shadow:0 1px 0 rgba(255,255,255,.5)}
+#toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);z-index:80;background:var(--ink);color:#fff;
+  padding:12px 20px;border-radius:999px;font-weight:800;font-size:15px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;max-width:90vw;text-align:center}
+#toast.show{opacity:1;transform:translateY(0)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media(max-width:360px){
+  #board{height:330px}.hex-cell{width:48px;height:56px}
+  .panel h1{font-size:30px}.chip{padding:7px 10px;font-size:14px}
+  .topbar{flex-wrap:wrap}
+  .brand{font-size:16px;padding:6px 10px;min-height:44px}
+  .icon-btn{width:44px;height:44px;min-width:44px;font-size:19px}
+  .top-actions{gap:6px}
+}
+/* how-to demo: a piece drops in and the line blooms (loops, 4s) */
+.demo-wrap{margin:6px auto 4px;max-width:340px}
+.demo-board{position:relative;height:118px;background:linear-gradient(180deg,#FFF3D6,#FFE9B8);border:2px solid var(--ink);border-radius:16px;overflow:hidden}
+.demo-hex{position:absolute;width:40px;height:46px;transform:translate(-50%,-50%);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);background:#E7D3A7;animation:demoBloom 4s ease-in-out infinite}
+.demo-hex::after{content:"";position:absolute;inset:5px;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);background:rgba(255,249,240,.55)}
+.demo-hex.filled{background:#7BC96F}
+.demo-hex.filled::after{background:transparent}
+.demo-hex .dot{position:absolute;left:50%;top:50%;width:14px;height:14px;transform:translate(-50%,-50%);border-radius:50%;background:#FFC94D;border:2px solid var(--ink)}
+.demo-hex.fill-at-45{animation:demoFill 4s ease-in-out infinite, demoBloom 4s ease-in-out infinite}
+.demo-hex.fill-at-45 .dot{opacity:0;animation:demoDot 4s ease-in-out infinite}
+@keyframes demoFill{0%,44%{background:#E7D3A7}45%,78%{background:#7BC96F}79%,100%{background:#E7D3A7}}
+@keyframes demoDot{0%,44%{opacity:0}45%,78%{opacity:1}79%,100%{opacity:0}}
+@keyframes demoBloom{0%,50%{filter:none}56%{filter:brightness(1.35) saturate(1.4)}64%{filter:none}100%{filter:none}}
+.demo-piece{position:absolute;left:50%;top:6px;transform:translateX(-50%);display:flex;gap:2px;animation:demoDrop 4s ease-in-out infinite;z-index:2}
+.demo-piece .mini-hex{position:static;transform:none;width:36px;height:41px;background:#FF6B6B;display:flex;align-items:center;justify-content:center}
+.demo-piece .mini-hex svg{width:24px;height:24px}
+@keyframes demoDrop{0%{transform:translateX(-50%) translateY(-70px);opacity:0}18%{opacity:1}32%{transform:translateX(-50%) translateY(26px);opacity:1}45%{transform:translateX(-50%) translateY(26px);opacity:0}100%{transform:translateX(-50%) translateY(26px);opacity:0}}
+.demo-cap{font-size:13px;font-weight:800;color:#546854;margin-top:6px}
+.stars{font-size:42px;letter-spacing:8px;line-height:1;margin:4px 0}
+.stars .off{opacity:.25;filter:grayscale(1)}
+.level-note{font-size:14px;font-weight:700;color:#546854}
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+  .hero{animation:none}
+}
+</style>
+</head>
+<body>
+<div class="stage">
+  <header class="topbar">
+    <a class="brand" href="/games/" aria-label="Back to JoJo's Blocks games">🌼 JoJo's <span>Blocks</span></a>
+    <div class="top-actions">
+      <button class="icon-btn" id="btn-music" aria-label="Toggle music" aria-pressed="true" title="Music">🎵</button>
+      <button class="icon-btn" id="btn-sfx" aria-label="Toggle sound effects" aria-pressed="true" title="Sound effects">🔊</button>
+      <button class="icon-btn" id="btn-pause" aria-label="Pause game" title="Pause (P)">⏸</button>
+    </div>
+  </header>
+
+  <div class="hud" role="group" aria-label="Game scores">
+    <div class="chip score"><span class="ic" aria-hidden="true">⭐</span>Score <b id="score-value">0</b></div>
+    <div class="chip best"><span class="ic" aria-hidden="true">🏆</span>Best <b id="best-value">0</b></div>
+    <div class="chip lines"><span class="ic" aria-hidden="true">🌸</span>Lines <b id="lines-value">0</b></div>
+    <div class="chip level"><span class="ic" aria-hidden="true">🌻</span>Level <b id="level-value">1</b><span id="level-progress" style="font-weight:800">0/3 🌸</span></div>
+  </div>
+
+  <main id="game-screen">
+    <div class="board-wrap" id="board-wrap">
+      <div id="board" role="grid" aria-label="Hex garden board. Use arrow keys to move, Enter to place the selected piece."></div>
+      <div id="bee" aria-hidden="true">
+        <svg viewBox="0 0 64 52" width="64" height="52">
+          <g class="wings"><ellipse cx="26" cy="12" rx="12" ry="7" fill="#CFE8FF" opacity=".9"/><ellipse cx="40" cy="10" rx="11" ry="6" fill="#CFE8FF" opacity=".9"/></g>
+          <ellipse cx="32" cy="30" rx="18" ry="13" fill="#FFC94D" stroke="#2B2D42" stroke-width="2"/>
+          <path d="M24 19 Q22 30 24 41 M34 18 Q32 30 34 42" stroke="#2B2D42" stroke-width="3" fill="none"/>
+          <circle cx="48" cy="26" r="8" fill="#2B2D42"/><circle cx="51" cy="24" r="2.4" fill="#fff"/><circle cx="45" cy="30" r="1.6" fill="#FF6B6B"/>
+          <path d="M46 18 Q48 12 52 11 M50 18 Q53 13 57 13" stroke="#2B2D42" stroke-width="2" fill="none"/>
+          <path d="M14 30 L8 26 M14 34 L7 34" stroke="#2B2D42" stroke-width="2"/>
+        </svg>
+      </div>
+    </div>
+    <p class="tray-label" id="tray-label">🌿 Pick a piece, then tap a honeycomb cell to plant it</p>
+    <div id="tray" role="group" aria-label="Piece tray"></div>
+    <p class="tray-hint">Tap a piece to select it — or drag it onto the board. Press R to rotate.</p>
+    <div class="rotate-row">
+      <button class="btn btn-sun btn-small" id="btn-rotate" aria-label="Rotate selected piece">🔄 Rotate (R)</button>
+      <button class="btn btn-teal btn-small" id="btn-restart" aria-label="Restart game">↻ Restart</button>
+    </div>
+  </main>
+
+  <footer>Hex Garden · JJB-GAME-20261116-14 · v1.1.0</footer>
+  <div id="aria-live" class="sr-only" aria-live="polite"></div>
+</div>
+
+<!-- START / MENU -->
+<div class="overlay open" id="menu-screen" role="dialog" aria-modal="true" aria-labelledby="game-title">
+  <div class="panel">
+    <svg class="hero" viewBox="0 0 340 190" aria-hidden="true">
+      <ellipse cx="170" cy="168" rx="150" ry="18" fill="#7BC96F"/>
+      <g><circle cx="70" cy="120" r="26" fill="#FF6B6B"/><circle cx="70" cy="120" r="10" fill="#FFC94D"/><rect x="68" y="144" width="4" height="26" fill="#3FA34D"/></g>
+      <g><circle cx="130" cy="96" r="30" fill="#7C6FF0"/><circle cx="130" cy="96" r="11" fill="#fff"/><rect x="128" y="124" width="4" height="44" fill="#3FA34D"/></g>
+      <g><circle cx="200" cy="112" r="26" fill="#FFC94D"/><circle cx="200" cy="112" r="10" fill="#FF6B6B"/><rect x="198" y="136" width="4" height="34" fill="#3FA34D"/></g>
+      <g><circle cx="262" cy="92" r="28" fill="#2EC4B6"/><circle cx="262" cy="92" r="11" fill="#FFF9F0"/><rect x="260" y="118" width="4" height="50" fill="#3FA34D"/></g>
+      <g><ellipse cx="170" cy="52" rx="16" ry="11" fill="#FFC94D" stroke="#2B2D42" stroke-width="2"/><circle cx="184" cy="48" r="7" fill="#2B2D42"/><ellipse cx="162" cy="40" rx="10" ry="6" fill="#CFE8FF" opacity=".9"/></g>
+      <path d="M40 150 Q90 128 140 150 T250 150 T320 148" stroke="#3FA34D" stroke-width="4" fill="none"/>
+      <circle cx="52" cy="62" r="14" fill="#FFC94D"/><circle cx="52" cy="62" r="18" fill="none" stroke="#FFC94D" stroke-width="3" stroke-dasharray="4 6"/>
+    </svg>
+    <h1 id="game-title">🌼 Hex Garden</h1>
+    <p class="tagline">Plant flowers on the honeycomb, bloom full lines, and let Bella the bee bring you bonuses!</p>
+    <p>Three pieces at a time. Fill a whole line in any direction and watch it bloom. The garden ends when nothing fits — how big can your bouquet grow?</p>
+    <div class="btn-col">
+      <button class="btn" id="btn-play">▶&nbsp; Play</button>
+      <button class="btn btn-teal" id="btn-howto">📖 How to play</button>
+      <button class="btn btn-ghost" id="btn-settings">⚙️ Settings</button>
+    </div>
+    <p style="margin-top:14px;font-size:13px;color:#546854">Best score: <b id="menu-best">0</b> · Best level: <b id="menu-level">1</b> · ⭐ <b id="menu-stars">0</b><br>Hex Garden · JJB-GAME-20261116-14 · v1.1.0</p>
+  </div>
+</div>
+
+<!-- HOW TO -->
+<div class="overlay" id="howto-screen" role="dialog" aria-modal="true" aria-labelledby="howto-title">
+  <div class="panel">
+    <h2 id="howto-title">🌷 How to play</h2>
+    <div class="demo-wrap" id="howto-demo" aria-hidden="true">
+      <div class="demo-board">
+        <div class="demo-hex filled" style="left:8%;top:62%"><span class="dot"></span></div>
+        <div class="demo-hex filled" style="left:21.5%;top:62%"><span class="dot"></span></div>
+        <div class="demo-hex fill-at-45" style="left:35%;top:62%"><span class="dot"></span></div>
+        <div class="demo-hex fill-at-45" style="left:48.5%;top:62%"><span class="dot"></span></div>
+        <div class="demo-hex fill-at-45" style="left:62%;top:62%"><span class="dot"></span></div>
+        <div class="demo-hex filled" style="left:75.5%;top:62%"><span class="dot"></span></div>
+        <div class="demo-hex filled" style="left:89%;top:62%"><span class="dot"></span></div>
+        <div class="demo-piece">
+          <div class="mini-hex"><svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="8" fill="#FFC94D" stroke="#2B2D42" stroke-width="2"/></svg></div>
+          <div class="mini-hex"><svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="8" fill="#FFC94D" stroke="#2B2D42" stroke-width="2"/></svg></div>
+          <div class="mini-hex"><svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="8" fill="#FFC94D" stroke="#2B2D42" stroke-width="2"/></svg></div>
+        </div>
+      </div>
+      <p class="demo-cap">Watch: a piece drops in, the line blooms away! 🌸</p>
+    </div>
+    <ul class="rules">
+      <li><b>Goal:</b> bloom as many lines as you can and climb the levels — each level asks for more lines, and new piece shapes join the tray as you level up.</li>
+      <li><b>Plant:</b> tap a piece in the tray, then tap a honeycomb cell — or drag the piece straight onto the board.</li>
+      <li><b>Rotate:</b> tap 🔄 Rotate or press <b>R</b> to turn the selected piece 60°.</li>
+      <li><b>Bloom:</b> fill a complete line in <b>any of the three directions</b> and it blooms away for points.</li>
+      <li><b>Bee bonus:</b> every bloom calls Bella the bee — she drops a <b>+50 bonus</b>. Bloom again on your very next move and her bonus grows (+75, +100, up to +150) — keep the streak alive!</li>
+      <li><b>Scoring:</b> 10 points per flower planted · 100 per line · extra lines in one move earn a combo bonus.</li>
+      <li><b>Levels:</b> bloom the target number of lines (shown in the Level chip) to finish a level and earn up to ⭐⭐⭐. Level 3 brings Row of 4 &amp; Blossom pieces, Level 4 Leaf, Level 5 Petal 5.</li>
+      <li><b>Game over:</b> when none of your three pieces fits anywhere, the garden is full.</li>
+      <li><b>On your phone:</b> tap a piece, then tap a cell — or drag it with your finger. Everything works with one thumb.</li>
+      <li><b>On a computer:</b> 1–3 select a piece · Arrow keys move the garden cursor · Enter/Space plant · R rotate · P pause.</li>
+    </ul>
+    <div class="btn-row">
+      <button class="btn" id="btn-close-howto">Got it!</button>
+      <button class="btn btn-teal" id="btn-play-from-howto">▶ Play</button>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS -->
+<div class="overlay" id="settings-screen" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+  <div class="panel">
+    <h2 id="settings-title">⚙️ Settings</h2>
+    <div class="settings-row"><label for="volume-slider">Volume</label><input type="range" id="volume-slider" min="0" max="100" value="70" aria-label="Volume"></div>
+    <div class="settings-row"><span>🎵 Music</span><button class="btn btn-small btn-teal toggle" id="btn-music-settings" aria-pressed="true">On</button></div>
+    <div class="settings-row"><span>🔊 Sound effects</span><button class="btn btn-small btn-teal toggle" id="btn-sfx-settings" aria-pressed="true">On</button></div>
+    <div class="settings-row"><span>🌸 Reduce motion</span><button class="btn btn-small btn-ghost toggle" id="btn-motion" aria-pressed="false">Off</button></div>
+    <p style="font-size:14px;color:#546854">Music starts only after you tap Play. Settings are saved on this device.</p>
+    <div class="btn-row"><button class="btn" id="btn-close-settings">Done</button></div>
+  </div>
+</div>
+
+<!-- PAUSE -->
+<div class="overlay" id="pause-screen" role="dialog" aria-modal="true" aria-labelledby="pause-title">
+  <div class="panel">
+    <h2 id="pause-title">⏸ Paused</h2>
+    <p>The garden is waiting for you. Bella is taking a little nap. 🐝💤</p>
+    <div class="stat-row"><div class="stat"><div class="v" id="pause-score">0</div><div class="l">Score</div></div>
+    <div class="stat"><div class="v" id="pause-lines">0</div><div class="l">Lines</div></div></div>
+    <div class="btn-col">
+      <button class="btn" id="btn-resume">▶ Resume</button>
+      <button class="btn btn-teal" id="btn-restart-pause">↻ Restart</button>
+      <button class="btn btn-lav" id="btn-howto-pause">📖 How to play</button>
+      <button class="btn btn-ghost" id="btn-quit-menu">🏠 Main menu</button>
+    </div>
+  </div>
+</div>
+
+<!-- LEVEL COMPLETE -->
+<div class="overlay" id="level-screen" role="dialog" aria-modal="true" aria-labelledby="level-title">
+  <div class="panel">
+    <div class="grade" aria-hidden="true">🌻</div>
+    <h2 id="level-title">Level 1 Complete!</h2>
+    <div class="stars" id="level-stars" aria-label="Stars earned"><span>⭐</span><span>⭐</span><span>⭐</span></div>
+    <p id="level-msg">Beautiful blooming! The garden is refreshed for the next level.</p>
+    <div class="stat-row">
+      <div class="stat"><div class="v" id="level-lines">0</div><div class="l">Lines bloomed</div></div>
+      <div class="stat"><div class="v" id="level-score">0</div><div class="l">Level score</div></div>
+      <div class="stat"><div class="v" id="level-next-target">5</div><div class="l">Next target</div></div>
+    </div>
+    <p class="level-note" id="level-unlock"></p>
+    <div class="btn-col">
+      <button class="btn" id="btn-next-level">▶ Next level</button>
+      <button class="btn btn-ghost" id="btn-level-menu">🏠 Main menu</button>
+    </div>
+  </div>
+</div>
+
+<!-- GAME OVER -->
+<div class="overlay" id="gameover-screen" role="dialog" aria-modal="true" aria-labelledby="gameover-title">
+  <div class="panel">
+    <div class="grade" id="gameover-emoji" aria-hidden="true">🌻</div>
+    <h2 id="gameover-title">Garden Full!</h2>
+    <p id="gameover-msg">No piece fits any more — what a beautiful bouquet you grew!</p>
+    <div class="score-big" id="final-score">0</div>
+    <p id="new-best" style="font-weight:800;color:#C0392B;display:none">🎉 New best score!</p>
+    <div class="stat-row">
+      <div class="stat"><div class="v" id="final-lines">0</div><div class="l">Lines bloomed</div></div>
+      <div class="stat"><div class="v" id="final-flowers">0</div><div class="l">Flowers planted</div></div>
+      <div class="stat"><div class="v" id="final-level">1</div><div class="l">Level reached</div></div>
+      <div class="stat"><div class="v" id="final-best">0</div><div class="l">Best</div></div>
+    </div>
+    <div class="btn-col">
+      <button class="btn" id="btn-replay">↻ Play again</button>
+      <button class="btn btn-ghost" id="btn-menu">🏠 Main menu</button>
+    </div>
+    <p style="margin-top:12px;font-size:13px;color:#546854">Hex Garden · JJB-GAME-20261116-14 · v1.1.0</p>
+  </div>
+</div>
+
+<div id="toast" role="status"></div>
+<div id="drag-ghost" aria-hidden="true"></div>
+
+<script>
+(function(){
+"use strict";
+/* ============================================================
+   Hex Garden — JJB-GAME-20261116-14 — 100% original code.
+   Honeycomb placement puzzle written from scratch for JoJo's Blocks.
+   ============================================================ */
+var NS = window.JJBHexGarden = window.JJBHexGarden || {};
+var RADIUS = 3, CELL = 56;
+var FLOWER_COLORS = [
+  {petal:"#FF6B6B", centre:"#FFC94D"}, {petal:"#FFC94D", centre:"#FF6B6B"},
+  {petal:"#7C6FF0", centre:"#FFF9F0"}, {petal:"#2EC4B6", centre:"#FFC94D"},
+  {petal:"#FF8FB1", centre:"#FFC94D"}, {petal:"#FF9F43", centre:"#7C6FF0"}
+];
+/* Piece library: axial offsets, anchor (0,0) always included. Original set.
+   minLevel gates new shapes in gradually: L1 seeds/sprouts/rows/corners,
+   L3 adds Row of 4 + Blossom, L4 Leaf, L5 Petal 5. */
+var PIECES = [
+  {name:"Seed",      cells:[[0,0]], weight:10, minLevel:1},
+  {name:"Sprout",    cells:[[0,0],[1,0]], weight:12, minLevel:1},
+  {name:"Sprout",    cells:[[0,0],[0,1]], weight:12, minLevel:1},
+  {name:"Sprout",    cells:[[0,0],[1,-1]], weight:12, minLevel:1},
+  {name:"Row of 3",  cells:[[0,0],[1,0],[2,0]], weight:10, minLevel:1},
+  {name:"Row of 3",  cells:[[0,0],[0,1],[0,2]], weight:10, minLevel:1},
+  {name:"Row of 3",  cells:[[0,0],[1,-1],[2,-2]], weight:10, minLevel:1},
+  {name:"Corner",    cells:[[0,0],[1,0],[0,1]], weight:10, minLevel:1},
+  {name:"Corner",    cells:[[0,0],[1,0],[1,-1]], weight:10, minLevel:1},
+  {name:"Corner",    cells:[[0,0],[0,1],[1,-1]], weight:8, minLevel:1},
+  {name:"Row of 4",  cells:[[0,0],[1,0],[2,0],[3,0]], weight:6, minLevel:3},
+  {name:"Row of 4",  cells:[[0,0],[0,1],[0,2],[0,3]], weight:6, minLevel:3},
+  {name:"Row of 4",  cells:[[0,0],[1,-1],[2,-2],[3,-3]], weight:6, minLevel:3},
+  {name:"Blossom",   cells:[[0,0],[1,0],[0,1],[1,-1]], weight:7, minLevel:3},
+  {name:"Blossom",   cells:[[0,0],[-1,0],[0,-1],[0,1]], weight:5, minLevel:3},
+  {name:"Leaf",      cells:[[0,0],[1,0],[2,0],[0,1]], weight:7, minLevel:4},
+  {name:"Leaf",      cells:[[0,0],[1,0],[0,1],[1,1]], weight:6, minLevel:4},
+  {name:"Petal 5",   cells:[[0,0],[1,0],[2,0],[0,1],[1,1]], weight:4, minLevel:5},
+  {name:"Petal 5",   cells:[[0,0],[1,0],[0,1],[-1,1],[1,-1]], weight:4, minLevel:5}
+];
+function levelTargetFor(level){ return 2*level + 1; } /* L1: 3 lines, L2: 5, L3: 7 ... */
+function loadStars(){ try{ return JSON.parse(load("jjb-hex-garden-stars","{}"))||{}; }catch(e){ return {}; } }
+function key(q,r){ return q+","+r; }
+function flowerSVG(c){
+  var petals="";
+  for(var i=0;i<5;i++){
+    var a=i*72;
+    petals+='<ellipse cx="22" cy="10" rx="6.5" ry="9" fill="'+c.petal+'" stroke="#2B2D42" stroke-width="1" transform="rotate('+a+' 22 22)"/>';
+  }
+  return '<svg viewBox="0 0 44 44" width="44" height="44" aria-hidden="true">'+petals+'<circle cx="22" cy="22" r="7" fill="'+c.centre+'" stroke="#2B2D42" stroke-width="1.4"/><circle cx="20" cy="20" r="1.6" fill="#2B2D42"/><circle cx="24" cy="20" r="1.6" fill="#2B2D42"/><path d="M19 24 Q22 26.5 25 24" stroke="#2B2D42" stroke-width="1.4" fill="none"/></svg>';
+}
+function $(id){ return document.getElementById(id); }
+function load(k, d){ try{ var v=localStorage.getItem(k); return v===null?d:v; }catch(e){ return d; } }
+function save(k, v){ try{ localStorage.setItem(k, String(v)); }catch(e){} }
+
+var state = {
+  screen:"menu", score:0, best:parseInt(load("jjb-hex-garden-best","0"),10)||0,
+  lines:0, flowers:0, tray:[], selected:-1, cursor:{q:0,r:0}, paused:false,
+  musicOn: load("jjb-hex-garden-music","on")==="on",
+  sfxOn: load("jjb-hex-garden-sfx","on")==="on",
+  volume: parseInt(load("jjb-hex-garden-volume","70"),10)||0,
+  reduceMotion: false, started:false, gameOver:false,
+  /* v1.1.0 — levels & progression */
+  level:1, linesThisLevel:0, levelStartScore:0, beeStreak:0,
+  stars: loadStars(), bestLevel: parseInt(load("jjb-hex-garden-level","1"),10)||1
+};
+var cells = {};   /* "q,r" -> {q,r,el,filled,flower} */
+var linesDef = []; /* {dir, coord, keys[]} */
+
+/* ---------- Audio (procedural WebAudio, original garden motif) ---------- */
+var AC=null, musicGain=null, sfxGain=null, musicTimer=null, musicStep=0;
+function ensureAudio(){
+  if(AC) { if(AC.state==="suspended") AC.resume(); return; }
+  try{
+    AC = new (window.AudioContext||window.webkitAudioContext)();
+    musicGain = AC.createGain(); sfxGain = AC.createGain();
+    musicGain.connect(AC.destination); sfxGain.connect(AC.destination);
+    applyVolume();
+  }catch(e){ AC=null; }
+}
+function applyVolume(){
+  if(!AC) return;
+  var v = state.volume/100;
+  musicGain.gain.value = state.musicOn ? v*0.5 : 0;
+  sfxGain.gain.value = state.sfxOn ? v : 0;
+}
+function tone(freq, dur, type, vol, when, dest){
+  if(!AC) return;
+  var t = when || AC.currentTime;
+  var o = AC.createOscillator(), g = AC.createGain();
+  o.type = type||"sine"; o.frequency.setValueAtTime(freq, t);
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(Math.max(vol||0.2,0.001), t+0.02);
+  g.gain.exponentialRampToValueAtTime(0.0001, t+dur);
+  o.connect(g); g.connect(dest||sfxGain); o.start(t); o.stop(t+dur+0.05);
+}
+/* Original motif: C major pentatonic garden walk, gentle 100bpm */
+var MOTIF = [523.25,587.33,659.25,783.99,659.25,587.33,523.25,440.00, 523.25,659.25,783.99,880.00,783.99,659.25,587.33,523.25];
+function startMusic(){
+  ensureAudio(); if(!AC || musicTimer) return;
+  musicStep=0;
+  musicTimer=setInterval(function(){
+    if(state.paused || state.screen==="menu" && !state.started) return;
+    if(!state.musicOn) return;
+    var f = MOTIF[musicStep % MOTIF.length];
+    tone(f, 0.55, "triangle", 0.10, AC.currentTime, musicGain);
+    if(musicStep % 4 === 0) tone(f/2, 0.9, "sine", 0.08, AC.currentTime, musicGain);
+    musicStep++;
+  }, 300);
+}
+function stopMusic(){ if(musicTimer){ clearInterval(musicTimer); musicTimer=null; } }
+function sfx(name){
+  if(!AC || !state.sfxOn) return;
+  try{
+    if(name==="place"){ tone(660,0.12,"sine",0.25); tone(880,0.14,"sine",0.18,AC.currentTime+0.06); }
+    else if(name==="invalid"){ tone(160,0.22,"sawtooth",0.16); tone(120,0.25,"sawtooth",0.14,AC.currentTime+0.08); }
+    else if(name==="clear"){ [523,659,784,1047].forEach(function(f,i){ tone(f,0.3,"triangle",0.22,AC.currentTime+i*0.07); }); }
+    else if(name==="bee"){ tone(220,0.5,"sawtooth",0.07); tone(330,0.5,"sawtooth",0.05,AC.currentTime+0.15); }
+    else if(name==="select"){ tone(740,0.07,"sine",0.15); }
+    else if(name==="rotate"){ tone(500,0.08,"sine",0.15); tone(640,0.08,"sine",0.15,AC.currentTime+0.06); }
+    else if(name==="over"){ [392,330,262,196].forEach(function(f,i){ tone(f,0.35,"triangle",0.2,AC.currentTime+i*0.13); }); }
+    else if(name==="start"){ [523,659,784].forEach(function(f,i){ tone(f,0.2,"triangle",0.2,AC.currentTime+i*0.08); }); }
+  }catch(e){}
+}
+
+/* ---------- Board ---------- */
+function layoutBoard(){
+  var board=$("board");
+  var W=board.clientWidth||380;
+  var size=Math.max(16, Math.min(28,(W/2-32)/(Math.sqrt(3)*3)));
+  var H=Math.round(size*11+30);
+  board.style.height=H+"px";
+  var cx=W/2, cy=H/2;
+  Object.keys(cells).forEach(function(k){
+    var c=cells[k];
+    c.el.style.left=(cx + size*Math.sqrt(3)*(c.q + c.r/2))+"px";
+    c.el.style.top=(cy + size*1.5*c.r)+"px";
+    c.el.style.width=Math.round(size*Math.sqrt(3)+6)+"px";
+    c.el.style.height=Math.round(size*2+6)+"px";
+  });
+  return size;
+}
+var resizeTimer=null;
+window.addEventListener("resize", function(){ clearTimeout(resizeTimer); resizeTimer=setTimeout(layoutBoard, 150); });
+function buildBoard(){
+  var board=$("board"); board.innerHTML=""; cells={}; linesDef=[];
+  for(var q=-RADIUS;q<=RADIUS;q++){
+    for(var r=Math.max(-RADIUS,-q-RADIUS); r<=Math.min(RADIUS,-q+RADIUS); r++){
+      var el=document.createElement("button");
+      el.type="button"; el.className="hex-cell"; el.setAttribute("role","gridcell");
+      el.setAttribute("aria-label","Garden cell row "+r+" column "+q+", empty");
+      el.dataset.q=q; el.dataset.r=r;
+      (function(qq,rr,el2){
+        el2.addEventListener("click", function(){ onCellTap(qq,rr); });
+        el2.addEventListener("mouseenter", function(){ showPreview(qq,rr); });
+        el2.addEventListener("mouseleave", function(){ clearPreview(); });
+      })(q,r,el);
+      board.appendChild(el);
+      cells[key(q,r)]={q:q,r:r,el:el,filled:false,flower:null};
+    }
+  }
+  /* lines: constant q, constant r, constant s=-q-r */
+  [["q",function(c){return c.q;}],["r",function(c){return c.r;}],["s",function(c){return -c.q-c.r;}]].forEach(function(d){
+    var groups={};
+    Object.keys(cells).forEach(function(k){ var c=cells[k]; var g=d[1](c); (groups[g]=groups[g]||[]).push(k); });
+    Object.keys(groups).forEach(function(g){ if(groups[g].length>=4) linesDef.push({dir:d[0],coord:g,keys:groups[g]}); });
+  });
+  layoutBoard();
+  updateCursor();
+}
+function updateCursor(){
+  Object.keys(cells).forEach(function(k){ cells[k].el.classList.remove("cursor"); });
+  var c=cells[key(state.cursor.q,state.cursor.r)];
+  if(c) c.el.classList.add("cursor");
+}
+function moveCursor(dq,dr){
+  var nq=state.cursor.q+dq, nr=state.cursor.r+dr;
+  if(cells[key(nq,nr)]){ state.cursor={q:nq,r:nr}; updateCursor(); clearPreview(); showPreview(nq,nr); }
+}
+function randomPiece(){
+  var pool = PIECES.filter(function(p){ return p.minLevel <= state.level; });
+  var total=0; pool.forEach(function(p){ total+=p.weight; });
+  var roll=Math.random()*total, acc=0;
+  for(var i=0;i<pool.length;i++){ acc+=pool[i].weight; if(roll<=acc) return {name:pool[i].name, cells:pool[i].cells.map(function(c){return [c[0],c[1]];}), color:FLOWER_COLORS[Math.floor(Math.random()*FLOWER_COLORS.length)]}; }
+  return {name:"Seed", cells:[[0,0]], color:FLOWER_COLORS[0]};
+}
+function dealTray(){
+  state.tray=[randomPiece(),randomPiece(),randomPiece()];
+  state.selected=-1; renderTray();
+}
+function renderTray(){
+  var tray=$("tray"); tray.innerHTML="";
+  state.tray.forEach(function(piece, idx){
+    var slot=document.createElement("div"); slot.className="tray-slot";
+    if(!piece){ slot.innerHTML='<span style="font-size:26px" aria-hidden="true">🌸</span>'; tray.appendChild(slot); return; }
+    var div=document.createElement("div");
+    div.className="tray-piece"+(state.selected===idx?" selected":"");
+    div.setAttribute("role","button"); div.setAttribute("tabindex","0");
+    div.setAttribute("aria-label","Piece "+(idx+1)+": "+piece.name+", "+piece.cells.length+" flowers. Press "+(idx+1)+" to select.");
+    div.dataset.idx=idx;
+    var mini=document.createElement("div"); mini.className="mini";
+    var s=17;
+    piece.cells.forEach(function(c){
+      var hx=document.createElement("div"); hx.className="mini-hex";
+      hx.style.left=(s*Math.sqrt(3)*(c[0]+c[1]/2))+"px";
+      hx.style.top=(s*1.5*c[1])+"px";
+      hx.style.background=piece.color.petal;
+      hx.innerHTML='<svg viewBox="0 0 44 44" width="24" height="24" aria-hidden="true"><circle cx="22" cy="22" r="8" fill="'+piece.color.centre+'" stroke="#2B2D42" stroke-width="2"/></svg>';
+      mini.appendChild(hx);
+    });
+    div.appendChild(mini);
+    div.addEventListener("click", function(){ if(suppressClick) return; selectPiece(idx); });
+    div.addEventListener("keydown", function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); selectPiece(idx); } });
+    div.addEventListener("pointerdown", function(e){ startDrag(e, idx, div); });
+    slot.appendChild(div); tray.appendChild(slot);
+  });
+}
+function selectPiece(idx){
+  if(!state.tray[idx] || state.gameOver || state.paused) return;
+  state.selected = (state.selected===idx) ? -1 : idx;
+  sfx("select"); renderTray(); clearPreview();
+  announce(state.selected>=0 ? "Selected "+state.tray[state.selected].name+", "+state.tray[state.selected].cells.length+" flowers. Tap a garden cell to plant it." : "Piece deselected.");
+}
+function rotateSelected(){
+  if(state.selected<0 || !state.tray[state.selected]) return;
+  var p=state.tray[state.selected];
+  /* 60° rotation in axial coords: (q,r) -> (-r, q+r) */
+  p.cells=p.cells.map(function(c){ return [-c[1], c[0]+c[1]]; });
+  sfx("rotate"); renderTray(); clearPreview();
+  announce("Piece rotated.");
+}
+function canPlace(piece, q, r){
+  if(!piece) return false;
+  return piece.cells.every(function(c){
+    var cell=cells[key(q+c[0], r+c[1])];
+    return cell && !cell.filled;
+  });
+}
+function targetCells(piece,q,r){ return piece.cells.map(function(c){ return cells[key(q+c[0], r+c[1])]; }).filter(Boolean); }
+function showPreview(q,r){
+  clearPreview();
+  if(state.selected<0 || !state.tray[state.selected] || state.gameOver || state.paused) return;
+  var piece=state.tray[state.selected];
+  var ok=canPlace(piece,q,r);
+  targetCells(piece,q,r).forEach(function(c){ c.el.classList.add(ok?"preview-valid":"preview-invalid"); });
+}
+function clearPreview(){
+  Object.keys(cells).forEach(function(k){ cells[k].el.classList.remove("preview-valid","preview-invalid"); });
+}
+function onCellTap(q,r){
+  if(state.gameOver || state.paused || state.screen!=="game") return;
+  if(state.selected<0){ toast("Pick a piece from the tray first 🌿"); return; }
+  placeSelectedAt(q,r);
+}
+function placeSelectedAt(q,r){
+  var piece=state.tray[state.selected];
+  if(!piece) return false;
+  if(!canPlace(piece,q,r)){
+    sfx("invalid"); clearPreview();
+    targetCells(piece,q,r).forEach(function(c){ c.el.classList.add("preview-invalid"); });
+    setTimeout(clearPreview, 350);
+    $("board-wrap").classList.remove("shake"); void $("board-wrap").offsetWidth; $("board-wrap").classList.add("shake");
+    announce("That spot does not fit. Try another cell.");
+    maybeGameOver();
+    return false;
+  }
+  clearPreview();
+  var placedCells=[];
+  piece.cells.forEach(function(c){
+    var cell=cells[key(q+c[0], r+c[1])];
+    cell.filled=true; cell.flower=piece.color;
+    cell.el.classList.add("filled");
+    cell.el.innerHTML='<span class="flower">'+flowerSVG(piece.color)+'</span>';
+    cell.el.setAttribute("aria-label","Garden cell, planted flower");
+    placedCells.push(cell);
+  });
+  state.flowers += piece.cells.length;
+  state.score += piece.cells.length*10;
+  sfx("place");
+  spawnParticles(q,r, piece.cells.length);
+  state.tray[state.selected]=null; state.selected=-1;
+  renderTray(); updateHUD();
+  announce("Planted "+piece.cells.length+" flowers. Score "+state.score+".");
+  setTimeout(function(){ afterPlacement(); }, 120);
+  return true;
+}
+function afterPlacement(){
+  var cleared=findFullLines();
+  if(cleared.length){
+    clearLines(cleared);
+  } else {
+    state.beeStreak=0; /* a move with no bloom breaks Bella's streak */
+    checkRefillOrOver();
+  }
+}
+function findFullLines(){
+  var out=[];
+  linesDef.forEach(function(L){
+    if(L.keys.every(function(k){ return cells[k].filled; })) out.push(L);
+  });
+  return out;
+}
+function clearLines(cleared){
+  var allKeys={};
+  cleared.forEach(function(L){ L.keys.forEach(function(k){ allKeys[k]=true; }); });
+  var keys=Object.keys(allKeys);
+  keys.forEach(function(k){
+    var c=cells[k]; c.el.classList.add("blooming");
+  });
+  var bonus = 100*cleared.length + (cleared.length>1 ? 50*(cleared.length-1) : 0);
+  /* Bee bonus streak: +50 first bloom, +75, +100, +125, capped at +150 while
+     every consecutive move blooms. A move with no bloom resets the streak. */
+  state.beeStreak += 1;
+  var beeBonus = Math.min(150, 50 + 25*(state.beeStreak-1));
+  state.score += bonus + beeBonus;
+  state.lines += cleared.length;
+  state.linesThisLevel += cleared.length;
+  sfx("clear"); setTimeout(function(){ sfx("bee"); }, 250);
+  flyBee();
+  floatText("+"+bonus+" 🌸 Bloom!", 190, 150);
+  setTimeout(function(){ floatText("🐝 +"+beeBonus+" Bee bonus"+(state.beeStreak>1?" ×"+state.beeStreak+" streak!":"!"), 190, 190); }, 500);
+  updateHUD();
+  announce("Bloomed "+cleared.length+" line"+(cleared.length>1?"s":"")+"! Plus "+bonus+" points and a "+beeBonus+" bee bonus. Score "+state.score+".");
+  setTimeout(function(){
+    keys.forEach(function(k){
+      var c=cells[k]; c.filled=false; c.flower=null;
+      c.el.classList.remove("filled","blooming"); c.el.innerHTML="";
+      c.el.setAttribute("aria-label","Garden cell, empty");
+    });
+    if(state.linesThisLevel >= levelTargetFor(state.level) && !state.levelCompleteShown){ showLevelComplete(); return; }
+    checkRefillOrOver();
+  }, 750);
+}
+function totalStars(){
+  var t=0; Object.keys(state.stars).forEach(function(k){ t+=state.stars[k]; }); return t;
+}
+function showLevelComplete(){
+  state.levelCompleteShown=true;
+  var levelScore = state.score - state.levelStartScore;
+  var target = levelTargetFor(state.level);
+  var par = target*150; /* ~one line's worth of planting + bloom points */
+  var earned = levelScore >= par*1.25 ? 3 : (levelScore >= par ? 2 : 1);
+  if(!state.stars[state.level] || state.stars[state.level] < earned){
+    state.stars[state.level]=earned; save("jjb-hex-garden-stars", JSON.stringify(state.stars));
+  }
+  if(state.level > state.bestLevel){ state.bestLevel=state.level; save("jjb-hex-garden-level", state.bestLevel); }
+  state.paused=true;
+  $("level-title").textContent="Level "+state.level+" Complete!";
+  var starsEl=$("level-stars");
+  starsEl.innerHTML=[1,2,3].map(function(i){ return '<span class="'+(i<=earned?"":"off")+'">⭐</span>'; }).join("");
+  starsEl.setAttribute("aria-label", earned+" of 3 stars earned");
+  $("level-msg").textContent = earned===3 ? "A perfect bouquet! Bella is buzzing with joy. 🐝" : "Beautiful blooming! The garden is refreshed for the next level.";
+  $("level-lines").textContent=state.linesThisLevel;
+  $("level-score").textContent=levelScore;
+  $("level-next-target").textContent=levelTargetFor(state.level+1);
+  var unlock="";
+  if(state.level+1===3) unlock="🌸 New in Level 3: Row of 4 & Blossom pieces join the tray!";
+  else if(state.level+1===4) unlock="🍃 New in Level 4: Leaf pieces join the tray!";
+  else if(state.level+1===5) unlock="🌺 New in Level 5: big Petal 5 pieces join the tray!";
+  else unlock="Next target: bloom "+levelTargetFor(state.level+1)+" lines.";
+  $("level-unlock").textContent=unlock;
+  sfx("clear");
+  updateHUD();
+  show("level-screen");
+  announce("Level "+state.level+" complete! "+earned+" stars. Level score "+levelScore+".");
+}
+function nextLevel(){
+  state.levelCompleteShown=false;
+  state.level += 1;
+  state.linesThisLevel=0; state.levelStartScore=state.score; state.beeStreak=0;
+  state.paused=false;
+  /* fresh garden: bloom away whatever is planted, then clear the board */
+  Object.keys(cells).forEach(function(k){
+    var c=cells[k];
+    if(c.filled){ c.el.classList.add("blooming"); }
+  });
+  setTimeout(function(){
+    Object.keys(cells).forEach(function(k){
+      var c=cells[k]; c.filled=false; c.flower=null;
+      c.el.classList.remove("filled","blooming"); c.el.innerHTML="";
+      c.el.setAttribute("aria-label","Garden cell, empty");
+    });
+    dealTray(); updateHUD(); show(null);
+    toast("🌻 Level "+state.level+" — bloom "+levelTargetFor(state.level)+" lines!");
+    announce("Level "+state.level+" started. Bloom "+levelTargetFor(state.level)+" lines to finish it.");
+  }, state.reduceMotion ? 60 : 450);
+}
+function maybeGameOver(){
+  if(state.gameOver || !state.started || state.paused) return false;
+  if(!anyPieceFits()){ setTimeout(gameOver, 450); return true; }
+  return false;
+}
+function checkRefillOrOver(){
+  if(state.tray.every(function(p){ return !p; })){
+    dealTray();
+    toast("🌱 Fresh pieces!");
+  }
+  maybeGameOver();
+}
+function anyPieceFits(){
+  for(var i=0;i<state.tray.length;i++){
+    var p=state.tray[i]; if(!p) continue;
+    var rots=[p.cells];
+    for(var rot=1;rot<6;rot++){ rots.push(rots[rot-1].map(function(c){ return [-c[1], c[0]+c[1]]; })); }
+    for(var ri=0;ri<rots.length;ri++){
+      var trial={cells:rots[ri]};
+      var fits=Object.keys(cells).some(function(k){ var c=cells[k]; return canPlace(trial,c.q,c.r); });
+      if(fits) return true;
+    }
+  }
+  return false;
+}
+function spawnParticles(q,r,n){
+  if(state.reduceMotion) return;
+  var board=$("board");
+  var cell=cells[key(q,r)] || {el:null};
+  for(var i=0;i<Math.min(8, 3+n);i++){
+    var s=document.createElement("span");
+    s.textContent=["🌸","✨","🌼","💛"][i%4];
+    s.style.cssText="position:absolute;z-index:25;pointer-events:none;font-size:16px;left:"+(150+Math.random()*80)+"px;top:"+(150+Math.random()*80)+"px;animation:floatUp 1s ease-out forwards";
+    board.appendChild(s); setTimeout(function(el){ return function(){ el.remove(); }; }(s), 1000);
+  }
+}
+function floatText(text,x,y){
+  var b=$("board"); var d=document.createElement("div");
+  d.className="float-text"; d.textContent=text; d.style.left=x+"px"; d.style.top=y+"px";
+  b.appendChild(d); setTimeout(function(){ d.remove(); }, 1450);
+}
+function flyBee(){
+  var bee=$("bee");
+  bee.classList.remove("flying"); void bee.offsetWidth;
+  bee.style.left="10px"; bee.style.top="120px";
+  bee.classList.add("flying");
+}
+function updateHUD(){
+  $("score-value").textContent=state.score;
+  $("best-value").textContent=state.best;
+  $("lines-value").textContent=state.lines;
+  $("level-value").textContent=state.level;
+  $("level-progress").textContent=state.linesThisLevel+"/"+levelTargetFor(state.level)+" 🌸";
+  $("menu-best").textContent=state.best;
+  $("menu-level").textContent=state.bestLevel;
+  $("menu-stars").textContent=totalStars();
+}
+function announce(msg){ $("aria-live").textContent=msg; }
+var toastTimer=null;
+function toast(msg){
+  var t=$("toast"); t.textContent=msg; t.classList.add("show");
+  clearTimeout(toastTimer); toastTimer=setTimeout(function(){ t.classList.remove("show"); }, 2200);
+}
+
+/* ---------- Drag & drop ---------- */
+var drag=null, suppressClick=false;
+function startDrag(e, idx, el){
+  if(!state.tray[idx] || state.gameOver || state.paused || state.screen!=="game") return;
+  if(e.pointerType==="mouse" && e.button!==0) return;
+  var startX=e.clientX, startY=e.clientY, active=false;
+  var ghost=$("drag-ghost");
+  var piece=state.tray[idx];
+  drag={idx:idx, pointerId:e.pointerId, overCell:null};
+  try{ el.setPointerCapture && el.setPointerCapture(e.pointerId); }catch(err){}
+  function onMove(ev){
+    if(!active){
+      if(Math.hypot(ev.clientX-startX, ev.clientY-startY) < 10) return;
+      active=true; suppressClick=true;
+      state.selected=idx; renderTray();
+      ghost.innerHTML="";
+      var mini=document.createElement("div"); mini.className="mini";
+      var s=17;
+      piece.cells.forEach(function(c){
+        var hx=document.createElement("div"); hx.className="mini-hex";
+        hx.style.left=(s*Math.sqrt(3)*(c[0]+c[1]/2))+"px";
+        hx.style.top=(s*1.5*c[1])+"px";
+        hx.style.background=piece.color.petal;
+        mini.appendChild(hx);
+      });
+      ghost.appendChild(mini); ghost.style.display="block";
+    }
+    moveGhost(ev); updateDragTarget(ev);
+  }
+  function onUp(ev){
+    document.removeEventListener("pointermove", onMove);
+    document.removeEventListener("pointerup", onUp);
+    document.removeEventListener("pointercancel", onUp);
+    ghost.style.display="none";
+    var wasActive=active; var target=drag?drag.overCell:null;
+    drag=null; clearPreview();
+    if(wasActive){
+      if(target){ placeSelectedAt(target.q, target.r); }
+      else { renderTray(); }
+      setTimeout(function(){ suppressClick=false; }, 50);
+    }
+  }
+  document.addEventListener("pointermove", onMove);
+  document.addEventListener("pointerup", onUp);
+  document.addEventListener("pointercancel", onUp);
+}
+function moveGhost(e){
+  var g=$("drag-ghost");
+  g.style.left=(e.clientX-40)+"px"; g.style.top=(e.clientY-30)+"px";
+}
+function updateDragTarget(e){
+  var el=document.elementFromPoint(e.clientX, e.clientY);
+  var cellEl = el && el.closest ? el.closest(".hex-cell") : null;
+  clearPreview();
+  if(cellEl && cellEl.dataset.q!==undefined){
+    var q=parseInt(cellEl.dataset.q,10), r=parseInt(cellEl.dataset.r,10);
+    drag.overCell={q:q,r:r};
+    showPreview(q,r);
+  } else drag.overCell=null;
+}
+
+/* ---------- Screens / flow ---------- */
+function show(id){
+  ["menu-screen","howto-screen","settings-screen","pause-screen","gameover-screen","level-screen"].forEach(function(x){ $(x).classList.toggle("open", x===id); });
+  if(id) state.screen = (id==="menu-screen"?"menu": id==="pause-screen"?"pause": id==="gameover-screen"?"over": id==="howto-screen"?"howto": id==="settings-screen"?"settings": id==="level-screen"?"level":"game");
+  else state.screen="game";
+}
+function startGame(){
+  ensureAudio(); sfx("start"); startMusic();
+  state.score=0; state.lines=0; state.flowers=0; state.gameOver=false; state.paused=false; state.started=true;
+  state.level=1; state.linesThisLevel=0; state.levelStartScore=0; state.beeStreak=0; state.levelCompleteShown=false;
+  buildBoard(); dealTray(); updateHUD();
+  show(null);
+  announce("New garden started. Level 1 — bloom "+levelTargetFor(1)+" lines. Pick a piece and plant it.");
+}
+function pauseGame(){
+  if(state.screen!=="game" || state.gameOver) return;
+  state.paused=true;
+  $("pause-score").textContent=state.score; $("pause-lines").textContent=state.lines;
+  show("pause-screen"); announce("Game paused.");
+}
+function resumeGame(){
+  if(!state.paused) return;
+  state.paused=false; ensureAudio(); show(null); announce("Game resumed.");
+}
+function gameOver(){
+  if(state.gameOver) return;
+  state.gameOver=true;
+  var isBest = state.score>state.best;
+  if(isBest){ state.best=state.score; save("jjb-hex-garden-best", state.best); }
+  if(state.level > state.bestLevel){ state.bestLevel=state.level; save("jjb-hex-garden-level", state.bestLevel); }
+  updateHUD(); sfx("over");
+  var grade = state.score>=1500?"🌻 Master Gardener!": state.score>=800?"🌷 Lovely Gardener!": state.score>=300?"🌱 Growing Gardener!":"🌼 First Sprout!";
+  $("gameover-emoji").textContent = state.score>=1500?"🏆": state.score>=800?"🌻":"🌷";
+  $("gameover-msg").textContent = grade+" No piece fits any more — you reached Level "+state.level+" and grew a beautiful bouquet!";
+  $("final-lines").textContent=state.lines;
+  $("final-flowers").textContent=state.flowers;
+  $("final-level").textContent=state.level;
+  $("final-best").textContent=state.best;
+  $("new-best").style.display = isBest && state.score>0 ? "block":"none";
+  show("gameover-screen");
+  /* count-up */
+  var target=state.score, el=$("final-score"), t0=Date.now();
+  (function tick(){
+    var p=Math.min(1,(Date.now()-t0)/800);
+    el.textContent=Math.round(target*p);
+    if(p<1) requestAnimationFrame(tick);
+  })();
+  announce("Game over. Final score "+state.score+". Best "+state.best+".");
+}
+function quitToMenu(){ state.paused=false; state.started=false; stopMusic(); updateHUD(); show("menu-screen"); }
+function syncSettingsUI(){
+  $("volume-slider").value=state.volume;
+  [["btn-music",state.musicOn],["btn-sfx",state.sfxOn]].forEach(function(p){ $(p[0]).setAttribute("aria-pressed", String(p[1])); $(p[0]).textContent = p[0]==="btn-music" ? "🎵":"🔊"; $(p[0]).style.opacity = p[1]?"1":"0.45"; });
+  $("btn-music-settings").textContent=state.musicOn?"On":"Off"; $("btn-music-settings").setAttribute("aria-pressed", String(state.musicOn));
+  $("btn-sfx-settings").textContent=state.sfxOn?"On":"Off"; $("btn-sfx-settings").setAttribute("aria-pressed", String(state.sfxOn));
+  $("btn-motion").textContent=state.reduceMotion?"On":"Off"; $("btn-motion").setAttribute("aria-pressed", String(state.reduceMotion));
+  document.body.style.setProperty("--rm", state.reduceMotion?"1":"0");
+}
+function toggleMusic(){ state.musicOn=!state.musicOn; save("jjb-hex-garden-music", state.musicOn?"on":"off"); ensureAudio(); applyVolume(); syncSettingsUI(); }
+function toggleSfx(){ state.sfxOn=!state.sfxOn; save("jjb-hex-garden-sfx", state.sfxOn?"on":"off"); ensureAudio(); applyVolume(); syncSettingsUI(); if(state.sfxOn) sfx("select"); }
+
+/* ---------- Events ---------- */
+$("btn-play").addEventListener("click", startGame);
+$("btn-play-from-howto").addEventListener("click", startGame);
+$("btn-howto").addEventListener("click", function(){ show("howto-screen"); });
+$("btn-howto-pause").addEventListener("click", function(){ show("howto-screen"); });
+$("btn-close-howto").addEventListener("click", function(){ if(state.screen==="level") show("level-screen"); else if(state.paused) show("pause-screen"); else if(state.started && !state.gameOver) show(null); else show("menu-screen"); });
+$("btn-settings").addEventListener("click", function(){ syncSettingsUI(); show("settings-screen"); });
+$("btn-close-settings").addEventListener("click", function(){ show(state.started && !state.gameOver && !state.paused ? null : "menu-screen"); if(state.started && !state.gameOver && !state.paused) state.screen="game"; });
+$("btn-pause").addEventListener("click", function(){ if(state.screen==="game") pauseGame(); else if(state.screen==="pause") resumeGame(); });
+$("btn-resume").addEventListener("click", resumeGame);
+$("btn-restart").addEventListener("click", function(){ if(state.screen==="game"||state.screen==="pause") startGame(); });
+$("btn-restart-pause").addEventListener("click", startGame);
+$("btn-replay").addEventListener("click", startGame);
+$("btn-next-level").addEventListener("click", nextLevel);
+$("btn-level-menu").addEventListener("click", quitToMenu);
+$("btn-menu").addEventListener("click", quitToMenu);
+$("btn-quit-menu").addEventListener("click", quitToMenu);
+$("btn-rotate").addEventListener("click", rotateSelected);
+$("btn-music").addEventListener("click", toggleMusic);
+$("btn-sfx").addEventListener("click", toggleSfx);
+$("btn-music-settings").addEventListener("click", toggleMusic);
+$("btn-sfx-settings").addEventListener("click", toggleSfx);
+$("btn-motion").addEventListener("click", function(){ state.reduceMotion=!state.reduceMotion; syncSettingsUI(); toast(state.reduceMotion?"Reduced motion on":"Reduced motion off"); });
+$("volume-slider").addEventListener("input", function(e){ state.volume=parseInt(e.target.value,10); save("jjb-hex-garden-volume", state.volume); ensureAudio(); applyVolume(); });
+document.addEventListener("keydown", function(e){
+  if(e.key==="p"||e.key==="P"||e.key==="Escape"){
+    if(state.screen==="game") pauseGame();
+    else if(state.screen==="pause") resumeGame();
+    return;
+  }
+  if(state.screen==="level" && (e.key==="Enter"||e.key===" ")){ e.preventDefault(); nextLevel(); return; }
+  if(state.screen!=="game" || state.paused || state.gameOver) return;
+  var tgt=e.target;
+  if(tgt && tgt.tagName==="INPUT") return; /* let sliders keep their keys */
+  if((e.key==="Enter"||e.key===" ") && tgt && tgt.closest && tgt.closest("button,.tray-piece,a")) return; /* focused control handles Enter/Space itself */
+  if(e.key==="1"||e.key==="2"||e.key==="3"){ selectPiece(parseInt(e.key,10)-1); }
+  else if(e.key==="r"||e.key==="R"){ rotateSelected(); }
+  else if(e.key==="ArrowUp"){ e.preventDefault(); moveCursor(0,-1); }
+  else if(e.key==="ArrowDown"){ e.preventDefault(); moveCursor(0,1); }
+  else if(e.key==="ArrowLeft"){ e.preventDefault(); moveCursor(-1,0); }
+  else if(e.key==="ArrowRight"){ e.preventDefault(); moveCursor(1,0); }
+  else if(e.key==="Enter"||e.key===" "){ e.preventDefault(); if(state.selected>=0) placeSelectedAt(state.cursor.q, state.cursor.r); }
+});
+if(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) state.reduceMotion=true;
+
+/* ---------- Init ---------- */
+buildBoard(); dealTray(); updateHUD(); syncSettingsUI();
+
+/* Public namespace + test hooks (state inspection only; gameplay unchanged) */
+NS.version="1.1.0"; NS.id="JJB-GAME-20261116-14";
+NS.state=state; NS.cells=cells;
+NS.startGame=startGame; NS.pauseGame=pauseGame; NS.resumeGame=resumeGame;
+NS.selectPiece=selectPiece; NS.rotateSelected=rotateSelected;
+NS.placeSelectedAt=placeSelectedAt; NS.canPlace=canPlace; NS.anyPieceFits=anyPieceFits;
+NS.maybeGameOver=maybeGameOver; NS.nextLevel=nextLevel; NS.levelTargetFor=levelTargetFor;
+NS.getState=function(){ return {screen:state.screen, score:state.score, best:state.best, lines:state.lines, flowers:state.flowers, selected:state.selected, tray:state.tray.map(function(p){ return p?{name:p.name,cells:p.cells.length}:null; }), gameOver:state.gameOver, paused:state.paused, filled:Object.keys(cells).filter(function(k){return cells[k].filled;}).length, level:state.level, linesThisLevel:state.linesThisLevel, levelTarget:levelTargetFor(state.level), beeStreak:state.beeStreak, stars:JSON.parse(JSON.stringify(state.stars)), bestLevel:state.bestLevel}; };
+NS._test={
+  setTray:function(pieces){ state.tray=pieces; state.selected=-1; renderTray(); },
+  fillCells:function(list, color){ var n=0; list.forEach(function(c){ var cell=cells[key(c[0],c[1])]; if(cell && !cell.filled){ cell.filled=true; cell.flower=color||FLOWER_COLORS[0]; cell.el.classList.add("filled"); cell.el.innerHTML='<span class="flower">'+flowerSVG(cell.flower)+'</span>'; n++; } }); state.flowers+=n; /* test-planted flowers count, as in real play */ },
+  clearBoard:function(){ Object.keys(cells).forEach(function(k){ var c=cells[k]; c.filled=false; c.el.classList.remove("filled"); c.el.innerHTML=""; }); },
+  allCellKeys:function(){ return Object.keys(cells); },
+  pieceNamesForLevel:function(l){ return PIECES.filter(function(p){ return p.minLevel<=l; }).map(function(p){ return p.name; }); },
+  dealTray:function(){ dealTray(); return state.tray.map(function(p){ return p?{name:p.name,cells:p.cells.length}:null; }); },
+  lineKeys:function(){ return linesDef.map(function(L){ return {dir:L.dir, coord:L.coord, keys:L.keys.slice()}; }); }
+};
+})();
+</script>
+</body>
+</html>
