@@ -1,1 +1,102 @@
-{"_readme":"JoJo's Blocks — BROWSER GAMES IN DEVELOPMENT (UI/UX Pass 2 deployment prep, 16 Nov 2026). Single source of truth for the games listed on /games/. WORKING TITLES ONLY — final names, thumbnails and gameplay are supplied and approved by the owner after development; do not invent them. Every game here has status 'coming-soon': it renders as a card with a neutral thumbnail tile (category icon only, no fake screenshot, no invented artwork), no Play button and no link. NO individual game page is generated for a coming-soon game, and no game appears in the sitemap. When a game is actually ready, set status to 'ready' and give it a slug + thumbnail + metaDescription; the generator then emits games/<slug>/index.html from templates/game.html and lists it in the sitemap.","games":[{"category":"Original Browser Games","description":"Guess the animal from the clues — a quick guessing game for animal lovers.","icon":"🦁","id":"animal-guess","status":"coming-soon","title":"Animal Guess"},{"category":"Original Browser Games","description":"Flip the cards and find every matching pair in as few moves as you can.","icon":"🃏","id":"memory-match","status":"coming-soon","title":"Memory Match"},{"category":"Original Browser Games","description":"The classic game of noughts and crosses — get three in a row to win.","icon":"✖️","id":"tic-tac-toe","status":"coming-soon","title":"Tic-Tac-Toe"},{"category":"Original Browser Games","description":"Click the box as soon as it appears — a quick game of speed and reflexes.","icon":"🖱️","id":"click-the-box","status":"coming-soon","title":"Click the Box"},{"category":"Original Browser Games","description":"Guide the bird through the gaps — a simple one-button flying game.","icon":"🐦","id":"bird-flight","status":"coming-soon","title":"Bird Flight"},{"category":"Original Browser Games","description":"Stack the falling blocks into complete rows before the pile reaches the top.","icon":"🧱","id":"falling-blocks","status":"coming-soon","title":"Falling Blocks"}]}
+{
+  "games": [
+    {
+      "id": "animal-guess",
+      "slug": "animal-guess",
+      "title": "Animal Guess Game",
+      "category": "educational",
+      "liveGenre": "Puzzle",
+      "description": "Find the hidden animal! Pick an animal, flip the tiles and find it before your attempts run out. A free JoJo's Blocks game — no sign-up, no download.",
+      "thumb": "https://jojosblocks.online/games/thumbs/animal-guess.svg",
+      "url": "/games/animal-guess/",
+      "status": "live",
+      "lastmod": "2026-11-16",
+      "dateAdded": "2026-11-16",
+      "featured": true,
+      "featuredRank": 1,
+      "tags": [
+        "learning"
+      ]
+    },
+    {
+      "id": "memory-match",
+      "slug": "memory-match",
+      "title": "Memory Match Game",
+      "category": "puzzle",
+      "liveGenre": "Puzzle",
+      "description": "Flip the cards and match the pairs! A free JoJo's Blocks memory game with three difficulties, best times and a timer that starts when you do. No sign-up, no download.",
+      "thumb": "https://jojosblocks.online/games/thumbs/memory-match.svg",
+      "url": "/games/memory-match/",
+      "status": "live",
+      "lastmod": "2026-11-16",
+      "dateAdded": "2026-11-16",
+      "featured": true,
+      "featuredRank": 2,
+      "tags": []
+    },
+    {
+      "id": "tic-tac-toe",
+      "slug": "tic-tac-toe",
+      "title": "Tic-Tac-Toe vs JoJo",
+      "category": "casual",
+      "liveGenre": "Classic",
+      "description": "Play Tic-Tac-Toe against JoJo the AI — or a friend. Three difficulties, score tally, and a fair game: JoJo's wins count as JoJo's wins. Free, no sign-up, no download.",
+      "thumb": "https://jojosblocks.online/games/thumbs/tic-tac-toe.svg",
+      "url": "/games/tic-tac-toe/",
+      "status": "live",
+      "lastmod": "2026-11-16",
+      "dateAdded": "2026-11-16",
+      "featured": true,
+      "featuredRank": 3,
+      "tags": []
+    },
+    {
+      "id": "click-the-box",
+      "slug": "click-the-box",
+      "title": "Click the Box Game",
+      "category": "arcade",
+      "liveGenre": "Reflex",
+      "description": "How fast are your reflexes? Click the moving box before time runs out and beat your best score. A free JoJo's Blocks game — no sign-up, no download.",
+      "thumb": "https://jojosblocks.online/games/thumbs/click-the-box.svg",
+      "url": "/games/click-the-box/",
+      "status": "live",
+      "lastmod": "2026-11-16",
+      "dateAdded": "2026-11-16",
+      "featured": true,
+      "featuredRank": 4,
+      "tags": []
+    },
+    {
+      "id": "flappy-penguin",
+      "slug": "flappy-penguin",
+      "title": "Flappy Penguin",
+      "category": "arcade",
+      "liveGenre": "Arcade",
+      "description": "Flap JoJo's penguin through the pipes! Tap, click or press Space. A free JoJo's Blocks game — no sign-up, no download.",
+      "thumb": "https://jojosblocks.online/games/thumbs/flappy-penguin.svg",
+      "url": "/games/flappy-penguin/",
+      "status": "live",
+      "lastmod": "2026-11-16",
+      "dateAdded": "2026-11-16",
+      "featured": true,
+      "featuredRank": 5,
+      "tags": []
+    },
+    {
+      "id": "block-drop",
+      "slug": "block-drop",
+      "title": "Block Drop",
+      "category": "puzzle",
+      "liveGenre": "Puzzle",
+      "description": "Stack the falling blocks, clear lines and chase your best score. A free JoJo's Blocks puzzle game — no sign-up, no download.",
+      "thumb": "https://jojosblocks.online/games/thumbs/block-drop.svg",
+      "url": "/games/block-drop/",
+      "status": "live",
+      "lastmod": "2026-11-16",
+      "dateAdded": "2026-11-16",
+      "featured": true,
+      "featuredRank": 6,
+      "tags": []
+    }
+  ]
+}

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Arcade | JoJo’s Blocks</title>
+<meta name="description" content="Fast, fun arcade games — quick to play, hard to put down.">
+<link rel="canonical" href="https://jojosblocks.online/games/category/arcade/">
+<link rel="stylesheet" href="../../../assets/styles.css">
+
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<!-- promo strip -->
+<div class="strip"><b>Instant PDF download, secure checkout on Gumroad.</b> Code JOJOS10 saves 10%.</div>
+
+<!-- header -->
+<header class="site">
+  <div class="hd">
+    <a class="logo" href="../../../">JoJo's Blocks<small>Digital Products • Creative Resources • Games</small></a>
+    <form class="search" id="headSearch" role="search" aria-label="Search the store" action="../../../search/" method="get">
+      <input id="searchInput" name="q" type="search" placeholder="Search books, free printables, games…" aria-label="Search books, free resources, games and articles" autocomplete="off">
+      <button type="submit">Search</button>
+      <div class="suggest" id="headSuggest" role="listbox" aria-label="Search suggestions"></div>
+    </form>
+    <button class="search-icon-btn" id="searchIconBtn" aria-label="Open search" aria-expanded="false">⌕</button>
+  </div>
+</header>
+
+<!-- mobile search overlay -->
+<div class="search-overlay" id="searchOverlay" role="search" aria-label="Search the store">
+  <div class="so-row">
+    <form class="search" id="mobSearch" action="../../../search/" method="get" style="display:flex">
+      <input id="mobSearchInput" name="q" type="search" placeholder="Search books, free printables, games…" aria-label="Search books, free resources, games and articles" autocomplete="off">
+      <button type="submit">Search</button>
+    </form>
+    <button class="so-close" id="searchOverlayClose" aria-label="Close search">✕</button>
+  </div>
+  <div class="suggest" id="mobSuggest" role="listbox" aria-label="Search suggestions"></div>
+</div>
+
+<nav class="dept" aria-label="Departments"><div class="wrap" id="deptNav">
+  <a href="../../../shop/">Shop</a>
+  <span class="has-fly"><a href="../../../free-resources/" aria-haspopup="true">Free resources</a><span class="flyout"><a href="../../../free-resources/category/coloring/">Coloring</a><a href="../../../free-resources/category/learn-to-draw/">Learn to draw</a><a href="../../../free-resources/category/worksheets/">Worksheets</a><a href="../../../free-resources/category/planners/">Planners</a><a href="../../../free-resources/category/printables/">Printables</a><a href="../../../free-resources/category/wallpapers/">Wallpapers</a><a href="../../../free-resources/category/ai/">AI</a><a href="../../../free-resources/category/stickers/">Stickers</a><a class="viewall" href="../../../free-resources/">View all →</a></span></span>
+  <span class="has-fly"><a href="../../../games/" class="on" aria-haspopup="true">Games & play</a><span class="flyout"><a href="../../../games/category/puzzle/">Puzzle</a><a href="../../../games/category/arcade/">Arcade</a><a href="../../../games/category/casual/">Casual</a><a href="../../../games/category/educational/">Educational</a><a class="viewall" href="../../../games/">View all →</a></span></span>
+  <span class="has-fly"><a href="../../../blog/" aria-haspopup="true">Blog</a><span class="flyout"><a href="../../../blog/category/guides/">Guides</a><a href="../../../blog/category/activities/">Activities</a><a href="../../../blog/category/fun-facts/">Fun facts</a><a class="viewall" href="../../../blog/">View all →</a></span></span>
+</div></nav>
+<main id="main">
+<section class="block"><div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><span>Home</span> <span class="sep">›</span><a href="../../../games/">Games &amp; Play</a> <span class="sep">›</span><span>Arcade</span></nav>
+  <div class="page-head">
+    <h1>Arcade</h1>
+    <p class="lede">Fast, fun arcade games — quick to play, hard to put down.</p>
+    
+  </div>
+  <div class="rail">
+    <div class="chips" id="listingChips" role="group" aria-label="Filter Arcade">
+      <a class="chip" href="../../../games/" aria-pressed="false">All</a>
+      <a class="chip" href="../../../games/category/puzzle/" aria-pressed="false">Puzzle</a>
+      <a class="chip" href="../../../games/category/arcade/" aria-pressed="true">Arcade</a>
+      <a class="chip" href="../../../games/category/casual/" aria-pressed="false">Casual</a>
+      <a class="chip" href="../../../games/category/educational/" aria-pressed="false">Educational</a>
+    </div>
+    <label class="sort">Sort
+      <select id="sortSelect" aria-label="Sort">
+        <option value="featured">Featured</option>
+        <option value="az">A–Z</option>
+      </select>
+    </label>
+  </div>
+  
+  
+  <div class="active-filters" id="activeFilters"></div>
+  <p class="count" id="pageCount" aria-live="polite" hidden></p>
+  <div class="ggrid" id="listingGrid">
+    <article class="gcard">
+      <div class="gthumb"><img src="https://jojosblocks.online/games/thumbs/click-the-box.svg" alt="Click the Box Game game" width="640" height="360" loading="lazy"></div>
+      <h3>Click the Box Game</h3><p class="meta">Arcade</p>
+      <a href="../../../games/click-the-box/">Play free →</a>
+    </article>
+    <article class="gcard">
+      <div class="gthumb"><img src="https://jojosblocks.online/games/thumbs/flappy-penguin.svg" alt="Flappy Penguin game" width="640" height="360" loading="lazy"></div>
+      <h3>Flappy Penguin</h3><p class="meta">Arcade</p>
+      <a href="../../../games/flappy-penguin/">Play free →</a>
+    </article>
+  </div>
+  <div class="empty" id="listingEmpty" role="status"></div>
+  <nav class="pager" id="pager" aria-label="Pagination"></nav>
+  <div class="loadmore-wrap"><button class="btn btn-ghost" id="loadMoreBtn" type="button" hidden>Load more</button></div>
+  
+  <script type="application/json" id="page-data">{"kind":"games","countNoun":"game","pageSize":24,"showAge":false,"lockFilter":true,"filterLabel":{"all":"All","puzzle":"Puzzle","arcade":"Arcade","casual":"Casual","educational":"Educational"},"items":[{"key":"click-the-box","title":"Click the Box Game","url":"games/click-the-box/","thumb":"https://jojosblocks.online/games/thumbs/click-the-box.svg","tag":"Arcade","desc":"How fast are your reflexes? Click the moving box before time runs out and beat your best score. A free JoJo's Blocks game — no sign-up, no download.","text":"How fast are your reflexes? Click the moving box before time runs out and beat your best score. A free JoJo's Blocks game — no sign-up, no download.","filterKey":"arcade","category":"arcade","categoryName":"Arcade","tags":[],"dateAdded":"2026-11-16","featuredRank":4},{"key":"flappy-penguin","title":"Flappy Penguin","url":"games/flappy-penguin/","thumb":"https://jojosblocks.online/games/thumbs/flappy-penguin.svg","tag":"Arcade","desc":"Flap JoJo's penguin through the pipes! Tap, click or press Space. A free JoJo's Blocks game — no sign-up, no download.","text":"Flap JoJo's penguin through the pipes! Tap, click or press Space. A free JoJo's Blocks game — no sign-up, no download.","filterKey":"arcade","category":"arcade","categoryName":"Arcade","tags":[],"dateAdded":"2026-11-16","featuredRank":5}]}</script>
+</div></section>
+</main>
+<footer class="site"><div class="wrap">
+  <div class="fgrid">
+    <div>
+      <h3>JoJo's Blocks</h3>
+      <p>Digital products, free resources and games for creating, learning and play.</p>
+      <p style="margin-top:12px"><a href="https://www.pinterest.com/JoJosBlocks/" target="_blank" rel="noopener">Pinterest — @JoJosBlocks</a></p>
+    </div>
+    <div>
+      <h4>Shop</h4>
+      <a href="../../../shop/">Our Products</a>
+      <a href="../../../free-resources/">Free Resources</a>
+      <a href="../../../games/">Games &amp; Play</a>
+      <a href="../../../blog/">Blog</a>
+    </div>
+    <div>
+      <h4>Help</h4>
+      <a href="mailto:jojobusiness0101@gmail.com">Contact us</a>
+      <a href="../../../#about">About</a>
+      <a href="../../../free-printables/">Free Taster Pack</a>
+    </div>
+    <div>
+      <h4>Legal</h4>
+      <a href="../../../privacy.html">Privacy Policy</a>
+      <a href="../../../terms.html">Terms &amp; Conditions</a>
+      <a href="../../../refund-policy.html">Refund Policy</a>
+    </div>
+  </div>
+  <div class="fine">
+    <span>© 2026 JoJo's Blocks. All rights reserved. — Preview: Round 2, scalable platform preview.</span>
+    <span>Sales are completed securely on Gumroad.</span>
+  </div>
+</div></footer>
+<!-- bottom tab bar (mobile only) -->
+<div class="tabbar"><nav aria-label="Quick navigation">
+  <a href="../../../shop/" data-tab="shop"><span class="ti">▦</span>Shop</a>
+  <a href="../../../free-resources/" data-tab="free"><span class="ti">✦</span>Free</a>
+  <a href="../../../games/" data-tab="games" class="on"><span class="ti">▶</span>Play</a>
+  <a href="../../../blog/" data-tab="blog"><span class="ti">✎</span>Blog</a>
+  <a href="#" data-tab="search" id="tabSearch"><span class="ti">⌕</span>Search</a>
+</nav></div>
+<div class="modal-back" id="modalBack" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal" id="modalBox">
+    <button class="x" id="modalClose" aria-label="Close product details">✕</button>
+    <div class="mgrid">
+      <div class="mcover" id="modalCover"></div>
+      <div class="mbody">
+        <p class="fmt" id="modalFmt"></p>
+        <h2 id="modalTitle"></h2>
+        <p class="mprice" id="modalPrice"></p>
+        <p class="msave" id="modalSave"></p>
+        <p id="modalDesc"></p>
+        <div class="macts">
+          <a class="btn btn-accent" id="modalBuy" href="#" target="_blank" rel="noopener">Buy on Gumroad</a>
+          <a class="btn btn-ghost btn-sm" id="modalPage" href="#" target="_blank" rel="noopener">View product page</a>
+        </div>
+        <p style="font-size:14px;color:var(--muted);margin-top:12px">Use code JOJOS10 at checkout for 10% off.</p>
+        <h3>What you get</h3>
+        <ul class="get" id="modalGet"></ul>
+        <h3>Good to know</h3>
+        <ul class="get">
+          <li>Instant PDF download</li>
+          <li>Print at home as often as you like</li>
+          <li>Personal &amp; family use</li>
+          <li>Secure checkout on Gumroad</li>
+          <li><a href="../../../refund-policy.html" target="_blank" rel="noopener">Refund policy</a></li>
+        </ul>
+        <h3>Sample pages</h3>
+        <p class="sample-note">Real sample pages from this book will appear here once supplied. Try the <a href="https://jojosblocks.online/assets/free-resources/jojos-blocks-free-taster-pack.pdf" target="_blank" rel="noopener">Free Taster Pack</a> first — six sample pages, free.</p>
+      </div>
+    </div>
+    <div class="rel">
+      <h3>You may also like</h3>
+      <div class="chips" id="modalRelated"></div>
+      <a class="page-link" id="modalPageLink" href="#" target="_blank" rel="noopener">View product page →</a>
+    </div>
+    <div class="msticky">
+      <span class="msticky-price" id="mstickyPrice"></span>
+      <a class="btn btn-accent" id="mstickyBuy" href="#" target="_blank" rel="noopener">Buy on Gumroad</a>
+    </div>
+  </div>
+</div>
+<script>window.JB={root:"../../../",page:"listing",kind:"games"};</script>
+<script type="application/json" id="product-data">{"bundle":{"title":"JoJo's Blocks Complete Coloring Book Bundle","price":12.99,"sale":11.69,"pages":154,"ages":"2–7","cover":"https://jojosblocks.online/assets/covers/bundle-cover.jpg","desc":"Four favorite adventures in one bundle — 154 pages of coloring, tracing, puzzles and learning for one low price. Includes My First ABC Book (28 pages, ages 2–4), My First Animal Explorer (30 pages), My Little Community Helpers (54 pages, 24 helpers) and My Little Space Adventure (42 pages, ages 3–5). Download the PDFs, print at home, and color!","gum":"https://jojosblocks.gumroad.com/l/jojos-blocks-coloring-bundle?wanted=true","page":"books/complete-coloring-book-bundle.html"},"abc":{"title":"My First ABC Book","price":3.99,"sale":3.59,"pages":28,"ages":"2–4","cover":"https://jojosblocks.online/assets/covers/book-01.jpg","desc":"Meet the alphabet one letter at a time. Each page pairs a big letter with a picture word — A is for Apple, B is for Ball, C is for Cat — with a color guide and tracing practice, so little ones learn, color and write their first letters.","gum":"https://jojosblocks.gumroad.com/l/my-first-abc-book?wanted=true","page":"books/my-first-abc-book.html"},"animal":{"title":"My First Animal Explorer","price":4.99,"sale":4.49,"pages":30,"ages":"3–6","cover":"https://jojosblocks.online/assets/covers/book-02.jpg","desc":"Hello, little explorer! Meet lions, elephants, giraffes, pandas, monkeys and more — learn each animal's name, trace the word, count, match and color. A certificate of achievement waits at the end for every super animal explorer.","gum":"https://jojosblocks.gumroad.com/l/my-first-animal-explorer?wanted=true","page":"books/my-first-animal-explorer.html"},"helpers":{"title":"My Little Community Helpers","price":4.99,"sale":4.49,"pages":54,"ages":"4–7","cover":"https://jojosblocks.online/assets/covers/book-03.jpg","desc":"Meet the people who help us every day! 24 community helpers — doctors, nurses, firefighters, police officers, teachers, veterinarians, electricians, mail carriers and more — with simple job descriptions, big coloring illustrations and a fun matching activity.","gum":"https://jojosblocks.gumroad.com/l/my-little-community-helpers?wanted=true","page":"books/my-little-community-helpers.html"},"space":{"title":"My Little Space Adventure","price":4.99,"sale":4.49,"pages":42,"ages":"3–5","cover":"https://jojosblocks.online/assets/covers/book-04.jpg","desc":"Join Nova, Zippy the alien and Rocket-7 on a mission to find the missing Cosmic Crystal. Color planets and alien worlds, solve mazes and puzzles, decode alien messages and take the Space Explorer Quiz — with a Junior Space Explorer certificate at the end.","gum":"https://jojosblocks.gumroad.com/l/my-little-space-adventure?wanted=true","page":"books/my-little-space-adventure.html"}}</script>
+<script src="../../../assets/site.js" defer></script>
+</body>
+</html>

@@ -1,1 +1,259 @@
-{"ages":"2–7","contents":[{"book":"My First ABC Book","icon":"🍎","text":"Alphabet learning and letter tracing — meet the letter A with its picture word.","title":"A is for Apple"},{"book":"My First Animal Explorer","icon":"🦁","text":"Animal coloring and word tracing — color the lion and trace its name.","title":"Meet the Lion"},{"book":"My Little Community Helpers","icon":"🚒","text":"Community helpers — color the firefighter and learn what helpers do.","title":"Meet the Firefighter"},{"book":"My Little Space Adventure","icon":"🌍","text":"Introductory space learning — color planet Earth and start the space mission.","title":"This is Earth!"}],"faqs":[{"a":"Six pages: a cover, one sample activity from each of our four books — A is for Apple, Meet the Lion, Meet the Firefighter and This is Earth! — and a closing page that introduces the full books.","q":"What is in the Free Taster Pack?"},{"a":"Click the Download Free Taster Pack button on this page. The 6-page A4 PDF downloads directly to your device — no account, no sign-up and no email address needed.","q":"How do I download the free pack?"},{"a":"Open the PDF on a computer or tablet and print on A4 paper. On A4 paper choose “Actual size”; on US Letter paper choose “Fit to page” so nothing is cut off.","q":"How do I print the pages?"},{"a":"The pack is suitable for ages 2–7. Each full book has its own age range: My First ABC Book is ages 2–4, My First Animal Explorer ages 3–6, My Little Community Helpers ages 4–7, and My Little Space Adventure ages 3–5.","q":"What ages is the free pack for?"},{"a":"Yes. Print as many copies as you need for your own household — a favorite page can be colored again and again.","q":"Can I print the pages more than once?"},{"a":"The free pack is for personal and family use only. Please don't share the file, resell it or redistribute it — instead, tell friends to download their own free copy from this page.","q":"Can I share the free pack with others?"}],"file":"assets/free-resources/jojos-blocks-free-taster-pack.pdf","fileBytes":1749828,"fileSize":"1.67 MB","format":"A4 PDF","heroHeading":"Free Printable Coloring Pages for Kids","heroIntro":"Try JoJo's Blocks before you buy. Download four free coloring pages for kids — one sample activity from each of our four coloring books — free, with no sign-up and no email address needed.","lastmod":"2026-11-15","license":["Personal and family use only.","Print as many copies as you need for your own household.","No resale or redistribution — please don't share the file."],"metaDescription":"Download four free printable coloring pages for kids ages 2–7: alphabet, animals, community helpers and space. A 6-page A4 PDF — print at home, no sign-up.","pages":6,"printSteps":[{"text":"Click the Download Free Taster Pack button — the file saves straight to your device.","title":"Download the PDF"},{"text":"Open the PDF in any PDF reader or in your web browser.","title":"Open it on a computer or tablet"},{"text":"The pack is designed for A4 paper — ordinary home printer paper works well.","title":"Print on A4 paper"},{"text":"If your printer uses US Letter paper, choose “Fit to page” in the print dialog so nothing is cut off.","title":"US Letter paper: select “Fit to page”"},{"text":"On A4 paper, choose “Actual size” so the pages print exactly as designed.","title":"A4 paper: select “Actual size”"}],"seoTitle":"Free Printable Coloring Pages for Kids | JoJo's Blocks","slug":"free-taster-pack","title":"JoJo's Blocks Free Taster Pack"}
+{
+  "freeResources": [
+    {
+      "id": "forest-friends-coloring",
+      "slug": "forest-friends-coloring",
+      "title": "Forest Friends Coloring Page",
+      "category": "coloring",
+      "liveGroup": "Coloring Pages",
+      "description": "Print a free Forest Friends coloring page — a friendly fox, rabbit, deer and owl among tall trees, mushrooms and flowers. A4 PDF, no sign-up, personal use.",
+      "format": "PDF · A4 · 1 page · 262 KB",
+      "fileUrl": "https://jojosblocks.online/assets/free-resources/forest-friends-coloring.pdf",
+      "url": "/free-resources/forest-friends-coloring/",
+      "status": "live",
+      "lastmod": "2026-11-15",
+      "dateAdded": "2026-11-15",
+      "featured": true,
+      "featuredRank": 5,
+      "thumb": "https://jojosblocks.online/assets/free-resources/forest-friends-coloring-preview.jpg",
+      "tags": [
+        "creative"
+      ],
+      "license": "Personal & family use only — print as many copies as you need for your own household. No resale or redistribution."
+    },
+    {
+      "id": "under-the-sea-coloring",
+      "slug": "under-the-sea-coloring",
+      "title": "Under the Sea Coloring Page",
+      "category": "coloring",
+      "liveGroup": "Coloring Pages",
+      "description": "Print a free Under the Sea coloring page — a dolphin, a turtle and little fish swim among coral, shells and bubbles. A4 PDF, no sign-up, personal use.",
+      "format": "PDF · A4 · 1 page · 188 KB",
+      "fileUrl": "https://jojosblocks.online/assets/free-resources/under-the-sea-coloring.pdf",
+      "url": "/free-resources/under-the-sea-coloring/",
+      "status": "live",
+      "lastmod": "2026-11-15",
+      "dateAdded": "2026-11-15",
+      "featured": false,
+      "featuredRank": 7,
+      "thumb": "https://jojosblocks.online/assets/free-resources/under-the-sea-coloring-preview.jpg",
+      "tags": [
+        "creative"
+      ],
+      "license": "Personal & family use only — print as many copies as you need for your own household. No resale or redistribution."
+    },
+    {
+      "id": "learn-to-draw-cat",
+      "slug": "learn-to-draw-cat",
+      "title": "Learn to Draw a Cat",
+      "category": "learn-to-draw",
+      "liveGroup": "Learn to Draw",
+      "description": "Learn to draw a cat with this free printable — a friendly sitting cat in bold line art, three easy steps and two practice boxes. A4 PDF, no sign-up.",
+      "format": "PDF · A4 · 1 page · 33 KB",
+      "fileUrl": "https://jojosblocks.online/assets/free-resources/learn-to-draw-cat.pdf",
+      "url": "/free-resources/learn-to-draw-cat/",
+      "status": "live",
+      "lastmod": "2026-11-15",
+      "dateAdded": "2026-11-15",
+      "featured": true,
+      "featuredRank": 4,
+      "thumb": "https://jojosblocks.online/assets/free-resources/learn-to-draw-cat-preview.jpg",
+      "tags": [
+        "learning",
+        "creative"
+      ],
+      "license": "Personal & family use only — print as many copies as you need for your own household. No resale or redistribution."
+    },
+    {
+      "id": "learn-to-draw-butterfly",
+      "slug": "learn-to-draw-butterfly",
+      "title": "Learn to Draw a Butterfly",
+      "category": "learn-to-draw",
+      "liveGroup": "Learn to Draw",
+      "description": "Learn to draw a butterfly with this free printable — a cheerful butterfly with big patterned wings, three easy steps and two practice boxes. A4 PDF.",
+      "format": "PDF · A4 · 1 page · 52 KB",
+      "fileUrl": "https://jojosblocks.online/assets/free-resources/learn-to-draw-butterfly.pdf",
+      "url": "/free-resources/learn-to-draw-butterfly/",
+      "status": "live",
+      "lastmod": "2026-11-15",
+      "dateAdded": "2026-11-15",
+      "featured": false,
+      "featuredRank": 8,
+      "thumb": "https://jojosblocks.online/assets/free-resources/learn-to-draw-butterfly-preview.jpg",
+      "tags": [
+        "learning",
+        "creative"
+      ],
+      "license": "Personal & family use only — print as many copies as you need for your own household. No resale or redistribution."
+    },
+    {
+      "id": "alphabet-tracing-a-e",
+      "slug": "alphabet-tracing-a-e",
+      "title": "Alphabet Tracing Worksheet — A to E",
+      "category": "worksheets",
+      "liveGroup": "Learning Worksheets",
+      "description": "Free alphabet tracing worksheet A to E — trace big uppercase and lowercase letters with a picture word for each letter. A4 PDF, no sign-up.",
+      "format": "PDF · A4 · 1 page · 46 KB",
+      "fileUrl": "https://jojosblocks.online/assets/free-resources/alphabet-tracing-a-e.pdf",
+      "url": "/free-resources/alphabet-tracing-a-e/",
+      "status": "live",
+      "lastmod": "2026-11-15",
+      "dateAdded": "2026-11-15",
+      "featured": false,
+      "featuredRank": 9,
+      "thumb": "https://jojosblocks.online/assets/free-resources/alphabet-tracing-a-e-preview.jpg",
+      "tags": [
+        "learning"
+      ],
+      "license": "Personal & family use only — print as many copies as you need for your own household. No resale or redistribution."
+    },
+    {
+      "id": "counting-1-10",
+      "slug": "counting-1-10",
+      "title": "Counting 1 to 10 Worksheet",
+      "category": "worksheets",
+      "liveGroup": "Learning Worksheets",
+      "description": "Free counting 1 to 10 worksheet — count and trace the numbers 1 to 10 with number words and dots to count. A4 PDF, no sign-up, personal use.",
+      "format": "PDF · A4 · 1 page · 48 KB",
+      "fileUrl": "https://jojosblocks.online/assets/free-resources/counting-1-10.pdf",
+      "url": "/free-resources/counting-1-10/",
+      "status": "live",
+      "lastmod": "2026-11-15",
+      "dateAdded": "2026-11-15",
+      "featured": false,
+      "featuredRank": 10,
+      "thumb": "https://jojosblocks.online/assets/free-resources/counting-1-10-preview.jpg",
+      "tags": [
+        "learning"
+      ],
+      "license": "Personal & family use only — print as many copies as you need for your own household. No resale or redistribution."
+    },
+    {
+      "id": "weekly-planner",
+      "slug": "weekly-planner",
+      "title": "Weekly Planner",
+      "category": "planners",
+      "liveGroup": "Planners & Routine",
+      "description": "Free weekly planner printable — seven Mon–Sun columns with checkbox tasks, a notes area and a weekly focus box. A4 landscape PDF, no sign-up.",
+      "format": "PDF · A4 landscape · 1 page · 47 KB",
+      "fileUrl": "https://jojosblocks.online/assets/free-resources/weekly-planner.pdf",
+      "url": "/free-resources/weekly-planner/",
+      "status": "live",
+      "lastmod": "2026-11-15",
+      "dateAdded": "2026-11-15",
+      "featured": true,
+      "featuredRank": 1,
+      "thumb": "https://jojosblocks.online/assets/free-resources/weekly-planner-preview.jpg",
+      "tags": [
+        "productivity"
+      ],
+      "license": "Personal & family use only — print as many copies as you need for your own household. No resale or redistribution."
+    },
+    {
+      "id": "daily-routine-chart",
+      "slug": "daily-routine-chart",
+      "title": "Daily Routine Chart for Kids",
+      "category": "planners",
+      "liveGroup": "Planners & Routine",
+      "description": "Free daily routine chart for kids — tick off morning, afternoon and evening steps, then colour a star for each part of the day. A4 PDF, no sign-up.",
+      "format": "PDF · A4 · 1 page · 46 KB",
+      "fileUrl": "https://jojosblocks.online/assets/free-resources/daily-routine-chart.pdf",
+      "url": "/free-resources/daily-routine-chart/",
+      "status": "live",
+      "lastmod": "2026-11-15",
+      "dateAdded": "2026-11-15",
+      "featured": false,
+      "featuredRank": 11,
+      "thumb": "https://jojosblocks.online/assets/free-resources/daily-routine-chart-preview.jpg",
+      "tags": [
+        "productivity"
+      ],
+      "license": "Personal & family use only — print as many copies as you need for your own household. No resale or redistribution."
+    },
+    {
+      "id": "sticker-sheet-stars-animals",
+      "slug": "sticker-sheet-stars-animals",
+      "title": "Printable Sticker Sheet — Stars & Animals",
+      "category": "stickers",
+      "liveGroup": "Creative Printables",
+      "description": "Free printable sticker sheet — eight cute stars and animals to cut out and stick, on one A4 sheet with dashed cut lines. PDF, no sign-up.",
+      "format": "PDF · A4 · 1 page · 872 KB",
+      "fileUrl": "https://jojosblocks.online/assets/free-resources/sticker-sheet-stars-animals.pdf",
+      "url": "/free-resources/sticker-sheet-stars-animals/",
+      "status": "live",
+      "lastmod": "2026-11-15",
+      "dateAdded": "2026-11-15",
+      "featured": true,
+      "featuredRank": 6,
+      "thumb": "https://jojosblocks.online/assets/free-resources/sticker-sheet-stars-animals-preview.jpg",
+      "tags": [
+        "creative"
+      ],
+      "license": "Personal & family use only — print as many copies as you need for your own household. No resale or redistribution."
+    },
+    {
+      "id": "bookmark-set",
+      "slug": "bookmark-set",
+      "title": "Printable Bookmarks — Set of 4",
+      "category": "printables",
+      "liveGroup": "Creative Printables",
+      "description": "Free printable bookmarks, set of 4 — coral, teal, sun yellow and lavender, each with an original reading quote. Print on card and cut apart.",
+      "format": "PDF · A4 · 1 page · 45 KB",
+      "fileUrl": "https://jojosblocks.online/assets/free-resources/bookmark-set.pdf",
+      "url": "/free-resources/bookmark-set/",
+      "status": "live",
+      "lastmod": "2026-11-15",
+      "dateAdded": "2026-11-15",
+      "featured": false,
+      "featuredRank": 12,
+      "thumb": "https://jojosblocks.online/assets/free-resources/bookmark-set-preview.jpg",
+      "tags": [
+        "creative"
+      ],
+      "license": "Personal & family use only — print as many copies as you need for your own household. No resale or redistribution."
+    },
+    {
+      "id": "sunset-mountains-wallpaper",
+      "slug": "sunset-mountains-wallpaper",
+      "title": "Sunset Mountains Phone Wallpaper",
+      "category": "wallpapers",
+      "liveGroup": "Wallpapers & AI",
+      "description": "Free Sunset Mountains phone wallpaper — a warm orange-and-pink sunset over layered mountains with a still lake reflection. 1080x1920 JPG.",
+      "format": "JPG · 1080x1920 · 378 KB",
+      "fileUrl": "https://jojosblocks.online/assets/free-resources/sunset-mountains-wallpaper.jpg",
+      "url": "/free-resources/sunset-mountains-wallpaper/",
+      "status": "live",
+      "lastmod": "2026-11-15",
+      "dateAdded": "2026-11-15",
+      "featured": true,
+      "featuredRank": 3,
+      "thumb": "https://jojosblocks.online/assets/free-resources/sunset-mountains-wallpaper-preview.jpg",
+      "tags": [
+        "creative"
+      ],
+      "license": "Personal & family use only. No resale or redistribution."
+    },
+    {
+      "id": "ai-art-prompt-pack",
+      "slug": "ai-art-prompt-pack",
+      "title": "AI Art Prompt Pack — 20 Creative Prompts",
+      "category": "ai",
+      "liveGroup": "Wallpapers & AI",
+      "description": "Free AI art prompt pack — 20 original one-line prompts in four categories: Animals, Landscapes, Fantasy and Everyday Magic. 2-page A4 PDF.",
+      "format": "PDF · A4 · 2 pages · 46 KB",
+      "fileUrl": "https://jojosblocks.online/assets/free-resources/ai-art-prompt-pack.pdf",
+      "url": "/free-resources/ai-art-prompt-pack/",
+      "status": "live",
+      "lastmod": "2026-11-15",
+      "dateAdded": "2026-11-15",
+      "featured": true,
+      "featuredRank": 2,
+      "thumb": "https://jojosblocks.online/assets/free-resources/ai-art-prompt-pack-preview.jpg",
+      "tags": [
+        "ai",
+        "creative"
+      ],
+      "license": "Personal & family use only — print as many copies as you need for your own household. No resale or redistribution."
+    }
+  ]
+}

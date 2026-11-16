@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Shop | JoJo’s Blocks</title>
+<meta name="description" content="Printable PDF books on Gumroad — download instantly and print at home.">
+<link rel="canonical" href="https://jojosblocks.online/shop/">
+<link rel="stylesheet" href="../assets/styles.css">
+
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<!-- promo strip -->
+<div class="strip"><b>Instant PDF download, secure checkout on Gumroad.</b> Code JOJOS10 saves 10%.</div>
+
+<!-- header -->
+<header class="site">
+  <div class="hd">
+    <a class="logo" href="../">JoJo's Blocks<small>Digital Products • Creative Resources • Games</small></a>
+    <form class="search" id="headSearch" role="search" aria-label="Search the store" action="../search/" method="get">
+      <input id="searchInput" name="q" type="search" placeholder="Search books, free printables, games…" aria-label="Search books, free resources, games and articles" autocomplete="off">
+      <button type="submit">Search</button>
+      <div class="suggest" id="headSuggest" role="listbox" aria-label="Search suggestions"></div>
+    </form>
+    <button class="search-icon-btn" id="searchIconBtn" aria-label="Open search" aria-expanded="false">⌕</button>
+  </div>
+</header>
+
+<!-- mobile search overlay -->
+<div class="search-overlay" id="searchOverlay" role="search" aria-label="Search the store">
+  <div class="so-row">
+    <form class="search" id="mobSearch" action="../search/" method="get" style="display:flex">
+      <input id="mobSearchInput" name="q" type="search" placeholder="Search books, free printables, games…" aria-label="Search books, free resources, games and articles" autocomplete="off">
+      <button type="submit">Search</button>
+    </form>
+    <button class="so-close" id="searchOverlayClose" aria-label="Close search">✕</button>
+  </div>
+  <div class="suggest" id="mobSuggest" role="listbox" aria-label="Search suggestions"></div>
+</div>
+
+<nav class="dept" aria-label="Departments"><div class="wrap" id="deptNav">
+  <a href="../shop/" class="on">Shop</a>
+  <span class="has-fly"><a href="../free-resources/" aria-haspopup="true">Free resources</a><span class="flyout"><a href="../free-resources/category/coloring/">Coloring</a><a href="../free-resources/category/learn-to-draw/">Learn to draw</a><a href="../free-resources/category/worksheets/">Worksheets</a><a href="../free-resources/category/planners/">Planners</a><a href="../free-resources/category/printables/">Printables</a><a href="../free-resources/category/wallpapers/">Wallpapers</a><a href="../free-resources/category/ai/">AI</a><a href="../free-resources/category/stickers/">Stickers</a><a class="viewall" href="../free-resources/">View all →</a></span></span>
+  <span class="has-fly"><a href="../games/" aria-haspopup="true">Games & play</a><span class="flyout"><a href="../games/category/puzzle/">Puzzle</a><a href="../games/category/arcade/">Arcade</a><a href="../games/category/casual/">Casual</a><a href="../games/category/educational/">Educational</a><a class="viewall" href="../games/">View all →</a></span></span>
+  <span class="has-fly"><a href="../blog/" aria-haspopup="true">Blog</a><span class="flyout"><a href="../blog/category/guides/">Guides</a><a href="../blog/category/activities/">Activities</a><a href="../blog/category/fun-facts/">Fun facts</a><a class="viewall" href="../blog/">View all →</a></span></span>
+</div></nav>
+<main id="main">
+<section class="block"><div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><span>Home</span> <span class="sep">›</span><span>Shop</span></nav>
+  <div class="page-head">
+    <h1>Shop</h1>
+    <p class="lede">Printable PDF books on Gumroad — download instantly and print at home.</p>
+    
+  </div>
+  <div class="rail">
+    <div class="chips" id="listingChips" role="group" aria-label="Filter Shop">
+      <button class="chip" data-filter="all" aria-pressed="true">All</button>
+      <button class="chip" data-filter="books" aria-pressed="false">Books</button>
+      <button class="chip" data-filter="bundle" aria-pressed="false">Bundles</button>
+    </div>
+    <label class="sort">Sort
+      <select id="sortSelect" aria-label="Sort">
+        <option value="featured">Featured</option>
+        <option value="price-asc">Price: Low to high</option>
+        <option value="price-desc">Price: High to low</option>
+        <option value="pages">Most pages</option>
+        <option value="az">A–Z</option>
+      </select>
+    </label>
+  </div>
+  
+  <button class="btn btn-ghost filters-btn" id="filtersBtn" type="button">Filters</button>
+  <div class="facet-bar" id="facets" role="group" aria-label="Filters">
+    <label>Format <select id="facetFormat" aria-label="Filter by format"><option value="all">All formats</option><option value="digital-pdf-coloring-book-bundle">Digital PDF coloring book bundle</option><option value="digital-pdf-coloring-book">Digital PDF coloring book</option></select></label>
+    <label>Price <select id="facetPrice" aria-label="Filter by price"><option value="all">Any price</option><option value="under5">Under $5</option><option value="5to10">$5 – $10</option><option value="over10">Over $10</option></select></label>
+    <label>Topic <select id="facetTopic" aria-label="Filter by topic"><option value="all">All topics</option><option value="learning">Learning</option><option value="creative">Creative</option></select></label>
+    <button class="btn btn-ink sheet-apply" id="sheetApply" type="button">Apply filters</button>
+  </div>
+  <div class="active-filters" id="activeFilters"></div>
+  <p class="count" id="pageCount" aria-live="polite" hidden></p>
+  <div class="pgrid" id="listingGrid">
+    <article class="card" data-id="bundle" data-cat="bundle" data-age-min="2" data-age-max="7" data-price="11.69" data-pages="154">
+      <div class="cover"><span class="badge">Best value</span><a href="../books/complete-coloring-book-bundle.html" data-detail="bundle" aria-label="View JoJo's Blocks Complete Coloring Book Bundle details"><img src="https://jojosblocks.online/assets/covers/bundle-cover.jpg" alt="Complete 4-book bundle cover — collage of the four JoJo's Blocks book covers" width="600" height="849" loading="lazy"></a></div>
+      <div class="body">
+        <h3><a href="../books/complete-coloring-book-bundle.html" data-detail="bundle">JoJo's Blocks Complete Coloring Book Bundle</a></h3>
+        <p class="meta">154 pages · Ages 2–7</p>
+        <div class="price-row"><span class="price">$11.69</span><s>$12.99</s></div>
+        <div class="actions"><a class="btn btn-accent" href="https://jojosblocks.gumroad.com/l/jojos-blocks-coloring-bundle?wanted=true" target="_blank" rel="noopener">Buy $11.69</a></div>
+      </div>
+    </article>
+    <article class="card" data-id="abc" data-cat="books" data-age-min="2" data-age-max="4" data-price="3.59" data-pages="28">
+      <div class="cover"><span class="badge">New</span><a href="../books/my-first-abc-book.html" data-detail="abc" aria-label="View My First ABC Book details"><img src="https://jojosblocks.online/assets/covers/book-01.jpg" alt="My First ABC Book cover — colorful ABC letters with an apple, a beach ball and a kitten" width="600" height="849" loading="lazy"></a></div>
+      <div class="body">
+        <h3><a href="../books/my-first-abc-book.html" data-detail="abc">My First ABC Book</a></h3>
+        <p class="meta">28 pages · Ages 2–4</p>
+        <div class="price-row"><span class="price">$3.59</span><s>$3.99</s></div>
+        <div class="actions"><a class="btn btn-accent" href="https://jojosblocks.gumroad.com/l/my-first-abc-book?wanted=true" target="_blank" rel="noopener">Buy $3.59</a></div>
+      </div>
+    </article>
+    <article class="card" data-id="animal" data-cat="books" data-age-min="3" data-age-max="6" data-price="4.49" data-pages="30">
+      <div class="cover"><span class="badge">New</span><a href="../books/my-first-animal-explorer.html" data-detail="animal" aria-label="View My First Animal Explorer details"><img src="https://jojosblocks.online/assets/covers/book-02.jpg" alt="My First Animal Explorer cover — a lion, elephant, giraffe, monkey, rabbit and panda" width="600" height="849" loading="lazy"></a></div>
+      <div class="body">
+        <h3><a href="../books/my-first-animal-explorer.html" data-detail="animal">My First Animal Explorer</a></h3>
+        <p class="meta">30 pages · Ages 3–6</p>
+        <div class="price-row"><span class="price">$4.49</span><s>$4.99</s></div>
+        <div class="actions"><a class="btn btn-accent" href="https://jojosblocks.gumroad.com/l/my-first-animal-explorer?wanted=true" target="_blank" rel="noopener">Buy $4.49</a></div>
+      </div>
+    </article>
+    <article class="card" data-id="helpers" data-cat="books" data-age-min="4" data-age-max="7" data-price="4.49" data-pages="54">
+      <div class="cover"><span class="badge">New</span><a href="../books/my-little-community-helpers.html" data-detail="helpers" aria-label="View My Little Community Helpers details"><img src="https://jojosblocks.online/assets/covers/book-03.jpg" alt="My Little Community Helpers cover — a firefighter, mail carrier, teacher, nurse, police officer and builder" width="600" height="849" loading="lazy"></a></div>
+      <div class="body">
+        <h3><a href="../books/my-little-community-helpers.html" data-detail="helpers">My Little Community Helpers</a></h3>
+        <p class="meta">54 pages · Ages 4–7</p>
+        <div class="price-row"><span class="price">$4.49</span><s>$4.99</s></div>
+        <div class="actions"><a class="btn btn-accent" href="https://jojosblocks.gumroad.com/l/my-little-community-helpers?wanted=true" target="_blank" rel="noopener">Buy $4.49</a></div>
+      </div>
+    </article>
+    <article class="card" data-id="space" data-cat="books" data-age-min="3" data-age-max="5" data-price="4.49" data-pages="42">
+      <div class="cover"><span class="badge">New</span><a href="../books/my-little-space-adventure.html" data-detail="space" aria-label="View My Little Space Adventure details"><img src="https://jojosblocks.online/assets/covers/book-04.jpg" alt="My Little Space Adventure cover — a young astronaut, a friendly green alien and Rocket-7 under a smiling moon" width="600" height="849" loading="lazy"></a></div>
+      <div class="body">
+        <h3><a href="../books/my-little-space-adventure.html" data-detail="space">My Little Space Adventure</a></h3>
+        <p class="meta">42 pages · Ages 3–5</p>
+        <div class="price-row"><span class="price">$4.49</span><s>$4.99</s></div>
+        <div class="actions"><a class="btn btn-accent" href="https://jojosblocks.gumroad.com/l/my-little-space-adventure?wanted=true" target="_blank" rel="noopener">Buy $4.49</a></div>
+      </div>
+    </article>
+  </div>
+  <div class="empty" id="listingEmpty" role="status"></div>
+  <nav class="pager" id="pager" aria-label="Pagination"></nav>
+  <div class="loadmore-wrap"><button class="btn btn-ghost" id="loadMoreBtn" type="button" hidden>Load more</button></div>
+  <p class="coming-note">More coming soon — printables, templates &amp; planners, digital art and guides.</p>
+  <script type="application/json" id="page-data">{"kind":"products","countNoun":"product","pageSize":24,"showAge":false,"lockFilter":false,"filterLabel":{"all":"All","books":"Books","bundle":"Bundles"},"items":[{"key":"bundle","title":"JoJo's Blocks Complete Coloring Book Bundle","url":"books/complete-coloring-book-bundle.html","thumb":"https://jojosblocks.online/assets/covers/bundle-cover.jpg","coverAlt":"Complete 4-book bundle cover — collage of the four JoJo's Blocks book covers","tag":"","desc":"Four favorite adventures in one bundle — 154 pages of coloring, tracing, puzzles and learning for one low price. Includes My First ABC Book (28 pages, ages 2–4), My First Animal Explorer (30 pages), My Little Community Helpers (54 pages, 24 helpers) and My Little Space Adventure (42 pages, ages 3–5). Download the PDFs, print at home, and color!","text":"Four favorite adventures in one bundle — 154 pages of coloring, tracing, puzzles and learning for one low price. Includes My First ABC Book (28 pages, ages 2–4), My First Animal Explorer (30 pages), My Little Community Helpers (54 pages, 24 helpers) and My Little Space Adventure (42 pages, ages 3–5). Download the PDFs, print at home, and color! All 4 books • Alphabet, animals, helpers & space learning creative","filterKey":"bundle","category":"books-ebooks","categoryName":"Books & ebooks","tags":["learning","creative"],"dateAdded":"2026-11-10","featuredRank":1,"price":"$12.99","salePrice":"$11.69","salePriceNum":11.69,"pages":154,"ageMin":2,"ageMax":7,"ageLabel":"Ages 2–7","gumroadUrl":"https://jojosblocks.gumroad.com/l/jojos-blocks-coloring-bundle?wanted=true","format":"Digital PDF coloring book bundle","formatKey":"digital-pdf-coloring-book-bundle","formatLabel":"Digital PDF coloring book bundle","badge":"Best value"},{"key":"abc","title":"My First ABC Book","url":"books/my-first-abc-book.html","thumb":"https://jojosblocks.online/assets/covers/book-01.jpg","coverAlt":"My First ABC Book cover — colorful ABC letters with an apple, a beach ball and a kitten","tag":"","desc":"Meet the alphabet one letter at a time. Each page pairs a big letter with a picture word — A is for Apple, B is for Ball, C is for Cat — with a color guide and tracing practice, so little ones learn, color and write their first letters.","text":"Meet the alphabet one letter at a time. Each page pairs a big letter with a picture word — A is for Apple, B is for Ball, C is for Cat — with a color guide and tracing practice, so little ones learn, color and write their first letters. Alphabet • Letters A–Z learning creative","filterKey":"books","category":"books-ebooks","categoryName":"Books & ebooks","tags":["learning","creative"],"dateAdded":"2026-11-10","featuredRank":2,"price":"$3.99","salePrice":"$3.59","salePriceNum":3.59,"pages":28,"ageMin":2,"ageMax":4,"ageLabel":"Ages 2–4","gumroadUrl":"https://jojosblocks.gumroad.com/l/my-first-abc-book?wanted=true","format":"Digital PDF coloring book","formatKey":"digital-pdf-coloring-book","formatLabel":"Digital PDF coloring book","badge":"New"},{"key":"animal","title":"My First Animal Explorer","url":"books/my-first-animal-explorer.html","thumb":"https://jojosblocks.online/assets/covers/book-02.jpg","coverAlt":"My First Animal Explorer cover — a lion, elephant, giraffe, monkey, rabbit and panda","tag":"","desc":"Hello, little explorer! Meet lions, elephants, giraffes, pandas, monkeys and more — learn each animal's name, trace the word, count, match and color. A certificate of achievement waits at the end for every super animal explorer.","text":"Hello, little explorer! Meet lions, elephants, giraffes, pandas, monkeys and more — learn each animal's name, trace the word, count, match and color. A certificate of achievement waits at the end for every super animal explorer. Animals • Learn, trace, color, discover learning creative","filterKey":"books","category":"books-ebooks","categoryName":"Books & ebooks","tags":["learning","creative"],"dateAdded":"2026-11-10","featuredRank":3,"price":"$4.99","salePrice":"$4.49","salePriceNum":4.49,"pages":30,"ageMin":3,"ageMax":6,"ageLabel":"Ages 3–6","gumroadUrl":"https://jojosblocks.gumroad.com/l/my-first-animal-explorer?wanted=true","format":"Digital PDF coloring book","formatKey":"digital-pdf-coloring-book","formatLabel":"Digital PDF coloring book","badge":"New"},{"key":"helpers","title":"My Little Community Helpers","url":"books/my-little-community-helpers.html","thumb":"https://jojosblocks.online/assets/covers/book-03.jpg","coverAlt":"My Little Community Helpers cover — a firefighter, mail carrier, teacher, nurse, police officer and builder","tag":"","desc":"Meet the people who help us every day! 24 community helpers — doctors, nurses, firefighters, police officers, teachers, veterinarians, electricians, mail carriers and more — with simple job descriptions, big coloring illustrations and a fun matching activity.","text":"Meet the people who help us every day! 24 community helpers — doctors, nurses, firefighters, police officers, teachers, veterinarians, electricians, mail carriers and more — with simple job descriptions, big coloring illustrations and a fun matching activity. Community helpers • The people who help us every day learning creative","filterKey":"books","category":"books-ebooks","categoryName":"Books & ebooks","tags":["learning","creative"],"dateAdded":"2026-11-10","featuredRank":4,"price":"$4.99","salePrice":"$4.49","salePriceNum":4.49,"pages":54,"ageMin":4,"ageMax":7,"ageLabel":"Ages 4–7","gumroadUrl":"https://jojosblocks.gumroad.com/l/my-little-community-helpers?wanted=true","format":"Digital PDF coloring book","formatKey":"digital-pdf-coloring-book","formatLabel":"Digital PDF coloring book","badge":"New"},{"key":"space","title":"My Little Space Adventure","url":"books/my-little-space-adventure.html","thumb":"https://jojosblocks.online/assets/covers/book-04.jpg","coverAlt":"My Little Space Adventure cover — a young astronaut, a friendly green alien and Rocket-7 under a smiling moon","tag":"","desc":"Join Nova, Zippy the alien and Rocket-7 on a mission to find the missing Cosmic Crystal. Color planets and alien worlds, solve mazes and puzzles, decode alien messages and take the Space Explorer Quiz — with a Junior Space Explorer certificate at the end.","text":"Join Nova, Zippy the alien and Rocket-7 on a mission to find the missing Cosmic Crystal. Color planets and alien worlds, solve mazes and puzzles, decode alien messages and take the Space Explorer Quiz — with a Junior Space Explorer certificate at the end. Space • Planets, aliens and rockets learning creative","filterKey":"books","category":"books-ebooks","categoryName":"Books & ebooks","tags":["learning","creative"],"dateAdded":"2026-11-10","featuredRank":5,"price":"$4.99","salePrice":"$4.49","salePriceNum":4.49,"pages":42,"ageMin":3,"ageMax":5,"ageLabel":"Ages 3–5","gumroadUrl":"https://jojosblocks.gumroad.com/l/my-little-space-adventure?wanted=true","format":"Digital PDF coloring book","formatKey":"digital-pdf-coloring-book","formatLabel":"Digital PDF coloring book","badge":"New"}]}</script>
+</div></section>
+</main>
+<footer class="site"><div class="wrap">
+  <div class="fgrid">
+    <div>
+      <h3>JoJo's Blocks</h3>
+      <p>Digital products, free resources and games for creating, learning and play.</p>
+      <p style="margin-top:12px"><a href="https://www.pinterest.com/JoJosBlocks/" target="_blank" rel="noopener">Pinterest — @JoJosBlocks</a></p>
+    </div>
+    <div>
+      <h4>Shop</h4>
+      <a href="../shop/">Our Products</a>
+      <a href="../free-resources/">Free Resources</a>
+      <a href="../games/">Games &amp; Play</a>
+      <a href="../blog/">Blog</a>
+    </div>
+    <div>
+      <h4>Help</h4>
+      <a href="mailto:jojobusiness0101@gmail.com">Contact us</a>
+      <a href="../#about">About</a>
+      <a href="../free-printables/">Free Taster Pack</a>
+    </div>
+    <div>
+      <h4>Legal</h4>
+      <a href="../privacy.html">Privacy Policy</a>
+      <a href="../terms.html">Terms &amp; Conditions</a>
+      <a href="../refund-policy.html">Refund Policy</a>
+    </div>
+  </div>
+  <div class="fine">
+    <span>© 2026 JoJo's Blocks. All rights reserved. — Preview: Round 2, scalable platform preview.</span>
+    <span>Sales are completed securely on Gumroad.</span>
+  </div>
+</div></footer>
+<!-- bottom tab bar (mobile only) -->
+<div class="tabbar"><nav aria-label="Quick navigation">
+  <a href="../shop/" data-tab="shop" class="on"><span class="ti">▦</span>Shop</a>
+  <a href="../free-resources/" data-tab="free"><span class="ti">✦</span>Free</a>
+  <a href="../games/" data-tab="games"><span class="ti">▶</span>Play</a>
+  <a href="../blog/" data-tab="blog"><span class="ti">✎</span>Blog</a>
+  <a href="#" data-tab="search" id="tabSearch"><span class="ti">⌕</span>Search</a>
+</nav></div>
+<div class="modal-back" id="modalBack" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal" id="modalBox">
+    <button class="x" id="modalClose" aria-label="Close product details">✕</button>
+    <div class="mgrid">
+      <div class="mcover" id="modalCover"></div>
+      <div class="mbody">
+        <p class="fmt" id="modalFmt"></p>
+        <h2 id="modalTitle"></h2>
+        <p class="mprice" id="modalPrice"></p>
+        <p class="msave" id="modalSave"></p>
+        <p id="modalDesc"></p>
+        <div class="macts">
+          <a class="btn btn-accent" id="modalBuy" href="#" target="_blank" rel="noopener">Buy on Gumroad</a>
+          <a class="btn btn-ghost btn-sm" id="modalPage" href="#" target="_blank" rel="noopener">View product page</a>
+        </div>
+        <p style="font-size:14px;color:var(--muted);margin-top:12px">Use code JOJOS10 at checkout for 10% off.</p>
+        <h3>What you get</h3>
+        <ul class="get" id="modalGet"></ul>
+        <h3>Good to know</h3>
+        <ul class="get">
+          <li>Instant PDF download</li>
+          <li>Print at home as often as you like</li>
+          <li>Personal &amp; family use</li>
+          <li>Secure checkout on Gumroad</li>
+          <li><a href="../refund-policy.html" target="_blank" rel="noopener">Refund policy</a></li>
+        </ul>
+        <h3>Sample pages</h3>
+        <p class="sample-note">Real sample pages from this book will appear here once supplied. Try the <a href="https://jojosblocks.online/assets/free-resources/jojos-blocks-free-taster-pack.pdf" target="_blank" rel="noopener">Free Taster Pack</a> first — six sample pages, free.</p>
+      </div>
+    </div>
+    <div class="rel">
+      <h3>You may also like</h3>
+      <div class="chips" id="modalRelated"></div>
+      <a class="page-link" id="modalPageLink" href="#" target="_blank" rel="noopener">View product page →</a>
+    </div>
+    <div class="msticky">
+      <span class="msticky-price" id="mstickyPrice"></span>
+      <a class="btn btn-accent" id="mstickyBuy" href="#" target="_blank" rel="noopener">Buy on Gumroad</a>
+    </div>
+  </div>
+</div>
+<script>window.JB={root:"../",page:"listing",kind:"products"};</script>
+<script type="application/json" id="product-data">{"bundle":{"title":"JoJo's Blocks Complete Coloring Book Bundle","price":12.99,"sale":11.69,"pages":154,"ages":"2–7","cover":"https://jojosblocks.online/assets/covers/bundle-cover.jpg","desc":"Four favorite adventures in one bundle — 154 pages of coloring, tracing, puzzles and learning for one low price. Includes My First ABC Book (28 pages, ages 2–4), My First Animal Explorer (30 pages), My Little Community Helpers (54 pages, 24 helpers) and My Little Space Adventure (42 pages, ages 3–5). Download the PDFs, print at home, and color!","gum":"https://jojosblocks.gumroad.com/l/jojos-blocks-coloring-bundle?wanted=true","page":"books/complete-coloring-book-bundle.html"},"abc":{"title":"My First ABC Book","price":3.99,"sale":3.59,"pages":28,"ages":"2–4","cover":"https://jojosblocks.online/assets/covers/book-01.jpg","desc":"Meet the alphabet one letter at a time. Each page pairs a big letter with a picture word — A is for Apple, B is for Ball, C is for Cat — with a color guide and tracing practice, so little ones learn, color and write their first letters.","gum":"https://jojosblocks.gumroad.com/l/my-first-abc-book?wanted=true","page":"books/my-first-abc-book.html"},"animal":{"title":"My First Animal Explorer","price":4.99,"sale":4.49,"pages":30,"ages":"3–6","cover":"https://jojosblocks.online/assets/covers/book-02.jpg","desc":"Hello, little explorer! Meet lions, elephants, giraffes, pandas, monkeys and more — learn each animal's name, trace the word, count, match and color. A certificate of achievement waits at the end for every super animal explorer.","gum":"https://jojosblocks.gumroad.com/l/my-first-animal-explorer?wanted=true","page":"books/my-first-animal-explorer.html"},"helpers":{"title":"My Little Community Helpers","price":4.99,"sale":4.49,"pages":54,"ages":"4–7","cover":"https://jojosblocks.online/assets/covers/book-03.jpg","desc":"Meet the people who help us every day! 24 community helpers — doctors, nurses, firefighters, police officers, teachers, veterinarians, electricians, mail carriers and more — with simple job descriptions, big coloring illustrations and a fun matching activity.","gum":"https://jojosblocks.gumroad.com/l/my-little-community-helpers?wanted=true","page":"books/my-little-community-helpers.html"},"space":{"title":"My Little Space Adventure","price":4.99,"sale":4.49,"pages":42,"ages":"3–5","cover":"https://jojosblocks.online/assets/covers/book-04.jpg","desc":"Join Nova, Zippy the alien and Rocket-7 on a mission to find the missing Cosmic Crystal. Color planets and alien worlds, solve mazes and puzzles, decode alien messages and take the Space Explorer Quiz — with a Junior Space Explorer certificate at the end.","gum":"https://jojosblocks.gumroad.com/l/my-little-space-adventure?wanted=true","page":"books/my-little-space-adventure.html"}}</script>
+<script src="../assets/site.js" defer></script>
+</body>
+</html>
