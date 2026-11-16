@@ -1098,7 +1098,7 @@ function armPending(k){
   pendingTimer=setTimeout(()=>{
     pendingKey=null;
     if(k==='P') pauseGame(); else if(!state.over) newGame(state.mode);
-  }, 250);
+  }, 1200);
 }
 function bind(){
   $('#btn-daily').addEventListener('click', ()=>{ ensureAudio(); sfx('click'); startMusic(); newGame('daily'); });
@@ -1134,9 +1134,11 @@ function bind(){
     const overlayOpen = $$('.overlay.active').length>0;
     const gameActive = $('#game-screen').classList.contains('active');
     /* P/R are letters too: a lone P/R on an empty row is ARMED as a shortcut
-       for 250ms. If the player keeps typing, the armed key becomes a letter
+       for 1200ms. If the player keeps typing, the armed key becomes a letter
        instead — so PAPER, RIVER, PLANT etc. type normally, while a deliberate
-       single P/R still pauses / restarts. */
+       single P/R still pauses / restarts. (Was 250ms: too short — slow typing
+       and automated typing paused the game mid-word, e.g. PIZZA untypeable
+       on a physical keyboard. Found by cloud-browser verification 2026-11-16.) */
     if(pendingKey && !overlayOpen && gameActive){
       if(/^[a-zA-Z]$/.test(e.key) || e.key==='Enter' || e.key==='Backspace'){
         clearTimeout(pendingTimer);
