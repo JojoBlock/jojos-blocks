@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-label="Twin Trails cover art">
+<title>Twin Trails — Flappy Penguin and Pip the seal pup race down parallel snowy trails</title>
+<rect width="640" height="360" fill="#2EC4B6"/>
+<circle cx="566" cy="56" r="62" fill="#FFC94D" opacity=".25"/>
+<circle cx="566" cy="56" r="46" fill="#FFC94D"/>
+<circle cx="70" cy="330" r="34" fill="#FF6B6B" opacity=".5"/>
+<circle cx="610" cy="330" r="22" fill="#7C6FF0" opacity=".6"/>
+<g fill="#FFF9F0">
+<circle cx="60" cy="60" r="5"/>
+<circle cx="120" cy="88" r="4"/>
+<circle cx="300" cy="58" r="5"/>
+<circle cx="420" cy="88" r="4"/>
+<circle cx="600" cy="180" r="5"/>
+<circle cx="40" cy="200" r="4"/>
+<circle cx="590" cy="100" r="4"/>
+<circle cx="330" cy="330" r="5"/>
+<circle cx="200" cy="322" r="4"/>
+<circle cx="480" cy="332" r="4"/>
+</g>
+<rect x="36" y="104" width="568" height="72" rx="36" fill="#FFF9F0"/>
+<rect x="36" y="216" width="568" height="72" rx="36" fill="#FFF9F0"/>
+<g fill="#2EC4B6" opacity=".55">
+<rect x="250" y="136" width="26" height="8" rx="4"/>
+<rect x="410" y="136" width="26" height="8" rx="4"/>
+<rect x="90" y="248" width="26" height="8" rx="4"/>
+<rect x="330" y="248" width="26" height="8" rx="4"/>
+<rect x="540" y="248" width="26" height="8" rx="4"/>
+</g>
+<g>
+<ellipse cx="156" cy="176" rx="10" ry="5" fill="#FF6B6B"/>
+<ellipse cx="184" cy="176" rx="10" ry="5" fill="#FF6B6B"/>
+<ellipse cx="141" cy="148" rx="7" ry="14" fill="#2B2D42"/>
+<ellipse cx="199" cy="148" rx="7" ry="14" fill="#2B2D42"/>
+<ellipse cx="170" cy="148" rx="26" ry="32" fill="#2B2D42"/>
+<ellipse cx="170" cy="156" rx="15" ry="21" fill="#FFF9F0"/>
+<circle cx="170" cy="108" r="19" fill="#2B2D42"/>
+<circle cx="163" cy="106" r="3.5" fill="#FFF9F0"/>
+<circle cx="177" cy="106" r="3.5" fill="#FFF9F0"/>
+<circle cx="163" cy="106" r="1.8" fill="#2B2D42"/>
+<circle cx="177" cy="106" r="1.8" fill="#2B2D42"/>
+<polygon points="170,112 162,118 178,118" fill="#FF6B6B"/>
+<rect x="152" y="126" width="36" height="10" rx="5" fill="#FF6B6B"/>
+<rect x="186" y="128" width="12" height="20" rx="6" fill="#FF6B6B"/>
+</g>
+<g>
+<ellipse cx="330" cy="140" rx="18" ry="10" fill="#FF6B6B"/>
+<polygon points="348,140 364,130 364,150" fill="#FF6B6B"/>
+<circle cx="320" cy="137" r="3" fill="#FFF9F0"/>
+<circle cx="320" cy="137" r="1.5" fill="#2B2D42"/>
+</g>
+<g>
+<rect x="468" y="128" width="60" height="26" rx="13" fill="#2B2D42"/>
+<circle cx="528" cy="141" r="13" fill="#2B2D42"/>
+<circle cx="528" cy="141" r="6" fill="#FFF9F0"/>
+<circle cx="528" cy="141" r="2.5" fill="#2B2D42"/>
+</g>
+<g>
+<ellipse cx="250" cy="252" rx="18" ry="10" fill="#FFC94D"/>
+<polygon points="232,252 216,242 216,262" fill="#FFC94D"/>
+<circle cx="260" cy="249" r="3" fill="#FFF9F0"/>
+<circle cx="260" cy="249" r="1.5" fill="#2B2D42"/>
+</g>
+<g>
+<ellipse cx="468" cy="262" rx="14" ry="8" fill="#7C6FF0"/>
+<ellipse cx="430" cy="256" rx="36" ry="22" fill="#7C6FF0"/>
+<ellipse cx="424" cy="272" rx="10" ry="5" fill="#7C6FF0"/>
+<circle cx="392" cy="246" r="19" fill="#7C6FF0"/>
+<ellipse cx="384" cy="250" rx="10" ry="7" fill="#FFF9F0"/>
+<circle cx="378" cy="247" r="3" fill="#2B2D42"/>
+<circle cx="386" cy="240" r="3.5" fill="#FFF9F0"/>
+<circle cx="398" cy="240" r="3.5" fill="#FFF9F0"/>
+<circle cx="386" cy="240" r="1.8" fill="#2B2D42"/>
+<circle cx="398" cy="240" r="1.8" fill="#2B2D42"/>
+<rect x="400" y="260" width="34" height="9" rx="4.5" fill="#FFC94D"/>
+<rect x="430" y="262" width="10" height="16" rx="5" fill="#FFC94D"/>
+</g>
+</svg>

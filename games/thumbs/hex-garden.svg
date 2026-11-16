@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-label="Hex Garden cover art">
+<title>Hex Garden — a honeycomb garden of hexagonal flower beds</title>
+<rect width="640" height="360" fill="#FFF9F0"/>
+<g>
+<polygon points="140,70 120,105 80,105 60,70 80,35 120,35" fill="#2EC4B6"/>
+<polygon points="200,70 180,105 140,105 120,70 140,35 180,35" fill="#FF6B6B"/>
+<polygon points="260,70 240,105 200,105 180,70 200,35 240,35" fill="#FFC94D"/>
+<polygon points="320,70 300,105 260,105 240,70 260,35 300,35" fill="#7C6FF0"/>
+<polygon points="380,70 360,105 320,105 300,70 320,35 360,35" fill="#2EC4B6"/>
+<polygon points="440,70 420,105 380,105 360,70 380,35 420,35" fill="#FF6B6B"/>
+<polygon points="500,70 480,105 440,105 420,70 440,35 480,35" fill="#FFC94D"/>
+<polygon points="560,70 540,105 500,105 480,70 500,35 540,35" fill="#7C6FF0"/>
+</g>
+<g>
+<polygon points="170,139 150,174 110,174 90,139 110,104 150,104" fill="#7C6FF0"/>
+<polygon points="230,139 210,174 170,174 150,139 170,104 210,104" fill="#2EC4B6"/>
+<polygon points="290,139 270,174 230,174 210,139 230,104 270,104" fill="#FF6B6B"/>
+<polygon points="350,139 330,174 290,174 270,139 290,104 330,104" fill="#FFC94D"/>
+<polygon points="410,139 390,174 350,174 330,139 350,104 390,104" fill="#7C6FF0"/>
+<polygon points="470,139 450,174 410,174 390,139 410,104 450,104" fill="#2EC4B6"/>
+<polygon points="530,139 510,174 470,174 450,139 470,104 510,104" fill="#FF6B6B"/>
+<polygon points="590,139 570,174 530,174 510,139 530,104 570,104" fill="#FFC94D"/>
+</g>
+<g>
+<polygon points="140,208 120,243 80,243 60,208 80,173 120,173" fill="#FFC94D"/>
+<polygon points="200,208 180,243 140,243 120,208 140,173 180,173" fill="#7C6FF0"/>
+<polygon points="260,208 240,243 200,243 180,208 200,173 240,173" fill="#2EC4B6"/>
+<polygon points="320,208 300,243 260,243 240,208 260,173 300,173" fill="#FF6B6B"/>
+<polygon points="380,208 360,243 320,243 300,208 320,173 360,173" fill="#FFC94D"/>
+<polygon points="440,208 420,243 380,243 360,208 380,173 420,173" fill="#7C6FF0"/>
+<polygon points="500,208 480,243 440,243 420,208 440,173 480,173" fill="#2EC4B6"/>
+<polygon points="560,208 540,243 500,243 480,208 500,173 540,173" fill="#FF6B6B"/>
+</g>
+<g>
+<polygon points="170,277 150,312 110,312 90,277 110,242 150,242" fill="#FF6B6B"/>
+<polygon points="230,277 210,312 170,312 150,277 170,242 210,242" fill="#FFC94D"/>
+<polygon points="290,277 270,312 230,312 210,277 230,242 270,242" fill="#7C6FF0"/>
+<polygon points="350,277 330,312 290,312 270,277 290,242 330,242" fill="#2EC4B6"/>
+<polygon points="410,277 390,312 350,312 330,277 350,242 390,242" fill="#FF6B6B"/>
+<polygon points="470,277 450,312 410,312 390,277 410,242 450,242" fill="#FFC94D"/>
+<polygon points="530,277 510,312 470,312 450,277 470,242 510,242" fill="#7C6FF0"/>
+<polygon points="590,277 570,312 530,312 510,277 530,242 570,242" fill="#2EC4B6"/>
+</g>
+<g fill="#FFF9F0">
+<circle cx="220" cy="58" r="6"/>
+<circle cx="220" cy="82" r="6"/>
+<circle cx="208" cy="70" r="6"/>
+<circle cx="232" cy="70" r="6"/>
+</g>
+<circle cx="220" cy="70" r="5" fill="#FF6B6B"/>
+<g fill="#FFF9F0">
+<circle cx="430" cy="127" r="6"/>
+<circle cx="430" cy="151" r="6"/>
+<circle cx="418" cy="139" r="6"/>
+<circle cx="442" cy="139" r="6"/>
+</g>
+<circle cx="430" cy="139" r="5" fill="#FFC94D"/>
+<g fill="#FFF9F0">
+<circle cx="310" cy="127" r="6"/>
+<circle cx="310" cy="151" r="6"/>
+<circle cx="298" cy="139" r="6"/>
+<circle cx="322" cy="139" r="6"/>
+</g>
+<circle cx="310" cy="139" r="5" fill="#FF6B6B"/>
+<g fill="#FFF9F0">
+<circle cx="220" cy="196" r="6"/>
+<circle cx="220" cy="220" r="6"/>
+<circle cx="208" cy="208" r="6"/>
+<circle cx="232" cy="208" r="6"/>
+</g>
+<circle cx="220" cy="208" r="5" fill="#FF6B6B"/>
+<g fill="#FFF9F0">
+<circle cx="490" cy="265" r="6"/>
+<circle cx="490" cy="289" r="6"/>
+<circle cx="478" cy="277" r="6"/>
+<circle cx="502" cy="277" r="6"/>
+</g>
+<circle cx="490" cy="277" r="5" fill="#FFC94D"/>
+<g>
+<ellipse cx="584" cy="48" rx="8" ry="5" fill="#FFF9F0" opacity=".9"/>
+<ellipse cx="596" cy="48" rx="8" ry="5" fill="#FFF9F0" opacity=".9"/>
+<ellipse cx="590" cy="60" rx="15" ry="10" fill="#FFC94D"/>
+<rect x="584" y="50" width="4" height="20" fill="#2B2D42"/>
+<rect x="592" y="50" width="4" height="20" fill="#2B2D42"/>
+<polygon points="575,60 568,56 568,64" fill="#2B2D42"/>
+</g>
+<g fill="#2EC4B6">
+<circle cx="40" cy="330" r="4"/>
+<circle cx="620" cy="330" r="4"/>
+<circle cx="320" cy="340" r="4"/>
+</g>
+</svg>
