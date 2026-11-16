@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Echo Blocks — Musical Memory Game | JoJo's Blocks</title>
+<meta name="description" content="Echo Blocks: a musical sequence memory game. Watch the glowing blocks sing, then echo their melody back. Original game by JoJo's Blocks.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Echo Blocks — original CSS, written from scratch for this game.
+   Palette (DESIGN-SYSTEM §1): Cream #FFF9F0, Ink #2B2D42,
+   Coral #FF6B6B, Sun #FFC94D, Teal #2EC4B6, Lavender #7C6FF0.
+   Environment: a lavender night stage — deep violet sky, stars,
+   a smiling crescent moon, rolling hills, fireflies.
+   ============================================================ */
+:root{
+  --cream:#FFF9F0; --ink:#2B2D42; --coral:#FF6B6B; --sun:#FFC94D;
+  --teal:#2EC4B6; --lavender:#7C6FF0;
+  --night-1:#241D4F; --night-2:#4B3D8F; --night-3:#7C6FF0;
+  --panel:#FFF9F0; --panel-shadow:0 18px 40px rgba(20,12,60,.45);
+  --radius:20px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color:var(--cream);
+  background:#1B1540;
+  min-height:100dvh;
+  overscroll-behavior:none;
+  -webkit-tap-highlight-color:transparent;
+}
+h1,h2,h3,.display{font-family:'Fredoka','Comic Sans MS',system-ui,sans-serif}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- Stage & night scenery ---------- */
+.stage{
+  position:relative;max-width:560px;margin:0 auto;min-height:100dvh;
+  padding:16px 16px 24px;overflow:hidden;
+  background:linear-gradient(180deg,#241D4F 0%,#4B3D8F 46%,#6B5BC0 78%,#7C6FF0 100%);
+  isolation:isolate;
+}
+.stage::before{ /* soft horizon glow */
+  content:"";position:absolute;inset:auto 0 0 0;height:46%;z-index:-1;
+  background:radial-gradient(120% 90% at 50% 110%,rgba(255,201,77,.35),rgba(255,201,77,0) 60%);
+}
+.stars{position:absolute;inset:0;z-index:-1;pointer-events:none}
+.stars i{position:absolute;width:4px;height:4px;border-radius:50%;background:#FFF9F0;opacity:.85;animation:twinkle 2.8s ease-in-out infinite}
+.stars i:nth-child(2n){width:3px;height:3px;animation-delay:.7s}
+.stars i:nth-child(3n){width:5px;height:5px;animation-delay:1.4s;opacity:.6}
+@keyframes twinkle{0%,100%{opacity:.25;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}
+.moon{position:absolute;top:64px;right:18px;width:64px;height:64px;z-index:0;pointer-events:none;animation:bob 5s ease-in-out infinite}
+/* Moon sits BELOW the top bar so it can never crowd the settings gear */
+@media (max-width:639px){.moon{top:66px;right:8px;width:52px;height:52px}}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-7px) rotate(2deg)}}
+.hills{position:absolute;left:0;right:0;bottom:0;width:100%;height:150px;z-index:-1;pointer-events:none;opacity:.9}
+.firefly{position:absolute;width:7px;height:7px;border-radius:50%;background:var(--sun);
+  box-shadow:0 0 12px 3px rgba(255,201,77,.75);z-index:0;pointer-events:none;animation:fly 7s ease-in-out infinite alternate}
+.firefly.f2{animation-duration:9s;animation-delay:1.2s}
+.firefly.f3{animation-duration:6s;animation-delay:2s}
+@keyframes fly{from{transform:translate(0,0);opacity:.35}50%{opacity:1}to{transform:translate(26px,-34px);opacity:.5}}
+
+/* ---------- Top bar ---------- */
+.topbar{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
+.brand{font-family:'Fredoka',sans-serif;font-weight:700;font-size:15px;color:var(--cream);
+  text-decoration:none;background:rgba(43,45,66,.45);border:1.5px solid rgba(255,249,240,.35);
+  padding:9px 14px;border-radius:999px;min-height:44px;display:inline-flex;align-items:center;gap:6px}
+.brand:hover{background:rgba(43,45,66,.7)}
+.icon-btns{display:flex;gap:8px}
+.icon-btn{min-width:44px;min-height:44px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+  font-size:20px;background:rgba(255,249,240,.16);border:1.5px solid rgba(255,249,240,.4);color:var(--cream);
+  transition:transform .15s ease-out,background .15s}
+.icon-btn:hover{background:rgba(255,249,240,.3)}
+.icon-btn:active{transform:translateY(2px) scale(.96)}
+.icon-btn[aria-pressed="false"]{opacity:.55}
+
+/* ---------- Screens ---------- */
+.screen{display:none;position:relative;z-index:2}
+.screen.active{display:block;animation:screenIn .35s ease-out}
+@keyframes screenIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.panel{background:var(--panel);color:var(--ink);border-radius:var(--radius);box-shadow:var(--panel-shadow);
+  padding:24px 20px;position:relative;overflow:hidden}
+.panel::before{content:"";position:absolute;top:0;left:0;right:0;height:6px;
+  background:linear-gradient(90deg,var(--coral),var(--sun),var(--teal),var(--lavender))}
+.panel h2{font-size:28px;line-height:1.15;margin-bottom:6px}
+.panel p{font-size:16px;line-height:1.55}
+.tagline{font-size:17px;color:#4A4C66}
+
+/* ---------- Buttons (DESIGN-SYSTEM §4) ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;min-width:44px;
+  padding:13px 26px;border-radius:999px;font-family:'Fredoka',sans-serif;font-weight:700;font-size:18px;color:var(--ink);
+  background:linear-gradient(135deg,var(--sun),#FFB03A);border:2px solid var(--ink);
+  box-shadow:0 5px 0 var(--ink),0 10px 20px rgba(20,12,60,.3);
+  transition:transform .15s ease-out,box-shadow .15s ease-out,filter .15s}
+.btn:hover{filter:brightness(1.05)}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--ink),0 4px 10px rgba(20,12,60,.3)}
+.btn-teal{background:linear-gradient(135deg,#7CF0E4,var(--teal));color:var(--ink)}
+.btn-lav{background:linear-gradient(135deg,#B9AEFF,var(--lavender));color:#fff;text-shadow:0 1px 2px rgba(20,12,60,.45)}
+.btn-coral{background:linear-gradient(135deg,#FFB3B3,var(--coral));color:#fff;text-shadow:0 1px 2px rgba(20,12,60,.4)}
+.btn-ghost{background:rgba(255,249,240,.14);color:var(--cream);border:2px solid rgba(255,249,240,.6);box-shadow:0 5px 0 rgba(20,12,60,.35)}
+.btn-ghost:active{box-shadow:0 2px 0 rgba(20,12,60,.35)}
+.btn-block{width:100%}
+.btn-sm{min-height:44px;padding:9px 18px;font-size:16px}
+.btn-row{display:flex;flex-direction:column;gap:12px;margin-top:18px}
+.btn-row .btn{width:100%}
+
+/* ---------- Menu hero ---------- */
+.hero-art{display:flex;justify-content:center;margin:2px 0 10px}
+.hero-art svg{width:210px;height:150px;filter:drop-shadow(0 10px 18px rgba(20,12,60,.4));animation:bob 4.5s ease-in-out infinite}
+.menu-title{font-size:40px;line-height:1.05;text-align:center;color:var(--cream);
+  text-shadow:0 3px 0 rgba(20,12,60,.55),0 8px 24px rgba(20,12,60,.5)}
+.menu-title .echo{color:var(--sun)}
+.menu-tag{text-align:center;font-size:17px;margin:8px 0 4px;color:#EFE9FF}
+.best-chip{display:inline-flex;align-items:center;gap:6px;background:rgba(255,249,240,.16);
+  border:1.5px solid rgba(255,249,240,.4);border-radius:999px;padding:8px 16px;min-height:44px;
+  font-family:'Fredoka',sans-serif;font-weight:600;font-size:16px}
+.best-wrap{text-align:center;margin:12px 0 4px}
+.mode-pick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.mode-card{background:rgba(255,249,240,.12);border:2px solid rgba(255,249,240,.35);border-radius:16px;
+  padding:14px 10px;min-height:88px;color:var(--cream);text-align:center;transition:transform .15s,background .15s}
+.mode-card:hover{background:rgba(255,249,240,.22)}
+.mode-card:active{transform:translateY(2px)}
+.mode-card[aria-pressed="true"]{background:rgba(255,201,77,.28);border-color:var(--sun);box-shadow:0 0 0 2px var(--sun) inset}
+.mode-card b{display:block;font-family:'Fredoka',sans-serif;font-size:17px}
+.mode-card span{font-size:13px;line-height:1.35;display:block;margin-top:3px;color:#EFE9FF}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;
+  background:rgba(255,249,240,.12);border:1.5px solid rgba(255,249,240,.3);border-radius:16px;padding:10px 14px;min-height:56px}
+.toggle-row label{font-weight:800;font-size:15px}
+.toggle-row small{display:block;font-weight:400;font-size:13px;color:#EFE9FF}
+.switch{position:relative;min-width:64px;min-height:44px;flex:none}
+.switch input{position:absolute;opacity:0;width:100%;height:100%;cursor:pointer;margin:0}
+.switch .track{position:absolute;inset:8px 0;background:rgba(43,45,66,.55);border-radius:999px;border:2px solid rgba(255,249,240,.5);transition:background .2s;pointer-events:none}
+.switch .track::after{content:"";position:absolute;top:3px;left:4px;width:22px;height:22px;border-radius:50%;background:var(--cream);transition:transform .2s}
+.switch input:checked + .track{background:var(--teal)}
+.switch input:checked + .track::after{transform:translateX(28px)}
+.switch input:focus-visible + .track{outline:3px solid var(--sun);outline-offset:2px}
+
+/* ---------- HUD ---------- */
+.hud{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:4px 0 12px;position:relative;z-index:2}
+.chip{display:inline-flex;align-items:center;gap:6px;background:rgba(255,249,240,.92);color:var(--ink);
+  border-radius:999px;padding:8px 14px;min-height:44px;font-family:'Fredoka',sans-serif;font-weight:600;font-size:16px;
+  box-shadow:0 4px 12px rgba(20,12,60,.3)}
+.chip .num{font-weight:700;font-size:18px}
+.chip.lives .heart{color:var(--coral);font-size:17px}
+.chip.lives .heart.off{opacity:.25;filter:grayscale(1)}
+.status-line{text-align:center;font-size:17px;font-weight:800;min-height:28px;color:var(--cream);
+  text-shadow:0 2px 6px rgba(20,12,60,.6);margin-bottom:10px}
+.progress-dots{display:flex;justify-content:center;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.progress-dots i{width:12px;height:12px;border-radius:50%;background:rgba(255,249,240,.3);border:1.5px solid rgba(255,249,240,.6)}
+.progress-dots i.done{background:var(--sun);border-color:var(--sun)}
+.progress-dots i.now{background:var(--teal);border-color:#fff;transform:scale(1.35);box-shadow:0 0 10px var(--teal)}
+
+/* ---------- Play blocks ---------- */
+.board{display:grid;grid-template-columns:1fr 1fr;gap:14px;position:relative;z-index:2;touch-action:none;user-select:none;-webkit-user-select:none}
+.block{position:relative;min-height:148px;border-radius:24px;border:3px solid var(--ink);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  box-shadow:0 7px 0 var(--ink),0 14px 26px rgba(20,12,60,.4);
+  transition:transform .12s ease-out,box-shadow .12s ease-out,filter .12s;touch-action:none;overflow:hidden}
+.block:active{transform:translateY(4px) scale(.98);box-shadow:0 3px 0 var(--ink)}
+.block .face{width:64px;height:64px}
+.block .bname{font-family:'Fredoka',sans-serif;font-weight:700;font-size:19px;color:var(--ink);line-height:1}
+.block .bnote{font-size:13px;font-weight:800;color:rgba(43,45,66,.75)}
+.block .bkey{position:absolute;top:8px;right:10px;font-family:'Fredoka',sans-serif;font-weight:700;font-size:13px;
+  background:rgba(43,45,66,.85);color:var(--cream);border-radius:8px;padding:3px 8px;min-width:28px;text-align:center}
+.block .bshape{position:absolute;top:8px;left:10px;font-size:17px}
+.block-coral{background:linear-gradient(145deg,#FF9A9A,var(--coral) 60%,#E85050)}
+.block-sun{background:linear-gradient(145deg,#FFE08A,var(--sun) 60%,#F5A623)}
+.block-teal{background:linear-gradient(145deg,#8DEEE3,var(--teal) 60%,#1FA89B)}
+.block-lav{background:linear-gradient(145deg,#C6BCFF,var(--lavender) 60%,#5A48D6)}
+.block.lit{filter:brightness(1.35) saturate(1.2);transform:scale(1.05);box-shadow:0 7px 0 var(--ink),0 0 34px 6px rgba(255,255,255,.75)}
+.block.lit .face{animation:wiggle .3s ease-in-out}
+@keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-6deg) scale(1.08)}75%{transform:rotate(6deg) scale(1.08)}}
+.block.wrong{animation:shake .4s ease-in-out}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+.block:disabled{opacity:.92}
+.board.locked .block{pointer-events:none}
+.board.locked{opacity:.97}
+.hint{margin-top:14px;text-align:center;font-size:14px;color:#EFE9FF}
+.hint kbd{background:rgba(255,249,240,.2);border:1px solid rgba(255,249,240,.5);border-radius:6px;padding:2px 7px;font-family:inherit;font-weight:800}
+
+/* ---------- Free Play ---------- */
+.free-strip{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;min-height:56px;align-items:center;
+  background:rgba(43,45,66,.4);border:2px dashed rgba(255,249,240,.45);border-radius:16px;padding:10px;margin-bottom:12px}
+.free-strip .empty{font-size:14px;color:#DCD5FF}
+.note-chip{display:inline-flex;align-items:center;gap:4px;min-width:44px;min-height:44px;padding:6px 10px;border-radius:999px;
+  font-family:'Fredoka',sans-serif;font-weight:700;font-size:15px;color:var(--ink);border:2px solid var(--ink);
+  animation:popIn .2s ease-out}
+@keyframes popIn{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+.note-chip.nc-coral{background:var(--coral)} .note-chip.nc-sun{background:var(--sun)}
+.note-chip.nc-teal{background:var(--teal)} .note-chip.nc-lav{background:var(--lavender);color:#fff;text-shadow:0 1px 2px rgba(20,12,60,.5)}
+.free-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.code-box{display:flex;gap:8px;margin-top:12px}
+.code-box input{flex:1;min-height:48px;border-radius:14px;border:2px solid var(--ink);padding:10px 12px;
+  font-family:'Fredoka',sans-serif;font-size:16px;color:var(--ink);background:var(--cream);min-width:0}
+.code-box input::placeholder{color:#7A7C96}
+
+/* ---------- Overlays ---------- */
+.overlay{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;padding:20px;
+  background:rgba(27,21,64,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.overlay.open{display:flex}
+.overlay .panel{width:100%;max-width:460px;max-height:88dvh;overflow-y:auto;animation:panelIn .3s ease-out;text-align:center}
+@keyframes panelIn{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:none}}
+.overlay .panel h2{font-size:30px}
+.big-score{font-family:'Fredoka',sans-serif;font-weight:700;font-size:56px;line-height:1;color:var(--lavender);margin:8px 0 2px}
+.stars-row{font-size:34px;letter-spacing:6px;margin:6px 0}
+.stars-row .dim{opacity:.25;filter:grayscale(1)}
+.result-rows{margin:14px 0;text-align:left}
+.result-rows .rrow{display:flex;justify-content:space-between;gap:10px;padding:10px 6px;border-bottom:2px dashed #E4DFF5;font-weight:800}
+.result-rows .rrow b{font-family:'Fredoka',sans-serif}
+.new-best{display:inline-block;background:linear-gradient(135deg,var(--sun),#FFB03A);color:var(--ink);
+  font-family:'Fredoka',sans-serif;font-weight:700;border:2px solid var(--ink);border-radius:999px;padding:6px 16px;margin:6px 0;
+  animation:popIn .35s ease-out}
+.mascot{width:96px;height:96px;margin:0 auto 4px}
+.mascot svg{width:100%;height:100%}
+
+/* ---------- How-to ---------- */
+.howto-steps{text-align:left;margin:12px 0}
+.howto-steps li{list-style:none;display:flex;gap:12px;margin-bottom:12px;font-size:15.5px;line-height:1.5}
+.howto-steps .step-n{flex:none;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:'Fredoka',sans-serif;font-weight:700;font-size:19px;color:var(--ink);border:2px solid var(--ink)}
+.howto-steps li:nth-child(1) .step-n{background:var(--coral);color:#fff}
+.howto-steps li:nth-child(2) .step-n{background:var(--sun)}
+.howto-steps li:nth-child(3) .step-n{background:var(--teal)}
+.howto-steps li:nth-child(4) .step-n{background:var(--lavender);color:#fff}
+.mini-blocks{display:flex;gap:8px;justify-content:center;margin:10px 0 2px}
+.mini-blocks i{width:34px;height:34px;border-radius:10px;border:2px solid var(--ink);display:block}
+.mini-blocks i:nth-child(1){background:var(--coral)} .mini-blocks i:nth-child(2){background:var(--sun)}
+.mini-blocks i:nth-child(3){background:var(--teal)} .mini-blocks i:nth-child(4){background:var(--lavender)}
+
+/* ---------- Settings ---------- */
+.set-row{margin:14px 0;text-align:left}
+.set-row label{font-weight:800;display:block;margin-bottom:6px}
+.set-row input[type="range"]{width:100%;min-height:44px;accent-color:var(--lavender)}
+.set-toggle{display:flex;gap:10px}
+.set-toggle .toggle-btn{flex:1;min-height:48px;border-radius:14px;border:2px solid var(--ink);font-family:'Fredoka',sans-serif;
+  font-weight:700;font-size:16px;background:#EFEAFB;color:var(--ink)}
+.set-toggle .toggle-btn[aria-pressed="true"]{background:var(--teal);color:var(--ink)}
+.set-toggle .toggle-btn[aria-pressed="false"]{opacity:.6}
+
+/* ---------- Confetti / particles ---------- */
+#fx{position:fixed;inset:0;pointer-events:none;z-index:60;overflow:hidden}
+#fx i{position:absolute;width:10px;height:14px;border-radius:3px;opacity:0;animation:confetti 1.1s ease-out forwards}
+@keyframes confetti{0%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translateY(180px) rotate(540deg)}}
+.spark{position:absolute;width:12px;height:12px;border-radius:50%;background:var(--sun);
+  box-shadow:0 0 14px 4px rgba(255,201,77,.8);pointer-events:none;animation:sparkPop .5s ease-out forwards;z-index:5}
+@keyframes sparkPop{from{transform:scale(.4);opacity:1}to{transform:scale(1.6);opacity:0}}
+.float-pts{position:absolute;font-family:'Fredoka',sans-serif;font-weight:700;font-size:22px;color:var(--sun);
+  text-shadow:0 2px 4px rgba(20,12,60,.7);pointer-events:none;z-index:5;animation:floatUp 1s ease-out forwards}
+@keyframes floatUp{from{transform:translateY(0);opacity:1}to{transform:translateY(-46px);opacity:0}}
+
+/* ---------- Footer ---------- */
+.footer{position:relative;z-index:2;text-align:center;font-size:13px;color:#CFC8F2;margin-top:22px;line-height:1.6}
+.footer a{color:var(--cream)}
+
+/* ---------- Responsive ---------- */
+@media (min-width:640px){
+  .stage{padding:24px 24px 32px}
+  .menu-title{font-size:44px}
+  .block{min-height:168px}
+  .btn-row{flex-direction:row}
+  .btn-row .btn{width:auto;flex:1}
+}
+@media (max-width:359px){
+  .block{min-height:132px}
+  .block .face{width:52px;height:52px}
+  .menu-title{font-size:30px}
+  .chip{font-size:14px;padding:7px 10px}
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+  .stars i,.moon,.hero-art svg,.firefly{animation:none !important}
+}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="stars" aria-hidden="true"><i style="top:6%;left:12%"></i><i style="top:12%;left:64%"></i><i style="top:4%;left:84%"></i><i style="top:20%;left:30%"></i><i style="top:26%;left:8%"></i><i style="top:18%;left:48%"></i><i style="top:32%;left:78%"></i><i style="top:9%;left:38%"></i><i style="top:38%;left:18%"></i><i style="top:30%;left:56%"></i></div>
+  <svg class="moon" viewBox="0 0 100 100" aria-hidden="true">
+    <path d="M62 8a42 42 0 1 0 0 84 34 34 0 1 1 0-84z" fill="#FFC94D" stroke="#2B2D42" stroke-width="3"/>
+    <circle cx="52" cy="38" r="3.4" fill="#2B2D42"/><circle cx="66" cy="50" r="3.4" fill="#2B2D42"/>
+    <path d="M52 58q8 7 16 0" fill="none" stroke="#2B2D42" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="44" cy="26" r="2.4" fill="#E8A93C"/><circle cx="70" cy="70" r="2.4" fill="#E8A93C"/>
+  </svg>
+  <span class="firefly" style="top:64%;left:8%" aria-hidden="true"></span>
+  <span class="firefly f2" style="top:72%;left:88%" aria-hidden="true"></span>
+  <span class="firefly f3" style="top:58%;left:50%" aria-hidden="true"></span>
+  <svg class="hills" viewBox="0 0 560 150" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 90 Q140 30 280 80 T560 70 V150 H0 Z" fill="#3A2E73"/>
+    <path d="M0 120 Q160 70 320 105 T560 100 V150 H0 Z" fill="#2B2150"/>
+  </svg>
+
+  <header class="topbar">
+    <a class="brand" href="/games/" aria-label="Back to JoJo's Blocks games">← Games</a>
+    <div class="icon-btns">
+      <button class="icon-btn" id="btn-music" type="button" aria-pressed="true" aria-label="Toggle music" title="Music">🎵</button>
+      <button class="icon-btn" id="btn-sfx" type="button" aria-pressed="true" aria-label="Toggle sound effects" title="Sound effects">🔔</button>
+      <button class="icon-btn" id="btn-settings" type="button" aria-label="Open settings" title="Settings">⚙️</button>
+    </div>
+  </header>
+
+  <div id="live" class="sr-only" aria-live="polite"></div>
+
+  <!-- ============ START / MENU ============ -->
+  <main class="screen active" id="screen-menu" aria-label="Echo Blocks main menu">
+    <div class="hero-art" aria-hidden="true">
+      <svg viewBox="0 0 210 150">
+        <rect x="18" y="18" width="82" height="82" rx="20" fill="#FF6B6B" stroke="#2B2D42" stroke-width="4"/>
+        <rect x="110" y="18" width="82" height="82" rx="20" fill="#FFC94D" stroke="#2B2D42" stroke-width="4"/>
+        <rect x="18" y="112" width="82" height="26" rx="12" fill="#2EC4B6" stroke="#2B2D42" stroke-width="4" transform="rotate(-4 59 125)"/>
+        <rect x="110" y="112" width="82" height="26" rx="12" fill="#7C6FF0" stroke="#2B2D42" stroke-width="4" transform="rotate(4 151 125)"/>
+        <circle cx="44" cy="48" r="5" fill="#2B2D42"/><circle cx="74" cy="48" r="5" fill="#2B2D42"/>
+        <path d="M46 66q13 12 26 0" fill="none" stroke="#2B2D42" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="136" cy="48" r="5" fill="#2B2D42"/><circle cx="166" cy="48" r="5" fill="#2B2D42"/>
+        <path d="M138 66q13 12 26 0" fill="none" stroke="#2B2D42" stroke-width="4" stroke-linecap="round"/>
+        <path d="M100 8l3 8 8 3-8 3-3 8-3-8-8-3 8-3z" fill="#FFF9F0"/>
+        <path d="M196 108l2.4 6 6 2.4-6 2.4-2.4 6-2.4-6-6-2.4 6-2.4z" fill="#FFF9F0"/>
+        <path d="M14 118l2.4 6 6 2.4-6 2.4-2.4 6-2.4-6-6-2.4 6-2.4z" fill="#FFC94D"/>
+      </svg>
+    </div>
+    <h1 class="menu-title"><span class="echo">Echo</span> Blocks</h1>
+    <p class="menu-tag">Watch the blocks sing. Echo their melody back — one note at a time.</p>
+    <div class="best-wrap"><span class="best-chip">🏆 Best score: <span id="menu-best">0</span> &nbsp;•&nbsp; Best round: <span id="menu-best-round">0</span></span></div>
+
+    <div class="mode-pick" role="group" aria-label="Choose a mode">
+      <button class="mode-card" id="mode-classic" type="button" aria-pressed="true"><b>🎵 Classic</b><span>Repeat the growing melody. One mistake allowed.</span></button>
+      <button class="mode-card" id="mode-free" type="button" aria-pressed="false"><b>🎹 Free Play</b><span>Compose your own tune &amp; share it as a code.</span></button>
+    </div>
+    <div class="toggle-row" id="strict-row">
+      <label for="strict-toggle">Strict Mode<small>No mistakes allowed — one wrong note ends the run.</small></label>
+      <span class="switch"><input type="checkbox" id="strict-toggle" aria-label="Strict mode"><span class="track"></span></span>
+    </div>
+    <div class="btn-row">
+      <button class="btn" id="btn-play" type="button">▶ Play</button>
+      <button class="btn btn-ghost" id="btn-howto" type="button">How to play</button>
+    </div>
+  </main>
+
+  <!-- ============ GAMEPLAY ============ -->
+  <main class="screen" id="screen-game" aria-label="Echo Blocks gameplay">
+    <div class="hud" role="status">
+      <span class="chip">Round <span class="num" id="hud-round">1</span></span>
+      <span class="chip">⭐ Score <span class="num" id="hud-score">0</span></span>
+      <span class="chip">🏆 Best <span class="num" id="hud-best">0</span></span>
+      <span class="chip lives" id="hud-lives" aria-label="Lives remaining"><span class="heart">❤️</span><span class="heart">❤️</span></span>
+      <button class="chip" id="btn-pause" type="button" aria-label="Pause game" style="cursor:pointer">⏸ Pause</button>
+    </div>
+    <p class="status-line" id="status-line">Listen carefully…</p>
+    <div class="progress-dots" id="progress-dots" aria-hidden="true"></div>
+
+    <div class="board locked" id="board" role="group" aria-label="Four musical blocks">
+      <button class="block block-coral" type="button" data-block="0" aria-label="Coral block, note C, key 1">
+        <span class="bshape" aria-hidden="true">●</span><span class="bkey" aria-hidden="true">1</span>
+        <svg class="face" viewBox="0 0 64 64" aria-hidden="true"><circle cx="22" cy="26" r="4.5" fill="#2B2D42"/><circle cx="42" cy="26" r="4.5" fill="#2B2D42"/><path class="mouth" d="M22 42q10 9 20 0" fill="none" stroke="#2B2D42" stroke-width="3.5" stroke-linecap="round"/></svg>
+        <span class="bname">Coral</span><span class="bnote">♪ C — Do</span>
+      </button>
+      <button class="block block-sun" type="button" data-block="1" aria-label="Sun block, note E, key 2">
+        <span class="bshape" aria-hidden="true">★</span><span class="bkey" aria-hidden="true">2</span>
+        <svg class="face" viewBox="0 0 64 64" aria-hidden="true"><circle cx="22" cy="26" r="4.5" fill="#2B2D42"/><circle cx="42" cy="26" r="4.5" fill="#2B2D42"/><path class="mouth" d="M22 42q10 9 20 0" fill="none" stroke="#2B2D42" stroke-width="3.5" stroke-linecap="round"/></svg>
+        <span class="bname">Sun</span><span class="bnote">♪ E — Mi</span>
+      </button>
+      <button class="block block-teal" type="button" data-block="2" aria-label="Teal block, note G, key 3">
+        <span class="bshape" aria-hidden="true">▲</span><span class="bkey" aria-hidden="true">3</span>
+        <svg class="face" viewBox="0 0 64 64" aria-hidden="true"><circle cx="22" cy="26" r="4.5" fill="#2B2D42"/><circle cx="42" cy="26" r="4.5" fill="#2B2D42"/><path class="mouth" d="M22 42q10 9 20 0" fill="none" stroke="#2B2D42" stroke-width="3.5" stroke-linecap="round"/></svg>
+        <span class="bname">Teal</span><span class="bnote">♪ G — Sol</span>
+      </button>
+      <button class="block block-lav" type="button" data-block="3" aria-label="Lavender block, note A, key 4">
+        <span class="bshape" aria-hidden="true">☾</span><span class="bkey" aria-hidden="true">4</span>
+        <svg class="face" viewBox="0 0 64 64" aria-hidden="true"><circle cx="22" cy="26" r="4.5" fill="#2B2D42"/><circle cx="42" cy="26" r="4.5" fill="#2B2D42"/><path class="mouth" d="M22 42q10 9 20 0" fill="none" stroke="#2B2D42" stroke-width="3.5" stroke-linecap="round"/></svg>
+        <span class="bname">Lavender</span><span class="bnote">♪ A — La</span>
+      </button>
+    </div>
+    <p class="hint">Tap the blocks, or press <kbd>1</kbd>–<kbd>4</kbd><br><kbd>P</kbd> pause &nbsp;·&nbsp; <kbd>R</kbd> restart</p>
+
+    <!-- Free Play panel (shown only in Free Play mode) -->
+    <section id="free-panel" hidden aria-label="Free Play composer" style="margin-top:16px">
+      <div class="free-strip" id="free-strip"><span class="empty">Tap the blocks to compose your tune — up to 32 notes.</span></div>
+      <div class="free-actions">
+        <button class="btn btn-teal btn-sm" id="btn-free-playback" type="button">▶ Play my tune</button>
+        <button class="btn btn-ghost btn-sm" id="btn-free-clear" type="button">Clear</button>
+        <button class="btn btn-sm" id="btn-free-share" type="button">🔗 Share code</button>
+      </div>
+      <div class="code-box">
+        <input id="free-code-in" type="text" placeholder="Paste an ECHO code here…" aria-label="Paste an Echo code to load a tune" autocomplete="off" spellcheck="false">
+        <button class="btn btn-lav btn-sm" id="btn-free-load" type="button">Load</button>
+      </div>
+      <p class="hint" id="free-code-out" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <footer class="footer">Echo Blocks • JJB-GAME-20261116-07 • v1.0.0<br>
+    An original JoJo's Blocks game — music made with WebAudio, no audio files.<br>
+    <a href="/games/">← Back to all games</a>
+  </footer>
+</div>
+
+<!-- ============ HOW TO PLAY ============ -->
+<div class="overlay" id="overlay-howto" role="dialog" aria-modal="true" aria-labelledby="howto-title">
+  <div class="panel">
+    <h2 id="howto-title">How to play 🎶</h2>
+    <div class="mini-blocks" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <ol class="howto-steps">
+      <li><span class="step-n">1</span><span><b>Listen.</b> The blocks light up and sing a melody, one note at a time. Each block has its own colour, shape and pentatonic note.</span></li>
+      <li><span class="step-n">2</span><span><b>Echo it back.</b> Tap the blocks in the same order — on screen, or with keys <b>1–4</b>.</span></li>
+      <li><span class="step-n">3</span><span><b>Grow the tune.</b> Every round adds one more note, and the melody gets faster every 5 rounds. Each correct note is +10 points; finishing a round earns a bonus.</span></li>
+      <li><span class="step-n">4</span><span><b>Stay in tune.</b> Easy mode forgives one wrong note (the melody plays again). Strict Mode ends the run on the first mistake. In <b>Free Play</b>, compose your own tune and share it as an ECHO code!</span></li>
+    </ol>
+    <p class="tagline">Pause anytime with <b>P</b> or the Pause button. Restart with <b>R</b>.</p>
+    <div class="btn-row"><button class="btn" id="btn-howto-play" type="button">▶ Got it — Play!</button>
+    <button class="btn btn-ghost" id="btn-howto-close" type="button" style="color:var(--ink);border-color:var(--ink)">Close</button></div>
+  </div>
+</div>
+
+<!-- ============ PAUSE ============ -->
+<div class="overlay" id="overlay-pause" role="dialog" aria-modal="true" aria-labelledby="pause-title">
+  <div class="panel">
+    <div class="mascot" aria-hidden="true"><svg viewBox="0 0 96 96"><circle cx="48" cy="48" r="40" fill="#7C6FF0" stroke="#2B2D42" stroke-width="4"/><circle cx="34" cy="42" r="5" fill="#2B2D42"/><circle cx="62" cy="42" r="5" fill="#2B2D42"/><path d="M36 58q12 9 24 0" fill="none" stroke="#2B2D42" stroke-width="4" stroke-linecap="round"/><path d="M48 6v10M78 18l-7 7M18 18l7 7" stroke="#FFC94D" stroke-width="4" stroke-linecap="round"/></svg></div>
+    <h2 id="pause-title">Paused ⏸</h2>
+    <p class="tagline">The melody is waiting for you. Take a breath — nothing is moving while you're away.</p>
+    <div class="btn-row">
+      <button class="btn btn-teal" id="btn-resume" type="button">▶ Resume</button>
+      <button class="btn" id="btn-pause-restart" type="button">↻ Restart</button>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" id="btn-pause-howto" type="button" style="color:var(--ink);border-color:var(--ink)">How to play</button>
+      <button class="btn btn-ghost" id="btn-pause-menu" type="button" style="color:var(--ink);border-color:var(--ink)">Quit to menu</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ GAME OVER / RESULTS ============ -->
+<div class="overlay" id="overlay-over" role="dialog" aria-modal="true" aria-labelledby="over-title">
+  <div class="panel">
+    <div class="mascot" aria-hidden="true"><svg viewBox="0 0 96 96" id="over-mascot"><circle cx="48" cy="48" r="40" fill="#FFC94D" stroke="#2B2D42" stroke-width="4"/><circle cx="34" cy="42" r="5" fill="#2B2D42"/><circle cx="62" cy="42" r="5" fill="#2B2D42"/><path d="M34 60q14 12 28 0" fill="none" stroke="#2B2D42" stroke-width="4" stroke-linecap="round"/><path d="M30 22l4 8M66 22l-4 8" stroke="#FF6B6B" stroke-width="4" stroke-linecap="round"/></svg></div>
+    <h2 id="over-title">Encore! 🎵</h2>
+    <p class="tagline" id="over-message">You echoed the melody beautifully.</p>
+    <div class="stars-row" id="over-stars" aria-label="Star rating">★★★</div>
+    <div class="big-score" id="over-score">0</div>
+    <p class="tagline">points</p>
+    <div id="over-newbest"></div>
+    <div class="result-rows">
+      <div class="rrow"><span>🎵 Round reached</span><b id="over-round">1</b></div>
+      <div class="rrow"><span>🎶 Longest melody</span><b id="over-longest">1 note</b></div>
+      <div class="rrow"><span>✅ Correct notes</span><b id="over-correct">0</b></div>
+      <div class="rrow"><span>🏆 Best score</span><b id="over-best">0</b></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn" id="btn-replay" type="button">↻ Play again</button>
+      <button class="btn btn-ghost" id="btn-over-menu" type="button" style="color:var(--ink);border-color:var(--ink)">Menu</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SETTINGS ============ -->
+<div class="overlay" id="overlay-settings" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+  <div class="panel">
+    <h2 id="settings-title">Settings ⚙️</h2>
+    <div class="set-row">
+      <label>Music</label>
+      <div class="set-toggle">
+        <button class="toggle-btn" id="set-music-on" type="button" aria-pressed="true">🎵 On</button>
+        <button class="toggle-btn" id="set-music-off" type="button" aria-pressed="false">🔇 Off</button>
+      </div>
+    </div>
+    <div class="set-row">
+      <label>Sound effects</label>
+      <div class="set-toggle">
+        <button class="toggle-btn" id="set-sfx-on" type="button" aria-pressed="true">🔔 On</button>
+        <button class="toggle-btn" id="set-sfx-off" type="button" aria-pressed="false">🔇 Off</button>
+      </div>
+    </div>
+    <div class="set-row">
+      <label for="volume-range">Volume — <span id="volume-val">70</span>%</label>
+      <input type="range" id="volume-range" min="0" max="100" value="70" step="1">
+    </div>
+    <p class="tagline">Settings are saved on this device and remembered next time you play.</p>
+    <div class="btn-row"><button class="btn" id="btn-settings-close" type="button">Done</button></div>
+  </div>
+</div>
+
+<div id="fx" aria-hidden="true"></div>
+
+<script>
+(function(){
+'use strict';
+/* ================================================================
+   Echo Blocks — JJB-GAME-20261116-07 — namespace JJBEchoBlocks.
+   100% original code written from scratch for this game.
+   Shared patterns (for the other nine games to follow):
+   - Audio: one AudioContext, musicGain + sfxGain, persisted settings
+   - Persistence: jjb-echo-blocks-* localStorage keys only
+   - HUD + overlay structure: screens toggled by .active / .open
+   ================================================================ */
+var NS = window.JJBEchoBlocks = window.JJBEchoBlocks || {};
+
+/* ---------- Constants ---------- */
+var BLOCKS = [
+  {name:'Coral',    shape:'●', note:'C', freq:261.63, cls:'block-coral', chip:'nc-coral'},
+  {name:'Sun',      shape:'★', note:'E', freq:329.63, cls:'block-sun',   chip:'nc-sun'},
+  {name:'Teal',     shape:'▲', note:'G', freq:392.00, cls:'block-teal',  chip:'nc-teal'},
+  {name:'Lavender', shape:'☾', note:'A', freq:440.00, cls:'block-lav',   chip:'nc-lav'}
+];
+var CODE_LETTERS = ['C','S','T','L'];           /* Coral Sun Teal Lavender */
+var LS_BEST='jjb-echo-blocks-best', LS_BEST_ROUND='jjb-echo-blocks-best-round',
+    LS_MUSIC='jjb-echo-blocks-music', LS_SFX='jjb-echo-blocks-sfx',
+    LS_VOL='jjb-echo-blocks-volume';
+var REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- State ---------- */
+var state = {
+  screen:'menu', mode:'classic', strict:false,
+  phase:'idle',            /* idle | playback | input | over | free */
+  sequence:[], round:1, score:0, best:0, bestRound:0,
+  lives:2, inputIndex:0, playbackIndex:0,
+  correctNotes:0, longest:0,
+  freeSeq:[], paused:false, wasPlayingBeforePause:false
+};
+var timers = { playback:null, roundClear:null, resume:null };
+NS.state = state;
+
+/* ---------- DOM helpers ---------- */
+function $(id){ return document.getElementById(id); }
+function el(q){ return document.querySelector(q); }
+function els(q){ return Array.prototype.slice.call(document.querySelectorAll(q)); }
+function announce(msg){ $('live').textContent = msg; }
+function store(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+function load(k,d){ try{ var v = localStorage.getItem(k); return v===null?d:v; }catch(e){ return d; } }
+
+/* ---------- Audio (shared pattern) ---------- */
+var AC = null, musicGain=null, sfxGain=null, musicTimer=null, musicStep=0, musicStarted=false;
+var settings = {
+  music: load(LS_MUSIC,'on')==='on',
+  sfx:   load(LS_SFX,'on')==='on',
+  volume: parseInt(load(LS_VOL,'70'),10) || 0
+};
+if(isNaN(settings.volume)||settings.volume<0||settings.volume>100) settings.volume=70;
+
+function ensureAudio(){
+  if(!AC){
+    try{
+      var Ctx = window.AudioContext || window.webkitAudioContext;
+      if(!Ctx) return;
+      AC = new Ctx();
+      musicGain = AC.createGain(); musicGain.connect(AC.destination);
+      sfxGain = AC.createGain(); sfxGain.connect(AC.destination);
+      applyGains();
+    }catch(e){ AC=null; }
+  }
+  if(AC && AC.state==='suspended'){ AC.resume(); }
+}
+function applyGains(){
+  if(!AC) return;
+  var v = settings.volume/100;
+  musicGain.gain.value = settings.music ? 0.14*v : 0;
+  sfxGain.gain.value   = settings.sfx   ? 0.55*v : 0;
+}
+function tone(freq, dur, type, when, dest, vol){
+  if(!AC) return;
+  var t = (when!==undefined?when:AC.currentTime);
+  var o = AC.createOscillator(), g = AC.createGain();
+  o.type = type||'sine'; o.frequency.setValueAtTime(freq, t);
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(vol||0.9, t+0.015);
+  g.gain.exponentialRampToValueAtTime(0.0001, t+dur);
+  o.connect(g); g.connect(dest||sfxGain);
+  o.start(t); o.stop(t+dur+0.05);
+}
+/* Original gentle music motif: pentatonic lullaby over a soft drone.
+   Bar: C E G A G E | A G E C D E — played as soft triangle notes
+   with a low C drone underneath. Composed for this game only. */
+var MUSIC_MOTIF = [261.63,329.63,392.00,440.00,392.00,329.63, 440.00,392.00,329.63,261.63,293.66,329.63];
+function musicTick(){
+  if(!AC || !settings.music || state.paused) return;
+  var n = MUSIC_MOTIF[musicStep % MUSIC_MOTIF.length];
+  tone(n, 0.55, 'triangle', undefined, musicGain, 0.5);
+  if(musicStep % 6 === 0) tone(130.81, 1.4, 'sine', undefined, musicGain, 0.35);
+  musicStep++;
+}
+function startMusic(){
+  ensureAudio();
+  if(musicStarted || !AC) return;
+  musicStarted = true;
+  musicTimer = setInterval(musicTick, 420);
+}
+function stopMusic(){ if(musicTimer){ clearInterval(musicTimer); musicTimer=null; musicStarted=false; } }
+
+/* SFX — all short synth blips, composed here */
+function sfxNote(i, dur){
+  if(!AC || !settings.sfx) return;
+  ensureAudio();
+  var f = BLOCKS[i].freq;
+  tone(f, dur||0.5, 'sine');
+  tone(f*2, 0.28, 'triangle', AC.currentTime+0.01);
+}
+function sfxClick(){ if(AC&&settings.sfx) tone(660,0.08,'triangle',undefined,undefined,0.5); }
+function sfxError(){
+  if(!AC||!settings.sfx) return;
+  tone(196,0.28,'sawtooth',undefined,undefined,0.35);
+  tone(155.56,0.4,'sawtooth',AC.currentTime+0.12,undefined,0.35);
+}
+function sfxRoundClear(){
+  if(!AC||!settings.sfx) return;
+  [523.25,659.25,783.99,1046.5].forEach(function(f,i){ tone(f,0.35,'triangle',AC.currentTime+i*0.09); });
+}
+function sfxWin(){
+  if(!AC||!settings.sfx) return;
+  [261.63,329.63,392.00,523.25,659.25,783.99].forEach(function(f,i){ tone(f,0.5,'triangle',AC.currentTime+i*0.11); });
+}
+
+/* ---------- Speed ---------- */
+function stepInterval(){ /* faster every 5 rounds; floor 280ms */
+  return Math.max(280, 650 - 70*Math.floor((state.round-1)/5));
+}
+NS.stepInterval = stepInterval;
+
+/* ---------- Screens / overlays ---------- */
+function showScreen(name){
+  state.screen = name;
+  els('.screen').forEach(function(s){ s.classList.remove('active'); });
+  var m = $('screen-'+name); if(m) m.classList.add('active');
+  window.scrollTo(0,0);
+}
+function openOverlay(id){ $(id).classList.add('open'); }
+function closeOverlay(id){ $(id).classList.remove('open'); }
+function closeAllOverlays(){ els('.overlay').forEach(function(o){ o.classList.remove('open'); }); }
+
+/* ---------- HUD ---------- */
+function renderHUD(){
+  $('hud-round').textContent = state.round;
+  $('hud-score').textContent = state.score;
+  $('hud-best').textContent = Math.max(state.best, state.score);
+  var hearts = els('#hud-lives .heart');
+  hearts.forEach(function(h,i){ h.classList.toggle('off', i >= state.lives); });
+  $('hud-lives').setAttribute('aria-label', state.lives + (state.lives===1?' life':' lives') + ' remaining');
+  var dots = $('progress-dots'); dots.innerHTML='';
+  for(var i=0;i<state.sequence.length;i++){
+    var d=document.createElement('i');
+    if(i<state.inputIndex) d.className='done';
+    else if(i===state.inputIndex && state.phase==='input') d.className='now';
+    dots.appendChild(d);
+  }
+  $('menu-best').textContent = state.best;
+  $('menu-best-round').textContent = state.bestRound;
+}
+function setStatus(msg){ $('status-line').textContent = msg; announce(msg); }
+
+/* ---------- Block visuals ---------- */
+var blockEls = els('.block');
+function faceMood(i, mood){
+  var mouth = blockEls[i].querySelector('.mouth');
+  if(!mouth) return;
+  if(mood==='happy') mouth.setAttribute('d','M20 40q12 12 24 0');
+  else if(mood==='sad') mouth.setAttribute('d','M22 48q10 -8 20 0');
+  else if(mood==='wow') mouth.setAttribute('d','M28 42q4 8 8 0');
+  else mouth.setAttribute('d','M22 42q10 9 20 0');
+}
+function lightBlock(i, dur){
+  var b = blockEls[i];
+  b.classList.add('lit'); faceMood(i,'wow');
+  var r = b.getBoundingClientRect();
+  sparkAt(r.left + r.width/2, r.top + r.height/2, BLOCKS[i].cls);
+  setTimeout(function(){ b.classList.remove('lit'); faceMood(i,'happy'); }, dur||420);
+}
+function sparkAt(x,y,cls){
+  if(REDUCED) return;
+  var s=document.createElement('span'); s.className='spark';
+  s.style.left=(x-6)+'px'; s.style.top=(y-6)+'px';
+  document.body.appendChild(s); setTimeout(function(){ s.remove(); }, 550);
+}
+function floatPoints(x,y,text){
+  if(REDUCED) return;
+  var s=document.createElement('span'); s.className='float-pts'; s.textContent=text;
+  s.style.left=(x-14)+'px'; s.style.top=(y-20)+'px';
+  document.body.appendChild(s); setTimeout(function(){ s.remove(); }, 1050);
+}
+function confetti(){
+  if(REDUCED) return;
+  var fx=$('fx'), colors=['#FF6B6B','#FFC94D','#2EC4B6','#7C6FF0','#FFF9F0'];
+  for(var i=0;i<36;i++){
+    var c=document.createElement('i');
+    c.style.left=(8+Math.random()*84)+'%'; c.style.top=(8+Math.random()*22)+'%';
+    c.style.background=colors[i%colors.length];
+    c.style.animationDelay=(Math.random()*0.25)+'s';
+    fx.appendChild(c); (function(el){ setTimeout(function(){ el.remove(); }, 1600); })(c);
+  }
+}
+
+/* ---------- Classic game flow ---------- */
+function clearTimers(){
+  ['playback','roundClear','resume'].forEach(function(k){ if(timers[k]){ clearTimeout(timers[k]); timers[k]=null; } });
+}
+function startGame(){
+  ensureAudio(); startMusic();
+  clearTimers();
+  state.mode = $('mode-free').getAttribute('aria-pressed')==='true' ? 'free' : 'classic';
+  state.strict = $('strict-toggle').checked;
+  state.score=0; state.round=1; state.correctNotes=0; state.longest=0;
+  state.lives = state.strict ? 1 : 2;
+  state.sequence=[]; state.inputIndex=0; state.paused=false;
+  state.freeSeq=[];
+  closeAllOverlays();
+  showScreen('game');
+  $('free-panel').hidden = (state.mode!=='free');
+  $('hud-lives').style.display = state.mode==='free' ? 'none' : '';
+  if(state.mode==='free'){
+    state.phase='free';
+    setStatus('Free Play — tap the blocks to compose your tune!');
+    renderFreeStrip(); renderHUD();
+    $('board').classList.remove('locked');
+    return;
+  }
+  state.phase='playback';
+  $('board').classList.add('locked');
+  addStep();
+  setStatus('Round 1 — listen…');
+  renderHUD();
+  announce('Round 1. Listen to the melody.');
+  timers.playback = setTimeout(playStep, 700);
+}
+function addStep(){
+  var next;
+  do{ next = Math.floor(Math.random()*4); }
+  while(state.sequence.length>=2 && next===state.sequence[state.sequence.length-1] && next===state.sequence[state.sequence.length-2]);
+  state.sequence.push(next);
+  state.longest = Math.max(state.longest, state.sequence.length);
+}
+function playStep(){
+  if(state.paused || state.phase!=='playback') return;
+  if(state.playbackIndex >= state.sequence.length){
+    state.phase='input'; state.inputIndex=0;
+    $('board').classList.remove('locked');
+    setStatus('Your turn — echo it back!');
+    renderHUD();
+    return;
+  }
+  var i = state.sequence[state.playbackIndex];
+  lightBlock(i, Math.min(420, stepInterval()*0.62));
+  sfxNote(i, 0.45);
+  state.playbackIndex++;
+  renderHUD();
+  timers.playback = setTimeout(playStep, stepInterval());
+}
+function startPlayback(){
+  state.phase='playback'; state.playbackIndex=0;
+  $('board').classList.add('locked');
+  setStatus('Listen again…');
+  renderHUD();
+  timers.playback = setTimeout(playStep, 600);
+}
+function onBlockTap(i){
+  ensureAudio();
+  if(state.paused) return;
+  if(state.mode==='free'){ freeTap(i); return; }
+  if(state.phase!=='input') return;
+  lightBlock(i, 380); sfxNote(i, 0.4);
+  var b = blockEls[i], r = b.getBoundingClientRect();
+  if(i===state.sequence[state.inputIndex]){
+    state.score += 10; state.correctNotes++;
+    floatPoints(r.left+r.width/2, r.top+10, '+10');
+    state.inputIndex++;
+    renderHUD();
+    if(state.inputIndex >= state.sequence.length){
+      /* Round cleared */
+      var bonus = 20 + 10*state.round;
+      state.score += bonus;
+      sfxRoundClear(); confetti();
+      setStatus('Round '+state.round+' complete! +'+bonus+' bonus 🎉');
+      announce('Round '+state.round+' complete. Bonus '+bonus+' points.');
+      $('board').classList.add('locked');
+      state.phase='playback';
+      state.round++;
+      state.inputIndex=0;
+      renderHUD();
+      timers.roundClear = setTimeout(function(){
+        if(state.paused) return;
+        addStep();
+        setStatus('Round '+state.round+' — listen…');
+        startPlayback();
+      }, 1100);
+    }
+  } else {
+    /* Wrong note */
+    state.lives--;
+    b.classList.add('wrong'); faceMood(i,'sad');
+    setTimeout(function(){ b.classList.remove('wrong'); faceMood(i,'happy'); }, 450);
+    sfxError();
+    renderHUD();
+    if(state.lives>0){
+      setStatus('Oops — one heart lost! Listen again…');
+      announce('Wrong note. One heart lost. The melody plays again.');
+      state.phase='playback';
+      $('board').classList.add('locked');
+      timers.roundClear = setTimeout(function(){ if(!state.paused) startPlayback(); }, 1100);
+    } else {
+      gameOver(false);
+    }
+  }
+}
+function gameOver(won){
+  clearTimers();
+  state.phase='over';
+  $('board').classList.add('locked');
+  var isBest = state.score > state.best;
+  if(isBest){ state.best = state.score; store(LS_BEST, String(state.best)); }
+  if(state.round > state.bestRound){ state.bestRound = state.round; store(LS_BEST_ROUND, String(state.bestRound)); }
+  renderHUD();
+  sfxWin();
+  confetti();
+  var stars = state.round>=10 ? 3 : state.round>=6 ? 2 : state.round>=3 ? 1 : 0;
+  $('over-title').textContent = won ? 'Encore! 🎵' : (state.round>=6 ? 'Great run! 🎶' : 'Encore! 🎵');
+  $('over-message').textContent = state.round>=10 ? 'A ten-round melody — you have a brilliant ear!'
+    : state.round>=6 ? 'You echoed a long melody. The night applauds you!'
+    : state.round>=3 ? 'A lovely run — the blocks loved singing with you.'
+    : 'A brave first echo — try again and the melody will grow!';
+  var sr=$('over-stars'); sr.innerHTML='';
+  for(var i=0;i<3;i++){ var s=document.createElement('span'); s.textContent='★'; if(i>=stars) s.className='dim'; sr.appendChild(s); }
+  sr.setAttribute('aria-label', stars+' out of 3 stars');
+  $('over-round').textContent = state.round;
+  $('over-longest').textContent = state.longest + (state.longest===1?' note':' notes');
+  $('over-correct').textContent = state.correctNotes;
+  $('over-best').textContent = state.best;
+  $('over-newbest').innerHTML = isBest && state.score>0 ? '<span class="new-best">🏆 New best score!</span>' : '';
+  openOverlay('overlay-over');
+  announce('Game over. Score '+state.score+'. Best '+state.best+'.');
+  countUp($('over-score'), state.score);
+}
+function countUp(node, target){
+  if(REDUCED){ node.textContent = target; return; }
+  var start = performance.now(), dur = 900;
+  function tick(t){
+    var p = Math.min(1,(t-start)/dur);
+    node.textContent = Math.round(target*(1-Math.pow(1-p,3)));
+    if(p<1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+/* ---------- Pause ---------- */
+function pauseGame(){
+  if(state.screen!=='game' || state.phase==='over' || state.paused) return;
+  if(state.mode==='free' && state.phase==='free'){ /* free play has no timers; still show pause overlay */ }
+  state.paused = true;
+  clearTimers();
+  if(AC && AC.state==='running'){ AC.suspend(); }
+  openOverlay('overlay-pause');
+  announce('Paused.');
+}
+function resumeGame(){
+  if(!state.paused) return;
+  state.paused = false;
+  closeOverlay('overlay-pause');
+  if(AC && AC.state==='suspended'){ AC.resume(); }
+  /* Re-arm exactly where we stopped: if we were mid-playback, resume
+     from the current playback index; if mid-input, just unlock. */
+  if(state.mode==='classic' && state.phase==='playback'){
+    timers.playback = setTimeout(playStep, 500);
+    setStatus('Round '+state.round+' — listen…');
+  } else if(state.mode==='classic' && state.phase==='input'){
+    $('board').classList.remove('locked');
+    setStatus('Your turn — echo it back!');
+  } else if(state.mode==='free'){
+    $('board').classList.remove('locked');
+  }
+  announce('Resumed.');
+}
+function quitToMenu(){
+  clearTimers();
+  state.paused=false; state.phase='idle';
+  if(AC && AC.state==='suspended'){ AC.resume(); }
+  closeAllOverlays();
+  showScreen('menu');
+  renderHUD();
+}
+
+/* ---------- Free Play ---------- */
+function freeTap(i){
+  lightBlock(i, 380); sfxNote(i, 0.4);
+  if(state.freeSeq.length>=32){ setStatus('That tune is full — 32 notes! Play it or clear it.'); return; }
+  state.freeSeq.push(i);
+  renderFreeStrip();
+}
+function renderFreeStrip(){
+  var strip=$('free-strip'); strip.innerHTML='';
+  if(!state.freeSeq.length){
+    var e=document.createElement('span'); e.className='empty';
+    e.textContent='Tap the blocks to compose your tune — up to 32 notes.';
+    strip.appendChild(e); return;
+  }
+  state.freeSeq.forEach(function(i){
+    var c=document.createElement('span');
+    c.className='note-chip '+BLOCKS[i].chip;
+    c.textContent = BLOCKS[i].shape+' '+BLOCKS[i].note;
+    strip.appendChild(c);
+  });
+}
+function encodeFree(){
+  return 'ECHO-' + state.freeSeq.map(function(i){ return CODE_LETTERS[i]; }).join('');
+}
+function decodeFree(code){
+  var m = String(code||'').trim().toUpperCase().replace(/^ECHO-?/,'');
+  if(!m || !/^[CSTL]+$/.test(m) || m.length>32) return null;
+  return m.split('').map(function(ch){ return CODE_LETTERS.indexOf(ch); });
+}
+function playFreeTune(){
+  if(!state.freeSeq.length){ setStatus('Compose a few notes first!'); return; }
+  state.phase='playback';
+  $('board').classList.add('locked');
+  var seq = state.freeSeq.slice(), idx=0;
+  setStatus('Playing your tune…');
+  (function step(){
+    if(state.paused){ timers.playback=setTimeout(step,400); return; }
+    if(idx>=seq.length){
+      state.phase='free'; $('board').classList.remove('locked');
+      setStatus('Lovely! Add more notes, or share your tune.');
+      return;
+    }
+    lightBlock(seq[idx], 380); sfxNote(seq[idx], 0.4); idx++;
+    timers.playback = setTimeout(step, 520);
+  })();
+}
+NS.encodeFree = encodeFree; NS.decodeFree = decodeFree;
+
+/* ---------- Settings ---------- */
+function applySettingsToUI(){
+  $('btn-music').setAttribute('aria-pressed', String(settings.music));
+  $('btn-sfx').setAttribute('aria-pressed', String(settings.sfx));
+  $('set-music-on').setAttribute('aria-pressed', String(settings.music));
+  $('set-music-off').setAttribute('aria-pressed', String(!settings.music));
+  $('set-sfx-on').setAttribute('aria-pressed', String(settings.sfx));
+  $('set-sfx-off').setAttribute('aria-pressed', String(!settings.sfx));
+  $('volume-range').value = settings.volume;
+  $('volume-val').textContent = settings.volume;
+}
+function saveSettings(){
+  store(LS_MUSIC, settings.music?'on':'off');
+  store(LS_SFX, settings.sfx?'on':'off');
+  store(LS_VOL, String(settings.volume));
+  applyGains(); applySettingsToUI();
+}
+NS.settings = settings;
+
+/* ---------- Wiring ---------- */
+blockEls.forEach(function(b){
+  b.addEventListener('click', function(){ onBlockTap(parseInt(b.dataset.block,10)); });
+  /* NOTE: no pointerdown preventDefault here — cancelling pointerdown
+     suppresses the compatibility click on touch devices. Scroll/zoom
+     during play is already prevented by touch-action:none in CSS. */
+});
+$('mode-classic').addEventListener('click', function(){
+  $('mode-classic').setAttribute('aria-pressed','true');
+  $('mode-free').setAttribute('aria-pressed','false');
+  $('strict-row').style.display='';
+  sfxClick();
+});
+$('mode-free').addEventListener('click', function(){
+  $('mode-free').setAttribute('aria-pressed','true');
+  $('mode-classic').setAttribute('aria-pressed','false');
+  $('strict-row').style.display='none';
+  sfxClick();
+});
+$('btn-play').addEventListener('click', startGame);
+$('btn-howto').addEventListener('click', function(){ ensureAudio(); sfxClick(); openOverlay('overlay-howto'); });
+$('btn-howto-close').addEventListener('click', function(){ closeOverlay('overlay-howto'); });
+$('btn-howto-play').addEventListener('click', function(){ closeOverlay('overlay-howto'); startGame(); });
+$('btn-pause').addEventListener('click', pauseGame);
+$('btn-resume').addEventListener('click', resumeGame);
+$('btn-pause-restart').addEventListener('click', function(){ closeOverlay('overlay-pause'); state.paused=false; if(AC&&AC.state==='suspended')AC.resume(); startGame(); });
+$('btn-pause-howto').addEventListener('click', function(){ openOverlay('overlay-howto'); });
+$('btn-pause-menu').addEventListener('click', quitToMenu);
+$('btn-replay').addEventListener('click', function(){ closeOverlay('overlay-over'); startGame(); });
+$('btn-over-menu').addEventListener('click', quitToMenu);
+$('btn-settings').addEventListener('click', function(){ ensureAudio(); sfxClick(); openOverlay('overlay-settings'); });
+$('btn-settings-close').addEventListener('click', function(){ closeOverlay('overlay-settings'); });
+$('btn-music').addEventListener('click', function(){ ensureAudio(); settings.music=!settings.music; saveSettings(); if(settings.music) startMusic(); });
+$('btn-sfx').addEventListener('click', function(){ ensureAudio(); settings.sfx=!settings.sfx; saveSettings(); if(settings.sfx) sfxClick(); });
+$('set-music-on').addEventListener('click', function(){ settings.music=true; saveSettings(); startMusic(); });
+$('set-music-off').addEventListener('click', function(){ settings.music=false; saveSettings(); });
+$('set-sfx-on').addEventListener('click', function(){ settings.sfx=true; saveSettings(); sfxClick(); });
+$('set-sfx-off').addEventListener('click', function(){ settings.sfx=false; saveSettings(); });
+$('volume-range').addEventListener('input', function(e){ settings.volume=parseInt(e.target.value,10); saveSettings(); });
+$('btn-free-playback').addEventListener('click', playFreeTune);
+$('btn-free-clear').addEventListener('click', function(){ state.freeSeq=[]; renderFreeStrip(); setStatus('Cleared — compose a fresh tune!'); });
+$('btn-free-share').addEventListener('click', function(){
+  if(!state.freeSeq.length){ $('free-code-out').textContent='Compose a few notes first, then share!'; return; }
+  var code = encodeFree();
+  $('free-code-out').textContent = 'Your share code: ' + code + ' — send it to a friend to load your tune!';
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(code).catch(function(){});
+  }
+  announce('Share code '+code);
+});
+$('btn-free-load').addEventListener('click', function(){
+  var seq = decodeFree($('free-code-in').value);
+  if(!seq){ $('free-code-out').textContent='That code does not look right — it should look like ECHO-CSTL.'; return; }
+  state.freeSeq = seq; renderFreeStrip();
+  $('free-code-out').textContent='Tune loaded — '+seq.length+' notes. Press “Play my tune” to hear it!';
+});
+
+/* Keyboard: 1–4 blocks, P/Esc pause, R restart */
+document.addEventListener('keydown', function(e){
+  if(e.target && (e.target.tagName==='INPUT')) return;
+  if(e.key>='1' && e.key<='4'){
+    if(state.screen==='game' && !state.paused){ onBlockTap(parseInt(e.key,10)-1); }
+  } else if(e.key==='p' || e.key==='P' || e.key==='Escape'){
+    if(state.paused){ resumeGame(); }
+    else if(state.screen==='game'){ pauseGame(); }
+    else closeAllOverlays();
+  } else if(e.key==='r' || e.key==='R'){
+    if(state.screen==='game'){ closeAllOverlays(); state.paused=false; if(AC&&AC.state==='suspended')AC.resume(); startGame(); }
+  } else if(e.key==='Enter' && state.screen==='menu' && document.activeElement===document.body){
+    startGame();
+  }
+});
+
+/* ---------- Init ---------- */
+state.best = parseInt(load(LS_BEST,'0'),10)||0;
+state.bestRound = parseInt(load(LS_BEST_ROUND,'0'),10)||0;
+applySettingsToUI();
+renderHUD();
+NS.startGame = startGame; NS.pauseGame = pauseGame; NS.resumeGame = resumeGame;
+NS.gameOver = gameOver; NS.onBlockTap = onBlockTap;
+})();
+</script>
+</body>
+</html>
