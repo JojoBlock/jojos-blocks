@@ -3,10 +3,105 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Tic-Tac-Toe vs JoJo — Free Browser Game | JoJo’s Blocks</title>
+<title>Tic-Tac-Toe vs JoJo | JoJo's Blocks — Games &amp; Play</title>
 <meta name="description" content="Play Tic-Tac-Toe against JoJo the AI — or a friend. Three difficulties, score tally, and a fair game: JoJo's wins count as JoJo's wins. Free, no sign-up, no download.">
 <link rel="canonical" href="https://jojosblocks.online/games/tic-tac-toe/">
 <link rel="stylesheet" href="../../assets/styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+#play{--cream:#FFF9F0;--white:#fff;--ink:#2B2D42;--muted:#5B5E73;--coral:#FF6B6B;--coral-dark:#E85050;--sun:#FFC94D;--teal:#2EC4B6;--lav:#7C6FF0;--pink:#FF8FAB;--mint:#D8F3DC;--radius:20px;--shadow:0 10px 30px rgba(43,45,66,.10)}
+#play *{box-sizing:border-box}
+#play{font-family:'Nunito',system-ui,sans-serif;background:var(--cream);color:var(--ink);line-height:1.6;font-size:17px;}
+#play h1, #play h2, #play h3{font-family:'Fredoka','Nunito',sans-serif;line-height:1.15;margin:0 0 .4em}
+#play .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:720px;margin:0 auto;padding:16px 20px 0}
+#play .brand{font-family:'Fredoka',sans-serif;font-weight:700;font-size:1.35rem;text-decoration:none;color:var(--ink);display:inline-flex;align-items:center;min-height:44px}
+#play .brand span{color:var(--coral)}
+#play .icon-btn{background:var(--white);border:2px solid var(--ink);border-radius:999px;padding:10px 14px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.95rem;color:var(--ink);cursor:pointer;min-height:44px}
+#play .icon-btn:hover{background:var(--sun)}
+#play .topbar{flex-wrap:wrap}
+#play .top-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+#play .jjb-volume{width:96px;accent-color:var(--coral);cursor:pointer;min-height:44px}
+#play .jjb-blob{position:fixed;border-radius:50%;filter:blur(70px);opacity:.35;pointer-events:none;z-index:0}
+#play .jjb-blob.b1{width:340px;height:340px;background:var(--coral);top:-80px;left:-90px;animation:jjb-ttt-drift 26s ease-in-out infinite alternate}
+#play .jjb-blob.b2{width:300px;height:300px;background:var(--teal);bottom:-70px;right:-80px;animation:jjb-ttt-drift 32s ease-in-out infinite alternate-reverse}
+
+@keyframes jjb-ttt-drift{from{transform:translate(0,0)}to{transform:translate(60px,40px)}}
+#play .topbar, #play .jjb-main{position:relative;z-index:1}
+#play .jjb-main{max-width:720px;margin:0 auto;padding:12px 20px 40px}
+#play .card{position:relative;background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px 24px;text-align:center}
+#play .eyebrow{font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#C22E2E;font-size:.85rem;margin:0 0 6px}
+#play h1{font-size:2rem}
+#play .lede{color:var(--muted);margin:0 0 16px}
+#play .stats{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:0 0 16px}
+#play .stat{background:var(--cream);border-radius:12px;padding:8px 14px;font-weight:800;font-size:.95rem;min-width:92px}
+#play .stat small{display:block;font-size:.75rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+#play .stat span{display:inline-block;transition:transform .18s ease}
+#play .jjb-stat-pop{transform:scale(1.18)}
+#play .jjb-floater{position:absolute;left:50%;top:32%;transform:translateX(-50%);font-family:'Fredoka',sans-serif;font-weight:700;font-size:1.4rem;color:var(--coral);pointer-events:none;z-index:5;animation:jjb-ttt-float .9s ease forwards}
+
+@keyframes jjb-ttt-float{from{transform:translate(-50%,0);opacity:1}to{transform:translate(-50%,-46px);opacity:0}}
+#play .controls-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+#play .controls-row label{font-weight:800;font-size:.95rem;align-self:center}
+#play select{padding:10px 12px;font-family:'Nunito',sans-serif;font-weight:700;font-size:1rem;border:2px solid var(--ink);border-radius:12px;background:var(--white);color:var(--ink);cursor:pointer;min-height:44px}
+#play #jjb-ttt-message{font-weight:800;font-size:1.2rem;min-height:1.6em;margin:10px 0;color:var(--ink)}
+#play #jjb-ttt-message.thinking{color:var(--muted)}
+#play .grid{display:grid;grid-template-columns:repeat(3,minmax(84px,110px));gap:10px;justify-content:center;margin:14px auto;max-width:380px}
+#play .cell{aspect-ratio:1;border:none;border-radius:16px;background:var(--cream);font-family:'Fredoka',sans-serif;font-size:2.6rem;font-weight:700;color:var(--ink);cursor:pointer;transition:transform .15s ease,background .2s ease;box-shadow:0 4px 0 rgba(0,0,0,.08)}
+#play .cell:hover:not(:disabled){transform:scale(1.05);background:var(--mint)}
+#play .cell:focus-visible{outline:3px solid var(--lav);outline-offset:2px}
+#play .cell:disabled{cursor:default}
+#play .cell.X{color:var(--teal);background:#D8F3DC}
+#play .cell.O{color:var(--coral);background:#FFE5D9}
+#play .cell.win{outline:4px solid var(--sun);outline-offset:2px;animation:jjb-ttt-pulse .6s ease infinite alternate}
+
+@keyframes jjb-ttt-pulse{from{transform:scale(1)}to{transform:scale(1.06)}}
+#play .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 22px;border-radius:999px;font-weight:800;font-family:'Nunito',sans-serif;font-size:1rem;border:2px solid transparent;cursor:pointer;text-decoration:none}
+#play .btn-primary{background:var(--coral);color:var(--ink)}
+#play .btn-primary:hover{background:var(--coral)}
+#play .btn-primary{box-shadow:0 4px 14px rgba(255,107,107,.35)}
+#play .btn:active{transform:scale(.97)}
+#play .btn-ghost{background:transparent;border-color:var(--ink);color:var(--ink)}
+#play .btn-ghost:hover{background:var(--sun)}
+#play .btn-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+#play .overlay{position:fixed;inset:0;background:rgba(43,45,66,.72);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}
+#play .overlay.open{display:flex}
+#play .overlay.open .overlay-card{animation:jjb-ttt-ovpop .28s ease}
+
+@keyframes jjb-ttt-ovpop{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1}}
+#play .jjb-celebrate .big{animation:jjb-ttt-celeb 1.1s ease-in-out infinite}
+
+@keyframes jjb-ttt-celeb{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+#play .overlay-card{background:var(--white);color:var(--ink);border-radius:var(--radius);max-width:460px;width:100%;padding:30px 26px;text-align:center;box-shadow:var(--shadow);max-height:90vh;overflow:auto}
+#play .overlay-card h2{font-size:1.7rem}
+#play .overlay-card p{color:var(--muted)}
+#play .overlay-card ul{text-align:left;color:var(--muted);margin:0 0 14px;padding-left:22px}
+#play .overlay-card .big{font-size:3rem}
+#play .confetti{position:fixed;top:-12px;width:10px;height:10px;border-radius:50%;z-index:60;pointer-events:none;animation:jjb-ttt-fall linear forwards}
+
+@keyframes jjb-ttt-fall{to{transform:translateY(105vh) rotate(540deg);opacity:.2}}
+@media (prefers-reduced-motion:reduce){#play *{transition:none!important;animation:none!important}}
+#play /* v2.1.0 presentation: hero cover + related games (design pass, #play 2026-11-16) */
+.jjb-hero{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:14px;display:block;margin:0 0 16px}
+#play .jjb-controls-line{color:var(--muted);font-size:.92rem;font-weight:700;margin:-6px 0 16px}
+#play .jjb-related{margin-top:22px;text-align:left}
+#play .jjb-related h2{font-size:1.25rem;text-align:center}
+#play .jjb-related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:12px}
+#play .jjb-related a{display:flex;flex-direction:column;gap:6px;align-items:center;text-decoration:none;color:var(--ink);font-weight:800;font-size:.9rem;line-height:1.3;background:var(--white);border-radius:14px;padding:10px;min-height:44px;box-shadow:var(--shadow);text-align:center}
+#play .jjb-related a img{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:8px;display:block}
+#play .jjb-related a:hover{background:var(--sun)}
+/* merged-page fix: overlays cover the game card only (see builder) */
+#play .overlay{position:absolute;inset:0}
+/* JJB merge: the overlay still sat BELOW the sticky site header/tabbar (z-index 70)
+   because .jjb-main is a z-index:1 stacking context, so a z-index on .overlay
+   alone cannot rise above the header (clicks on an overlay scrolled under the
+   header hit the search box). Raise .jjb-main above the header only while an
+   overlay is open (the overlay is modal; the header returns when it closes). */
+#play .jjb-main:has(.overlay.open){z-index:71}
+/* merged-page addition: anchor offset for #play */
+#play{scroll-margin-top:12px}
+</style>
 
 </head>
 <body>
@@ -43,7 +138,7 @@
   <a href="../../shop/">Shop</a>
   <a href="../../recommended/">Affiliate Products</a>
   <span class="has-fly"><a href="../../free-resources/" aria-haspopup="true">Free resources</a><span class="flyout"><a href="../../free-resources/category/coloring/">Coloring</a><a href="../../free-resources/category/learn-to-draw/">Learn to draw</a><a href="../../free-resources/category/worksheets/">Worksheets</a><a href="../../free-resources/category/planners/">Planners</a><a href="../../free-resources/category/printables/">Printables</a><a href="../../free-resources/category/wallpapers/">Wallpapers</a><a href="../../free-resources/category/ai/">AI</a><a href="../../free-resources/category/stickers/">Stickers</a><a class="viewall" href="../../free-resources/">View all →</a></span></span>
-  <span class="has-fly"><a href="../../games/" class="on" aria-haspopup="true">Games & play</a><span class="flyout"><a href="../../games/category/puzzle/">Puzzle</a><a href="../../games/category/arcade/">Arcade</a><a href="../../games/category/casual/">Casual</a><a href="../../games/category/educational/">Educational</a><a class="viewall" href="../../games/">View all →</a></span></span>
+  <span class="has-fly"><a href="../../games/" class="on" aria-haspopup="true">Games & play</a><span class="flyout"><a href="../../games/category/puzzle/">Puzzle</a><a href="../../games/category/arcade/">Arcade</a><a href="../../games/category/casual/">Casual</a><a href="../../games/category/casual/">Casual</a><a class="viewall" href="../../games/">View all →</a></span></span>
   <span class="has-fly"><a href="../../blog/" aria-haspopup="true">Blog</a><span class="flyout"><a href="../../blog/category/guides/">Guides</a><a href="../../blog/category/activities/">Activities</a><a href="../../blog/category/fun-facts/">Fun facts</a><a class="viewall" href="../../blog/">View all →</a></span></span>
 </div></nav>
 <main id="main">
@@ -56,12 +151,425 @@
       <h1>Tic-Tac-Toe vs JoJo</h1>
       <p>Play Tic-Tac-Toe against JoJo the AI — or a friend. Three difficulties, score tally, and a fair game: JoJo's wins count as JoJo's wins. Free, no sign-up, no download.</p>
       <div class="dbuy">
-        <a class="btn btn-ink" href="https://jojosblocks.online/games/tic-tac-toe/" target="_blank" rel="noopener">Play free →</a>
+        <a class="btn btn-ink" href="#play" id="play-free-btn">Play free →</a>
         <a class="btn btn-ghost" href="../../games/">All games</a>
       </div>
-      <p class="dnote">This game plays on jojosblocks.online and opens in a new tab. No downloads, no accounts.</p>
+      <p class="dnote">Plays right here on jojosblocks.online. No downloads, no accounts.</p>
     </div>
   </div></div>
+<section id="play" class="jjb-play" aria-label="Play Tic-Tac-Toe vs JoJo">
+<div class="jjb-blob b1" aria-hidden="true"></div>
+<div class="jjb-blob b2" aria-hidden="true"></div>
+<div class="topbar">
+  
+  <div class="top-controls">
+    <button class="icon-btn" id="jjb-ttt-music" type="button" aria-pressed="true" aria-label="Toggle music">🎵 Music on</button>
+    <input class="jjb-volume" id="jjb-ttt-volume" type="range" min="0" max="100" value="70" aria-label="Music volume">
+    <button class="icon-btn" id="jjb-ttt-sound" type="button" aria-pressed="true" aria-label="Toggle sound">🔊 Sound on</button>
+  </div>
+</div>
+<div class="jjb-main">
+  <div class="card">
+    
+    <p class="eyebrow">Games &amp; Play · Classic</p>
+    <h1>⭕ Tic-Tac-Toe ❌</h1>
+    <p class="lede">You are X. Beat JoJo the AI — or play a friend on the same screen.</p>
+    <p class="jjb-controls-line">Tap a square, or press keys 1–9 · P pauses · play vs JoJo or a friend</p>
+    <div class="stats" role="status" aria-live="polite">
+      <div class="stat"><small>You (X)</small><span id="jjb-ttt-wins-x">0</span></div>
+      <div class="stat"><small>Draws</small><span id="jjb-ttt-draws">0</span></div>
+      <div class="stat"><small>JoJo (O)</small><span id="jjb-ttt-wins-o">0</span></div>
+      <div class="stat"><small>Round</small><span id="jjb-ttt-round">1</span></div>
+    </div>
+    <div class="controls-row">
+      <label for="jjb-ttt-mode">Mode</label>
+      <select id="jjb-ttt-mode">
+        <option value="ai" selected>vs JoJo AI</option>
+        <option value="2p">2 players</option>
+      </select>
+      <label for="jjb-ttt-difficulty">JoJo's skill</label>
+      <select id="jjb-ttt-difficulty">
+        <option value="easy">Easy</option>
+        <option value="normal" selected>Normal</option>
+        <option value="hard">Hard (unbeatable)</option>
+      </select>
+    </div>
+    <p id="jjb-ttt-message" aria-live="polite">Your turn (X)</p>
+    <div class="grid" id="jjb-ttt-grid" role="grid" aria-label="Tic-tac-toe board"></div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" id="jjb-ttt-pause" type="button">⏸ Pause</button>
+      <button class="btn btn-ghost" id="jjb-ttt-restart" type="button">↻ New round</button>
+      <button class="btn btn-ghost" id="jjb-ttt-reset-score" type="button">Reset score</button>
+      <button class="btn btn-ghost" id="jjb-ttt-howto" type="button">? How to play</button>
+    </div>
+  <div class="overlay open" id="jjb-ttt-start" role="dialog" aria-modal="true" aria-labelledby="jjb-ttt-start-title">
+    <div class="overlay-card">
+      <div class="big">⭕❌</div>
+      <h2 id="jjb-ttt-start-title">Tic-Tac-Toe vs JoJo</h2>
+      <p>Get three in a row — across, down or diagonally. You play X and go first.</p>
+      <ul>
+        <li>Tap a square — or press keys 1–9 (top-left to bottom-right).</li>
+        <li>Easy: JoJo plays randomly. Normal: JoJo blocks and attacks. Hard: JoJo never loses.</li>
+        <li>Switch to 2 players to play a friend on the same screen.</li>
+        <li>Press P (or the Pause button) to pause; JoJo waits while you think.</li>
+      </ul>
+      <button class="btn btn-primary" id="jjb-ttt-start-btn" type="button">▶ Start playing</button>
+    </div>
+  </div>
+  
+  <div class="overlay" id="jjb-ttt-howto-ov" role="dialog" aria-modal="true" aria-labelledby="jjb-ttt-howto-title">
+    <div class="overlay-card">
+      <h2 id="jjb-ttt-howto-title">How to play</h2>
+      <ul>
+        <li>Players take turns placing X and O on the 3×3 grid.</li>
+        <li>First to three in a row wins the round. A full board with no line is a draw.</li>
+        <li>Against JoJo, you are always X and move first; JoJo answers after a short think.</li>
+        <li>Keyboard: keys 1–9 place your mark, Tab + Enter works too.</li>
+        <li>Press P to pause the round, Escape to close this panel.</li>
+      </ul>
+      <button class="btn btn-primary" id="jjb-ttt-howto-close" type="button">Got it</button>
+    </div>
+  </div>
+  
+  <div class="overlay" id="jjb-ttt-pause-ov" role="dialog" aria-modal="true" aria-labelledby="jjb-ttt-pause-title">
+    <div class="overlay-card">
+      <div class="big">⏸</div>
+      <h2 id="jjb-ttt-pause-title">Paused</h2>
+      <p>The board is frozen and JoJo is waiting. Take your time!</p>
+      <button class="btn btn-primary" id="jjb-ttt-resume" type="button">▶ Resume</button>
+      <button class="btn btn-ghost" id="jjb-ttt-pause-restart" type="button">↻ New round</button>
+    </div>
+  </div>
+  
+  <div class="overlay" id="jjb-ttt-end" role="dialog" aria-modal="true" aria-labelledby="jjb-ttt-end-title">
+    <div class="overlay-card jjb-celebrate">
+      <div class="big" id="jjb-ttt-end-emoji">🎉</div>
+      <h2 id="jjb-ttt-end-title">You won!</h2>
+      <p id="jjb-ttt-end-text"></p>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="jjb-ttt-again" type="button">▶ Next round</button>
+        <button class="btn btn-ghost" id="jjb-ttt-end-close" type="button">Close</button>
+      </div>
+    </div>
+  </div>
+  </div>
+  <section class="jjb-related" aria-label="Related games">
+    <h2>More games to try</h2>
+    <div class="jjb-related-grid">
+      <a href="../animal-guess/"><img src="../thumbs/animal-guess.svg" alt="" width="640" height="360" loading="lazy">Animal Guess</a>
+      <a href="../memory-match/"><img src="../thumbs/memory-match.svg" alt="" width="640" height="360" loading="lazy">Memory Match</a>
+      <a href="../click-the-box/"><img src="../thumbs/click-the-box.svg" alt="" width="640" height="360" loading="lazy">Click the Box</a>
+      <a href="../flappy-penguin/"><img src="../thumbs/flappy-penguin.svg" alt="" width="640" height="360" loading="lazy">Flappy Penguin</a>
+      <a href="../block-drop/"><img src="../thumbs/block-drop.svg" alt="" width="640" height="360" loading="lazy">Block Drop</a>
+    </div>
+  </section>
+</div>
+<script>
+(function(){
+'use strict';
+var NS='JJBTicTacToe';
+var $=function(id){return document.getElementById(id);};
+var grid=$('jjb-ttt-grid'),msg=$('jjb-ttt-message');
+var WINS=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+var SOUND_KEY='jjb-tic-tac-toe-sound',SCORE_KEY='jjb-tic-tac-toe-score';
+var soundOn=localStorage.getItem(SOUND_KEY)!=='off';
+var board=['','','','','','','','',''],current='X',active=false,started=false,aiTimer=null,paused=false;
+var tally={X:0,O:0,D:0};
+try{var saved=JSON.parse(localStorage.getItem(SCORE_KEY)||'{}');if(saved.X!=null)tally=saved;}catch(e){}
+var round=1,actx=null;
+function tone(freq,dur,type,vol,delay){
+  if(!soundOn)return;
+  try{
+    actx=actx||new (window.AudioContext||window.webkitAudioContext)();
+    var t0=actx.currentTime+(delay||0);
+    var o=actx.createOscillator(),g=actx.createGain();
+    o.type=type||'sine';o.frequency.value=freq;
+    g.gain.setValueAtTime(vol||0.12,t0);
+    g.gain.exponentialRampToValueAtTime(0.001,t0+dur);
+    o.connect(g);g.connect(actx.destination);o.start(t0);o.stop(t0+dur);
+  }catch(e){}
+}
+function snd(k){
+  if(k==='click')tone(520,.08,'sine',.1);
+  else if(k==='win'){[523,659,784,1047].forEach(function(f,i){tone(f,.22,'triangle',.12,i*.11);});}
+  else if(k==='lose'){[400,320,240].forEach(function(f,i){tone(f,.22,'triangle',.11,i*.13);});}
+  else tone(440,.15,'sine',.09);
+}
+function refreshSoundBtn(){
+  var b=$('jjb-ttt-sound');
+  b.textContent=soundOn?'🔊 Sound on':'🔇 Sound off';
+  b.setAttribute('aria-pressed',String(soundOn));
+}
+$('jjb-ttt-sound').addEventListener('click',function(){
+  soundOn=!soundOn;localStorage.setItem(SOUND_KEY,soundOn?'on':'off');refreshSoundBtn();
+  if(soundOn)tone(660,.12,'sine');
+});
+refreshSoundBtn();
+
+/* v2.1.0 music: original strategic-ambient loop, ~84 BPM, A-minor pad chords
+   + sparse triangle melody, very low volume. WebAudio only, nothing downloaded.
+   Music is independent of the SFX mute: the sound toggle silences SFX only. */
+var MUSIC_KEY='jjb-tic-tac-toe-music',VOLUME_KEY='jjb-tic-tac-toe-volume';
+var musicOn=localStorage.getItem(MUSIC_KEY)!=='off';
+var musicVol=Math.max(0,Math.min(100,parseInt(localStorage.getItem(VOLUME_KEY)||'70',10)||0))/100;
+var musicTimer=null,musicStep=0;
+var TTT_CHORDS=[[220,261.63,329.63],[174.61,220,261.63],[130.81,196,261.63],[196,246.94,293.66]];
+var TTT_MELODY=[0,0,440,0,0,0,523.25,0,0,0,659.25,0,0,0,587.33,0];
+function musicNote(freq,dur,type,vol){
+  if(!musicOn)return;
+  try{
+    actx=actx||new (window.AudioContext||window.webkitAudioContext)();
+    if(actx.state==='suspended')actx.resume();
+    var t0=actx.currentTime;
+    var o=actx.createOscillator(),g=actx.createGain();
+    o.type=type;o.frequency.value=freq;
+    g.gain.setValueAtTime(vol*musicVol,t0);
+    g.gain.exponentialRampToValueAtTime(0.001,t0+dur);
+    o.connect(g);g.connect(actx.destination);o.start(t0);o.stop(t0+dur+0.05);
+  }catch(e){}
+}
+function musicTick(){
+  if(!musicOn||!started||paused||!active)return;
+  var s=musicStep%16;
+  if(s%4===0){TTT_CHORDS[(s/4)|0].forEach(function(f){musicNote(f,1.5,'sine',0.028);});}
+  var m=TTT_MELODY[s];
+  if(m)musicNote(m,0.55,'triangle',0.035);
+  musicStep++;
+}
+function startMusic(){
+  if(!musicOn||!started||!active||paused)return;
+  stopMusic();musicStep=0;
+  musicTimer=setInterval(musicTick,360);
+  musicTick();
+}
+function stopMusic(){if(musicTimer){clearInterval(musicTimer);musicTimer=null;}}
+function refreshMusicBtn(){
+  var b=$('jjb-ttt-music');
+  b.textContent=musicOn?'🎵 Music on':'🎵 Music off';
+  b.setAttribute('aria-pressed',String(musicOn));
+}
+$('jjb-ttt-music').addEventListener('click',function(){
+  musicOn=!musicOn;localStorage.setItem(MUSIC_KEY,musicOn?'on':'off');refreshMusicBtn();
+  if(musicOn)startMusic();else stopMusic();
+});
+$('jjb-ttt-volume').addEventListener('input',function(){
+  var v=Math.max(0,Math.min(100,parseInt($('jjb-ttt-volume').value,10)||0));
+  musicVol=v/100;localStorage.setItem(VOLUME_KEY,String(v));
+});
+$('jjb-ttt-volume').value=String(Math.round(musicVol*100));
+refreshMusicBtn();
+
+function popStat(el){if(!el)return;el.classList.add('jjb-stat-pop');setTimeout(function(){el.classList.remove('jjb-stat-pop');},180);}
+function floater(text){
+  var card=document.querySelector('.card');if(!card)return;
+  var s=document.createElement('span');s.className='jjb-floater';s.textContent=text;
+  card.appendChild(s);
+  var done=false;
+  function rm(){if(!done){done=true;s.remove();}}
+  s.addEventListener('animationend',rm);
+  setTimeout(rm,950);
+}
+function saveTally(){localStorage.setItem(SCORE_KEY,JSON.stringify(tally));}
+function showTally(){
+  $('jjb-ttt-wins-x').textContent=tally.X;
+  $('jjb-ttt-wins-o').textContent=tally.O;
+  $('jjb-ttt-draws').textContent=tally.D;
+  $('jjb-ttt-round').textContent=round;
+}
+function setMsg(t,thinking){msg.textContent=t;msg.classList.toggle('thinking',!!thinking);}
+function buildGrid(){
+  grid.innerHTML='';
+  for(var i=0;i<9;i++){
+    (function(i){
+      var b=document.createElement('button');
+      b.type='button';b.className='cell';b.setAttribute('role','gridcell');
+      b.setAttribute('aria-label','Square '+(i+1));
+      b.addEventListener('click',function(){place(i);});
+      grid.appendChild(b);
+    })(i);
+  }
+}
+function winnerOf(b){
+  for(var k=0;k<WINS.length;k++){
+    var w=WINS[k],a=w[0],c=w[1],d=w[2];
+    if(b[a]&&b[a]===b[c]&&b[c]===b[d])return{winner:b[a],line:w};
+  }
+  return null;
+}
+function emptyCells(b){var r=[];for(var i=0;i<9;i++)if(!b[i])r.push(i);return r;}
+function findLineMove(b,mark){
+  for(var k=0;k<WINS.length;k++){
+    var w=WINS[k];
+    var marks=w.filter(function(i){return b[i]===mark;}).length;
+    var blanks=w.filter(function(i){return !b[i];});
+    if(marks===2&&blanks.length===1)return blanks[0];
+  }
+  return -1;
+}
+function minimax(b,player){
+  var res=winnerOf(b);
+  if(res)return res.winner==='O'?10:-10;
+  if(!b.includes(''))return 0;
+  var best=player==='O'?-Infinity:Infinity;
+  emptyCells(b).forEach(function(i){
+    b[i]=player;
+    var s=minimax(b,player==='O'?'X':'O');
+    b[i]='';
+    best=player==='O'?Math.max(best,s):Math.min(best,s);
+  });
+  return best;
+}
+function aiMove(){
+  var diff=$('jjb-ttt-difficulty').value,idx=-1;
+  var empt=emptyCells(board);
+  if(!empt.length)return;
+  if(diff==='easy'){
+    idx=empt[Math.floor(Math.random()*empt.length)];
+  }else if(diff==='normal'){
+    idx=findLineMove(board,'O');
+    if(idx<0)idx=findLineMove(board,'X');
+    if(idx<0&&!board[4])idx=4;
+    if(idx<0)idx=empt[Math.floor(Math.random()*empt.length)];
+  }else{
+    var bestScore=-Infinity;
+    empt.forEach(function(i){
+      board[i]='O';
+      var s=minimax(board,'X');
+      board[i]='';
+      if(s>bestScore){bestScore=s;idx=i;}
+    });
+  }
+  place(idx,true);
+}
+function place(i,isAi){
+  if(!started||!active||paused)return;
+  if(board[i])return;
+  if($('jjb-ttt-mode').value==='ai'&&current==='O'&&!isAi)return;
+  board[i]=current;
+  var cell=grid.children[i];
+  cell.textContent=current;cell.classList.add(current);cell.disabled=true;
+  snd('click');
+  var res=winnerOf(board);
+  if(res){
+    active=false;
+    res.line.forEach(function(j){grid.children[j].classList.add('win');});
+    endRound(res.winner);
+    return;
+  }
+  if(!board.includes('')){
+    active=false;endRound(null);return;
+  }
+  current=current==='X'?'O':'X';
+  if($('jjb-ttt-mode').value==='ai'){
+    if(current==='O'){
+      setMsg("JoJo is thinking… 🤖",true);
+      aiTimer=setTimeout(aiMove,650);
+    }else setMsg('Your turn (X)');
+  }else{
+    setMsg(current==='X'?"Player 1's turn (X)":"Player 2's turn (O)");
+  }
+}
+function confetti(){
+  var colors=['#FFC94D','#FF6B6B','#2EC4B6','#7C6FF0','#FF8FAB'];
+  for(var i=0;i<60;i++){
+    var c=document.createElement('div');
+    c.className='confetti';
+    c.style.left=(Math.random()*100)+'vw';
+    c.style.backgroundColor=colors[i%colors.length];
+    c.style.animationDuration=(Math.random()*2+2.5)+'s';
+    c.style.animationDelay=(Math.random()*0.4)+'s';
+    document.body.appendChild(c);
+    (function(el){setTimeout(function(){el.remove();},5500);})(c);
+  }
+}
+function endRound(winner){
+  stopMusic();
+  var mode=$('jjb-ttt-mode').value;
+  if(winner==='X'){
+    tally.X++;snd('win');confetti();popStat($('jjb-ttt-wins-x'));floater('+1 🎉');
+    $('jjb-ttt-end-emoji').textContent='🎉';
+    $('jjb-ttt-end-title').textContent=mode==='ai'?'You won!':'Player 1 (X) wins!';
+    $('jjb-ttt-end-text').textContent=mode==='ai'?'You beat JoJo in this round. Nice work!':'Three in a row for Player 1!';
+    setMsg('🎉 '+(mode==='ai'?'You won!':'Player 1 wins!'));
+  }else if(winner==='O'){
+    tally.O++;snd('lose');popStat($('jjb-ttt-wins-o'));
+    $('jjb-ttt-end-emoji').textContent='🤖';
+    $('jjb-ttt-end-title').textContent=mode==='ai'?'JoJo wins':'Player 2 (O) wins!';
+    $('jjb-ttt-end-text').textContent=mode==='ai'?'JoJo takes this round. Try again — change the difficulty if you like.':'Three in a row for Player 2!';
+    setMsg('🤖 '+(mode==='ai'?'JoJo wins!':'Player 2 wins!'));
+  }else{
+    tally.D++;snd('draw');popStat($('jjb-ttt-draws'));
+    $('jjb-ttt-end-emoji').textContent='🤝';
+    $('jjb-ttt-end-title').textContent="It's a draw!";
+    $('jjb-ttt-end-text').textContent='Nobody got three in a row. Rematch?';
+    setMsg("It's a draw!");
+  }
+  saveTally();showTally();
+  setTimeout(function(){$('jjb-ttt-end').classList.add('open');},450);
+}
+function newRound(){
+  if(aiTimer){clearTimeout(aiTimer);aiTimer=null;}
+  paused=false;$('jjb-ttt-pause-ov').classList.remove('open');
+  board=['','','','','','','','',''];current='X';active=true;
+  buildGrid();setMsg('Your turn (X)');
+  startMusic();
+}
+function pauseGame(){
+  if(!started||!active||paused)return;
+  paused=true;
+  if(aiTimer){clearTimeout(aiTimer);aiTimer=null;}
+  $('jjb-ttt-pause-ov').classList.add('open');
+  stopMusic();
+}
+function resumeGame(){
+  if(!paused)return;
+  paused=false;$('jjb-ttt-pause-ov').classList.remove('open');
+  startMusic();
+  if(active&&$('jjb-ttt-mode').value==='ai'&&current==='O'&&board.includes('')&&!winnerOf(board)){
+    setMsg("JoJo is thinking… 🤖",true);
+    aiTimer=setTimeout(aiMove,650);
+  }else if(active){
+    setMsg(current==='X'?'Your turn (X)':"Player 2's turn (O)");
+  }
+}
+$('jjb-ttt-start-btn').addEventListener('click',function(){
+  snd('click');
+  $('jjb-ttt-start').classList.remove('open');started=true;newRound();
+});
+$('jjb-ttt-restart').addEventListener('click',function(){
+  if(!started)return;$('jjb-ttt-end').classList.remove('open');round++;newRound();showTally();
+});
+$('jjb-ttt-again').addEventListener('click',function(){
+  snd('click');
+  $('jjb-ttt-end').classList.remove('open');round++;newRound();showTally();
+});
+$('jjb-ttt-end-close').addEventListener('click',function(){$('jjb-ttt-end').classList.remove('open');});
+$('jjb-ttt-reset-score').addEventListener('click',function(){
+  tally={X:0,O:0,D:0};round=1;saveTally();showTally();
+});
+$('jjb-ttt-mode').addEventListener('change',function(){if(started)newRound();});
+$('jjb-ttt-difficulty').addEventListener('change',function(){if(started)newRound();});
+$('jjb-ttt-howto').addEventListener('click',function(){$('jjb-ttt-howto-ov').classList.add('open');});
+$('jjb-ttt-howto-close').addEventListener('click',function(){$('jjb-ttt-howto-ov').classList.remove('open');});
+$('jjb-ttt-pause').addEventListener('click',pauseGame);
+$('jjb-ttt-resume').addEventListener('click',function(){snd('click');resumeGame();});
+$('jjb-ttt-pause-restart').addEventListener('click',function(){
+  resumeGame();$('jjb-ttt-end').classList.remove('open');round++;newRound();showTally();
+});
+document.addEventListener('keydown',function(e){
+  if(e.target&&(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT'||e.target.isContentEditable))return; /* JJB merge: don't steal keys typed in site search */
+  if(e.key==='Escape'){$('jjb-ttt-howto-ov').classList.remove('open');if(paused)resumeGame();return;}
+  if((e.key==='p'||e.key==='P')&&started&&active){if(paused)resumeGame();else pauseGame();return;}
+  if(!started||!active||paused)return;
+  var n=parseInt(e.key,10);
+  if(n>=1&&n<=9)place(n-1);
+});
+buildGrid();showTally();
+window[NS]={version:'2.1.0',id:'JJB-GAME-20261115-03',reset:newRound,musicState:function(){return{on:musicOn,volume:Math.round(musicVol*100),step:musicStep,playing:musicTimer!==null&&musicOn};}};
+})();
+</script>
+<script>(function(){var btn=document.getElementById('play-free-btn');if(!btn)return;btn.addEventListener('click',function(e){e.preventDefault();var play=document.getElementById('play');if(play)play.scrollIntoView({behavior:'smooth',block:'start'});var start=document.getElementById('jjb-ttt-start-btn');var ov=document.getElementById('jjb-ttt-start');var tries=0;function attempt(){if(start&&ov&&ov.classList.contains('open')){start.click();}else if(tries<1){tries++;setTimeout(attempt,400);}}setTimeout(attempt,400);});})();</script>
+</section>
 </div></section>
 </main>
 <footer class="site"><div class="wrap">

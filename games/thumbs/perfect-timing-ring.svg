@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-label="Perfect Timing Ring cover art">
+<title>Perfect Timing Ring — stop the spinning hand exactly on the glowing target</title>
+<rect width="640" height="360" fill="#2B2D42"/>
+<g fill="#FFF9F0" opacity=".35">
+<circle cx="72" cy="70" r="5"/>
+<circle cx="568" cy="70" r="5"/>
+<circle cx="72" cy="290" r="5"/>
+<circle cx="568" cy="290" r="5"/>
+<circle cx="120" cy="180" r="4"/>
+<circle cx="520" cy="180" r="4"/>
+</g>
+<g fill="#FFC94D" opacity=".8">
+<circle cx="150" cy="90" r="6"/>
+<circle cx="490" cy="90" r="6"/>
+<circle cx="150" cy="270" r="6"/>
+<circle cx="490" cy="270" r="6"/>
+</g>
+<circle cx="320" cy="180" r="118" fill="none" stroke="#2EC4B6" stroke-width="16"/>
+<circle cx="320" cy="180" r="88" fill="none" stroke="#FFF9F0" stroke-width="6" opacity=".35"/>
+<circle cx="320" cy="180" r="58" fill="none" stroke="#7C6FF0" stroke-width="10" opacity=".8"/>
+<circle cx="403" cy="97" r="5" fill="#FFF9F0" opacity=".8"/>
+<circle cx="237" cy="97" r="5" fill="#FFF9F0" opacity=".8"/>
+<circle cx="403" cy="263" r="5" fill="#FFF9F0" opacity=".8"/>
+<circle cx="237" cy="263" r="5" fill="#FFF9F0" opacity=".8"/>
+<circle cx="320" cy="180" r="118" fill="none" stroke="#FF6B6B" stroke-width="22" pathLength="100" stroke-dasharray="16 84" transform="rotate(-90 320 180)" stroke-linecap="round"/>
+<g transform="rotate(38 320 180)">
+<rect x="314" y="66" width="12" height="114" rx="6" fill="#FFC94D"/>
+</g>
+<circle cx="320" cy="180" r="24" fill="#FFC94D"/>
+<circle cx="320" cy="180" r="12" fill="#FFF9F0"/>
+</svg>

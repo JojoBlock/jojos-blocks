@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-label="Penguin Stack cover art">
+<title>Penguin Stack — Pip the penguin climbs a tower of swinging ice blocks</title>
+<rect width="640" height="360" fill="#FFF9F0"/>
+<circle cx="80" cy="64" r="56" fill="#FFC94D" opacity=".25"/>
+<circle cx="80" cy="64" r="38" fill="#FFC94D"/>
+<g fill="#2EC4B6" opacity=".18">
+<ellipse cx="500" cy="60" rx="26" ry="14"/>
+<ellipse cx="528" cy="54" rx="30" ry="16"/>
+<ellipse cx="556" cy="62" rx="24" ry="12"/>
+<ellipse cx="110" cy="240" rx="22" ry="11"/>
+<ellipse cx="134" cy="235" rx="26" ry="13"/>
+<ellipse cx="158" cy="241" rx="20" ry="10"/>
+</g>
+<rect x="0" y="312" width="640" height="48" fill="#2EC4B6"/>
+<g fill="#FFF9F0">
+<circle cx="60" cy="330" r="5"/>
+<circle cx="150" cy="340" r="4"/>
+<circle cx="560" cy="330" r="5"/>
+<circle cx="480" cy="342" r="4"/>
+<circle cx="250" cy="336" r="4"/>
+</g>
+<g transform="rotate(-14 185 143)">
+<rect x="120" y="130" width="130" height="26" rx="6" fill="#FF6B6B"/>
+</g>
+<g fill="#2EC4B6">
+<circle cx="240" cy="110" r="5"/>
+<circle cx="265" cy="95" r="5"/>
+<circle cx="290" cy="85" r="5"/>
+</g>
+<rect x="270" y="286" width="180" height="26" rx="6" fill="#2EC4B6"/>
+<rect x="278" y="260" width="164" height="26" rx="6" fill="#FF6B6B"/>
+<rect x="274" y="234" width="172" height="26" rx="6" fill="#FFC94D"/>
+<rect x="285" y="208" width="150" height="26" rx="6" fill="#7C6FF0"/>
+<rect x="281" y="182" width="158" height="26" rx="6" fill="#2EC4B6"/>
+<rect x="290" y="156" width="140" height="26" rx="6" fill="#FFF9F0" stroke="#2B2D42" stroke-width="3"/>
+<g>
+<ellipse cx="348" cy="156" rx="9" ry="4" fill="#FF6B6B"/>
+<ellipse cx="372" cy="156" rx="9" ry="4" fill="#FF6B6B"/>
+<ellipse cx="344" cy="132" rx="6" ry="11" fill="#2B2D42"/>
+<ellipse cx="376" cy="132" rx="6" ry="11" fill="#2B2D42"/>
+<ellipse cx="360" cy="132" rx="20" ry="24" fill="#2B2D42"/>
+<ellipse cx="360" cy="138" rx="12" ry="16" fill="#FFF9F0"/>
+<circle cx="360" cy="104" r="15" fill="#2B2D42"/>
+<circle cx="354" cy="102" r="3" fill="#FFF9F0"/>
+<circle cx="366" cy="102" r="3" fill="#FFF9F0"/>
+<circle cx="354" cy="102" r="1.5" fill="#2B2D42"/>
+<circle cx="366" cy="102" r="1.5" fill="#2B2D42"/>
+<polygon points="360,108 354,113 366,113" fill="#FF6B6B"/>
+</g>
+<g fill="#FFC94D">
+<circle cx="300" cy="90" r="5"/>
+<circle cx="420" cy="80" r="5"/>
+<circle cx="470" cy="120" r="4"/>
+<circle cx="470" cy="60" r="4"/>
+</g>
+</svg>

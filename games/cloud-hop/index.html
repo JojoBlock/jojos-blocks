@@ -1,0 +1,1612 @@
+<!DOCTYPE html>
+<html lang="en">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Cloud Hop — Free Browser Game | JoJo’s Blocks</title>
+<meta name="description" content="Cloud Hop: bounce a penguin with an umbrella ever higher through the clouds, collect sun tokens and charge a Sunny Burst. An original JoJo's Blocks game.">
+<link rel="canonical" href="https://jojosblocks.online/games/cloud-hop/">
+<link rel="stylesheet" href="../../assets/styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<!-- promo strip -->
+<div class="strip"><b>Instant PDF download, secure checkout on Gumroad.</b> Code JOJOS10 saves 10%.</div>
+
+<!-- header -->
+<header class="site">
+  <div class="hd">
+    <a class="logo" href="../../"><img class="logo-mark" src="../../assets/profile-logo.jpg" alt="JoJo's Blocks logo" width="1000" height="1000">JoJo's Blocks</a>
+    <form class="search" id="headSearch" role="search" aria-label="Search the store" action="../../search/" method="get">
+      <input id="searchInput" name="q" type="search" placeholder="Search books, free printables, games…" aria-label="Search books, free resources, games and articles" autocomplete="off">
+      <button type="submit">Search</button>
+      <div class="suggest" id="headSuggest" role="listbox" aria-label="Search suggestions"></div>
+    </form>
+    <button class="search-icon-btn" id="searchIconBtn" aria-label="Open search" aria-expanded="false">⌕</button>
+  </div>
+</header>
+
+<!-- mobile search overlay -->
+<div class="search-overlay" id="searchOverlay" role="search" aria-label="Search the store">
+  <div class="so-row">
+    <form class="search" id="mobSearch" action="../../search/" method="get" style="display:flex">
+      <input id="mobSearchInput" name="q" type="search" placeholder="Search books, free printables, games…" aria-label="Search books, free resources, games and articles" autocomplete="off">
+      <button type="submit">Search</button>
+    </form>
+    <button class="so-close" id="searchOverlayClose" aria-label="Close search">✕</button>
+  </div>
+  <div class="suggest" id="mobSuggest" role="listbox" aria-label="Search suggestions"></div>
+</div>
+
+<nav class="dept" aria-label="Departments"><div class="wrap" id="deptNav">
+  <a href="../../shop/">Shop</a>
+  <a href="../../recommended/">Affiliate Products</a>
+  <span class="has-fly"><a href="../../free-resources/" aria-haspopup="true">Free resources</a><span class="flyout"><a href="../../free-resources/category/coloring/">Coloring</a><a href="../../free-resources/category/learn-to-draw/">Learn to draw</a><a href="../../free-resources/category/worksheets/">Worksheets</a><a href="../../free-resources/category/planners/">Planners</a><a href="../../free-resources/category/printables/">Printables</a><a href="../../free-resources/category/wallpapers/">Wallpapers</a><a href="../../free-resources/category/ai/">AI</a><a href="../../free-resources/category/stickers/">Stickers</a><a class="viewall" href="../../free-resources/">View all →</a></span></span>
+  <span class="has-fly"><a href="../../games/" class="on" aria-haspopup="true">Games & play</a><span class="flyout"><a href="../../games/category/puzzle/">Puzzle</a><a href="../../games/category/arcade/">Arcade</a><a href="../../games/category/casual/">Casual</a><a href="../../games/category/educational/">Educational</a><a class="viewall" href="../../games/">View all →</a></span></span>
+  <span class="has-fly"><a href="../../blog/" aria-haspopup="true">Blog</a><span class="flyout"><a href="../../blog/category/guides/">Guides</a><a href="../../blog/category/activities/">Activities</a><a href="../../blog/category/fun-facts/">Fun facts</a><a class="viewall" href="../../blog/">View all →</a></span></span>
+</div></nav>
+<main id="main">
+<section class="block"><div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><span>Home</span> <span class="sep">›</span><a href="../../games/">Games &amp; Play</a> <span class="sep">›</span><a href="../../games/category/arcade/">Arcade</a> <span class="sep">›</span><span>Cloud Hop</span></nav>
+  <div class="detail"><div class="dgrid">
+    <div class="dcover"><img src="https://jojosblocks.online/games/thumbs/cloud-hop.svg" alt="Cloud Hop game" width="640" height="360"></div>
+    <div>
+      <p class="dmeta">Browser game · Arcade · Free</p>
+      <h1>Cloud Hop</h1>
+      <p>Cloud Hop: bounce a penguin with an umbrella ever higher through the clouds, collect sun tokens and charge a Sunny Burst. An original JoJo's Blocks game.</p>
+      <div class="dbuy">
+        <a class="btn btn-ink" href="#play" id="play-free-btn">Play free →</a>
+        <a class="btn btn-ghost" href="../../games/">All games</a>
+      </div>
+      <p class="dnote">Plays right here on jojosblocks.online. No downloads, no accounts.</p>
+    </div>
+  </div></div>
+  <section id="play" class="jjb-play" aria-label="Play Cloud Hop">
+  <style>
+
+#play{
+  --cream:#FFF9F0; --ink:#2B2D42; --coral:#FF6B6B; --coral-deep:#E85454;
+  --sun:#FFC94D; --sun-deep:#F5A623; --teal:#2EC4B6; --teal-deep:#1FA89B;
+  --lav:#7C6FF0; --lav-deep:#6558D6;
+  --card:#FFFFFF; --shadow:0 10px 28px rgba(43,45,66,.16), 0 2px 6px rgba(43,45,66,.10);
+  --radius:20px;
+}
+#play *{box-sizing:border-box; margin:0; padding:0;}
+body #play{
+  font-family:'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  background:linear-gradient(180deg,#E9E4FF 0%,#CDEFEA 46%,#FFF9F0 100%);
+  color:var(--ink);
+  
+  display:flex; flex-direction:column; align-items:center;
+  overscroll-behavior:none;
+  -webkit-tap-highlight-color:transparent;
+}
+#play h1, #play h2, #play h3, #play .display{font-family:'Fredoka','Comic Sans MS',system-ui,sans-serif; font-weight:700; letter-spacing:.2px;}
+#play button{font-family:inherit; cursor:pointer; touch-action:manipulation;}
+#play button:focus-visible, #play a:focus-visible, #play input:focus-visible{outline:3px solid var(--sun); outline-offset:2px; border-radius:8px;}
+#play .sr-only{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;}
+
+#play .topbar{width:100%; max-width:560px; display:flex; align-items:center; justify-content:space-between;
+  padding:10px 16px 4px; gap:8px;}
+#play .brand{font-family:'Fredoka','Comic Sans MS',system-ui,sans-serif; font-weight:700; font-size:19px;
+  color:var(--ink); text-decoration:none; display:flex; align-items:center; gap:8px; min-height:44px; padding:4px 6px; border-radius:12px;}
+#play .brand .brand-dot{width:30px; height:30px; border-radius:50%; flex:none;
+  background:radial-gradient(circle at 35% 30%, #FFF6D6 0%, var(--sun) 55%, var(--sun-deep) 100%);
+  box-shadow:inset 0 -3px 0 rgba(43,45,66,.18), 0 3px 8px rgba(43,45,66,.18);}
+#play .brand small{font-family:'Nunito',system-ui,sans-serif; font-weight:800; font-size:11px; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--lav-deep);}
+#play .topbar .ver{font-size:12px; font-weight:800; color:rgba(43,45,66,.55);}
+#play .top-actions{display:flex; align-items:center; gap:8px;}
+#play #pauseBtn{display:none;}
+body.in-game #play #pauseBtn{display:flex;}
+@media (max-width:400px){
+  #play .topbar .ver, #play .brand small{display:none;}
+}
+
+#play .stage-wrap{width:100%; max-width:560px; flex:1; display:flex; flex-direction:column; padding:0 16px 12px; min-height:0;}
+#play .stage{position:relative; flex:1; min-height:480px; border-radius:26px; overflow:hidden;
+  box-shadow:var(--shadow); border:3px solid rgba(255,255,255,.85); background:#BFE9E4;}
+#play #game{display:block; width:100%; height:100%; touch-action:none; user-select:none; -webkit-user-select:none;}
+
+#play .hud{display:flex; align-items:center; gap:8px; padding:10px 2px 10px; flex-wrap:wrap;}
+#play .chip{display:flex; align-items:center; gap:7px; background:rgba(255,249,240,.94); border:2px solid rgba(43,45,66,.10);
+  border-radius:999px; padding:6px 12px; min-height:44px; box-shadow:0 3px 10px rgba(43,45,66,.12); font-weight:800;}
+#play .chip .ic{font-size:19px; line-height:1;}
+#play .chip .lbl{font-size:11px; font-weight:800; letter-spacing:.07em; text-transform:uppercase; color:rgba(43,45,66,.62);}
+#play .chip .val{font-family:'Fredoka','Comic Sans MS',system-ui,sans-serif; font-weight:700; font-size:19px; line-height:1; color:var(--ink);}
+#play .chip.height .val{color:var(--lav-deep);}
+#play .chip.tokens .val{color:#B57E00;}
+#play .chip.burst{padding:6px 8px 6px 12px; cursor:pointer; border:2px dashed rgba(245,166,35,.55); transition:transform .15s ease-out, box-shadow .15s ease-out;}
+#play .chip.burst.ready{border-style:solid; border-color:var(--sun-deep); background:linear-gradient(135deg,#FFF3CF,#FFE08A);
+  animation:burstGlow 1s ease-in-out infinite alternate;}
+#play .chip.burst.ready:active{transform:scale(.96);}
+#play .chip.burst .meter{width:54px; height:10px; border-radius:99px; background:rgba(43,45,66,.14); overflow:hidden;}
+#play .chip.burst .meter i{display:block; height:100%; width:0%; border-radius:99px;
+  background:linear-gradient(90deg,var(--sun-deep),var(--sun)); transition:width .25s ease-out;}
+@keyframes burstGlow{from{box-shadow:0 3px 10px rgba(245,166,35,.25);} to{box-shadow:0 3px 18px rgba(245,166,35,.65);}}
+#play .hud .spacer{flex:1;}
+#play .icon-btn{width:44px; height:44px; flex:none; border-radius:50%; border:2px solid rgba(43,45,66,.12);
+  background:rgba(255,249,240,.94); font-size:20px; line-height:1; display:flex; align-items:center; justify-content:center;
+  box-shadow:0 3px 10px rgba(43,45,66,.12); transition:transform .15s ease-out, background .15s ease-out; color:var(--ink);}
+#play .icon-btn:active{transform:translateY(2px) scale(.96);}
+#play .icon-btn[aria-pressed="true"]{background:linear-gradient(135deg,#FFE9E9,#FFD2D2); border-color:var(--coral);}
+
+#play .overlay{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:16px;
+  background:rgba(43,45,66,.38); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  opacity:1; transition:opacity .3s ease-out; z-index:10;}
+/* JJB merge: the overlay (z-index 10) sat BELOW the sticky site header/tabbar
+   (z-index 70), so clicks on an overlay scrolled under the header hit the
+   header/search box. 71 puts it above the header/tabbar but below the search
+   overlay (85) / modal (90). The overlay stays confined to #play. */
+#play .overlay{z-index:71}
+#play .overlay.hidden{opacity:0; pointer-events:none;}
+#play .panel{background:var(--cream); border-radius:var(--radius); box-shadow:var(--shadow); width:100%; max-width:420px;
+  max-height:100%; overflow-y:auto; padding:20px 20px 18px; text-align:center; position:relative;
+  transform:translateY(0) scale(1); transition:transform .3s ease-out; border-top:6px solid var(--sun);}
+#play .panel::before{content:""; position:absolute; inset:0 0 auto 0; height:6px; border-radius:20px 20px 0 0;
+  background:linear-gradient(90deg,var(--teal),var(--sun),var(--lav)); opacity:0; }
+#play .overlay.hidden .panel{transform:translateY(14px) scale(.97);}
+#play .panel.lav{border-top-color:var(--lav);} #play .panel.teal{border-top-color:var(--teal);} #play .panel.coral{border-top-color:var(--coral);}
+#play .panel h2{font-size:30px; line-height:1.1; margin:6px 0 4px;}
+#play .panel .tag{font-size:15px; font-weight:700; color:rgba(43,45,66,.72); margin-bottom:14px;}
+#play .hero-art{width:100%; max-width:260px; margin:0 auto 4px; display:block; animation:bob 3.2s ease-in-out infinite;}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-1deg);} 50%{transform:translateY(-10px) rotate(1.5deg);}}
+#play .btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:52px; min-width:180px;
+  padding:12px 26px; border-radius:999px; border:2px solid var(--ink); font-family:'Fredoka','Comic Sans MS',system-ui,sans-serif;
+  font-weight:700; font-size:19px; color:var(--ink); text-decoration:none;
+  background:linear-gradient(180deg,#FFE08A,var(--sun) 55%,var(--sun-deep));
+  box-shadow:0 5px 0 var(--ink), 0 10px 18px rgba(43,45,66,.22);
+  transition:transform .15s ease-out, box-shadow .15s ease-out;}
+#play .btn:hover{transform:translateY(-1px);}
+#play .btn:active{transform:translateY(3px); box-shadow:0 2px 0 var(--ink), 0 4px 8px rgba(43,45,66,.20);}
+#play .btn.teal{background:linear-gradient(180deg,#7FE3D8,var(--teal) 55%,var(--teal-deep));}
+#play .btn.lav{background:linear-gradient(180deg,#B3A8FF,var(--lav) 55%,var(--lav-deep));}
+#play .btn.ghost{background:var(--card); box-shadow:0 4px 0 rgba(43,45,66,.25), 0 8px 14px rgba(43,45,66,.14); font-size:16px; min-height:48px; min-width:150px;}
+#play .btn-row{display:flex; flex-direction:column; gap:8px; align-items:center; margin-top:12px;}
+#play .btn-row .row2{display:flex; gap:10px; flex-wrap:wrap; justify-content:center;}
+#play .btn-row .row2 .btn{min-width:0; flex:1 1 140px;}
+#play .pulse-soft{animation:pulseSoft 1.8s ease-in-out infinite;}
+@keyframes pulseSoft{
+  0%,100%{box-shadow:0 5px 0 var(--ink), 0 10px 18px rgba(43,45,66,.22);}
+  50%{box-shadow:0 5px 0 var(--ink), 0 10px 26px rgba(245,166,35,.65), 0 0 0 7px rgba(255,201,77,.28);}
+}
+
+#play .big-score{font-family:'Fredoka','Comic Sans MS',system-ui,sans-serif; font-weight:700; font-size:48px; line-height:1; color:var(--lav-deep);}
+#play .big-score small{font-size:18px; color:rgba(43,45,66,.6);}
+#play .stat-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:12px 0 4px;}
+#play .stat{background:#fff; border-radius:16px; padding:9px 8px; box-shadow:0 3px 10px rgba(43,45,66,.10); border:2px solid rgba(43,45,66,.06);}
+#play .stat .k{font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:rgba(43,45,66,.6);}
+#play .stat .v{font-family:'Fredoka','Comic Sans MS',system-ui,sans-serif; font-weight:700; font-size:23px; line-height:1.15;}
+#play .stat .v.teal{color:var(--teal-deep);} #play .stat .v.sun{color:#B57E00;} #play .stat .v.coral{color:var(--coral-deep);}
+#play .stars{font-size:30px; letter-spacing:6px; margin:4px 0 2px;}
+#play .stars .off{opacity:.28; filter:grayscale(1);}
+#play .newbest{display:inline-block; margin-top:8px; background:linear-gradient(90deg,var(--sun),#FFDF8A); color:var(--ink);
+  font-weight:800; font-size:13px; letter-spacing:.06em; text-transform:uppercase; border-radius:999px; padding:6px 14px;
+  border:2px solid var(--ink); animation:pulseBadge 1.2s ease-in-out infinite;}
+@keyframes pulseBadge{0%,100%{transform:scale(1);} 50%{transform:scale(1.05);}}
+#play .newbest[hidden]{display:none;}
+
+#play .howto-list{text-align:left; margin:10px auto 4px; max-width:340px; display:flex; flex-direction:column; gap:10px;}
+#play .howto-list li{list-style:none; display:flex; gap:10px; align-items:flex-start; font-weight:700; font-size:15px; line-height:1.35;}
+#play .howto-list .dot{flex:none; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-size:17px; background:#fff; border:2px solid rgba(43,45,66,.12); box-shadow:0 2px 6px rgba(43,45,66,.10);}
+#play .cloud-key{display:inline-flex; gap:6px; flex-wrap:wrap; margin-top:4px;}
+#play .cloud-key span{font-size:12px; font-weight:800; padding:5px 10px; border-radius:999px; background:#fff; border:2px solid rgba(43,45,66,.10);}
+#play .kbd{display:inline-block; min-width:26px; padding:2px 7px; border-radius:7px; background:#fff; border:2px solid rgba(43,45,66,.25);
+  border-bottom-width:3px; font-family:'Fredoka',system-ui,sans-serif; font-size:13px; font-weight:700;}
+
+#play .howto-demo{position:relative; height:96px; margin:8px auto 2px; max-width:340px; border-radius:16px; overflow:hidden;
+  background:linear-gradient(180deg,#B9A8FF 0%,#8FE3D8 55%,#FFF3CF 100%); border:2px solid rgba(43,45,66,.15);}
+#play .howto-demo .demo-sun{position:absolute; top:7px; right:12px; font-size:22px; line-height:1; animation:demoSun 2.4s ease-in-out infinite;}
+@keyframes demoSun{0%,100%{transform:rotate(-8deg) scale(1);} 50%{transform:rotate(8deg) scale(1.15);}}
+#play .howto-demo .demo-cloud{position:absolute; font-size:26px; line-height:1; top:58px; left:9%; animation:demoDrift 5s ease-in-out infinite alternate;}
+#play .howto-demo .demo-cloud.c2{top:66px; left:auto; right:9%; font-size:22px; animation-duration:6.5s;}
+@keyframes demoDrift{from{transform:translateX(-8px);} to{transform:translateX(14px);}}
+#play .howto-demo .demo-pip{position:absolute; left:50%; bottom:16px; margin-left:-15px; font-size:30px; line-height:1; animation:demoBounce 1.1s ease-in-out infinite;}
+@keyframes demoBounce{0%,100%{transform:translateY(0) scale(1,1);} 30%{transform:translateY(-32px) scale(.96,1.04);} 55%{transform:translateY(0) scale(1.12,.82);} 75%{transform:translateY(-12px) scale(1,1);}}
+#play .howto-demo .demo-arrow{position:absolute; top:50%; margin-top:-13px; width:26px; height:26px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:800; color:var(--ink);
+  background:rgba(255,249,240,.92); border:2px solid rgba(43,45,66,.25); animation:demoNudge 1.1s ease-in-out infinite;}
+#play .howto-demo .demo-arrow.left{left:8px;}
+#play .howto-demo .demo-arrow.right{right:8px; animation-delay:.55s;}
+@keyframes demoNudge{0%,100%{transform:scale(1); opacity:.6;} 50%{transform:scale(1.18); opacity:1;}}
+#play .howto-demo .demo-cap{position:absolute; left:0; right:0; bottom:3px; text-align:center; font-size:11px; font-weight:800;
+  color:rgba(43,45,66,.78); letter-spacing:.04em;}
+
+#play .set-row{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 4px;
+  border-bottom:2px dashed rgba(43,45,66,.10); font-weight:800; font-size:15px; text-align:left;}
+#play .set-row:last-of-type{border-bottom:none;}
+#play .set-row small{display:block; font-weight:600; color:rgba(43,45,66,.6); font-size:12.5px;}
+#play .toggle{position:relative; width:64px; height:44px; flex:none; border-radius:999px; border:2px solid var(--ink);
+  background:rgba(43,45,66,.14); transition:background .2s ease-out; padding:0;}
+#play .toggle::after{content:""; position:absolute; top:2px; left:2px; width:36px; height:36px; border-radius:50%;
+  background:#fff; box-shadow:0 2px 5px rgba(43,45,66,.3); transition:left .2s ease-out;}
+#play .toggle[aria-pressed="true"]{background:var(--teal);}
+#play .toggle[aria-pressed="true"]::after{left:24px;}
+#play input[type="range"]{width:150px; accent-color:var(--lav); height:34px;}
+#play .vol-val{font-family:'Fredoka',system-ui,sans-serif; font-weight:700; min-width:44px; text-align:right;}
+
+#play .toast{position:absolute; left:0; right:0; width:max-content; max-width:calc(100% - 20px); margin:0 auto; top:64px; transform:translateY(-8px); z-index:5;
+  background:rgba(255,249,240,.96); border:2px solid var(--ink); border-radius:999px; padding:8px 18px;
+  font-family:'Fredoka','Comic Sans MS',system-ui,sans-serif; font-weight:700; font-size:17px; color:var(--ink);
+  box-shadow:var(--shadow); opacity:0; pointer-events:none; transition:opacity .25s ease-out, transform .25s ease-out;
+  max-width:calc(100% - 20px); text-align:center; white-space:normal;}
+#play .toast.show{opacity:1; transform:translateY(0);}
+#play .toast.sun{background:linear-gradient(90deg,#FFE08A,var(--sun));}
+
+#play .foot{width:100%; max-width:560px; text-align:center; padding:2px 16px 14px; font-size:12.5px; font-weight:700; color:rgba(43,45,66,.6);}
+#play .foot a{color:var(--lav-deep);}
+
+@media (max-width:380px){
+  #play .chip .lbl{display:none;}
+  #play .chip{padding:6px 10px;}
+  #play .chip.burst .meter{width:40px;}
+  #play .panel h2{font-size:26px;}
+  #play .big-score{font-size:46px;}
+}
+@media (max-height:600px){ #play .stage{min-height:420px;} }
+@media (prefers-reduced-motion: reduce){
+  #play *, #play *::before, #play *::after{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important;}
+  #play .hero-art{animation:none;}
+}
+
+#play{scroll-margin-top:12px}
+
+  </style>
+<div class="topbar">
+  <div class="top-actions">
+    <button class="icon-btn" id="pauseBtn" type="button" aria-label="Pause game (P)" title="Pause (P)">⏸</button>
+    <button class="icon-btn" id="muteBtn" type="button" aria-label="Mute or unmute all sound (M)" aria-pressed="false" title="Mute / unmute (M)">🔊</button>
+    
+  </div>
+</div>
+
+<div class="stage-wrap">
+  <!-- HUD: in-flow bar above the canvas so it never overlaps play -->
+  <div class="hud" role="group" aria-label="Game status">
+    <div class="chip height" title="Height climbed"><span class="ic" aria-hidden="true">☁️</span><span class="lbl">Height</span><span class="val" id="hudHeight">0</span></div>
+    <div class="chip tokens" title="Sun tokens collected"><span class="ic" aria-hidden="true">☀️</span><span class="lbl">Suns</span><span class="val" id="hudTokens">0</span></div>
+    <button class="chip burst" id="burstBtn" type="button" aria-label="Sunny Burst power-up: collect 5 sun tokens to charge, then activate" title="Sunny Burst — collect 5 suns, then tap (or press Space)">
+      <span class="ic" aria-hidden="true">⚡</span><span class="lbl">Burst</span><span class="meter" aria-hidden="true"><i id="burstFill"></i></span><span class="val" id="burstCount">0/5</span>
+    </button>
+  </div>
+
+  <div class="stage" id="stage">
+    <canvas id="game" role="img" aria-label="Cloud Hop play field. A penguin with an umbrella bounces on clouds. Steer with arrow keys or by dragging."></canvas>
+    <div class="toast" id="toast" role="status"></div>
+
+    <!-- START / MENU -->
+    <div class="overlay" id="menuOverlay">
+      <div class="panel">
+        <svg class="hero-art" viewBox="0 0 260 190" role="img" aria-label="Pip the penguin holding a lavender umbrella, bouncing on a cloud">
+          <g>
+            <ellipse cx="70" cy="168" rx="52" ry="12" fill="#FFFFFF" opacity=".85"/>
+            <ellipse cx="196" cy="150" rx="40" ry="10" fill="#FFFFFF" opacity=".7"/>
+            <path d="M40 168 Q70 138 100 168 Q130 138 160 168 Q190 138 220 168 L220 176 Q130 186 40 176 Z" fill="#FFFFFF" stroke="#2B2D42" stroke-width="3" stroke-linejoin="round"/>
+            <circle cx="212" cy="40" r="20" fill="#FFC94D" stroke="#2B2D42" stroke-width="3"/>
+            <g stroke="#2B2D42" stroke-width="3" stroke-linecap="round"><line x1="212" y1="12" x2="212" y2="18"/><line x1="212" y1="62" x2="212" y2="68"/><line x1="184" y1="40" x2="190" y2="40"/><line x1="234" y1="40" x2="240" y2="40"/></g>
+            <circle cx="206" cy="37" r="2.4" fill="#2B2D42"/><circle cx="218" cy="37" r="2.4" fill="#2B2D42"/>
+            <path d="M206 45 Q212 50 218 45" fill="none" stroke="#2B2D42" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- umbrella -->
+            <path d="M128 8 Q150 34 172 66 Q150 52 128 66 Q106 52 84 66 Q106 34 128 8 Z" fill="#7C6FF0" stroke="#2B2D42" stroke-width="3" stroke-linejoin="round"/>
+            <path d="M128 8 L128 66" stroke="#2B2D42" stroke-width="3"/>
+            <circle cx="128" cy="8" r="4" fill="#FFC94D" stroke="#2B2D42" stroke-width="2.5"/>
+            <path d="M128 66 q0 10 9 10" fill="none" stroke="#2B2D42" stroke-width="3" stroke-linecap="round"/>
+            <!-- penguin -->
+            <ellipse cx="128" cy="132" rx="34" ry="40" fill="#2B2D42"/>
+            <ellipse cx="128" cy="142" rx="21" ry="27" fill="#FFF9F0"/>
+            <ellipse cx="128" cy="112" rx="16" ry="12" fill="#2B2D42"/>
+            <circle cx="121" cy="110" r="3.4" fill="#fff"/><circle cx="121" cy="110" r="1.7" fill="#2B2D42"/>
+            <circle cx="135" cy="110" r="3.4" fill="#fff"/><circle cx="135" cy="110" r="1.7" fill="#2B2D42"/>
+            <path d="M122 120 L134 120 L128 127 Z" fill="#FFC94D" stroke="#2B2D42" stroke-width="2" stroke-linejoin="round"/>
+            <ellipse cx="112" cy="118" rx="4.5" ry="3" fill="#FF6B6B" opacity=".55"/>
+            <ellipse cx="144" cy="118" rx="4.5" ry="3" fill="#FF6B6B" opacity=".55"/>
+            <ellipse cx="96" cy="140" rx="7" ry="13" fill="#2B2D42" transform="rotate(18 96 140)"/>
+            <ellipse cx="160" cy="140" rx="7" ry="13" fill="#2B2D42" transform="rotate(-18 160 140)"/>
+            <ellipse cx="114" cy="172" rx="10" ry="5" fill="#FFC94D" stroke="#2B2D42" stroke-width="2"/>
+            <ellipse cx="142" cy="172" rx="10" ry="5" fill="#FFC94D" stroke="#2B2D42" stroke-width="2"/>
+          </g>
+        </svg>
+        <h2>Cloud Hop</h2>
+        <p class="tag">Bounce Pip the penguin ever higher, chase the sun and don't look down!</p>
+        <div class="btn-row">
+          <button class="btn pulse-soft" id="playBtn" type="button">▶&nbsp;Play</button>
+          <div class="row2">
+            <button class="btn ghost" id="howBtn" type="button">How to play</button>
+            <button class="btn ghost" id="settingsBtn" type="button">⚙️ Settings</button>
+          </div>
+        </div>
+        <p style="margin-top:14px; font-size:13px; font-weight:700; color:rgba(43,45,66,.6);">Best height: <span id="menuBest">0</span> blocks · <span id="menuBestTokens">0</span> suns in one run</p>
+      </div>
+    </div>
+
+    <!-- HOW TO PLAY -->
+    <div class="overlay hidden" id="howOverlay" role="dialog" aria-modal="true" aria-labelledby="howTitle">
+      <div class="panel teal">
+        <h2 id="howTitle">How to play</h2>
+        <p class="tag">Pip bounces on his own — you steer!</p>
+        <div class="howto-demo" aria-hidden="true">
+          <span class="demo-sun">☀️</span>
+          <span class="demo-cloud">☁️</span><span class="demo-cloud c2">☁️</span>
+          <span class="demo-pip">🐧</span>
+          <span class="demo-arrow left">◀</span><span class="demo-arrow right">▶</span>
+          <span class="demo-cap">Drag ◀ ▶ or use the arrow keys to steer</span>
+        </div>
+        <ul class="howto-list">
+          <li><span class="dot" aria-hidden="true">👆</span><span><b>Drag</b> anywhere on the sky to steer Pip left and right. On a keyboard use <span class="kbd">←</span> <span class="kbd">→</span> or <span class="kbd">A</span> <span class="kbd">D</span>.</span></li>
+          <li><span class="dot" aria-hidden="true">☁️</span><span>Land on clouds to keep bouncing. The sky scrolls up as you climb — fall below the screen and the run ends.</span></li>
+          <li><span class="dot" aria-hidden="true">☀️</span><span>Grab <b>sun tokens</b>. Every <b>5 suns</b> charges a <b>Sunny Burst</b> — tap the Burst chip or press <span class="kbd">Space</span> to rocket upwards. Grab suns quickly in a row for a <b>sun streak</b>!</span></li>
+          <li><span class="dot" aria-hidden="true">🌈</span><span>Watch the clouds:
+            <span class="cloud-key"><span>🟢 Moving — drifts sideways</span><span>🟡 Spring — super bounce!</span><span>🔴 Breakable — breaks after one bounce</span><span>🟣 Crumbling — vanishes a few seconds after it appears</span></span></span></li>
+          <li><span class="dot" aria-hidden="true">🏆</span><span>Every <b>25 blocks</b> is a milestone — a banner, a fanfare and <b>+1 Burst charge</b>! Higher up, the clouds drift further apart and new cloud types appear.</span></li>
+          <li><span class="dot" aria-hidden="true">📱</span><span><b>Tilt steering</b> is optional (in Settings) and only works on phones with a tilt sensor — drag and arrow keys always work, on every device.</span></li>
+          <li><span class="dot" aria-hidden="true">⏸</span><span><span class="kbd">P</span> or <span class="kbd">Esc</span> pauses · <span class="kbd">R</span> restarts · <span class="kbd">M</span> mutes sound.</span></li>
+        </ul>
+        <div class="btn-row">
+          <button class="btn teal" id="howPlayBtn" type="button">Got it — Play!</button>
+          <button class="btn ghost" id="howCloseBtn" type="button">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAUSE -->
+    <div class="overlay hidden" id="pauseOverlay" role="dialog" aria-modal="true" aria-labelledby="pauseTitle">
+      <div class="panel lav">
+        <h2 id="pauseTitle">Paused</h2>
+        <p class="tag">Pip is holding his umbrella and waiting.</p>
+        <p style="font-weight:800;">Height so far: <span id="pauseHeight">0</span> blocks · Suns: <span id="pauseTokens">0</span></p>
+        <div class="btn-row">
+          <button class="btn" id="resumeBtn" type="button">▶&nbsp;Resume</button>
+          <div class="row2">
+            <button class="btn ghost" id="restartBtn" type="button">↻ Restart</button>
+            <button class="btn ghost" id="pauseSettingsBtn" type="button">⚙️ Settings</button>
+          </div>
+          <div class="row2">
+            <button class="btn ghost" id="pauseHowBtn" type="button">How to play</button>
+            <button class="btn ghost" id="quitBtn" type="button">🏠 Menu</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAME OVER -->
+    <div class="overlay hidden" id="overOverlay" role="dialog" aria-modal="true" aria-labelledby="overTitle">
+      <div class="panel coral">
+        <h2 id="overTitle">Tumbled!</h2>
+        <p class="tag" id="overTag">Pip slipped off a cloud… but what a climb!</p>
+        <div class="stars" id="overStars" aria-label="Star rating"></div>
+        <div class="big-score"><span id="overScore">0</span> <small>blocks</small></div>
+        <div id="newBestBadge" class="newbest" hidden>🎉 New best!</div>
+        <div class="stat-grid">
+          <div class="stat"><div class="k">Best height</div><div class="v" id="overBest">0</div></div>
+          <div class="stat"><div class="k">Sun tokens</div><div class="v sun" id="overTokens">0</div></div>
+          <div class="stat"><div class="k">Sunny Bursts</div><div class="v teal" id="overBursts">0</div></div>
+          <div class="stat"><div class="k">Best suns</div><div class="v" id="overBestTokens">0</div></div>
+        </div>
+        <p style="margin-top:6px; font-size:13.5px; font-weight:800; color:rgba(43,45,66,.7);">☀️ Best sun streak this run: <span id="overStreak">0</span></p>
+        <div class="btn-row">
+          <button class="btn" id="replayBtn" type="button">↻&nbsp;Hop again</button>
+          <button class="btn ghost" id="overMenuBtn" type="button">🏠 Menu</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="overlay hidden" id="settingsOverlay" role="dialog" aria-modal="true" aria-labelledby="setTitle">
+      <div class="panel lav">
+        <h2 id="setTitle">Settings</h2>
+        <p class="tag">Sound and controls — saved on this device.</p>
+        <div class="set-row"><span>🎵 Music<small>Cheerful sky tune</small></span>
+          <button class="toggle" id="musicToggle" type="button" aria-pressed="true" aria-label="Toggle music"></button></div>
+        <div class="set-row"><span>🔔 Sound effects<small>Bounces, chimes &amp; pops</small></span>
+          <button class="toggle" id="sfxToggle" type="button" aria-pressed="true" aria-label="Toggle sound effects"></button></div>
+        <div class="set-row"><span>🔊 Volume<small>Applies to music and effects</small></span>
+          <span style="display:flex; align-items:center; gap:8px;"><input type="range" id="volSlider" min="0" max="100" value="70" aria-label="Volume"><span class="vol-val" id="volVal">70%</span></span></div>
+        <div class="set-row"><span>📱 Tilt steering<small>Lean your phone to steer (if supported)</small></span>
+          <button class="toggle" id="tiltToggle" type="button" aria-pressed="false" aria-label="Toggle tilt steering"></button></div>
+        <p id="tiltNote" style="font-size:13px; font-weight:700; color:rgba(43,45,66,.6); margin-top:8px;" hidden></p>
+        <div class="btn-row">
+          <button class="btn lav" id="settingsCloseBtn" type="button">Done</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="sr-only" aria-live="polite" id="liveRegion"></div>
+  <script>
+(function(){
+'use strict';
+/* =====================================================================
+   CLOUD HOP — JJB-GAME-20261116-13 · namespace JJBCloudHop
+   100% ORIGINAL: all code, art (canvas-drawn), music and SFX written
+   from scratch for JoJo's Blocks. No copied game code, assets or tunes.
+   ===================================================================== */
+var NS = window.JJBCloudHop = window.JJBCloudHop || {};
+
+/* ---------------- persistence ---------------- */
+var LS = { best:'jjb-cloud-hop-best', bestTokens:'jjb-cloud-hop-best-tokens',
+           music:'jjb-cloud-hop-music', sfx:'jjb-cloud-hop-sfx',
+           volume:'jjb-cloud-hop-volume', tilt:'jjb-cloud-hop-tilt' };
+function lsGet(k, d){ try{ var v = localStorage.getItem(k); return v === null ? d : v; }catch(e){ return d; } }
+function lsSet(k, v){ try{ localStorage.setItem(k, String(v)); }catch(e){} }
+var settings = {
+  music: lsGet(LS.music,'on') === 'on',
+  sfx:   lsGet(LS.sfx,'on') === 'on',
+  volume: Math.max(0, Math.min(100, parseInt(lsGet(LS.volume,'70'),10) || 70)),
+  tilt:  lsGet(LS.tilt,'off') === 'on'
+};
+var bestHeight = parseInt(lsGet(LS.best,'0'),10) || 0;
+var bestTokens = parseInt(lsGet(LS.bestTokens,'0'),10) || 0;
+
+/* ---------------- DOM ---------------- */
+function $(id){ return document.getElementById(id); }
+var canvas = $('game'), ctx = canvas.getContext('2d');
+var stage = $('stage');
+var hudHeight = $('hudHeight'), hudTokens = $('hudTokens'),
+    burstBtn = $('burstBtn'), burstFill = $('burstFill'), burstCount = $('burstCount'),
+    toastEl = $('toast'), liveEl = $('liveRegion');
+
+/* ---------------- constants ---------------- */
+var GRAV = 0.34, BOUNCE_VY = -12.6, SPRING_VY = -20.5, BURST_VY = -15.5,
+    MAX_FALL = 15, ACCEL = 0.55, MAX_VX = 6.4, FRICTION = 0.86,
+    BLOCK_PX = 60, CLOUD_W = 88, CLOUD_H = 26;
+var REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var lastCloudX = 0;   // clouds drift from the previous one so the next is always reachable
+
+/* ---------------- state ---------------- */
+var state = 'menu';            // menu | playing | paused | over
+var W = 0, H = 0, DPR = 1;
+var player;
+var clouds = [], tokens = [], particles = [], floaters = [];
+var camY = 0, maxCamY = 0, heightBlocks = 0, tokenCount = 0, burstCharge = 0,
+    burstUsed = 0, burstTimer = 0, startY = 0, lastMilestone = 0, rafId = 0,
+    lastT = 0, elapsed = 0, keys = {}, pointer = {active:false, x:0},
+    tiltX = 0, tiltActive = false, musicTimer = null, musicStep = 0, nextNoteT = 0,
+    tokenStreak = 0, bestStreak = 0, streakT = 0;   // streakT in frames (~60/s)
+var bgClouds = [];   // decorative drifting clouds (parallax)
+var stars = [];      // appear at altitude
+var birds = [];
+
+/* =====================================================================
+   AUDIO — procedural WebAudio only. One AudioContext, created/resumed
+   on the first user gesture. Separate music/sfx buses, persisted.
+   ===================================================================== */
+var AC = null, musicBus = null, sfxBus = null, musicOn = settings.music, sfxOn = settings.sfx;
+function ensureAudio(){
+  if (AC) { if (AC.state === 'suspended') AC.resume(); return; }
+  try{
+    var Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return;
+    AC = new Ctx();
+    musicBus = AC.createGain(); musicBus.connect(AC.destination);
+    sfxBus = AC.createGain(); sfxBus.connect(AC.destination);
+    applyVolume();
+  }catch(e){ AC = null; }
+}
+function applyVolume(){
+  if (!AC) return;
+  var v = settings.volume / 100;
+  musicBus.gain.value = musicOn ? v * 0.42 : 0;
+  sfxBus.gain.value   = sfxOn   ? v * 0.9  : 0;
+}
+function tone(freq, dur, type, vol, when, slideTo){
+  if (!AC || !sfxOn) return;
+  when = when || 0;
+  var t0 = AC.currentTime + when;
+  var o = AC.createOscillator(), g = AC.createGain();
+  o.type = type || 'sine'; o.frequency.setValueAtTime(freq, t0);
+  if (slideTo) o.frequency.exponentialRampToValueAtTime(Math.max(30, slideTo), t0 + dur);
+  g.gain.setValueAtTime(0.0001, t0);
+  g.gain.exponentialRampToValueAtTime(vol || 0.25, t0 + 0.012);
+  g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+  o.connect(g); g.connect(sfxBus);
+  o.start(t0); o.stop(t0 + dur + 0.05);
+}
+function noiseBurst(dur, vol, freq){
+  if (!AC || !sfxOn) return;
+  var t0 = AC.currentTime, len = Math.floor(AC.sampleRate * dur);
+  var buf = AC.createBuffer(1, len, AC.sampleRate), d = buf.getChannelData(0);
+  for (var i=0;i<len;i++) d[i] = (Math.random()*2-1) * (1 - i/len);
+  var src = AC.createBufferSource(); src.buffer = buf;
+  var f = AC.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = freq || 900;
+  var g = AC.createGain(); g.gain.value = vol || 0.3;
+  src.connect(f); f.connect(g); g.connect(sfxBus); src.start(t0);
+}
+/* SFX — one distinct sound per action */
+var SFX = {
+  click:  function(){ tone(660, .07, 'triangle', .18); },
+  bounce: function(p){ tone(300 + (p||0)*30, .12, 'sine', .30, 0, 520 + (p||0)*30); },
+  spring: function(){ tone(180, .28, 'sine', .32, 0, 940); tone(360, .2, 'triangle', .14, .02, 1200); },
+  token:  function(){ tone(880, .10, 'sine', .26); tone(1318, .16, 'sine', .22, .07); },
+  brk:    function(){ noiseBurst(.22, .30, 700); tone(140, .18, 'square', .10, 0, 70); },
+  burst:  function(){ var n=[523,659,784,1046,1318]; for(var i=0;i<n.length;i++) tone(n[i], .18, 'triangle', .22, i*.06); noiseBurst(.3,.08,4000); },
+  milestone:function(){ tone(784,.12,'triangle',.22); tone(988,.12,'triangle',.22,.09); tone(1175,.22,'triangle',.24,.18); },
+  fall:   function(){ tone(620, .55, 'sine', .22, 0, 130); },
+  over:   function(){ var n=[392,330,262,196]; for(var i=0;i<n.length;i++) tone(n[i], .3, 'triangle', .22, i*.16); },
+  denied: function(){ tone(220, .12, 'square', .12, 0, 160); }
+};
+/* Music — original gentle loop, C-major pentatonic, ~96bpm eighth notes.
+   Melody (triangle) over a soft bass (sine). Scheduled with a timer. */
+var MELODY = [523,659,784,880,784,659,587,659, 523,659,784,1046,880,784,659,587,
+              440,523,659,784,659,523,587,659, 784,880,784,659,587,523,0,0];
+var BASS   = [131,131,175,175, 196,196,175,175, 131,131,175,175, 196,196,262,262];
+function musicTick(){
+  if (!AC || state !== 'playing' || !musicOn) return;
+  var now = AC.currentTime;
+  if (now < nextNoteT - 0.05) return;
+  var step = musicStep % 32, beat = 60 / 96 / 2; // eighth notes @96bpm
+  var f = MELODY[step];
+  if (f){
+    var o = AC.createOscillator(), g = AC.createGain();
+    o.type = 'triangle'; o.frequency.value = f;
+    g.gain.setValueAtTime(0.0001, nextNoteT);
+    g.gain.exponentialRampToValueAtTime(0.16, nextNoteT + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, nextNoteT + beat * 0.92);
+    o.connect(g); g.connect(musicBus); o.start(nextNoteT); o.stop(nextNoteT + beat);
+  }
+  if (step % 4 === 0){
+    var b = BASS[(step/4)|0], o2 = AC.createOscillator(), g2 = AC.createGain();
+    o2.type = 'sine'; o2.frequency.value = b;
+    g2.gain.setValueAtTime(0.0001, nextNoteT);
+    g2.gain.exponentialRampToValueAtTime(0.14, nextNoteT + 0.03);
+    g2.gain.exponentialRampToValueAtTime(0.0001, nextNoteT + beat * 3.6);
+    o2.connect(g2); g2.connect(musicBus); o2.start(nextNoteT); o2.stop(nextNoteT + beat * 3.8);
+  }
+  musicStep++;
+  nextNoteT += beat;
+}
+function startMusic(){
+  ensureAudio();
+  if (!AC || musicTimer) return;
+  nextNoteT = AC.currentTime + 0.06; musicStep = 0;
+  musicTimer = setInterval(musicTick, 60);
+}
+function stopMusic(){ if (musicTimer){ clearInterval(musicTimer); musicTimer = null; } }
+
+/* ---------------- helpers ---------------- */
+function rand(a,b){ return a + Math.random()*(b-a); }
+function clamp(v,a,b){ return v<a?a:(v>b?b:v); }
+function show(el){ el.classList.remove('hidden'); }
+function hide(el){ el.classList.add('hidden'); }
+function say(msg){ liveEl.textContent = ''; setTimeout(function(){ liveEl.textContent = msg; }, 30); }
+var toastTimer = null;
+function toast(msg, sun){
+  toastEl.textContent = msg; toastEl.classList.toggle('sun', !!sun); toastEl.classList.add('show');
+  say(msg);
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ toastEl.classList.remove('show'); }, 2200);
+}
+function starCount(h){ return h >= 120 ? 3 : (h >= 60 ? 2 : (h >= 25 ? 1 : 0)); }
+
+/* ---------------- world generation ---------------- */
+function makeCloud(y, forceType, hForType){
+  // hForType: the altitude the cloud sits at, used for the type ramp.
+  // The initial batch is generated up-front, so it must use the cloud's own
+  // altitude — not the player's current height (which is 0 at seed time).
+  var h = (hForType === undefined) ? heightBlocks : hForType;
+  var r = Math.random(), type = 'normal';
+  if (forceType) type = forceType;
+  else if (h >= 75 && r < 0.14) type = 'crumble';   // timed: vanishes ~2.6 s after it appears
+  else if (h >= 45 && r < 0.30) type = 'breakable';
+  else if (h >= 18 && r < 0.44) type = 'spring';
+  else if (h >= 10 && r < 0.66) type = 'moving';
+  var c = { x: 0, y: y, w: CLOUD_W, type: type,
+            baseX: 0, amp: 0, speed: 0, phase: rand(0, Math.PI*2),
+            broken: false, breakVy: 0, breakA: 1, springAnim: 0,
+            crumbleT: 0, crumbleArmed: false };
+  // next cloud stays within steering reach of the previous one;
+  // the sideways drift ramps up with altitude (gentle onboarding first)
+  var drift = 150 * (0.5 + Math.min(0.5, h / 40));
+  c.x = clamp(lastCloudX + rand(-drift, drift), 10, Math.max(11, W - CLOUD_W - 10));
+  lastCloudX = c.x;
+  if (type === 'moving'){ c.baseX = c.x; c.amp = rand(34, 68); c.speed = rand(0.9, 1.5) * (1 + Math.min(0.8, h/200)); }
+  return c;
+}
+function gapForHeight(h){
+  // gap grows with altitude: 64 -> 96 px
+  var hh = (h === undefined) ? heightBlocks : h;
+  return 64 + Math.min(32, hh * 0.22);
+}
+function seedWorld(){
+  clouds = []; tokens = []; particles = []; floaters = [];
+  camY = 0; maxCamY = 0; heightBlocks = 0; tokenCount = 0; burstCharge = 0;
+  burstUsed = 0; burstTimer = 0; lastMilestone = 0; elapsed = 0;
+  tokenStreak = 0; bestStreak = 0; streakT = 0;
+  startY = H - 130;
+  lastCloudX = W/2 - CLOUD_W/2;
+  player = { x: W/2 - 24, y: startY - 46, vx: 0, vy: 0, w: 48, h: 52,
+             facing: 1, squash: 0, blink: 0, dead: false };
+  // starting cloud + staircase upward
+  var y = startY;
+  clouds.push(makeCloud(y, 'normal'));
+  clouds[0].x = W/2 - CLOUD_W/2;
+  lastCloudX = clouds[0].x;
+  y -= gapForHeight(0);
+  while (y > -H * 2.2){
+    var hy = (startY - y) / BLOCK_PX;   // this cloud's own altitude
+    var nc = makeCloud(y, undefined, hy);
+    clouds.push(nc);
+    if (Math.random() < 0.30) spawnToken(y - 52, nc.x);
+    y -= gapForHeight(hy) * rand(0.9, 1.12);
+  }
+  updateHUD();
+}
+function spawnToken(y, nearX){
+  var x = (typeof nearX === 'number') ? clamp(nearX + rand(-20, 70), 24, W - 24) : rand(24, W - 24);
+  tokens.push({ x: x, y: y, r: 15, taken: false, phase: rand(0, Math.PI*2) });
+}
+function ensureCloudsAbove(){
+  // keep generating above the camera top
+  var topY = camY - H * 0.4;
+  var highest = Infinity;
+  for (var i=0;i<clouds.length;i++) if (clouds[i].y < highest) highest = clouds[i].y;
+  while (highest > topY){
+    highest -= gapForHeight() * rand(0.9, 1.12);
+    var nc2 = makeCloud(highest);
+    clouds.push(nc2);
+    if (Math.random() < 0.30) spawnToken(highest - 52, nc2.x);
+  }
+  // prune far below
+  clouds = clouds.filter(function(c){ return c.y < camY + H + 220 && c.breakA > 0; });
+  tokens = tokens.filter(function(t){ return !t.taken && t.y < camY + H + 120; });
+}
+
+
+/* ---------------- particles & floaters ---------------- */
+function puff(x, y, n, colors, spd, life){
+  if (REDUCED) return;
+  for (var i=0;i<n;i++){
+    var a = rand(0, Math.PI*2), s = rand(spd*0.3, spd);
+    particles.push({ x:x, y:y, vx:Math.cos(a)*s, vy:Math.sin(a)*s - 0.6,
+      life: rand(life*0.6, life), maxLife: life, size: rand(3, 7),
+      color: colors[(Math.random()*colors.length)|0], shape: Math.random()<0.5?'circle':'star' });
+  }
+}
+function addFloater(x, y, text, color){
+  floaters.push({ x:x, y:y, text:text, color: color || '#2B2D42', life: 1 });
+}
+
+/* ---------------- update ---------------- */
+function update(dt){
+  elapsed += dt;
+  var p = player;
+  // --- horizontal steering: keys, drag, tilt ---
+  var steer = 0;
+  if (keys['ArrowLeft'] || keys['KeyA']) steer -= 1;
+  if (keys['ArrowRight'] || keys['KeyD']) steer += 1;
+  if (pointer.active){
+    var dx = pointer.x - (p.x + p.w/2);
+    p.vx = clamp(dx * 0.14, -MAX_VX, MAX_VX);
+    p.facing = dx >= 0 ? 1 : -1;
+  } else if (settings.tilt && tiltActive){
+    p.vx = clamp(tiltX * 0.16, -MAX_VX, MAX_VX);
+    if (Math.abs(tiltX) > 2) p.facing = tiltX > 0 ? 1 : -1;
+  } else if (steer !== 0){
+    p.vx = clamp(p.vx + steer * ACCEL * dt, -MAX_VX, MAX_VX);
+    p.facing = steer;
+  } else {
+    p.vx *= Math.pow(FRICTION, dt);
+    if (Math.abs(p.vx) < 0.05) p.vx = 0;
+  }
+  p.x += p.vx * dt;
+  // wrap around screen edges (classic endless jumper)
+  if (p.x + p.w < -8) p.x = W - 8;
+  if (p.x > W + 8) p.x = -p.w + 8;
+
+  // --- vertical physics ---
+  if (burstTimer > 0){
+    burstTimer -= dt;
+    p.vy = BURST_VY;
+    if (!REDUCED && Math.random() < 0.7)
+      particles.push({ x: p.x + p.w/2 + rand(-14,14), y: p.y - camY + p.h, vx: rand(-.5,.5), vy: rand(1,3),
+        life: .5, maxLife: .5, size: rand(3,6), color: Math.random()<0.5?'#FFC94D':'#FF6B6B', shape:'star' });
+  } else {
+    p.vy = Math.min(p.vy + GRAV * dt, MAX_FALL);
+  }
+  var prevFeet = p.y + p.h - 6;   // feet before this frame's move (for swept landing test)
+  p.y += p.vy * dt;
+  p.squash = Math.max(0, p.squash - dt * 0.12);
+  p.blink -= dt;
+
+  // --- moving clouds drift; crumbling clouds count down once visible ---
+  for (var i=0;i<clouds.length;i++){
+    var c = clouds[i];
+    if (c.type === 'moving' && !c.broken)
+      c.x = clamp(c.baseX + Math.sin(elapsed * 0.02 * c.speed + c.phase) * c.amp, 4, W - c.w - 4);
+    if (c.type === 'spring') c.springAnim = Math.max(0, c.springAnim - dt * 0.1);
+    if (c.type === 'crumble' && !c.broken){
+      if (!c.crumbleArmed && c.y - camY > -40 && c.y - camY < H + 40){
+        c.crumbleArmed = true; c.crumbleT = 156;   // ~2.6 s at 60 fps
+      }
+      if (c.crumbleArmed){
+        c.crumbleT -= dt;
+        if (c.crumbleT <= 0){
+          c.broken = true; c.breakVy = 1.2;
+          SFX.brk();
+          puff(c.x + c.w/2, c.y - camY, 12, ['#7C6FF0','#B3A8FF','#FFF9F0'], 2.4, .7);
+          addFloater(c.x + c.w/2, c.y - camY - 14, 'CRUMBLED!', '#6558D6');
+        }
+      }
+    }
+    if (c.broken){ c.y += c.breakVy * dt; c.breakVy += 0.4 * dt; c.breakA -= dt * 0.03; }
+  }
+
+  // --- sun streak window: 8 s (~480 frames) without a token resets it ---
+  streakT += dt;
+  if (streakT > 480) tokenStreak = 0;
+
+  // --- land on clouds (only while falling) ---
+  // All in WORLD coordinates (p.y and cl.y are world; camY only converts for
+  // drawing). Swept test: the feet must cross the cloud top this frame, so
+  // slow headless frames can never tunnel through a cloud.
+  if (p.vy > 0 && burstTimer <= 0){
+    var newFeet = p.y + p.h - 6;
+    for (var j=0;j<clouds.length;j++){
+      var cl = clouds[j];
+      if (cl.broken || cl.breakA <= 0) continue;
+      var cy = cl.y - camY;   // screen y, for effects only
+      if (prevFeet <= cl.y + 2 && newFeet >= cl.y - 6 &&
+          p.x + p.w - 10 > cl.x && p.x + 10 < cl.x + cl.w){
+        if (cl.type === 'spring'){
+          p.vy = SPRING_VY; cl.springAnim = 1;
+          SFX.spring(); puff(p.x + p.w/2, cy + 8, 10, ['#FFC94D','#FFF9F0','#FF6B6B'], 2.6, .6);
+          addFloater(p.x + p.w/2, cy - 18, 'BOING!', '#B57E00');
+        } else {
+          p.vy = BOUNCE_VY;
+          SFX.bounce(heightBlocks);
+          puff(p.x + p.w/2, cy + 6, 5, ['#FFFFFF','#FFF9F0'], 1.4, .45);
+        }
+        p.squash = 1;
+        if (cl.type === 'breakable'){
+          cl.broken = true; cl.breakVy = 1.2;
+          SFX.brk(); puff(cl.x + cl.w/2, cl.y - camY, 12, ['#FF6B6B','#E85454','#FFF9F0'], 2.4, .7);
+        }
+        break;
+      }
+    }
+  }
+
+  // --- camera follows upward ---
+  var screenY = p.y - camY;
+  if (screenY < H * 0.38){
+    var dy = H * 0.38 - screenY;
+    camY -= dy;
+    if (camY < maxCamY) maxCamY = camY;
+    heightBlocks = Math.max(heightBlocks, Math.floor(-maxCamY / BLOCK_PX));
+    var ms = Math.floor(heightBlocks / 25) * 25;
+    if (ms > lastMilestone && ms > 0){
+      lastMilestone = ms;
+      burstCharge = Math.min(5, burstCharge + 1);   // milestone bonus: +1 Burst charge
+      updateHUD();
+      toast('🎉 ' + ms + ' blocks high — milestone! +1 Burst charge', true);
+      SFX.milestone();
+      addFloater(p.x + p.w/2, p.y - camY - 30, '+1 Burst charge!', '#B57E00');
+      puff(p.x + p.w/2, p.y - camY, 18, ['#FFC94D','#2EC4B6','#7C6FF0'], 3, .9);
+    }
+    ensureCloudsAbove();
+  }
+
+  // --- sun tokens ---
+  for (var k=0;k<tokens.length;k++){
+    var t = tokens[k];
+    if (t.taken) continue;
+    var dx = (p.x + p.w/2) - t.x, dy2 = (p.y + p.h/2) - t.y;   // world coords both
+    if (dx*dx + dy2*dy2 < 38*38){
+      t.taken = true; tokenCount++;
+      burstCharge = Math.min(5, burstCharge + 1);
+      tokenStreak++; streakT = 0;   // fresh token resets the 8 s streak window
+      if (tokenStreak > bestStreak) bestStreak = tokenStreak;
+      if (tokenStreak === 3 || tokenStreak === 5 || tokenStreak === 8){
+        addFloater(t.x, t.y - camY - 34, 'Sun streak ×' + tokenStreak + '!', '#B57E00');
+        say('Sun streak times ' + tokenStreak);
+      }
+      SFX.token();
+      puff(t.x, t.y - camY, 10, ['#FFC94D','#FFE08A','#FFFFFF'], 2.2, .6);
+      addFloater(t.x, t.y - camY - 14, '+1 ☀', '#B57E00');
+      if (burstCharge === 5){ toast('⚡ Sunny Burst ready! Tap Burst or press Space', true); SFX.milestone(); say('Sunny Burst ready'); }
+      updateHUD();
+    }
+  }
+
+  // --- particles & floaters ---
+  for (var m=particles.length-1;m>=0;m--){
+    var pt = particles[m];
+    pt.x += pt.vx * dt; pt.y += pt.vy * dt; pt.vy += 0.05 * dt; pt.life -= dt * 0.03;
+    if (pt.life <= 0) particles.splice(m,1);
+  }
+  for (var n=floaters.length-1;n>=0;n--){
+    floaters[n].y -= 0.7 * dt; floaters[n].life -= dt * 0.02;
+    if (floaters[n].life <= 0) floaters.splice(n,1);
+  }
+
+  // --- decorative background drift ---
+  for (var b=0;b<bgClouds.length;b++){
+    bgClouds[b].x += bgClouds[b].spd * dt * 0.4;
+    if (bgClouds[b].x > W + 90) bgClouds[b].x = -90;
+  }
+  if (Math.random() < 0.0012 && birds.length < 3)
+    birds.push({ x: -40, y: rand(40, H*0.4), spd: rand(0.8,1.4), flap: 0 });
+  for (var bi=birds.length-1;bi>=0;bi--){
+    birds[bi].x += birds[bi].spd * dt; birds[bi].flap += dt * 0.25;
+    if (birds[bi].x > W + 50) birds.splice(bi,1);
+  }
+
+  // --- fell below the screen? ---
+  if (p.y - camY > H + 60){
+    gameOver();
+  }
+  updateHUD();
+}
+
+/* ---------------- Sunny Burst ---------------- */
+function tryBurst(){
+  if (state !== 'playing') return false;
+  if (burstCharge < 5){ SFX.denied(); toast('Collect 5 suns to charge Sunny Burst — ' + burstCharge + '/5'); return false; }
+  burstCharge = 0; burstTimer = 140; burstUsed++;
+  player.vy = BURST_VY;
+  SFX.burst();
+  puff(player.x + player.w/2, player.y, 22, ['#FFC94D','#FF6B6B','#7C6FF0','#2EC4B6'], 3.4, .9);
+  addFloater(player.x + player.w/2, player.y - 20, 'SUNNY BURST!', '#B57E00');
+  toast('☀️ SUNNY BURST!', true);
+  say('Sunny Burst activated');
+  updateHUD();
+  return true;
+}
+
+/* ---------------- HUD ---------------- */
+function updateHUD(){
+  hudHeight.textContent = heightBlocks;
+  hudTokens.textContent = tokenCount;
+  burstFill.style.width = (burstCharge / 5 * 100) + '%';
+  burstCount.textContent = burstCharge + '/5';
+  burstBtn.classList.toggle('ready', burstCharge >= 5);
+  burstBtn.setAttribute('aria-label',
+    burstCharge >= 5 ? 'Sunny Burst ready — activate now (Space)' :
+    'Sunny Burst power-up: ' + burstCharge + ' of 5 sun tokens collected');
+}
+
+/* =====================================================================
+   RENDERING — all art drawn with canvas paths (original). Sky shifts
+   from bright morning to dusk lavender as altitude grows.
+   ===================================================================== */
+function skyColors(){
+  var t = clamp(heightBlocks / 160, 0, 1); // 0 = morning, 1 = high dusk
+  function mix(a,b){ return [ Math.round(a[0]+(b[0]-a[0])*t), Math.round(a[1]+(b[1]-a[1])*t), Math.round(a[2]+(b[2]-a[2])*t) ]; }
+  var top = mix([168,158,255],[94,74,190]), mid = mix([140,224,214],[124,104,214]), bot = mix([255,249,240],[255,214,150]);
+  return { top:'rgb('+top+')', mid:'rgb('+mid+')', bot:'rgb('+bot+')', t:t };
+}
+function drawCloudShape(x, y, w, h, fill, stroke){
+  ctx.fillStyle = fill; ctx.strokeStyle = stroke || 'rgba(43,45,66,0.9)'; ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.ellipse(x + w*0.24, y + h*0.62, w*0.26, h*0.42, 0, 0, Math.PI*2);
+  ctx.ellipse(x + w*0.5,  y + h*0.42, w*0.30, h*0.52, 0, 0, Math.PI*2);
+  ctx.ellipse(x + w*0.76, y + h*0.62, w*0.26, h*0.42, 0, 0, Math.PI*2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(x + w*0.06, y + h*0.95);
+  ctx.quadraticCurveTo(x + w*0.5, y + h*0.18, x + w*0.94, y + h*0.95);
+  ctx.closePath(); ctx.fill();
+  if (stroke){ ctx.stroke(); }
+}
+function drawSunToken(t){
+  var y = t.y - camY + Math.sin(elapsed * 0.06 + t.phase) * 4;
+  ctx.save();
+  ctx.translate(t.x, y);
+  // rays
+  ctx.strokeStyle = '#F5A623'; ctx.lineWidth = 3; ctx.lineCap = 'round';
+  for (var i=0;i<8;i++){
+    var a = i * Math.PI/4 + elapsed * 0.008;
+    ctx.beginPath();
+    ctx.moveTo(Math.cos(a)*19, Math.sin(a)*19);
+    ctx.lineTo(Math.cos(a)*25, Math.sin(a)*25);
+    ctx.stroke();
+  }
+  var g = ctx.createRadialGradient(-4,-5,2, 0,0,16);
+  g.addColorStop(0,'#FFF3CF'); g.addColorStop(.55,'#FFC94D'); g.addColorStop(1,'#F5A623');
+  ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0,0,15,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle = '#2B2D42'; ctx.lineWidth = 2; ctx.stroke();
+  ctx.fillStyle = '#2B2D42';
+  ctx.beginPath(); ctx.arc(-4.5,-2,1.8,0,Math.PI*2); ctx.arc(4.5,-2,1.8,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(0,3,5,0.15*Math.PI,0.85*Math.PI); ctx.stroke();
+  ctx.restore();
+}
+function drawPenguin(){
+  var p = player;
+  var x = p.x + p.w/2, y = p.y - camY;
+  var squashY = 1 - p.squash * 0.18, squashX = 1 + p.squash * 0.14;
+  var tilt = clamp(p.vx * 0.03, -0.22, 0.22);
+  var flap = Math.sin(elapsed * 0.35) * (p.vy < 0 ? 0.5 : 0.15);
+  ctx.save();
+  ctx.translate(x, y + p.h/2);
+  ctx.rotate(tilt);
+  ctx.scale(squashX, squashY);
+  // shadow under penguin on the cloud is drawn by clouds; draw soft drop shadow
+  // umbrella (above head, tilts with steering)
+  ctx.save();
+  ctx.translate(-tilt * 60, -44);
+  ctx.rotate(-tilt * 1.6);
+  ctx.strokeStyle = '#2B2D42'; ctx.lineWidth = 3; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(0, -2); ctx.lineTo(0, 26); ctx.stroke();
+  ctx.beginPath(); ctx.arc(0, 26, 5, 0, Math.PI); ctx.stroke(); // handle hook
+  ctx.fillStyle = '#7C6FF0';
+  ctx.beginPath();
+  ctx.moveTo(-30, 2);
+  ctx.quadraticCurveTo(-30, -26, 0, -28);
+  ctx.quadraticCurveTo(30, -26, 30, 2);
+  ctx.quadraticCurveTo(20, -4, 10, 2);
+  ctx.quadraticCurveTo(0, -4, -10, 2);
+  ctx.quadraticCurveTo(-20, -4, -30, 2);
+  ctx.closePath(); ctx.fill();
+  ctx.strokeStyle = '#2B2D42'; ctx.lineWidth = 2.5; ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0,-28); ctx.lineTo(0,2); ctx.stroke();
+  ctx.fillStyle = '#FFC94D';
+  ctx.beginPath(); ctx.arc(0,-28,4,0,Math.PI*2); ctx.fill(); ctx.stroke();
+  ctx.restore();
+  // body
+  ctx.fillStyle = '#2B2D42';
+  ctx.beginPath(); ctx.ellipse(0, 6, 21, 24, 0, 0, Math.PI*2); ctx.fill();
+  ctx.strokeStyle = '#2B2D42'; ctx.lineWidth = 2; ctx.stroke();
+  // belly
+  ctx.fillStyle = '#FFF9F0';
+  ctx.beginPath(); ctx.ellipse(0, 12, 13, 16, 0, 0, Math.PI*2); ctx.fill();
+  // wings (flap with motion)
+  ctx.fillStyle = '#2B2D42';
+  ctx.save(); ctx.translate(-19, 2); ctx.rotate(-0.5 - flap); ctx.beginPath(); ctx.ellipse(0, 6, 5, 12, 0, 0, Math.PI*2); ctx.fill(); ctx.restore();
+  ctx.save(); ctx.translate(19, 2); ctx.rotate(0.5 + flap); ctx.beginPath(); ctx.ellipse(0, 6, 5, 12, 0, 0, Math.PI*2); ctx.fill(); ctx.restore();
+  // feet
+  ctx.fillStyle = '#FFC94D';
+  ctx.beginPath(); ctx.ellipse(-9, 29, 7, 3.6, 0, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(9, 29, 7, 3.6, 0, 0, Math.PI*2); ctx.fill();
+  ctx.strokeStyle = '#2B2D42'; ctx.lineWidth = 1.8; ctx.stroke();
+  // eyes (happy arc while bursting, blink otherwise)
+  var bursting = burstTimer > 0;
+  ctx.fillStyle = '#2B2D42';
+  if (bursting){
+    ctx.strokeStyle = '#2B2D42'; ctx.lineWidth = 2.2; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.arc(-7, -6, 4, Math.PI*1.1, Math.PI*1.9); ctx.stroke();
+    ctx.beginPath(); ctx.arc(7, -6, 4, Math.PI*1.1, Math.PI*1.9); ctx.stroke();
+  } else if (p.blink > 0){
+    ctx.beginPath(); ctx.moveTo(-10,-6); ctx.lineTo(-4,-6); ctx.moveTo(4,-6); ctx.lineTo(10,-6); ctx.stroke();
+  } else {
+    ctx.beginPath(); ctx.arc(-7, -6, 2.6, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(7, -6, 2.6, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.arc(-6, -7, 1, 0, Math.PI*2); ctx.arc(8, -7, 1, 0, Math.PI*2); ctx.fill();
+  }
+  // beak
+  ctx.fillStyle = '#FFC94D'; ctx.strokeStyle = '#2B2D42'; ctx.lineWidth = 1.8;
+  ctx.beginPath(); ctx.moveTo(-5, 0); ctx.lineTo(5, 0); ctx.lineTo(0, 5.5); ctx.closePath(); ctx.fill(); ctx.stroke();
+  // blush
+  ctx.fillStyle = 'rgba(255,107,107,0.55)';
+  ctx.beginPath(); ctx.ellipse(-13, 1, 3.6, 2.4, 0, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(13, 1, 3.6, 2.4, 0, 0, Math.PI*2); ctx.fill();
+  ctx.restore();
+}
+function drawHeightMarker(){
+  // right-edge ruler with 10-block ticks + BEST flag
+  var x = W - 14;
+  ctx.save();
+  ctx.strokeStyle = 'rgba(43,45,66,0.35)'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(x, 10); ctx.lineTo(x, H - 10); ctx.stroke();
+  ctx.fillStyle = 'rgba(43,45,66,0.6)'; ctx.font = '700 11px Fredoka, sans-serif'; ctx.textAlign = 'right';
+  for (var b = 10; b <= 200; b += 10){
+    // position ticks by world height: screen y = player line minus (b - height) blocks
+    var sy = (player.y - camY) - (b - heightBlocks) * BLOCK_PX;
+    if (sy < 14 || sy > H - 14) continue;
+    ctx.strokeStyle = 'rgba(43,45,66,0.45)';
+    ctx.beginPath(); ctx.moveTo(x - 6, sy); ctx.lineTo(x + 2, sy); ctx.stroke();
+    ctx.fillText(b + '', x - 9, sy + 4);
+  }
+  // BEST flag at best height
+  if (bestHeight > 0){
+    var by = (player.y - camY) - (bestHeight - heightBlocks) * BLOCK_PX;
+    if (by > 20 && by < H - 20){
+      ctx.fillStyle = '#FF6B6B';
+      ctx.beginPath(); ctx.moveTo(x - 2, by); ctx.lineTo(x - 2, by - 12); ctx.lineTo(x - 16, by - 8); ctx.lineTo(x - 2, by - 4); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = '#2B2D42'; ctx.font = '800 10px Nunito, sans-serif';
+      ctx.fillText('BEST', x - 19, by - 14);
+    }
+  }
+  ctx.restore();
+}
+function render(){
+  var sky = skyColors();
+  var g = ctx.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, sky.top); g.addColorStop(0.55, sky.mid); g.addColorStop(1, sky.bot);
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+
+  // stars fade in at altitude
+  if (sky.t > 0.25){
+    ctx.fillStyle = 'rgba(255,249,240,' + (sky.t * 0.9) + ')';
+    for (var s=0;s<stars.length;s++){
+      var tw = 0.5 + 0.5 * Math.sin(elapsed * 0.05 + stars[s].ph);
+      ctx.globalAlpha = tw * sky.t;
+      ctx.beginPath(); ctx.arc(stars[s].x, stars[s].y, stars[s].r, 0, Math.PI*2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+  // sun with a face (fixed, top-left, drifts slightly with camera)
+  var sunY = 56 + (camY * 0.02) % 20;
+  ctx.save(); ctx.translate(52, sunY);
+  ctx.strokeStyle = 'rgba(245,166,35,0.9)'; ctx.lineWidth = 4; ctx.lineCap = 'round';
+  for (var r=0;r<10;r++){
+    var a = r * Math.PI/5 + elapsed * 0.004;
+    ctx.beginPath(); ctx.moveTo(Math.cos(a)*26, Math.sin(a)*26); ctx.lineTo(Math.cos(a)*34, Math.sin(a)*34); ctx.stroke();
+  }
+  var sg = ctx.createRadialGradient(-6,-8,4, 0,0,24);
+  sg.addColorStop(0,'#FFF6D6'); sg.addColorStop(.6,'#FFC94D'); sg.addColorStop(1,'#F5A623');
+  ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(0,0,22,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle = '#2B2D42'; ctx.lineWidth = 2; ctx.stroke();
+  ctx.fillStyle = '#2B2D42';
+  ctx.beginPath(); ctx.arc(-7,-3,2.2,0,Math.PI*2); ctx.arc(7,-3,2.2,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(0,4,7,0.15*Math.PI,0.85*Math.PI); ctx.stroke();
+  ctx.restore();
+
+  // decorative background clouds (parallax, no collision)
+  for (var b=0;b<bgClouds.length;b++){
+    ctx.globalAlpha = bgClouds[b].a;
+    drawCloudShape(bgClouds[b].x, bgClouds[b].y, bgClouds[b].w, bgClouds[b].w*0.42, '#FFFFFF', null);
+    ctx.globalAlpha = 1;
+  }
+  // birds
+  ctx.strokeStyle = '#2B2D42'; ctx.lineWidth = 2.2; ctx.lineCap = 'round';
+  for (var bi=0;bi<birds.length;bi++){
+    var bd = birds[bi], w = Math.sin(bd.flap) * 4;
+    ctx.beginPath();
+    ctx.moveTo(bd.x - 8, bd.y - w); ctx.quadraticCurveTo(bd.x, bd.y + 3, bd.x + 8, bd.y - w);
+    ctx.stroke();
+  }
+  // burst aura + expanding shockwave ring
+  if (burstTimer > 0){
+    ctx.save();
+    ctx.globalAlpha = 0.28 + 0.12 * Math.sin(elapsed * 0.3);
+    var rg = ctx.createRadialGradient(player.x + player.w/2, player.y - camY + player.h/2, 10,
+                                      player.x + player.w/2, player.y - camY + player.h/2, 120);
+    rg.addColorStop(0, '#FFC94D'); rg.addColorStop(1, 'rgba(255,201,77,0)');
+    ctx.fillStyle = rg; ctx.beginPath(); ctx.arc(player.x + player.w/2, player.y - camY + player.h/2, 120, 0, Math.PI*2); ctx.fill();
+    ctx.restore();
+    var bp = (140 - burstTimer) / 140;   // 0 at ignition, 1 at burnout
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, 0.6 * (1 - bp));
+    ctx.strokeStyle = '#FFC94D'; ctx.lineWidth = 6;
+    ctx.beginPath(); ctx.arc(player.x + player.w/2, player.y - camY + player.h/2, 34 + bp * 150, 0, Math.PI*2); ctx.stroke();
+    ctx.restore();
+  }
+  // clouds
+  for (var i=0;i<clouds.length;i++){
+    var c = clouds[i], cy = c.y - camY;
+    if (cy < -60 || cy > H + 80 || c.breakA <= 0) continue;
+    ctx.save();
+    ctx.globalAlpha = c.broken ? Math.max(0, c.breakA) : 1;
+    var fill = '#FFFFFF', stroke = 'rgba(43,45,66,0.85)';
+    if (c.type === 'moving'){ fill = '#D8F5F1'; stroke = '#1FA89B'; }
+    if (c.type === 'spring'){ fill = '#FFE9A8'; stroke = '#F5A623'; }
+    if (c.type === 'breakable'){ fill = '#FFE3E3'; stroke = '#E85454'; }
+    if (c.type === 'crumble'){ fill = '#EDEAFF'; stroke = '#6558D6'; }
+    // crumbling clouds tremble as their timer runs out
+    var drawX = c.x;
+    if (c.type === 'crumble' && c.crumbleArmed && c.crumbleT < 70)
+      drawX = c.x + Math.sin(elapsed * 1.4) * 2.5;
+    if (c.type === 'crumble') ctx.setLineDash([6, 4]);   // dashed outline: timed cloud
+    drawCloudShape(drawX, cy, c.w, CLOUD_H, fill, stroke);
+    ctx.setLineDash([]);
+    if (c.type === 'crumble' && c.crumbleArmed){
+      // countdown dots above the cloud (3 -> 1) + cracks in the final second
+      var dots = Math.max(1, Math.ceil(c.crumbleT / 156 * 3));
+      ctx.fillStyle = '#6558D6';
+      for (var di=0; di<dots; di++){ ctx.beginPath(); ctx.arc(drawX + c.w/2 - 10 + di*10, cy - 9, 3, 0, Math.PI*2); ctx.fill(); }
+      if (c.crumbleT < 70){
+        ctx.strokeStyle = 'rgba(101,88,214,0.9)'; ctx.lineWidth = 2.2; ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(drawX + c.w*0.3, cy + 4); ctx.lineTo(drawX + c.w*0.42, cy + 12); ctx.lineTo(drawX + c.w*0.36, cy + 18);
+        ctx.moveTo(drawX + c.w*0.62, cy + 6); ctx.lineTo(drawX + c.w*0.55, cy + 14);
+        ctx.stroke();
+      }
+    }
+    if (c.type === 'spring'){
+      // coil on top
+      var squash = 1 - c.springAnim * 0.45;
+      ctx.strokeStyle = '#F5A623'; ctx.lineWidth = 3; ctx.lineCap = 'round';
+      ctx.beginPath();
+      var cx = c.x + c.w/2;
+      ctx.moveTo(cx - 12, cy + 2);
+      ctx.lineTo(cx - 6, cy - 8 * squash); ctx.lineTo(cx + 2, cy + 2);
+      ctx.lineTo(cx + 8, cy - 8 * squash); ctx.lineTo(cx + 12, cy + 2);
+      ctx.stroke();
+      ctx.fillStyle = '#FFC94D';
+      ctx.beginPath(); ctx.arc(cx, cy - 10 * squash, 5, 0, Math.PI*2); ctx.fill();
+      ctx.strokeStyle = '#2B2D42'; ctx.lineWidth = 2; ctx.stroke();
+    }
+    if (c.type === 'breakable'){
+      ctx.strokeStyle = 'rgba(232,84,84,0.9)'; ctx.lineWidth = 2.2; ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(c.x + c.w*0.3, cy + 4); ctx.lineTo(c.x + c.w*0.42, cy + 12); ctx.lineTo(c.x + c.w*0.36, cy + 18);
+      ctx.moveTo(c.x + c.w*0.62, cy + 6); ctx.lineTo(c.x + c.w*0.55, cy + 14);
+      ctx.stroke();
+    }
+    if (c.type === 'moving'){
+      ctx.fillStyle = '#1FA89B'; ctx.font = '700 11px Fredoka, sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText('⇄', c.x + c.w/2, cy + CLOUD_H - 4);
+    }
+    ctx.restore();
+  }
+  // sun tokens
+  for (var k=0;k<tokens.length;k++) if (!tokens[k].taken) drawSunToken(tokens[k]);
+  // penguin (only while playing/paused; hidden on menu behind overlay anyway)
+  if (state === 'playing' || state === 'paused') drawPenguin();
+  // particles
+  for (var m=0;m<particles.length;m++){
+    var pt = particles[m];
+    ctx.globalAlpha = clamp(pt.life / pt.maxLife, 0, 1);
+    ctx.fillStyle = pt.color;
+    if (pt.shape === 'star'){
+      ctx.save(); ctx.translate(pt.x, pt.y - camY * 0); ctx.rotate(pt.life);
+      ctx.fillRect(-pt.size/2, -pt.size/2, pt.size, pt.size); ctx.restore();
+    } else {
+      ctx.beginPath(); ctx.arc(pt.x, pt.y, pt.size/2, 0, Math.PI*2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+  // floaters
+  ctx.textAlign = 'center';
+  for (var n=0;n<floaters.length;n++){
+    var f = floaters[n];
+    ctx.globalAlpha = clamp(f.life, 0, 1);
+    ctx.font = '700 17px Fredoka, sans-serif';
+    ctx.fillStyle = f.color;
+    ctx.fillText(f.text, f.x, f.y);
+    ctx.globalAlpha = 1;
+  }
+  // height marker (right edge)
+  if (state === 'playing' || state === 'paused') drawHeightMarker();
+}
+
+
+/* ---------------- game flow ---------------- */
+function showOnly(id){
+  ['menuOverlay','howOverlay','pauseOverlay','overOverlay','settingsOverlay'].forEach(function(o){
+    if (o === id) show($(o)); else hide($(o));
+  });
+}
+function syncChrome(){
+  // pause button only makes sense while a run is live
+  document.body.classList.toggle('in-game', state === 'playing' || state === 'paused');
+}
+function startGame(){
+  ensureAudio(); SFX.click();
+  menuLoopRunning = false;
+  seedWorld();
+  state = 'playing';
+  showOnly(null);
+  syncChrome();
+  startMusic();
+  say('Game started. Bounce on the clouds and climb as high as you can.');
+  lastT = performance.now();
+  cancelAnimationFrame(rafId);
+  rafId = requestAnimationFrame(loop);
+}
+function pauseGame(){
+  if (state !== 'playing') return;
+  state = 'paused';
+  $('pauseHeight').textContent = heightBlocks;
+  $('pauseTokens').textContent = tokenCount;
+  showOnly('pauseOverlay');
+  syncChrome();
+  say('Paused at ' + heightBlocks + ' blocks.');
+}
+function resumeGame(){
+  if (state !== 'paused') return;
+  ensureAudio(); SFX.click();
+  state = 'playing';
+  showOnly(null);
+  syncChrome();
+  lastT = performance.now();
+  cancelAnimationFrame(rafId);
+  rafId = requestAnimationFrame(loop);
+}
+function quitToMenu(){
+  state = 'menu';
+  stopMusic();
+  seedWorld();
+  $('menuBest').textContent = bestHeight;
+  $('menuBestTokens').textContent = bestTokens;
+  showOnly('menuOverlay');
+  syncChrome();
+  renderMenuBackdrop();
+}
+function gameOver(){
+  if (state !== 'playing') return;
+  state = 'over';
+  player.dead = true;
+  SFX.fall(); setTimeout(function(){ SFX.over(); }, 350);
+  stopMusic();
+  if (!REDUCED) puff(player.x + player.w/2, player.y - camY, 16, ['#FF6B6B','#FFC94D','#7C6FF0'], 3, .9);
+  var isNewBest = heightBlocks > bestHeight;
+  var isNewBestTokens = tokenCount > bestTokens;
+  if (isNewBest){ bestHeight = heightBlocks; lsSet(LS.best, bestHeight); }
+  if (isNewBestTokens){ bestTokens = tokenCount; lsSet(LS.bestTokens, bestTokens); }
+  var stars = starCount(heightBlocks);
+  $('overTitle').textContent = heightBlocks >= 120 ? 'Sky Legend!' : heightBlocks >= 60 ? 'Cloud Master!' : heightBlocks >= 25 ? 'High Flyer!' : 'Tumbled!';
+  $('overTag').textContent = heightBlocks >= 120 ? 'Pip soared past the dusk clouds — legendary hopping!' :
+    heightBlocks >= 60 ? 'Pip danced among the high clouds. Amazing climb!' :
+    heightBlocks >= 25 ? 'A splendid climb — the sun was cheering you on!' :
+    'Pip slipped off a cloud… but what a climb!';
+  $('overStars').innerHTML = '';
+  for (var i=0;i<3;i++){
+    var s = document.createElement('span');
+    s.textContent = '★'; s.className = i < stars ? '' : 'off';
+    s.setAttribute('aria-hidden','true');
+    $('overStars').appendChild(s);
+  }
+  $('overStars').setAttribute('aria-label', stars + ' of 3 stars');
+  $('newBestBadge').hidden = !isNewBest;
+  $('overBest').textContent = bestHeight;
+  $('overTokens').textContent = tokenCount;
+  $('overBursts').textContent = burstUsed;
+  $('overBestTokens').textContent = bestTokens;
+  $('overStreak').textContent = bestStreak;
+  showOnly('overOverlay');
+  syncChrome();
+  // count-up animation on the final height
+  var target = heightBlocks, el = $('overScore'), t0 = performance.now(), dur = REDUCED ? 1 : 900;
+  function countUp(now){
+    var k = clamp((now - t0) / dur, 0, 1);
+    el.textContent = Math.round(target * (1 - Math.pow(1 - k, 3)));
+    if (k < 1) requestAnimationFrame(countUp);
+  }
+  requestAnimationFrame(countUp);
+  say('Game over. You reached ' + heightBlocks + ' blocks. Best height ' + bestHeight + ' blocks.');
+}
+var menuLoopRunning = false;
+function renderMenuBackdrop(){
+  // gentle animated backdrop behind the menu overlay
+  if (state !== 'menu' || menuLoopRunning) return;
+  menuLoopRunning = true;
+  function frame(){
+    if (state !== 'menu'){ menuLoopRunning = false; return; }
+    elapsed += 1;
+    player.blink = (Math.random() < 0.01) ? 8 : Math.max(0, player.blink - 1);
+    if (Math.random() < 0.05) player.squash = 0.6;
+    player.squash = Math.max(0, player.squash - 0.02);
+    render();
+    rafId = requestAnimationFrame(frame);
+  }
+  render();
+  rafId = requestAnimationFrame(frame);
+}
+
+/* ---------------- main loop ---------------- */
+function loop(now){
+  if (state !== 'playing') return;
+  var dt = clamp((now - lastT) / 16.667, 0.5, 2.5); // frame-normalised
+  lastT = now;
+  update(dt);
+  render();
+  if (state === 'playing') rafId = requestAnimationFrame(loop);
+}
+
+/* ---------------- input ---------------- */
+function canvasPos(e){
+  var r = canvas.getBoundingClientRect();
+  var cx = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
+  return cx - r.left;
+}
+canvas.addEventListener('pointerdown', function(e){
+  if (state !== 'playing') return;
+  ensureAudio();
+  pointer.active = true; pointer.x = canvasPos(e);
+  e.preventDefault();
+});
+window.addEventListener('pointermove', function(e){
+  if (pointer.active) pointer.x = canvasPos(e);
+});
+window.addEventListener('pointerup', function(){ pointer.active = false; });
+window.addEventListener('pointercancel', function(){ pointer.active = false; });
+canvas.addEventListener('touchstart', function(e){ e.preventDefault(); }, { passive:false });
+
+document.addEventListener('keydown', function(e){
+  if(e.target&&(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT'||e.target.isContentEditable))return; /* JJB merge: don't steal keys typed in site search */
+  if (e.repeat && (e.code === 'Space')) { e.preventDefault(); return; }
+  keys[e.code] = true;
+  if (e.code === 'ArrowLeft' || e.code === 'ArrowRight' || e.code === 'Space') e.preventDefault();
+  if (e.code === 'Space'){
+    if (state === 'playing') tryBurst();
+    else if (state === 'menu') startGame();
+    else if (state === 'over') startGame();
+  }
+  if (e.code === 'KeyP' || e.code === 'Escape'){
+    if (state === 'playing') pauseGame();
+    else if (state === 'paused') resumeGame();
+    else if (!$('howOverlay').classList.contains('hidden') || !$('settingsOverlay').classList.contains('hidden')){
+      if (state === 'paused') showOnly('pauseOverlay'); else showOnly('menuOverlay');
+    }
+  }
+  if (e.code === 'KeyR' && (state === 'playing' || state === 'paused' || state === 'over')) startGame();
+  if (e.code === 'KeyM') toggleMasterMute();
+  if (e.code === 'Enter' && state === 'menu') startGame();
+});
+document.addEventListener('keyup', function(e){ keys[e.code] = false; });
+
+/* tilt steering (opt-in, only if the device actually fires events) */
+var tiltWatchdog = null;
+function armTilt(){
+  if (!settings.tilt) return;
+  if (typeof DeviceOrientationEvent === 'undefined'){ tiltNote('Tilt is not supported on this device.'); return; }
+  if (typeof DeviceOrientationEvent.requestPermission === 'function'){
+    DeviceOrientationEvent.requestPermission().then(function(res){
+      if (res === 'granted') listenTilt(); else tiltNote('Tilt permission was declined — drag or arrow keys still work.');
+    }).catch(function(){ tiltNote('Tilt could not be enabled on this device.'); });
+  } else listenTilt();
+}
+function listenTilt(){
+  var gotEvent = false;
+  function onTilt(e){
+    if (e.gamma === null || e.gamma === undefined) return;
+    gotEvent = true; tiltActive = true; tiltX = clamp(e.gamma, -45, 45);
+  }
+  window.addEventListener('deviceorientation', onTilt);
+  clearTimeout(tiltWatchdog);
+  tiltWatchdog = setTimeout(function(){
+    if (!gotEvent){ tiltActive = false; tiltNote('No tilt sensor found on this device — drag or arrow keys still work.'); }
+  }, 2500);
+}
+function tiltNote(msg){ var n = $('tiltNote'); n.hidden = false; n.textContent = msg; }
+
+/* ---------------- settings / mute ---------------- */
+function toggleMasterMute(){
+  // master mute toggles both buses together
+  var bothOn = musicOn && sfxOn;
+  musicOn = sfxOn = !bothOn;
+  settings.music = musicOn; settings.sfx = sfxOn;
+  lsSet(LS.music, musicOn ? 'on' : 'off'); lsSet(LS.sfx, sfxOn ? 'on' : 'off');
+  applyVolume(); syncSettingsUI();
+  say(musicOn ? 'Sound on' : 'Sound muted');
+}
+function syncSettingsUI(){
+  $('musicToggle').setAttribute('aria-pressed', String(musicOn));
+  $('sfxToggle').setAttribute('aria-pressed', String(sfxOn));
+  $('volSlider').value = settings.volume;
+  $('volVal').textContent = settings.volume + '%';
+  $('tiltToggle').setAttribute('aria-pressed', String(settings.tilt));
+  var muted = !musicOn && !sfxOn;
+  $('muteBtn').setAttribute('aria-pressed', String(muted));
+  $('muteBtn').textContent = muted ? '🔇' : '🔊';
+}
+$('musicToggle').addEventListener('click', function(){
+  ensureAudio(); musicOn = !musicOn; settings.music = musicOn;
+  lsSet(LS.music, musicOn ? 'on' : 'off'); applyVolume(); syncSettingsUI(); SFX.click();
+});
+$('sfxToggle').addEventListener('click', function(){
+  ensureAudio(); sfxOn = !sfxOn; settings.sfx = sfxOn;
+  lsSet(LS.sfx, sfxOn ? 'on' : 'off'); applyVolume(); syncSettingsUI(); if (sfxOn) SFX.click();
+});
+$('volSlider').addEventListener('input', function(){
+  settings.volume = parseInt(this.value, 10) || 0;
+  lsSet(LS.volume, settings.volume); applyVolume(); syncSettingsUI();
+});
+$('tiltToggle').addEventListener('click', function(){
+  settings.tilt = !settings.tilt; lsSet(LS.tilt, settings.tilt ? 'on' : 'off');
+  if (settings.tilt){ tiltActive = false; armTilt(); } else { tiltActive = false; $('tiltNote').hidden = true; }
+  syncSettingsUI();
+});
+$('muteBtn').addEventListener('click', function(){ ensureAudio(); toggleMasterMute(); });
+$('burstBtn').addEventListener('click', function(){ ensureAudio(); tryBurst(); });
+$('pauseBtn').addEventListener('click', function(){
+  if (state === 'playing') pauseGame(); else if (state === 'paused') resumeGame();
+});
+
+/* ---------------- overlay buttons ---------------- */
+var settingsReturn = 'menu';
+function openSettings(from){
+  settingsReturn = from || 'menu';
+  showOnly('settingsOverlay');
+}
+$('playBtn').addEventListener('click', startGame);
+$('howBtn').addEventListener('click', function(){ ensureAudio(); SFX.click(); showOnly('howOverlay'); });
+$('settingsBtn').addEventListener('click', function(){ ensureAudio(); SFX.click(); openSettings('menu'); });
+$('howPlayBtn').addEventListener('click', startGame);
+$('howCloseBtn').addEventListener('click', function(){
+  SFX.click();
+  showOnly(state === 'paused' ? 'pauseOverlay' : 'menuOverlay');
+});
+$('resumeBtn').addEventListener('click', resumeGame);
+$('restartBtn').addEventListener('click', startGame);
+$('pauseSettingsBtn').addEventListener('click', function(){ openSettings('pause'); });
+$('pauseHowBtn').addEventListener('click', function(){ showOnly('howOverlay'); });
+$('quitBtn').addEventListener('click', function(){ SFX.click(); quitToMenu(); });
+$('replayBtn').addEventListener('click', startGame);
+$('overMenuBtn').addEventListener('click', function(){ SFX.click(); quitToMenu(); });
+$('settingsCloseBtn').addEventListener('click', function(){
+  SFX.click();
+  showOnly(settingsReturn === 'pause' ? 'pauseOverlay' : 'menuOverlay');
+});
+
+/* ---------------- resize / init ---------------- */
+function resize(){
+  var r = stage.getBoundingClientRect();
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  W = Math.max(280, Math.floor(r.width));
+  H = Math.max(420, Math.floor(r.height));
+  canvas.width = Math.floor(W * DPR);
+  canvas.height = Math.floor(H * DPR);
+  canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  if (state === 'menu'){ renderMenuBackdrop(); }
+  else render();
+}
+function seedBackground(){
+  bgClouds = [];
+  for (var i=0;i<7;i++){
+    bgClouds.push({ x: rand(-40, W), y: rand(20, H - 60), w: rand(48, 110), spd: rand(0.2, 0.7), a: rand(0.35, 0.7) });
+  }
+  stars = [];
+  for (var j=0;j<40;j++) stars.push({ x: rand(0, W), y: rand(0, H), r: rand(0.8, 2), ph: rand(0, 6) });
+}
+window.addEventListener('resize', function(){ resize(); seedBackground(); });
+document.addEventListener('visibilitychange', function(){
+  if (document.hidden && state === 'playing') pauseGame();
+});
+
+NS._state = function(){ return { state: state, height: heightBlocks, tokens: tokenCount,
+  burst: burstCharge, best: bestHeight, burstUsed: burstUsed, milestone: lastMilestone,
+  streak: tokenStreak, bestStreak: bestStreak,
+  clouds: clouds ? clouds.length : 0, music: musicOn, sfx: sfxOn, volume: settings.volume }; };
+NS._debug = { startGame: startGame, pauseGame: pauseGame, resumeGame: resumeGame, tryBurst: tryBurst,
+  setPlayer: function(x, y, vy, vx){ player.x = x; player.y = y; player.vy = vy; player.vx = (vx === undefined ? 0 : vx); },
+  setBurst: function(n){ burstCharge = n; updateHUD(); },
+  setStreak: function(n, t){ tokenStreak = n; streakT = t; },
+  getPlayer: function(){ return { x: player.x, y: player.y, vx: player.vx, vy: player.vy, camY: camY }; },
+  clouds: function(){ return clouds; }, tokens: function(){ return tokens; },
+  sampleCloudType: function(h){ return makeCloud(-1000, undefined, h).type; } };
+
+/* init */
+$('menuBest').textContent = bestHeight;
+$('menuBestTokens').textContent = bestTokens;
+syncSettingsUI();
+syncChrome();
+resize();
+seedBackground();
+seedWorld();
+state = 'menu';
+showOnly('menuOverlay');
+renderMenuBackdrop();
+if (settings.tilt) armTilt();
+})();
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('play-free-btn');
+  if(!btn) return;
+  btn.addEventListener('click',function(e){
+    e.preventDefault();
+    var play=document.getElementById('play');
+    if(play) play.scrollIntoView({behavior:'smooth',block:'start'});
+    var tries=0;
+    function tryStart(){
+      var start=document.getElementById('playBtn');
+      if(start && start.offsetParent!==null){ start.click(); return; }
+      if(++tries<2){ setTimeout(tryStart,400); }
+    }
+    setTimeout(tryStart,400);
+  });
+})();
+</script>
+  </section>
+  <section class="jjb-related" aria-label="More games to play" style="margin-top:28px">
+    <h2>More games to play</h2>
+    <div class="ggrid">
+    <article class="gcard">
+      <div class="gthumb"><img src="https://jojosblocks.online/games/thumbs/animal-guess.svg" alt="Animal Guess Game game" width="640" height="360" loading="lazy"></div>
+      <h3>Animal Guess Game</h3><p class="meta">Educational</p>
+      <a href="../../games/animal-guess/">Play free →</a>
+    </article>
+    <article class="gcard">
+      <div class="gthumb"><img src="https://jojosblocks.online/games/thumbs/memory-match.svg" alt="Memory Match Game game" width="640" height="360" loading="lazy"></div>
+      <h3>Memory Match Game</h3><p class="meta">Puzzle</p>
+      <a href="../../games/memory-match/">Play free →</a>
+    </article>
+    <article class="gcard">
+      <div class="gthumb"><img src="https://jojosblocks.online/games/thumbs/flappy-penguin.svg" alt="Flappy Penguin game" width="640" height="360" loading="lazy"></div>
+      <h3>Flappy Penguin</h3><p class="meta">Arcade</p>
+      <a href="../../games/flappy-penguin/">Play free →</a>
+    </article>
+    </div>
+  </section>
+</div></section>
+</main>
+<footer class="site"><div class="wrap">
+  <div class="fgrid">
+    <div>
+      <h3>JoJo's Blocks</h3>
+      <p>Digital products, free resources and games for creating, learning and play.</p>
+      <p style="margin-top:12px"><a class="pin-link" href="https://www.pinterest.com/JoJosBlocks/" target="_blank" rel="noopener"><svg class="pin-icon" viewBox="0 0 24 24" width="19" height="19" aria-hidden="true" fill="#E60023"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.39 18.592.026 11.985.026L12.017 0z"/></svg>Pinterest — @JoJosBlocks</a></p>
+    </div>
+    <div>
+      <h4>Shop</h4>
+      <a href="../../shop/">Our Products</a>
+      <a href="../../free-resources/">Free Resources</a>
+      <a href="../../games/">Games &amp; Play</a>
+      <a href="../../blog/">Blog</a>
+      <a href="../../recommended/">Affiliate Products</a>
+    </div>
+    <div>
+      <h4>Help</h4>
+      <a href="mailto:jojobusiness0101@gmail.com">Contact us</a>
+      <a href="../../#about">About</a>
+      <a href="../../free-printables/">Free Taster Pack</a>
+    </div>
+    <div>
+      <h4>Legal</h4>
+      <a href="../../privacy.html">Privacy Policy</a>
+      <a href="../../terms.html">Terms &amp; Conditions</a>
+      <a href="../../refund-policy.html">Refund Policy</a>
+    </div>
+  </div>
+  <div class="fine">
+    <span>© 2026 JoJo's Blocks. All rights reserved.</span>
+    <span>Sales are completed securely on Gumroad.</span>
+  </div>
+</div></footer>
+<!-- bottom tab bar (mobile only) -->
+<div class="tabbar"><nav aria-label="Quick navigation">
+  <a href="../../shop/" data-tab="shop"><span class="ti">▦</span>Shop</a>
+  <a href="../../free-resources/" data-tab="free"><span class="ti">✦</span>Free</a>
+  <a href="../../games/" data-tab="games" class="on"><span class="ti">▶</span>Play</a>
+  <a href="../../blog/" data-tab="blog"><span class="ti">✎</span>Blog</a>
+  <a href="#" data-tab="search" id="tabSearch"><span class="ti">⌕</span>Search</a>
+</nav></div>
+<div class="modal-back" id="modalBack" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal" id="modalBox">
+    <button class="x" id="modalClose" aria-label="Close product details">✕</button>
+    <div class="mgrid">
+      <div class="mcover" id="modalCover"></div>
+      <div class="mbody">
+        <p class="fmt" id="modalFmt"></p>
+        <h2 id="modalTitle"></h2>
+        <p class="mprice" id="modalPrice"></p>
+        <p class="msave" id="modalSave"></p>
+        <p id="modalDesc"></p>
+        <div class="macts">
+          <a class="btn btn-accent" id="modalBuy" href="#" target="_blank" rel="noopener">Buy on Gumroad</a>
+          <a class="btn btn-ghost btn-sm" id="modalPage" href="#" target="_blank" rel="noopener">View product page</a>
+        </div>
+        <p style="font-size:14px;color:var(--muted);margin-top:12px">Use code JOJOS10 at checkout for 10% off.</p>
+        <h3>What you get</h3>
+        <ul class="get" id="modalGet"></ul>
+        <h3>Good to know</h3>
+        <ul class="get">
+          <li>Instant PDF download</li>
+          <li>Print at home as often as you like</li>
+          <li>Personal &amp; family use</li>
+          <li>Secure checkout on Gumroad</li>
+          <li><a href="../../refund-policy.html" target="_blank" rel="noopener">Refund policy</a></li>
+        </ul>
+        <h3>Sample pages</h3>
+        <p class="sample-note">Real sample pages from this book will appear here once supplied. Try the <a href="https://jojosblocks.online/assets/free-resources/jojos-blocks-free-taster-pack.pdf" target="_blank" rel="noopener">Free Taster Pack</a> first — six sample pages, free.</p>
+      </div>
+    </div>
+    <div class="rel">
+      <h3>You may also like</h3>
+      <div class="chips" id="modalRelated"></div>
+      <a class="page-link" id="modalPageLink" href="#" target="_blank" rel="noopener">View product page →</a>
+    </div>
+    <div class="msticky">
+      <span class="msticky-price" id="mstickyPrice"></span>
+      <a class="btn btn-accent" id="mstickyBuy" href="#" target="_blank" rel="noopener">Buy on Gumroad</a>
+    </div>
+  </div>
+</div>
+<script>window.JB={root:"../../",page:"detail",kind:"games"};</script>
+<script type="application/json" id="product-data">{"bundle":{"title":"JoJo's Blocks Complete Coloring Book Bundle","price":12.99,"sale":11.69,"pages":154,"ages":"2–7","cover":"https://jojosblocks.online/assets/covers/bundle-cover.jpg","desc":"Four favorite adventures in one bundle — 154 pages of coloring, tracing, puzzles and learning for one low price. Includes My First ABC Book (28 pages, ages 2–4), My First Animal Explorer (30 pages), My Little Community Helpers (54 pages, 24 helpers) and My Little Space Adventure (42 pages, ages 3–5). Download the PDFs, print at home, and color!","gum":"https://jojosblocks.gumroad.com/l/jojos-blocks-coloring-bundle?wanted=true","page":"books/complete-coloring-book-bundle.html"},"abc":{"title":"My First ABC Book","price":3.99,"sale":3.59,"pages":28,"ages":"2–4","cover":"https://jojosblocks.online/assets/covers/book-01.jpg","desc":"Meet the alphabet one letter at a time. Each page pairs a big letter with a picture word — A is for Apple, B is for Ball, C is for Cat — with a color guide and tracing practice, so little ones learn, color and write their first letters.","gum":"https://jojosblocks.gumroad.com/l/my-first-abc-book?wanted=true","page":"books/my-first-abc-book.html"},"animal":{"title":"My First Animal Explorer","price":4.99,"sale":4.49,"pages":30,"ages":"3–6","cover":"https://jojosblocks.online/assets/covers/book-02.jpg","desc":"Hello, little explorer! Meet lions, elephants, giraffes, pandas, monkeys and more — learn each animal's name, trace the word, count, match and color. A certificate of achievement waits at the end for every super animal explorer.","gum":"https://jojosblocks.gumroad.com/l/my-first-animal-explorer?wanted=true","page":"books/my-first-animal-explorer.html"},"helpers":{"title":"My Little Community Helpers","price":4.99,"sale":4.49,"pages":54,"ages":"4–7","cover":"https://jojosblocks.online/assets/covers/book-03.jpg","desc":"Meet the people who help us every day! 24 community helpers — doctors, nurses, firefighters, police officers, teachers, veterinarians, electricians, mail carriers and more — with simple job descriptions, big coloring illustrations and a fun matching activity.","gum":"https://jojosblocks.gumroad.com/l/my-little-community-helpers?wanted=true","page":"books/my-little-community-helpers.html"},"space":{"title":"My Little Space Adventure","price":4.99,"sale":4.49,"pages":42,"ages":"3–5","cover":"https://jojosblocks.online/assets/covers/book-04.jpg","desc":"Join Nova, Zippy the alien and Rocket-7 on a mission to find the missing Cosmic Crystal. Color planets and alien worlds, solve mazes and puzzles, decode alien messages and take the Space Explorer Quiz — with a Junior Space Explorer certificate at the end.","gum":"https://jojosblocks.gumroad.com/l/my-little-space-adventure?wanted=true","page":"books/my-little-space-adventure.html"}}</script>
+<script src="../../assets/site.js" defer></script>
+</body>
+</html>

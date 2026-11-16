@@ -126,14 +126,20 @@ All prices are in USD. A 10% discount code JOJOS10 is automatically applied at G
 ### Games & Play
 
 - Page: https://jojosblocks.online/games/
-- What it is: Six original browser games you can play right here, free — no download, no account: Animal Guess (puzzle), Memory Match (memory), Tic-Tac-Toe vs JoJo (classic strategy), Click the Box (reflex arcade), Flappy Penguin (arcade), and Block Drop (puzzle/blocks). Each game has original procedural WebAudio music and sound effects, with mute and volume controls.
+- What it is: Twelve original browser games you can play right here, free — no download, no account: Animal Guess (puzzle), Memory Match (memory), Tic-Tac-Toe vs JoJo (classic strategy), Click the Box (reflex arcade), Flappy Penguin (arcade), Block Drop (puzzle/blocks), Twin Trails (dual-lane dodger), Perfect Timing Ring (one-tap timing), Penguin Stack (tower-stacking), Cloud Hop (cloud bounce), Hex Garden (hex-grid puzzle), and Beat Blocks (rhythm). Each game has original procedural WebAudio music and sound effects, with mute and volume controls.
 - Games:
   - Animal Guess: https://jojosblocks.online/games/animal-guess/
   - Memory Match: https://jojosblocks.online/games/memory-match/
-  - Tic-Tac-Toe vs JoJo: https://jojos-blocks.online/games/tic-tac-toe/
-  - Click the Box: https://jojos-blocks.online/games/click-the-box/
-  - Flappy Penguin: https://jojos-blocks.online/games/flappy-penguin/
-  - Block Drop: https://jojos-blocks.online/games/block-drop/
+  - Tic-Tac-Toe vs JoJo: https://jojosblocks.online/games/tic-tac-toe/
+  - Click the Box: https://jojosblocks.online/games/click-the-box/
+  - Flappy Penguin: https://jojosblocks.online/games/flappy-penguin/
+  - Block Drop: https://jojosblocks.online/games/block-drop/
+  - Twin Trails: https://jojosblocks.online/games/twin-trails/
+  - Perfect Timing Ring: https://jojosblocks.online/games/perfect-timing-ring/
+  - Penguin Stack: https://jojosblocks.online/games/penguin-stack/
+  - Cloud Hop: https://jojosblocks.online/games/cloud-hop/
+  - Hex Garden: https://jojosblocks.online/games/hex-garden/
+  - Beat Blocks: https://jojosblocks.online/games/beat-blocks/
 
 ### Digital Products
 

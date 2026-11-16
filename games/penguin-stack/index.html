@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Penguin Stack — Free Browser Game | JoJo's Blocks</title>
+<meta name="description" content="Penguin Stack: a tower-stacking arcade game. Tap to drop swinging ice blocks, stack them high, and help Pip the penguin climb to the sky.">
+<link rel="canonical" href="https://jojosblocks.online/games/penguin-stack/">
+<link rel="stylesheet" href="../../assets/styles.css">
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Game styles, scoped under #play (see build-merge.py). Original :root/​*​/body/button/.btn rules are prefixed with #play. */
+#play{position:relative}
+
+/* ============ Penguin Stack — original design, brand palette only ============ */
+#play{
+  --cream:#FFF9F0; --ink:#2B2D42; --coral:#FF6B6B; --sun:#FFC94D;
+  --teal:#2EC4B6; --lavender:#7C6FF0;
+  --teal-deep:#159E92; --lavender-deep:#5B4BD6;
+  --card-shadow:0 10px 30px rgba(43,45,66,.18), 0 2px 0 rgba(255,255,255,.7) inset;
+  --font-display:'Fredoka','Comic Sans MS',system-ui,sans-serif;
+  --font-body:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+#play *{box-sizing:border-box; margin:0; padding:0;}
+#play{height:100%;}
+#play{
+  font-family:var(--font-body); color:var(--ink); background:#1B1E33;
+  background-image:radial-gradient(1200px 600px at 50% -10%, #3A3E6E 0%, #1B1E33 60%);
+  display:flex; justify-content:center; overflow:hidden;
+  overscroll-behavior:none; -webkit-tap-highlight-color:transparent;
+}
+#play button{font-family:var(--font-display); cursor:pointer; touch-action:manipulation;}
+#play button:focus-visible, #play a:focus-visible, #play input:focus-visible{outline:3px solid var(--sun); outline-offset:2px;}
+#play [hidden]{display:none !important;}
+
+/* ---------- stage ---------- */
+#play .stage{
+  position:relative; width:100%; max-width:560px; height:100dvh; max-height:960px;
+  display:flex; flex-direction:column; overflow:hidden;
+  background:linear-gradient(180deg,#B9A8F5 0%,#8FD8E8 34%,#CDEFF2 55%,#FFF9F0 78%,#BFE8F2 100%);
+  box-shadow:0 0 60px rgba(0,0,0,.45);
+}
+@media (min-width:600px){ #play .stage{border-left:3px solid rgba(255,255,255,.35); border-right:3px solid rgba(255,255,255,.35);} }
+
+/* decorative sky: sun, aurora ribbons, clouds, distant bergs */
+#play .sky-decor{position:absolute; inset:0; pointer-events:none; overflow:hidden;}
+#play .sun-disc{
+  position:absolute; top:26px; right:26px; width:74px; height:74px; border-radius:50%;
+  background:radial-gradient(circle at 38% 35%, #FFF3C4 0%, var(--sun) 55%, #FFB347 100%);
+  box-shadow:0 0 34px 10px rgba(255,201,77,.55); animation:sunPulse 4s ease-in-out infinite;
+}
+@keyframes sunPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.06);}}
+#play .aurora{position:absolute; top:-40px; left:-10%; width:120%; height:190px; opacity:.55; filter:blur(6px);
+  background:linear-gradient(100deg, transparent 8%, rgba(46,196,182,.65) 30%, rgba(124,111,240,.6) 55%, transparent 82%);
+  border-radius:0 0 50% 50% / 0 0 100% 100%; transform:rotate(-4deg); animation:auroraSway 9s ease-in-out infinite alternate;}
+@keyframes auroraSway{from{transform:rotate(-6deg) translateX(-8px);}to{transform:rotate(-2deg) translateX(10px);}}
+#play .cloud{position:absolute; background:#fff; border-radius:999px; opacity:.85; filter:blur(1px);}
+#play .cloud::before, #play .cloud::after{content:""; position:absolute; background:#fff; border-radius:50%;}
+#play .cloud.c1{top:96px; left:8%; width:92px; height:26px; animation:drift 26s linear infinite;}
+#play .cloud.c1::before{width:40px; height:40px; top:-20px; left:14px;}
+#play .cloud.c1::after{width:28px; height:28px; top:-13px; right:16px;}
+#play .cloud.c2{top:150px; right:6%; width:70px; height:20px; animation:drift 34s linear infinite reverse;}
+#play .cloud.c2::before{width:30px; height:30px; top:-15px; left:10px;}
+#play .cloud.c2::after{width:22px; height:22px; top:-10px; right:12px;}
+@keyframes drift{from{transform:translateX(-30px);}to{transform:translateX(30px);}}
+#play .berg{position:absolute; bottom:0; width:0; height:0; border-style:solid; opacity:.5;}
+#play .berg.b1{left:-30px; border-width:0 120px 90px 120px; border-color:transparent transparent #9FDCE9 transparent;}
+#play .berg.b2{right:-20px; border-width:0 90px 64px 90px; border-color:transparent transparent #8FD0E4 transparent;}
+#play .sea{position:absolute; left:0; right:0; bottom:0; height:64px;
+  background:linear-gradient(180deg,#7FD0E8 0%, #3FA8C9 55%, #2E8FB5 100%);}
+#play .sea::before{content:""; position:absolute; inset:0;
+  background:repeating-linear-gradient(90deg, rgba(255,255,255,.28) 0 26px, transparent 26px 74px);
+  animation:seaMove 5s linear infinite;}
+@keyframes seaMove{from{background-position-x:0;}to{background-position-x:74px;}}
+
+/* ---------- top bar ---------- */
+#play .topbar{
+  position:relative; z-index:6; display:flex; align-items:center; gap:6px;
+  padding:10px 12px 4px;
+}
+#play .back-link{
+  display:inline-flex; align-items:center; justify-content:center; min-width:44px; min-height:44px;
+  padding:0 10px; border-radius:999px; background:rgba(255,249,240,.85); color:var(--ink);
+  font-family:var(--font-display); font-weight:600; font-size:15px; text-decoration:none;
+  box-shadow:0 3px 10px rgba(43,45,66,.18);
+}
+#play .top-title{flex:1; text-align:center; font-family:var(--font-display); font-weight:700; font-size:19px;
+  color:var(--ink); text-shadow:0 1px 0 rgba(255,255,255,.7); letter-spacing:.3px; white-space:nowrap; overflow:hidden;}
+@media (max-width:430px){
+  #play .topbar{gap:4px; padding:10px 8px 4px;}
+  #play .back-link{min-width:44px; padding:0 6px;}
+  #play .back-link .back-text{display:none;}
+  #play .top-title{font-size:17px;}
+}
+#play .icon-btn{
+  min-width:44px; min-height:44px; border-radius:50%; border:2px solid var(--ink);
+  background:var(--cream); color:var(--ink); font-size:20px; line-height:1;
+  display:inline-flex; align-items:center; justify-content:center;
+  box-shadow:0 3px 0 var(--ink); transition:transform .12s ease, box-shadow .12s ease, background .15s;
+}
+#play .icon-btn:active{transform:translateY(2px); box-shadow:0 1px 0 var(--ink);}
+#play .icon-btn[aria-pressed="true"]{background:var(--sun);}
+#play .icon-btn.off{background:#E8E2D5; color:#8A8578;}
+
+/* ---------- HUD ---------- */
+#play .hud{position:relative; z-index:6; display:flex; gap:8px; padding:6px 12px 2px; flex-wrap:wrap; justify-content:center;}
+#play .chip{
+  display:inline-flex; align-items:center; gap:6px; min-height:40px; padding:6px 14px;
+  border-radius:999px; background:rgba(255,249,240,.92); box-shadow:0 3px 10px rgba(43,45,66,.16);
+  font-family:var(--font-display); font-weight:600; font-size:16px; color:var(--ink);
+}
+#play .chip .ic{font-size:17px;}
+#play .chip .val{font-weight:700; font-size:18px;}
+#play .chip.score{background:linear-gradient(135deg,#FFE9A8,#FFC94D);}
+#play .chip.combo{background:linear-gradient(135deg,#FFD2D2,#FF6B6B); color:#fff; animation:comboPop .3s ease;}
+#play .chip.wind{background:linear-gradient(135deg,#DCD6FF,#7C6FF0); color:#fff;}
+#play .chip.wind.gusting{animation:windFlash .5s ease infinite alternate;}
+#play .chip.level{background:linear-gradient(135deg,#DCD6FF,#7C6FF0); color:#fff;}
+@keyframes windFlash{from{box-shadow:0 0 0 0 rgba(124,111,240,.7);}to{box-shadow:0 0 0 7px rgba(124,111,240,0);}}
+@keyframes comboPop{0%{transform:scale(1);}40%{transform:scale(1.18);}100%{transform:scale(1);}}
+
+/* ---------- play area ---------- */
+#play .play-area{position:relative; z-index:3; flex:1; min-height:0; touch-action:none; overflow:hidden;}
+#play #game-canvas{position:absolute; inset:0; width:100%; height:100%; display:block; touch-action:none;}
+#play .tap-hint{
+  position:absolute; left:50%; bottom:14px; transform:translateX(-50%);
+  background:rgba(43,45,66,.82); color:var(--cream); font-family:var(--font-display); font-weight:600;
+  font-size:15px; padding:10px 18px; border-radius:999px; pointer-events:none; white-space:nowrap;
+  animation:hintBob 1.6s ease-in-out infinite;
+}
+@keyframes hintBob{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-5px);}}
+#play .perfect-banner{
+  position:absolute; left:50%; top:22%; transform:translate(-50%,-50%) scale(.6); z-index:8;
+  background:linear-gradient(135deg,#FFE066,#FFC94D 60%,#FFB347); color:var(--ink);
+  font-family:var(--font-display); font-weight:700; font-size:30px; letter-spacing:1px;
+  padding:12px 26px; border-radius:999px; border:3px solid var(--ink);
+  box-shadow:0 8px 24px rgba(255,180,40,.55), 0 3px 0 var(--ink);
+  opacity:0; pointer-events:none; white-space:nowrap; text-shadow:0 1px 0 #fff;
+}
+#play .perfect-banner.show{animation:bannerPop .9s ease forwards;}
+@keyframes bannerPop{
+  0%{opacity:0; transform:translate(-50%,-50%) scale(.5) rotate(-4deg);}
+  18%{opacity:1; transform:translate(-50%,-50%) scale(1.12) rotate(2deg);}
+  32%{transform:translate(-50%,-50%) scale(1) rotate(0deg);}
+  75%{opacity:1; transform:translate(-50%,-50%) scale(1);}
+  100%{opacity:0; transform:translate(-50%,-70%) scale(.95);}
+}
+#play .milestone-banner{
+  position:absolute; left:50%; top:34%; transform:translate(-50%,-50%) scale(.6); z-index:8;
+  background:linear-gradient(135deg,#DCD6FF,#7C6FF0 55%,#2EC4B6); color:#fff;
+  font-family:var(--font-display); font-weight:700; font-size:24px; letter-spacing:.5px;
+  padding:12px 24px; border-radius:999px; border:3px solid var(--ink);
+  box-shadow:0 8px 24px rgba(124,111,240,.5), 0 3px 0 var(--ink);
+  opacity:0; pointer-events:none; white-space:nowrap; text-shadow:0 1px 0 rgba(43,45,66,.4);
+}
+#play .milestone-banner.show{animation:bannerPop .9s ease forwards;}
+#play .wind-toast{
+  position:absolute; left:50%; top:12%; transform:translateX(-50%); z-index:8;
+  background:linear-gradient(135deg,#DCD6FF,#7C6FF0); color:#fff; font-family:var(--font-display);
+  font-weight:600; font-size:16px; padding:10px 18px; border-radius:999px; border:2px solid #fff;
+  box-shadow:0 6px 18px rgba(91,75,214,.5); opacity:0; pointer-events:none; white-space:nowrap;
+}
+#play .wind-toast.show{animation:toastIn 2.2s ease forwards;}
+@keyframes toastIn{0%{opacity:0; transform:translateX(-50%) translateY(-8px);}12%{opacity:1; transform:translateX(-50%) translateY(0);}80%{opacity:1;}100%{opacity:0;}}
+#play .score-pop{
+  position:absolute; z-index:8; font-family:var(--font-display); font-weight:700; font-size:22px;
+  color:var(--ink); text-shadow:0 2px 0 #fff, 0 0 12px rgba(255,201,77,.9); pointer-events:none;
+  animation:popFloat 1s ease-out forwards;
+}
+#play .score-pop.perfect{color:#B97E00;}
+@keyframes popFloat{0%{opacity:0; transform:translate(-50%,0) scale(.7);}20%{opacity:1; transform:translate(-50%,-14px) scale(1.15);}100%{opacity:0; transform:translate(-50%,-58px) scale(1);}}
+
+/* ---------- overlays ---------- */
+#play .overlay{
+  position:absolute; inset:0; z-index:20; display:flex;
+  padding:18px; background:rgba(27,30,51,.42); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+}
+#play .panel{
+  width:100%; max-width:440px; max-height:100%; overflow-y:auto; margin:auto; background:var(--cream);
+  border-radius:24px; border:3px solid var(--ink); box-shadow:var(--card-shadow);
+  padding:24px 22px 22px; text-align:center; animation:panelIn .35s ease;
+}
+@keyframes panelIn{from{opacity:0; transform:translateY(18px) scale(.96);}to{opacity:1; transform:translateY(0) scale(1);}}
+#play .panel h1{font-family:var(--font-display); font-weight:700; font-size:36px; line-height:1.05; margin:8px 0 4px;}
+#play .panel h2{font-family:var(--font-display); font-weight:700; font-size:28px; margin-bottom:6px;}
+#play .panel p{font-size:16px; line-height:1.5; color:#4A4D68;}
+#play .tagline{font-size:17px; font-weight:700; color:var(--teal-deep);}
+#play .hero-wrap{display:flex; justify-content:center; margin-bottom:2px;}
+#play .hero-wrap svg{width:210px; height:auto; filter:drop-shadow(0 8px 14px rgba(43,45,66,.25)); animation:heroBob 3s ease-in-out infinite;}
+@keyframes heroBob{0%,100%{transform:translateY(0) rotate(-1deg);}50%{transform:translateY(-8px) rotate(1.5deg);}}
+#play .best-line{margin:10px 0 2px; font-family:var(--font-display); font-weight:600; font-size:16px;}
+#play .best-line b{color:#B97E00;}
+
+/* buttons */
+#play .btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  min-height:52px; min-width:44px; padding:12px 26px; border-radius:999px; border:2px solid var(--ink);
+  font-family:var(--font-display); font-weight:700; font-size:18px; color:var(--ink);
+  background:linear-gradient(180deg,#fff,#FFE9C2);
+  box-shadow:0 4px 0 var(--ink); transition:transform .12s ease, box-shadow .12s ease, filter .15s;
+}
+#play .btn:active{transform:translateY(3px); box-shadow:0 1px 0 var(--ink);}
+#play .btn.primary{background:linear-gradient(180deg,#FF8A8A,#FF6B6B); color:#fff; font-size:20px; padding:13px 34px;}
+#play .btn.teal{background:linear-gradient(180deg,#5FE0D2,#2EC4B6); color:#fff;}
+#play .btn.sun{background:linear-gradient(180deg,#FFE066,#FFC94D);}
+#play .btn.lav{background:linear-gradient(180deg,#A99CFF,#7C6FF0); color:#fff;}
+#play .btn.ghost{background:#fff;}
+#play .btn-block{display:flex; width:100%;}
+#play .btn-row{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:14px;}
+#play .btn-row .btn{flex:1 1 auto;}
+#play .stack-gap{display:flex; flex-direction:column; gap:10px; margin-top:16px;}
+
+/* how-to */
+#play .howto-list{text-align:left; margin:14px auto 4px; max-width:340px; display:flex; flex-direction:column; gap:10px;}
+#play .howto-list li{list-style:none; display:flex; gap:10px; align-items:flex-start; font-size:15.5px; line-height:1.45;}
+#play .howto-list .n{
+  flex:0 0 30px; width:30px; height:30px; border-radius:50%; background:var(--sun);
+  border:2px solid var(--ink); font-family:var(--font-display); font-weight:700;
+  display:flex; align-items:center; justify-content:center; font-size:15px;
+}
+#play .howto-list li:nth-child(2) .n{background:var(--teal); color:#fff;}
+#play .howto-list li:nth-child(3) .n{background:var(--lavender); color:#fff;}
+#play .howto-list li:nth-child(4) .n{background:var(--coral); color:#fff;}
+#play .howto-list li:nth-child(5) .n{background:#2B2D42; color:#fff;}
+/* animated how-to demo: a block swings, lines up, then drops (original CSS animation) */
+#play .demo-stage{position:relative; height:120px; margin:14px auto 2px; max-width:340px; border-radius:16px; overflow:hidden;
+  background:linear-gradient(180deg,#B9A8F5 0%,#8FD8E8 45%,#CDEFF2 70%,#BFE8F2 100%); border:2px solid var(--ink);}
+#play .demo-guide{position:absolute; left:50%; top:10px; bottom:34px; width:2px; margin-left:-1px; background:rgba(43,45,66,.28);}
+#play .demo-tower{position:absolute; left:50%; bottom:0; width:76px; height:34px; margin-left:-38px;
+  background:linear-gradient(180deg,#fff,#9FD8E8); border:2px solid var(--ink); border-bottom:none; border-radius:8px 8px 0 0;}
+#play .demo-block{position:absolute; left:50%; top:10px; width:56px; height:22px; margin-left:-28px;
+  background:linear-gradient(180deg,#fff,#BFEDE8 60%,#9FD8E8); border:2px solid var(--ink); border-radius:7px;
+  animation:demoDrop 2.8s ease-in-out infinite;}
+#play .demo-tap{position:absolute; left:50%; top:44px; margin-left:24px; font-family:var(--font-display); font-weight:700; font-size:14px;
+  background:var(--ink); color:var(--cream); padding:4px 10px; border-radius:999px; opacity:0; animation:demoTap 2.8s ease-in-out infinite;}
+@keyframes demoDrop{
+  0%{transform:translateX(-52px) translateY(0);}
+  28%{transform:translateX(52px) translateY(0);}
+  44%{transform:translateX(0) translateY(0);}
+  52%{transform:translateX(0) translateY(0);}
+  62%{transform:translateX(0) translateY(54px);}
+  76%{transform:translateX(0) translateY(54px); opacity:1;}
+  80%{opacity:0;}
+  81%{transform:translateX(-52px) translateY(0); opacity:0;}
+  90%{opacity:1;}
+  100%{transform:translateX(-52px) translateY(0); opacity:1;}
+}
+@keyframes demoTap{0%,40%{opacity:0;}48%,60%{opacity:1;}68%,100%{opacity:0;}}
+#play .demo-caption{font-size:14px; font-weight:700; color:var(--teal-deep); margin-top:6px;}
+#play kbd{
+  font-family:var(--font-body); font-weight:800; background:#fff; border:2px solid var(--ink);
+  border-bottom-width:3px; border-radius:8px; padding:1px 8px; font-size:14px;
+}
+
+/* settings */
+#play .set-row{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 4px; border-bottom:2px dashed #E5DCC8; font-weight:700; font-size:16px;}
+#play .set-row:last-of-type{border-bottom:none;}
+#play .toggle{
+  min-width:76px; min-height:44px; border-radius:999px; border:2px solid var(--ink);
+  font-family:var(--font-display); font-weight:700; font-size:15px; background:#E8E2D5; color:#8A8578;
+  box-shadow:0 3px 0 var(--ink); transition:all .15s;
+}
+#play .toggle[aria-pressed="true"]{background:var(--teal); color:#fff;}
+#play .toggle:active{transform:translateY(2px); box-shadow:0 1px 0 var(--ink);}
+#play input[type="range"]{width:150px; height:44px; accent-color:var(--teal); cursor:pointer;}
+
+/* game over */
+#play .big-score{font-family:var(--font-display); font-weight:700; font-size:64px; line-height:1; color:var(--ink); margin:6px 0 2px;}
+#play .big-score small{font-size:20px; color:#6A6D85;}
+#play .stat-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:14px 0 4px;}
+#play .stat-cell{background:#fff; border:2px solid #E5DCC8; border-radius:16px; padding:10px 8px;}
+#play .stat-cell .k{font-size:13px; font-weight:800; text-transform:uppercase; letter-spacing:.6px; color:#6A6D85;}
+#play .stat-cell .v{font-family:var(--font-display); font-weight:700; font-size:24px;}
+#play .new-best{
+  display:inline-block; margin-top:8px; background:linear-gradient(135deg,#FFE066,#FFC94D);
+  border:2px solid var(--ink); border-radius:999px; padding:6px 16px;
+  font-family:var(--font-display); font-weight:700; font-size:16px; animation:comboPop .4s ease;
+}
+#play .stars-row{font-size:30px; letter-spacing:6px; margin:4px 0 2px;}
+#play .stars-row .dim{opacity:.28; filter:grayscale(1);}
+
+/* footer */
+#play .game-footer{
+  position:relative; z-index:6; text-align:center; padding:6px 10px 10px;
+  font-size:12.5px; font-weight:700; color:rgba(43,45,66,.75); letter-spacing:.3px;
+}
+#play .game-footer a{color:var(--ink);}
+
+/* small screens */
+@media (max-width:380px){
+  #play .panel h1{font-size:30px;}
+  #play .topbar{gap:3px; padding:10px 6px 4px;}
+  #play .top-title{font-size:14px; letter-spacing:0;}
+  #play .chip{font-size:14px; padding:5px 11px;}
+  #play .chip .val{font-size:16px;}
+  #play .perfect-banner{font-size:24px; padding:10px 20px;}
+}
+@media (prefers-reduced-motion: reduce){
+  #play *, #play *::before, #play *::after{animation-duration:.001s !important; animation-iteration-count:1 !important; transition-duration:.001s !important;}
+}
+#play .sr-only{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;}
+
+</style>
+<style>
+/* Page chrome for the merged game section + related games (jjb-* classes
+   are unique to these pages; no collision with styles.css). */
+.jjb-play{position:relative;margin-top:28px}
+/* MERGE FIX: game overlays (.overlay, z-index 20/50 in the sources) sat
+   BELOW the sticky site header/tabbar (z-index 70), so at some scroll
+   positions the panel slid under the header and clicks leaked to the
+   header (e.g. focusing the search box). 71 puts the overlay above the
+   header/tabbar but below the flyout (75), suggestions (80), search
+   overlay (85) and modal (90). The overlay stays confined to #play. */
+#play .overlay{z-index:71}
+.jjb-related{margin:36px 0 8px}
+.jjb-related h2{font-size:22px;margin:0 0 14px}
+.jjb-rel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:640px){.jjb-rel-grid{grid-template-columns:1fr}}
+.jjb-rel-card{display:block;text-decoration:none;color:inherit}
+.jjb-rel-card img{width:100%;height:auto;display:block;border-radius:10px}
+.jjb-rel-card span{display:block;margin-top:8px;font-weight:700}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<!-- promo strip -->
+<div class="strip"><b>Instant PDF download, secure checkout on Gumroad.</b> Code JOJOS10 saves 10%.</div>
+
+<!-- header -->
+<header class="site">
+  <div class="hd">
+    <a class="logo" href="../../"><img class="logo-mark" src="../../assets/profile-logo.jpg" alt="JoJo's Blocks logo" width="1000" height="1000">JoJo's Blocks</a>
+    <form class="search" id="headSearch" role="search" aria-label="Search the store" action="../../search/" method="get">
+      <input id="searchInput" name="q" type="search" placeholder="Search books, free printables, games…" aria-label="Search books, free resources, games and articles" autocomplete="off">
+      <button type="submit">Search</button>
+      <div class="suggest" id="headSuggest" role="listbox" aria-label="Search suggestions"></div>
+    </form>
+    <button class="search-icon-btn" id="searchIconBtn" aria-label="Open search" aria-expanded="false">⌕</button>
+  </div>
+</header>
+
+<!-- mobile search overlay -->
+<div class="search-overlay" id="searchOverlay" role="search" aria-label="Search the store">
+  <div class="so-row">
+    <form class="search" id="mobSearch" action="../../search/" method="get" style="display:flex">
+      <input id="mobSearchInput" name="q" type="search" placeholder="Search books, free printables, games…" aria-label="Search books, free resources, games and articles" autocomplete="off">
+      <button type="submit">Search</button>
+    </form>
+    <button class="so-close" id="searchOverlayClose" aria-label="Close search">✕</button>
+  </div>
+  <div class="suggest" id="mobSuggest" role="listbox" aria-label="Search suggestions"></div>
+</div>
+
+<nav class="dept" aria-label="Departments"><div class="wrap" id="deptNav">
+  <a href="../../shop/">Shop</a>
+  <a href="../../recommended/">Affiliate Products</a>
+  <span class="has-fly"><a href="../../free-resources/" aria-haspopup="true">Free resources</a><span class="flyout"><a href="../../free-resources/category/coloring/">Coloring</a><a href="../../free-resources/category/learn-to-draw/">Learn to draw</a><a href="../../free-resources/category/worksheets/">Worksheets</a><a href="../../free-resources/category/planners/">Planners</a><a href="../../free-resources/category/printables/">Printables</a><a href="../../free-resources/category/wallpapers/">Wallpapers</a><a href="../../free-resources/category/ai/">AI</a><a href="../../free-resources/category/stickers/">Stickers</a><a class="viewall" href="../../free-resources/">View all →</a></span></span>
+  <span class="has-fly"><a href="../../games/" class="on" aria-haspopup="true">Games & play</a><span class="flyout"><a href="../../games/category/puzzle/">Puzzle</a><a href="../../games/category/arcade/">Arcade</a><a href="../../games/category/casual/">Casual</a><a href="../../games/category/educational/">Educational</a><a class="viewall" href="../../games/">View all →</a></span></span>
+  <span class="has-fly"><a href="../../blog/" aria-haspopup="true">Blog</a><span class="flyout"><a href="../../blog/category/guides/">Guides</a><a href="../../blog/category/activities/">Activities</a><a href="../../blog/category/fun-facts/">Fun facts</a><a class="viewall" href="../../blog/">View all →</a></span></span>
+</div></nav>
+<main id="main">
+<section class="block"><div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><span>Home</span> <span class="sep">›</span><a href="../../games/">Games &amp; Play</a> <span class="sep">›</span><a href="../../games/category/arcade/">Arcade</a> <span class="sep">›</span><span>Penguin Stack</span></nav>
+  <div class="detail"><div class="dgrid">
+    <div class="dcover"><img src="https://jojosblocks.online/games/thumbs/penguin-stack.svg" alt="Penguin Stack game" width="640" height="360"></div>
+    <div>
+      <p class="dmeta">Browser game · Arcade · Free</p>
+      <h1>Penguin Stack</h1>
+      <p>Penguin Stack: a tower-stacking arcade game. Tap to drop swinging ice blocks, stack them high, and help Pip the penguin climb to the sky.</p>
+      <div class="dbuy">
+        <a class="btn btn-ink" href="#play" id="play-free-btn">Play free →</a>
+        <a class="btn btn-ghost" href="../../games/">All games</a>
+      </div>
+      <p class="dnote">Plays right here on jojosblocks.online. No downloads, no accounts.</p>
+    </div>
+  </div></div>
+
+  <section id="play" class="jjb-play" aria-label="Play Penguin Stack">
+
+<div class="stage" id="stage">
+  <!-- scenery -->
+  <div class="sky-decor" aria-hidden="true">
+    <div class="aurora"></div>
+    <div class="sun-disc"></div>
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+    <div class="berg b1"></div>
+    <div class="berg b2"></div>
+    <div class="sea"></div>
+  </div>
+
+  <!-- top bar -->
+  <header class="topbar">
+    
+    <div class="top-title">Penguin Stack</div>
+    <button class="icon-btn" id="btn-sfx" type="button" aria-label="Toggle sound effects" aria-pressed="true" title="Sound effects">🔊</button>
+    <button class="icon-btn" id="btn-music" type="button" aria-label="Toggle music" aria-pressed="true" title="Music">🎵</button>
+    <button class="icon-btn" id="btn-pause" type="button" aria-label="Pause game" title="Pause (P)">⏸</button>
+  </header>
+
+  <!-- HUD -->
+  <div class="hud" role="status" aria-label="Game status">
+    <span class="chip score"><span class="ic">🧊</span>Height <span class="val" id="hud-height">0</span></span>
+    <span class="chip"><span class="ic">⭐</span>Score <span class="val" id="hud-score">0</span></span>
+    <span class="chip"><span class="ic">🏆</span>Best <span class="val" id="hud-best">0</span></span>
+    <span class="chip level" id="hud-level" hidden><span class="ic">🎈</span>Level <span class="val" id="hud-level-val">1</span></span>
+    <span class="chip combo" id="hud-combo" hidden><span class="ic">🔥</span>Combo ×<span class="val" id="hud-combo-val">2</span></span>
+    <span class="chip wind" id="hud-wind" hidden><span class="ic">💨</span><span id="hud-wind-text">Wind: calm</span></span>
+  </div>
+
+  <!-- play area -->
+  <div class="play-area" id="play-area">
+    <canvas id="game-canvas" aria-label="Penguin Stack play area. Tap, click or press Space to drop the swinging ice block."></canvas>
+    <div class="perfect-banner" id="perfect-banner" aria-hidden="true">★ PERFECT! ★</div>
+    <div class="milestone-banner" id="milestone-banner" aria-hidden="true"></div>
+    <div class="wind-toast" id="wind-toast" aria-hidden="true">💨 Wind gust! Hold steady…</div>
+    <div class="tap-hint" id="tap-hint" hidden>Tap, click or press Space to drop</div>
+  </div>
+
+  <!-- footer -->
+  
+
+  <div class="sr-only" aria-live="polite" id="live"></div>
+
+  <!-- ============ START ============ -->
+  <div class="overlay" id="ov-start" role="dialog" aria-modal="true" aria-labelledby="title-start">
+    <div class="panel">
+      <div class="hero-wrap" aria-hidden="true">
+        <!-- Original hero art: Pip the penguin on an ice-block tower, drawn for this game -->
+        <svg viewBox="0 0 220 190" role="img" aria-label="Pip the penguin standing on a stack of ice blocks">
+          <ellipse cx="110" cy="178" rx="86" ry="9" fill="#7FB6D9" opacity=".45"/>
+          <g>
+            <rect x="52" y="140" width="116" height="30" rx="8" fill="#BFEDE8" stroke="#2B2D42" stroke-width="3"/>
+            <rect x="52" y="140" width="116" height="9" rx="4" fill="#FFFFFF"/>
+            <rect x="64" y="112" width="92" height="28" rx="8" fill="#DCD6FF" stroke="#2B2D42" stroke-width="3"/>
+            <rect x="64" y="112" width="92" height="8" rx="4" fill="#FFFFFF"/>
+            <rect x="76" y="86" width="68" height="26" rx="8" fill="#FFE9A8" stroke="#2B2D42" stroke-width="3"/>
+            <rect x="76" y="86" width="68" height="8" rx="4" fill="#FFFFFF"/>
+          </g>
+          <g>
+            <ellipse cx="98" cy="76" rx="7" ry="4" fill="#FF6B6B"/>
+            <ellipse cx="122" cy="76" rx="7" ry="4" fill="#FF6B6B"/>
+            <ellipse cx="110" cy="52" rx="26" ry="30" fill="#2B2D42"/>
+            <ellipse cx="110" cy="60" rx="16" ry="19" fill="#FFFFFF"/>
+            <circle cx="101" cy="44" r="4.5" fill="#fff"/><circle cx="119" cy="44" r="4.5" fill="#fff"/>
+            <circle cx="101" cy="45" r="2.4" fill="#2B2D42"/><circle cx="119" cy="45" r="2.4" fill="#2B2D42"/>
+            <path d="M104 52 L116 52 L110 59 Z" fill="#FFC94D" stroke="#2B2D42" stroke-width="1.6" stroke-linejoin="round"/>
+            <circle cx="95" cy="54" r="3" fill="#FF6B6B" opacity=".55"/><circle cx="125" cy="54" r="3" fill="#FF6B6B" opacity=".55"/>
+            <path d="M86 58 Q110 70 134 58 L134 66 Q110 78 86 66 Z" fill="#FF6B6B"/>
+            <path d="M98 66 L122 66 L116 80 L104 80 Z" fill="#FF6B6B"/>
+            <ellipse cx="84" cy="56" rx="6" ry="12" fill="#2B2D42" transform="rotate(18 84 56)"/>
+            <ellipse cx="136" cy="56" rx="6" ry="12" fill="#2B2D42" transform="rotate(-18 136 56)"/>
+          </g>
+          <g fill="#FFC94D"><path d="M30 34 l3 7 7 1 -5 5 1 7 -6 -4 -6 4 1 -7 -5 -5 7 -1 z"/><path d="M188 22 l2.4 5.6 5.6 1 -4 4 1 5.6 -5 -3.4 -5 3.4 1 -5.6 -4 -4 5.6 -1 z"/><path d="M196 96 l2 4.6 4.6 1 -3.4 3.4 1 4.6 -4.2 -2.8 -4.2 2.8 1 -4.6 -3.4 -3.4 4.6 -1 z"/></g>
+        </svg>
+      </div>
+      <h1 id="title-start">Penguin Stack</h1>
+      <p class="tagline">Help Pip climb to the sky, one ice block at a time!</p>
+      <p style="margin-top:8px">Drop the swinging ice blocks, line them up perfectly, and build the tallest tower in the frozen bay. Watch out for the wind!</p>
+      <p class="best-line">🏆 Best tower: <b id="start-best">0</b> blocks</p>
+      <div class="stack-gap">
+        <button class="btn primary btn-block" id="btn-play" type="button">▶&nbsp; Play</button>
+        <div class="btn-row">
+          <button class="btn teal" id="btn-howto" type="button">How to play</button>
+          <button class="btn sun" id="btn-settings" type="button">⚙ Settings</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ HOW TO PLAY ============ -->
+  <div class="overlay" id="ov-howto" role="dialog" aria-modal="true" aria-labelledby="title-howto" hidden>
+    <div class="panel">
+      <h2 id="title-howto">How to play 🐧</h2>
+      <ol class="howto-list">
+        <li><span class="n">1</span><span><b>Tap, click or press <kbd>Space</kbd></b> to drop the swinging ice block onto the tower.</span></li>
+        <li><span class="n">2</span><span>Any part that hangs over the edge gets <b>sliced off</b> — the tower gets narrower every miss-aimed drop!</span></li>
+        <li><span class="n">3</span><span>Land a <b>perfect drop</b> to keep the full width, grow your combo and earn bonus points. Pip hops with joy!</span></li>
+        <li><span class="n">4</span><span>From height <b>8</b>, icy <b>wind gusts</b> push the swinging block — time your drop between gusts. Miss the tower completely and the run ends.</span></li>
+        <li><span class="n">5</span><span>Every <b>5 blocks</b> the level rises and the swing gets faster. Every <b>10 blocks</b> is a milestone worth <b>+5 bonus points</b> — and the wind gets stronger too!</span></li>
+      </ol>
+      <div class="demo-stage" aria-hidden="true">
+        <div class="demo-guide"></div>
+        <div class="demo-tower"></div>
+        <div class="demo-block"></div>
+        <div class="demo-tap">👆 TAP!</div>
+      </div>
+      <p class="demo-caption">Watch: the block swings… tap when it's lined up over the tower!</p>
+      <p style="margin-top:12px"><kbd>P</kbd> / <kbd>Esc</kbd> pause &nbsp;·&nbsp; <kbd>R</kbd> restart &nbsp;·&nbsp; <kbd>Space</kbd> drop</p>
+      <div class="btn-row">
+        <button class="btn primary" id="btn-howto-play" type="button">▶&nbsp; Play now</button>
+        <button class="btn ghost" id="btn-howto-close" type="button">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SETTINGS ============ -->
+  <div class="overlay" id="ov-settings" role="dialog" aria-modal="true" aria-labelledby="title-settings" hidden>
+    <div class="panel">
+      <h2 id="title-settings">Settings ⚙️</h2>
+      <div class="set-row"><span>🎵 Music</span><button class="toggle" id="set-music" type="button" aria-pressed="true">On</button></div>
+      <div class="set-row"><span>🔊 Sound effects</span><button class="toggle" id="set-sfx" type="button" aria-pressed="true">On</button></div>
+      <div class="set-row"><span>🔈 Volume</span><input type="range" id="set-volume" min="0" max="100" value="70" step="5" aria-label="Volume"></div>
+      <div class="btn-row"><button class="btn primary" id="btn-settings-close" type="button">Done</button></div>
+    </div>
+  </div>
+
+  <!-- ============ PAUSE ============ -->
+  <div class="overlay" id="ov-pause" role="dialog" aria-modal="true" aria-labelledby="title-pause" hidden>
+    <div class="panel">
+      <h2 id="title-pause">Paused ❄️</h2>
+      <p>Pip is taking a little breather on the tower.</p>
+      <p class="best-line">Height <b id="pause-height">0</b> · Score <b id="pause-score">0</b></p>
+      <div class="stack-gap">
+        <button class="btn primary btn-block" id="btn-resume" type="button">▶&nbsp; Resume</button>
+        <div class="btn-row">
+          <button class="btn teal" id="btn-restart-pause" type="button">↻ Restart</button>
+          <button class="btn sun" id="btn-settings-pause" type="button">⚙ Settings</button>
+          <button class="btn lav" id="btn-howto-pause" type="button">📖 How to play</button>
+        </div>
+        <button class="btn ghost btn-block" id="btn-quit" type="button">Quit to menu</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ GAME OVER ============ -->
+  <div class="overlay" id="ov-over" role="dialog" aria-modal="true" aria-labelledby="title-over" hidden>
+    <div class="panel">
+      <div class="hero-wrap" aria-hidden="true">
+        <svg viewBox="0 0 220 120" role="img" aria-label="Pip the penguin looking dizzy after the tower toppled" style="width:150px">
+          <ellipse cx="110" cy="106" rx="70" ry="8" fill="#7FB6D9" opacity=".45"/>
+          <g>
+            <ellipse cx="96" cy="98" rx="8" ry="4" fill="#FF6B6B"/>
+            <ellipse cx="126" cy="98" rx="8" ry="4" fill="#FF6B6B"/>
+            <ellipse cx="111" cy="66" rx="30" ry="34" fill="#2B2D42" transform="rotate(-8 111 66)"/>
+            <ellipse cx="112" cy="76" rx="18" ry="21" fill="#FFFFFF" transform="rotate(-8 112 76)"/>
+            <path d="M96 52 l6 6 M102 52 l-6 6 M122 50 l6 6 M128 50 l-6 6" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>
+            <ellipse cx="111" cy="66" rx="7" ry="4.5" fill="#FFC94D" stroke="#2B2D42" stroke-width="1.6"/>
+            <circle cx="97" cy="70" r="3.4" fill="#FF6B6B" opacity=".55"/><circle cx="127" cy="68" r="3.4" fill="#FF6B6B" opacity=".55"/>
+            <path d="M88 74 Q111 86 134 72 L134 80 Q111 92 88 82 Z" fill="#FF6B6B"/>
+            <g fill="#FFC94D"><path d="M52 26 l2.4 5.6 5.6 1 -4 4 1 5.6 -5 -3.4 -5 3.4 1 -5.6 -4 -4 5.6 -1 z"/><path d="M170 18 l2.4 5.6 5.6 1 -4 4 1 5.6 -5 -3.4 -5 3.4 1 -5.6 -4 -4 5.6 -1 z"/></g>
+          </g>
+        </svg>
+      </div>
+      <h2 id="title-over">Tower Toppled!</h2>
+      <p>Pip wobbled… and the ice block slid into the sea. What a climb, though!</p>
+      <div class="stars-row" id="over-stars" aria-label="Tower rating">⭐⭐⭐</div>
+      <div class="big-score"><span id="over-score">0</span><small> pts</small></div>
+      <div class="new-best" id="over-newbest" hidden>🎉 New best tower!</div>
+      <div class="stat-grid">
+        <div class="stat-cell"><div class="k">Tower height</div><div class="v" id="over-height">0</div></div>
+        <div class="stat-cell"><div class="k">Best height</div><div class="v" id="over-best">0</div></div>
+        <div class="stat-cell"><div class="k">Perfect drops</div><div class="v" id="over-perfect">0</div></div>
+        <div class="stat-cell"><div class="k">Best combo</div><div class="v" id="over-combo">×0</div></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn primary" id="btn-replay" type="button">↻&nbsp; Play again</button>
+        <button class="btn ghost" id="btn-menu" type="button">Menu</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+(function(){
+'use strict';
+/* =====================================================================
+   Penguin Stack — JJB-GAME-20261116-11
+   100% original vanilla JS. Tower-stacking arcade starring Pip, an
+   original cartoon penguin. No libraries, no copied code or art.
+   ===================================================================== */
+var NS = window.JJBPenguinStack = window.JJBPenguinStack || {};
+NS.version = '1.1.0';
+NS.gameId = 'JJB-GAME-20261116-11';
+
+var $ = function(id){ return document.getElementById(id); };
+var stage = $('stage'), playArea = $('play-area'), canvas = $('game-canvas'), ctx = canvas.getContext('2d');
+var live = $('live');
+var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------------- persistence ---------------- */
+var K = { best:'jjb-penguin-stack-best', music:'jjb-penguin-stack-music',
+          sfx:'jjb-penguin-stack-sfx', volume:'jjb-penguin-stack-volume' };
+function lsGet(k, d){ try{ var v = localStorage.getItem(k); return v === null ? d : v; }catch(e){ return d; } }
+function lsSet(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
+var settings = {
+  music: lsGet(K.music, 'on') !== 'off',
+  sfx: lsGet(K.sfx, 'on') !== 'off',
+  volume: Math.max(0, Math.min(100, parseInt(lsGet(K.volume, '70'), 10) || 70))
+};
+var best = parseInt(lsGet(K.best, '0'), 10) || 0;
+function saveSettings(){
+  lsSet(K.music, settings.music ? 'on' : 'off');
+  lsSet(K.sfx, settings.sfx ? 'on' : 'off');
+  lsSet(K.volume, String(settings.volume));
+}
+function saveBest(){ lsSet(K.best, String(best)); }
+
+/* ---------------- audio (procedural WebAudio only) ---------------- */
+var AC = null, musicGain = null, sfxGain = null, musicTimer = null, musicStep = 0, nextNoteTime = 0;
+function ensureAudio(){
+  if (AC) { if (AC.state === 'suspended') AC.resume(); return; }
+  try{
+    var Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return;
+    AC = new Ctx();
+    musicGain = AC.createGain(); musicGain.connect(AC.destination);
+    sfxGain = AC.createGain(); sfxGain.connect(AC.destination);
+    applyVolumes();
+  }catch(e){ AC = null; }
+}
+function applyVolumes(){
+  if (!AC) return;
+  var v = settings.volume / 100;
+  musicGain.gain.value = settings.music ? v * 0.16 : 0;
+  sfxGain.gain.value = settings.sfx ? v * 0.9 : 0;
+}
+function tone(freq, dur, type, vol, when, slideTo){
+  if (!AC || !settings.sfx) return;
+  try{
+    var t = when || AC.currentTime;
+    var o = AC.createOscillator(), g = AC.createGain();
+    o.type = type || 'sine'; o.frequency.setValueAtTime(freq, t);
+    if (slideTo) o.frequency.exponentialRampToValueAtTime(Math.max(20, slideTo), t + dur);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol || 0.5, t + 0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(sfxGain); o.start(t); o.stop(t + dur + 0.05);
+  }catch(e){}
+}
+function noiseBurst(dur, vol, freq){
+  if (!AC || !settings.sfx) return;
+  try{
+    var len = Math.floor(AC.sampleRate * dur), buf = AC.createBuffer(1, len, AC.sampleRate), d = buf.getChannelData(0);
+    for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len);
+    var src = AC.createBufferSource(); src.buffer = buf;
+    var f = AC.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = freq || 800;
+    var g = AC.createGain(); g.gain.value = vol || 0.4;
+    src.connect(f); f.connect(g); g.connect(sfxGain); src.start();
+  }catch(e){}
+}
+var sfx = {
+  click: function(){ tone(660, 0.08, 'triangle', 0.35); },
+  thunk: function(){ tone(150, 0.22, 'sine', 0.8, 0, 55); noiseBurst(0.12, 0.35, 500); },
+  slice: function(){ noiseBurst(0.18, 0.3, 2400); tone(300, 0.12, 'sawtooth', 0.12, 0, 140); },
+  chime: function(){ var t = AC ? AC.currentTime : 0; tone(880, 0.28, 'sine', 0.5, t); tone(1174, 0.3, 'sine', 0.45, t + 0.07); tone(1568, 0.42, 'sine', 0.4, t + 0.14); },
+  whistle: function(){ tone(1150, 0.7, 'sine', 0.35, 0, 280); tone(1150, 0.7, 'triangle', 0.1, 0, 300); },
+  wobble: function(){ tone(220, 0.18, 'triangle', 0.25, 0, 180); },
+  gust: function(){ noiseBurst(0.9, 0.16, 1200); },
+  gameover: function(){ if(!AC) return; var t = AC.currentTime; tone(392, 0.3, 'triangle', 0.45, t); tone(330, 0.3, 'triangle', 0.45, t + 0.22); tone(262, 0.55, 'triangle', 0.5, t + 0.44); },
+  fanfare: function(){ if(!AC) return; var t = AC.currentTime; [523, 659, 784, 1047].forEach(function(f, i){ tone(f, 0.3, 'triangle', 0.4, t + i * 0.1); }); }
+};
+/* Gentle original music loop: soft pentatonic lullaby over a low pad.
+   16-step loop, ~92 bpm eighth notes. Composed for this game only. */
+var MELODY = [523, 0, 587, 659, 0, 784, 659, 0, 587, 0, 523, 0, 440, 0, 494, 0];
+var BASS   = [131, 0, 0, 0, 175, 0, 0, 0, 196, 0, 0, 0, 165, 0, 0, 0];
+function musicTick(){
+  if (!AC || !settings.music) return;
+  var stepDur = 60 / 92 / 2;
+  while (nextNoteTime < AC.currentTime + 0.45){
+    var i = musicStep % 16, t = Math.max(nextNoteTime, AC.currentTime + 0.02);
+    if (MELODY[i]) musicNote(MELODY[i], t, stepDur * 1.8, 'triangle', 0.5);
+    if (BASS[i]) musicNote(BASS[i], t, stepDur * 3.4, 'sine', 0.5);
+    musicStep++; nextNoteTime += stepDur;
+  }
+}
+function musicNote(freq, t, dur, type, vol){
+  try{
+    var o = AC.createOscillator(), g = AC.createGain();
+    o.type = type; o.frequency.value = freq;
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(vol, t + 0.03);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(musicGain); o.start(t); o.stop(t + dur + 0.05);
+  }catch(e){}
+}
+function startMusic(){
+  ensureAudio(); if (!AC) return;
+  if (musicTimer) return;
+  nextNoteTime = AC.currentTime + 0.05; musicStep = 0;
+  musicTimer = setInterval(musicTick, 180);
+}
+function stopMusic(){ if (musicTimer){ clearInterval(musicTimer); musicTimer = null; } }
+
+/* ---------------- game state ---------------- */
+var BH = 26;                 /* block height px */
+var BASE_W = 150;            /* starting block width */
+var PERFECT_PX = 7;          /* |dx| within this = perfect */
+var WIND_HEIGHT = 8;         /* wind gusts begin at this height */
+var state = 'menu';          /* menu | howto | playing | paused | falling | gameover */
+var blocks = [];             /* {x, w} centre-x + width, bottom-up */
+var moving = null;           /* {x, w, phase, speed} */
+var camY = 0, camTarget = 0; /* camera shift (px, positive = tower shifted down) */
+var score = 0, height = 0, combo = 0, maxCombo = 0, perfectCount = 0;
+var level = 1, milestones = 0;   /* level = floor(height/5)+1; milestone every 10 blocks */
+var hopT = -1, wobbleAmp = 0, wobbleT = 0, penguinMood = 'normal';
+var windEnabled = false, gust = null, nextGustIn = 4, windOffset = 0, windTarget = 0;
+var debris = [], particles = [], snow = [];
+var cw = 0, ch = 0, dpr = 1, lastT = 0, elapsed = 0;
+var fallingBlock = null, overAt = 0, overShown = false;
+var pausedAt = 0;
+
+function groundY(){ return ch - 64; }
+function centreX(){ return cw / 2; }
+function topBlock(){ return blocks[blocks.length - 1]; }
+function blockTopY(i){ return groundY() - (i + 1) * BH + camY; }
+function swingAmp(){ return Math.max(24, cw / 2 - (moving ? moving.w / 2 : 40) - 10); }
+function levelFor(h){ return Math.floor(h / 5) + 1; }
+function swingSpeed(){ return Math.min(4.8, 1.5 + blocks.length * 0.11 + (levelFor(blocks.length) - 1) * 0.12); }
+
+function resetRun(){
+  blocks = [{ x: centreX(), w: BASE_W }];
+  score = 0; height = 0; combo = 0; maxCombo = 0; perfectCount = 0;
+  level = 1; milestones = 0;
+  camY = 0; camTarget = 0; hopT = -1; wobbleAmp = 0; penguinMood = 'normal';
+  windEnabled = false; gust = null; nextGustIn = 4 + Math.random() * 2; windOffset = 0; windTarget = 0;
+  debris = []; particles = []; fallingBlock = null; overShown = false;
+  spawnMoving();
+  updateHUD();
+}
+function spawnMoving(){
+  var w = topBlock().w;
+  moving = { x: centreX() - swingAmp(), w: w, phase: -Math.PI / 2, speed: swingSpeed() };
+}
+function newBestCheck(){
+  /* v1.1.0 fix: the "New best tower!" badge must only fire when a PREVIOUS
+     best existed and this run beat it — not on a first-ever run, where any
+     tower (even 1 block) would otherwise "beat" the starting best of 0. */
+  var prevBest = best;
+  if (height > best){ best = height; saveBest(); return prevBest > 0; }
+  return false;
+}
+
+/* ---------------- overlays ---------------- */
+var overlays = { menu: $('ov-start'), howto: $('ov-howto'), settings: $('ov-settings'), pause: $('ov-pause'), over: $('ov-over') };
+var settingsReturn = 'menu';
+function showOverlay(name){
+  Object.keys(overlays).forEach(function(k){ overlays[k].hidden = (k !== name); });
+  if (name){
+    var panel = overlays[name].querySelector('.panel');
+    /* Always open at the top: a tall panel (e.g. How to Play on a 320px
+       phone) must show its title, not the scrolled position left over from
+       a previous open or from focusing the bottom button. */
+    if (panel) panel.scrollTop = 0;
+    var btn = panel && panel.querySelector('button');
+    /* Focus without scrolling: focusing the panel's first button (e.g. the
+       "Play now" button at the bottom of How to Play) used to scroll a
+       too-tall panel down and hide its title on open. */
+    if (btn) setTimeout(function(){ try{ btn.focus({preventScroll:true}); }catch(e){} }, 60);
+  }
+}
+function hideOverlays(){ Object.keys(overlays).forEach(function(k){ overlays[k].hidden = true; }); }
+function say(msg){ live.textContent = msg; }
+
+/* ---------------- HUD ---------------- */
+function updateHUD(){
+  $('hud-height').textContent = height;
+  $('hud-score').textContent = score;
+  $('hud-best').textContent = best;
+  var c = $('hud-combo');
+  if (combo >= 2){ c.hidden = false; $('hud-combo-val').textContent = combo; }
+  else c.hidden = true;
+  var w = $('hud-wind');
+  if (windEnabled){
+    w.hidden = false;
+    $('hud-wind-text').textContent = gust ? 'Wind: GUSTING!' : 'Wind: calm';
+    w.classList.toggle('gusting', !!gust);
+  } else w.hidden = true;
+  var lv = $('hud-level');
+  if (level >= 2){ lv.hidden = false; $('hud-level-val').textContent = level; }
+  else lv.hidden = true;
+  $('start-best').textContent = best;
+}
+
+/* ---------------- flow ---------------- */
+function startGame(){
+  ensureAudio(); startMusic();
+  resetRun();
+  state = 'playing';
+  hideOverlays();
+  $('tap-hint').hidden = false;
+  setTimeout(function(){ $('tap-hint').hidden = true; }, 3500);
+  say('Game started. Tap, click or press Space to drop the block.');
+}
+function pauseGame(){
+  if (state !== 'playing') return;
+  state = 'paused'; pausedAt = performance.now();
+  $('pause-height').textContent = height;
+  $('pause-score').textContent = score;
+  showOverlay('pause');
+  if (AC) AC.suspend();
+  say('Paused.');
+}
+function resumeGame(){
+  if (state !== 'paused') return;
+  state = 'playing'; hideOverlays();
+  if (AC) AC.resume();
+  say('Resumed.');
+}
+function quitToMenu(){
+  state = 'menu';
+  stopMusic();
+  $('start-best').textContent = best;
+  showOverlay('menu');
+  say('Back at the menu.');
+}
+function endRun(){
+  state = 'gameover'; overAt = performance.now();
+  window.__penguinNewBest = newBestCheck();
+  sfx.gameover();
+  penguinMood = 'dizzy';
+  updateHUD();
+  say('Tower toppled. Final score ' + score + ', height ' + height + '.');
+  setTimeout(showGameOver, 750);
+}
+function showGameOver(){
+  if (state !== 'gameover' || overShown) return;
+  overShown = true;
+  /* new-best badge: true only if this run beat a PREVIOUS best (endRun);
+     a first-ever run never shows it (see newBestCheck) */
+  var badge = $('over-newbest');
+  badge.hidden = !window.__penguinNewBest;
+  $('over-score').textContent = score;
+  $('over-height').textContent = height;
+  $('over-best').textContent = best;
+  $('over-perfect').textContent = perfectCount;
+  $('over-combo').textContent = '×' + maxCombo;
+  var stars = height >= 15 ? 3 : height >= 8 ? 2 : height >= 3 ? 1 : 0;
+  var row = $('over-stars');
+  row.innerHTML = '';
+  for (var i = 0; i < 3; i++){
+    var s = document.createElement('span');
+    s.textContent = '⭐'; if (i >= stars) s.className = 'dim';
+    row.appendChild(s);
+  }
+  row.setAttribute('aria-label', stars + ' of 3 stars');
+  showOverlay('over');
+  countUp($('over-score'), score);
+  if (window.__penguinNewBest) sfx.fanfare();
+}
+function countUp(el, target){
+  if (reducedMotion){ el.textContent = target; return; }
+  var start = performance.now(), dur = 650;
+  (function tick(now){
+    var p = Math.min(1, (now - start) / dur);
+    el.textContent = Math.round(target * (1 - Math.pow(1 - p, 2)));
+    if (p < 1) requestAnimationFrame(tick);
+  })(start);
+}
+
+/* ---------------- core mechanic: drop + slice ---------------- */
+function dropBlock(){
+  if (state !== 'playing' || !moving) return;
+  var top = topBlock();
+  var dx = moving.x - top.x;
+  var left = Math.max(moving.x - moving.w / 2, top.x - top.w / 2);
+  var right = Math.min(moving.x + moving.w / 2, top.x + top.w / 2);
+  var overlap = right - left;
+
+  if (overlap <= 2){
+    /* complete miss — the block slides into the sea */
+    fallingBlock = { x: moving.x, w: moving.w, y: blockTopY(blocks.length), vy: 0, rot: 0, vr: (Math.random() < 0.5 ? -1 : 1) * 1.6 };
+    moving = null; combo = 0;
+    sfx.whistle(); state = 'falling';
+    penguinMood = 'worried';
+    setTimeout(function(){ if (state === 'falling') endRun(); }, 950);
+    updateHUD();
+    say('Missed the tower!');
+    return;
+  }
+
+  var perfect = Math.abs(dx) <= PERFECT_PX;
+  var newX, newW;
+  if (perfect){
+    newX = top.x; newW = top.w;
+    combo++; maxCombo = Math.max(maxCombo, combo);
+    perfectCount++; score += 2;
+    penguinMood = 'happy';
+    sfx.chime();
+    showBanner(); burst(moving.x, blockTopY(blocks.length), 16, ['#FFC94D', '#2EC4B6', '#FFFFFF']);
+    scorePop(moving.x, blockTopY(blocks.length) - 8, '+2 PERFECT!', true);
+    wobbleAmp = Math.max(wobbleAmp, 0.012);
+  } else {
+    newX = (left + right) / 2; newW = overlap;
+    combo = 0; score += 1;
+    penguinMood = 'normal';
+    sfx.thunk(); sfx.slice();
+    /* sliced-off piece becomes falling debris */
+    var cutW = moving.w - overlap;
+    if (cutW > 2){
+      var cutX = dx > 0 ? right + cutW / 2 : left - cutW / 2;
+      debris.push({ x: cutX, w: cutW, y: blockTopY(blocks.length), vy: 30, rot: 0, vr: (dx > 0 ? 1 : -1) * 2.2, alpha: 1 });
+    }
+    burst(newX, blockTopY(blocks.length), 7, ['#BFEDE8', '#FFFFFF', '#2EC4B6']);
+    scorePop(newX, blockTopY(blocks.length) - 8, '+1', false);
+    wobbleAmp = Math.max(wobbleAmp, 0.03);
+  }
+  wobbleT = 0;
+  blocks.push({ x: newX, w: newW });
+  height = blocks.length - 1;
+  hopT = 0;
+  /* camera: keep the tower top in view */
+  var topY = groundY() - blocks.length * BH;
+  if (topY + camTarget < 118) camTarget = 118 - (groundY() - blocks.length * BH);
+  /* wind unlock */
+  if (!windEnabled && height >= WIND_HEIGHT){
+    windEnabled = true;
+    nextGustIn = 2.5;
+    toastWind('💨 Wind gusts begin! Time your drops…');
+    say('Wind gusts have begun. The swinging block will be pushed by the wind.');
+  }
+  /* level up + milestones (level every 5 blocks, milestone every 10) */
+  var leveled = false;
+  var newLevel = levelFor(height);
+  if (newLevel > level){ level = newLevel; leveled = true; }
+  if (height % 10 === 0){
+    milestones++;
+    score += 5;
+    showMilestone(leveled
+      ? '🏆 ' + height + ' blocks! +5 bonus · Level ' + level
+      : '🏆 ' + height + ' blocks! +5 bonus');
+    penguinMood = 'happy'; hopT = 0;
+    burst(centreX(), blockTopY(blocks.length), 22, ['#FFC94D', '#2EC4B6', '#7C6FF0', '#FFFFFF']);
+    sfx.fanfare();
+    say('Milestone! ' + height + ' blocks. Five bonus points.');
+  } else if (leveled){
+    showMilestone('🎈 Level ' + level + ' — faster swings!');
+    say('Level ' + level + '. The blocks swing faster now.');
+  }
+  updateHUD();
+  say('Height ' + height + ', score ' + score + (perfect ? '. Perfect drop! Combo ' + combo + '.' : '.'));
+  spawnMoving();
+}
+function showBanner(){
+  var b = $('perfect-banner');
+  b.classList.remove('show'); void b.offsetWidth; b.classList.add('show');
+}
+function showMilestone(text){
+  var b = $('milestone-banner');
+  b.textContent = text;
+  b.classList.remove('show'); void b.offsetWidth; b.classList.add('show');
+}
+function toastWind(msg){
+  var t = $('wind-toast');
+  t.textContent = msg;
+  t.classList.remove('show'); void t.offsetWidth; t.classList.add('show');
+}
+function scorePop(x, y, text, perfect){
+  if (reducedMotion) return;
+  var el = document.createElement('div');
+  el.className = 'score-pop' + (perfect ? ' perfect' : '');
+  el.textContent = text;
+  el.style.left = x + 'px'; el.style.top = y + 'px';
+  playArea.appendChild(el);
+  setTimeout(function(){ el.remove(); }, 1050);
+}
+function burst(x, y, n, colors){
+  if (reducedMotion) return;
+  for (var i = 0; i < n; i++){
+    var a = Math.random() * Math.PI * 2, sp = 40 + Math.random() * 130;
+    particles.push({ x: x, y: y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 60,
+      life: 0.7 + Math.random() * 0.5, t: 0, size: 3 + Math.random() * 5,
+      color: colors[i % colors.length], shape: Math.random() < 0.5 ? 'circle' : 'rect' });
+  }
+}
+
+/* ---------------- wind ---------------- */
+function updateWind(dt){
+  if (!windEnabled){ windTarget = 0; windOffset += (0 - windOffset) * Math.min(1, dt * 4); return; }
+  if (gust){
+    gust.t -= dt;
+    windTarget = gust.dir * gust.strength * 46;
+    if (gust.t <= 0){ gust = null; nextGustIn = Math.max(2.2, 3.5 - (level - 1) * 0.25) + Math.random() * 3; }
+  } else {
+    windTarget = 0;
+    nextGustIn -= dt;
+    if (nextGustIn <= 0){
+      /* v1.1.0: gusts get stronger (and more frequent) as the level rises */
+      gust = { t: 1.5 + Math.random() * 0.7, dir: Math.random() < 0.5 ? -1 : 1,
+        strength: (0.6 + Math.random() * 0.6) * Math.min(1.6, 1 + (level - 1) * 0.1) };
+      sfx.gust(); toastWind('💨 Wind gust! Hold steady…');
+      wobbleAmp = Math.max(wobbleAmp, 0.02);
+      if (penguinMood === 'normal') penguinMood = 'worried';
+      say('Wind gust!');
+    }
+  }
+  windOffset += (windTarget - windOffset) * Math.min(1, dt * 3.2);
+  updateHUDWind();
+}
+function updateHUDWind(){
+  if (!windEnabled) return;
+  var t = $('hud-wind-text');
+  var txt = gust ? 'Wind: GUSTING!' : 'Wind: calm';
+  if (t.textContent !== txt){ t.textContent = txt; $('hud-wind').classList.toggle('gusting', !!gust); }
+}
+
+/* ---------------- canvas sizing ---------------- */
+function resize(){
+  var r = playArea.getBoundingClientRect();
+  dpr = Math.min(2, window.devicePixelRatio || 1);
+  cw = Math.max(200, r.width); ch = Math.max(200, r.height);
+  canvas.width = Math.round(cw * dpr); canvas.height = Math.round(ch * dpr);
+  canvas.style.width = cw + 'px'; canvas.style.height = ch + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  if (blocks.length && Math.abs(blocks[0].x - centreX()) > 1){
+    var shift = centreX() - blocks[0].x;
+    blocks.forEach(function(b){ b.x += shift; });
+    if (moving) moving.x += shift;
+  }
+  if (!snow.length) initSnow();
+}
+function initSnow(){
+  snow = [];
+  var n = reducedMotion ? 0 : 42;
+  for (var i = 0; i < n; i++) snow.push({ x: Math.random() * cw, y: Math.random() * ch, r: 1 + Math.random() * 2.6, s: 12 + Math.random() * 26, drift: (Math.random() - 0.5) * 14 });
+}
+
+/* ---------------- drawing ---------------- */
+var TINTS = ['#BFEDE8', '#DCD6FF', '#FFE9A8', '#FFD2D2', '#D8F3F0', '#EFEAFF'];
+function roundRect(x, y, w, h, r){
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+function drawBlock(b, y, idx){
+  var x = b.x - b.w / 2;
+  var g = ctx.createLinearGradient(0, y, 0, y + BH);
+  g.addColorStop(0, '#FFFFFF'); g.addColorStop(0.28, TINTS[idx % TINTS.length]); g.addColorStop(1, '#9FD8E8');
+  roundRect(x, y, b.w, BH, 7);
+  ctx.fillStyle = g; ctx.fill();
+  ctx.lineWidth = 2; ctx.strokeStyle = '#2B2D42'; ctx.stroke();
+  /* frost sparkles */
+  ctx.fillStyle = 'rgba(255,255,255,.85)';
+  ctx.fillRect(x + 8, y + BH - 7, 10, 2);
+  ctx.fillRect(x + b.w - 22, y + 6, 12, 2);
+  /* snow cap */
+  ctx.fillStyle = '#FFFFFF';
+  roundRect(x + 2, y, b.w - 4, 8, 4); ctx.fill();
+}
+/* Pip — original cartoon penguin, drawn with canvas paths */
+function drawPenguin(fx, fy, scale, mood, hopLift){
+  ctx.save();
+  ctx.translate(fx, fy - hopLift);
+  ctx.scale(scale, scale);
+  var lean = 0;
+  if (gust) lean = gust.dir * 0.06;
+  if (mood === 'worried') lean += 0.05;
+  ctx.rotate(lean);
+  /* feet */
+  ctx.fillStyle = '#FF6B6B';
+  ctx.beginPath(); ctx.ellipse(-13, -2, 9, 4.5, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(13, -2, 9, 4.5, 0, 0, Math.PI * 2); ctx.fill();
+  /* flippers */
+  ctx.fillStyle = '#2B2D42';
+  ctx.beginPath(); ctx.ellipse(-24, -34, 6, 13, 0.5, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(24, -34, 6, 13, -0.5, 0, Math.PI * 2); ctx.fill();
+  /* body */
+  ctx.beginPath(); ctx.ellipse(0, -34, 24, 30, 0, 0, Math.PI * 2); ctx.fill();
+  /* belly */
+  ctx.fillStyle = '#FFFFFF';
+  ctx.beginPath(); ctx.ellipse(0, -28, 15, 19, 0, 0, Math.PI * 2); ctx.fill();
+  /* scarf */
+  ctx.fillStyle = '#FF6B6B';
+  ctx.beginPath(); ctx.ellipse(0, -52, 19, 6.5, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(-6, -48); ctx.lineTo(6, -48); ctx.lineTo(10, -34); ctx.lineTo(-2, -34); ctx.closePath(); ctx.fill();
+  /* head is part of body; eyes */
+  ctx.fillStyle = '#FFFFFF';
+  ctx.beginPath(); ctx.arc(-9, -48, 4.6, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(9, -48, 4.6, 0, Math.PI * 2); ctx.fill();
+  if (mood === 'happy'){
+    ctx.strokeStyle = '#2B2D42'; ctx.lineWidth = 2; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.arc(-9, -47, 3.4, Math.PI, 0); ctx.stroke();
+    ctx.beginPath(); ctx.arc(9, -47, 3.4, Math.PI, 0); ctx.stroke();
+  } else if (mood === 'dizzy'){
+    ctx.strokeStyle = '#FFFFFF'; ctx.lineWidth = 2.2; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(-13, -52); ctx.lineTo(-5, -44); ctx.moveTo(-5, -52); ctx.lineTo(-13, -44); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(5, -52); ctx.lineTo(13, -44); ctx.moveTo(13, -52); ctx.lineTo(5, -44); ctx.stroke();
+  } else if (mood === 'worried'){
+    ctx.fillStyle = '#2B2D42';
+    ctx.beginPath(); ctx.arc(-9, -48, 2.2, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(9, -48, 2.2, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = '#2B2D42'; ctx.lineWidth = 1.8; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(-13, -56); ctx.lineTo(-5, -54); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(5, -54); ctx.lineTo(13, -56); ctx.stroke();
+  } else {
+    ctx.fillStyle = '#2B2D42';
+    ctx.beginPath(); ctx.arc(-9, -47.6, 2.4, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(9, -47.6, 2.4, 0, Math.PI * 2); ctx.fill();
+  }
+  /* beak */
+  if (mood === 'worried'){
+    ctx.fillStyle = '#FFC94D'; ctx.strokeStyle = '#2B2D42'; ctx.lineWidth = 1.4;
+    ctx.beginPath(); ctx.ellipse(0, -40, 3.4, 4.2, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  } else {
+    ctx.fillStyle = '#FFC94D'; ctx.strokeStyle = '#2B2D42'; ctx.lineWidth = 1.4; ctx.lineJoin = 'round';
+    ctx.beginPath(); ctx.moveTo(-6, -41); ctx.lineTo(6, -41); ctx.lineTo(0, -34.5); ctx.closePath(); ctx.fill(); ctx.stroke();
+  }
+  /* blush */
+  ctx.fillStyle = 'rgba(255,107,107,.5)';
+  ctx.beginPath(); ctx.arc(-15, -39, 3, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(15, -39, 3, 0, Math.PI * 2); ctx.fill();
+  ctx.restore();
+}
+function drawSnow(dt){
+  if (reducedMotion) return;
+  ctx.fillStyle = 'rgba(255,255,255,.9)';
+  snow.forEach(function(f){
+    f.y += f.s * dt; f.x += f.drift * dt + Math.sin(elapsed * 0.7 + f.y * 0.02) * 6 * dt;
+    if (f.y > ch + 4){ f.y = -4; f.x = Math.random() * cw; }
+    if (f.x < -4) f.x = cw + 4; if (f.x > cw + 4) f.x = -4;
+    ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2); ctx.fill();
+  });
+}
+function drawWindStreaks(){
+  if (!gust || reducedMotion) return;
+  ctx.strokeStyle = 'rgba(255,255,255,.75)'; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
+  for (var i = 0; i < 5; i++){
+    var y = 60 + i * 62 + ((elapsed * 260 + i * 97) % 90);
+    var x0 = ((elapsed * 420 + i * 173) % (cw + 160)) - 80;
+    var len = 46 + gust.strength * 30;
+    ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(x0 + (gust.dir > 0 ? len : -len), y); ctx.stroke();
+  }
+}
+function render(dt){
+  ctx.clearRect(0, 0, cw, ch);
+  drawSnow(dt);
+  drawWindStreaks();
+  /* tower wobble pivot at the base */
+  var wob = wobbleAmp * Math.sin(wobbleT * 11);
+  ctx.save();
+  ctx.translate(centreX(), groundY());
+  ctx.rotate(wob);
+  ctx.translate(-centreX(), -groundY());
+  for (var i = 0; i < blocks.length; i++) drawBlock(blocks[i], blockTopY(i), i);
+  /* moving block + guide */
+  if (moving && (state === 'playing' || state === 'paused')){
+    var my = blockTopY(blocks.length);
+    ctx.save();
+    ctx.globalAlpha = 0.28; ctx.fillStyle = '#2B2D42';
+    ctx.fillRect(moving.x - 1, my + BH, 2, groundY() - my - BH);
+    ctx.restore();
+    drawBlock(moving, my, blocks.length);
+    /* swing-direction chevrons */
+    ctx.fillStyle = 'rgba(43,45,66,.55)';
+    ctx.font = '700 13px Fredoka, sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('◀ ▶', moving.x, my - 8);
+  }
+  /* falling (missed) block */
+  if (fallingBlock){
+    ctx.save();
+    ctx.translate(fallingBlock.x, fallingBlock.y + BH / 2);
+    ctx.rotate(fallingBlock.rot);
+    /* v1.1.0 fix: the missed block stays fully visible until it is IN the
+       sea — it used to fade by viewport height and could vanish before
+       reaching the sea on very short viewports. */
+    var fadeStart = groundY() + 8;
+    ctx.globalAlpha = fallingBlock.y < fadeStart ? 1 : Math.max(0, 1 - (fallingBlock.y - fadeStart) / 140);
+    drawBlock({ x: 0, w: fallingBlock.w }, -BH / 2, blocks.length);
+    ctx.restore();
+  }
+  /* debris */
+  debris.forEach(function(d){
+    ctx.save();
+    ctx.translate(d.x, d.y + BH / 2); ctx.rotate(d.rot);
+    ctx.globalAlpha = Math.max(0, d.alpha);
+    drawBlock({ x: 0, w: d.w }, -BH / 2, blocks.length + 1);
+    ctx.restore();
+  });
+  /* Pip on top of the tower */
+  var feetY = groundY() - blocks.length * BH + camY;
+  var hopLift = 0;
+  if (hopT >= 0) hopLift = Math.sin(Math.min(1, hopT) * Math.PI) * 26;
+  var bob = (state === 'menu') ? Math.sin(elapsed * 2.2) * 3 : 0;
+  var mood = state === 'gameover' ? 'dizzy' : penguinMood;
+  if (state !== 'falling') drawPenguin(centreX() + (blocks.length ? blocks[blocks.length - 1].x - centreX() : 0), feetY + bob, 1, mood, hopLift);
+  ctx.restore();
+  /* particles */
+  particles.forEach(function(p){
+    ctx.globalAlpha = Math.max(0, 1 - p.t / p.life);
+    ctx.fillStyle = p.color;
+    if (p.shape === 'rect'){ ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size * 0.7); }
+    else { ctx.beginPath(); ctx.arc(p.x, p.y, p.size / 2, 0, Math.PI * 2); ctx.fill(); }
+  });
+  ctx.globalAlpha = 1;
+}
+
+/* ---------------- main loop ---------------- */
+function loop(t){
+  requestAnimationFrame(loop);
+  var dt = Math.min(0.05, (t - lastT) / 1000 || 0.016);
+  lastT = t; elapsed += dt;
+  if (state === 'playing'){
+    if (moving){
+      moving.phase += dt * moving.speed;
+      moving.x = centreX() + windOffset + swingAmp() * Math.sin(moving.phase);
+    }
+    updateWind(dt);
+    if (hopT >= 0){ hopT += dt * 3.2; if (hopT >= 1){ hopT = -1; if (penguinMood === 'happy') penguinMood = 'normal'; } }
+    if (wobbleAmp > 0.0005){ wobbleT += dt; wobbleAmp *= Math.pow(0.12, dt); }
+    else wobbleAmp = 0;
+    camY += (camTarget - camY) * Math.min(1, dt * 5);
+  }
+  if (state === 'falling' && fallingBlock){
+    fallingBlock.vy += 1400 * dt;
+    fallingBlock.y += fallingBlock.vy * dt;
+    fallingBlock.rot += fallingBlock.vr * dt;
+    /* v1.1.0: splash when the block hits the sea + a hard tower wobble */
+    if (!fallingBlock.splashed && fallingBlock.y + BH >= groundY()){
+      fallingBlock.splashed = true;
+      burst(fallingBlock.x, groundY(), 16, ['#FFFFFF', '#7FD0E8', '#2EC4B6']);
+      noiseBurst(0.25, 0.3, 900);
+      wobbleAmp = Math.max(wobbleAmp, 0.09);
+    }
+  }
+  debris.forEach(function(d){ d.vy += 700 * dt; d.y += d.vy * dt; d.rot += d.vr * dt; d.alpha -= dt * 1.1; });
+  debris = debris.filter(function(d){ return d.alpha > 0 && d.y < ch + 60; });
+  particles.forEach(function(p){ p.t += dt; p.x += p.vx * dt; p.y += p.vy * dt; p.vy += 260 * dt; });
+  particles = particles.filter(function(p){ return p.t < p.life; });
+  render(dt);
+}
+
+/* ---------------- input ---------------- */
+function onDropAction(){
+  if (state === 'playing') dropBlock();
+}
+playArea.addEventListener('pointerdown', function(e){
+  e.preventDefault();
+  ensureAudio();
+  onDropAction();
+});
+canvas.addEventListener('touchstart', function(e){ e.preventDefault(); }, { passive: false });
+document.addEventListener('keydown', function(e){
+  if (e.target && (e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.isContentEditable)) return; /* JJB merge: don't steal keys typed in site search */
+  if (e.repeat) return;
+  var k = e.key;
+  if (k === ' ' || k === 'Enter'){
+    if (state === 'playing'){ e.preventDefault(); ensureAudio(); dropBlock(); }
+    else if (state === 'menu' && !overlays.menu.hidden){ e.preventDefault(); startGame(); }
+    else if (state === 'gameover' && !overlays.over.hidden){ e.preventDefault(); startGame(); }
+  } else if (k === 'p' || k === 'P' || k === 'Escape'){
+    if (!overlays.howto.hidden){ closeHowto(); }
+    else if (state === 'playing') pauseGame();
+    else if (state === 'paused') resumeGame();
+  } else if (k === 'r' || k === 'R'){
+    if (state === 'playing' || state === 'paused' || state === 'gameover') startGame();
+  } else if (k === 'm' || k === 'M'){
+    toggleSfx();
+  }
+});
+
+/* ---------------- settings / toggles ---------------- */
+function syncSettingsUI(){
+  $('set-music').textContent = settings.music ? 'On' : 'Off';
+  $('set-music').setAttribute('aria-pressed', String(settings.music));
+  $('set-sfx').textContent = settings.sfx ? 'On' : 'Off';
+  $('set-sfx').setAttribute('aria-pressed', String(settings.sfx));
+  $('set-volume').value = settings.volume;
+  $('btn-music').setAttribute('aria-pressed', String(settings.music));
+  $('btn-music').classList.toggle('off', !settings.music);
+  $('btn-music').textContent = settings.music ? '🎵' : '🔇';
+  $('btn-sfx').setAttribute('aria-pressed', String(settings.sfx));
+  $('btn-sfx').classList.toggle('off', !settings.sfx);
+  $('btn-sfx').textContent = settings.sfx ? '🔊' : '🔇';
+  applyVolumes();
+}
+function toggleMusic(){ settings.music = !settings.music; saveSettings(); syncSettingsUI(); if (settings.music && state === 'playing') startMusic(); }
+function toggleSfx(){ settings.sfx = !settings.sfx; saveSettings(); syncSettingsUI(); if (settings.sfx) sfx.click(); }
+var howtoReturn = 'menu';
+function closeHowto(){
+  if (howtoReturn === 'pause' && state === 'paused') showOverlay('pause');
+  else showOverlay('menu');
+}
+function openSettings(from){
+  settingsReturn = from || 'menu';
+  showOverlay('settings');
+}
+function closeSettings(){
+  if (settingsReturn === 'pause' && state === 'paused') showOverlay('pause');
+  else if (state === 'playing') hideOverlays();
+  else showOverlay('menu');
+}
+$('btn-music').addEventListener('click', function(){ ensureAudio(); toggleMusic(); });
+$('btn-sfx').addEventListener('click', function(){ ensureAudio(); toggleSfx(); });
+$('btn-pause').addEventListener('click', function(){
+  if (state === 'playing') pauseGame();
+  else if (state === 'paused') resumeGame();
+});
+$('set-music').addEventListener('click', function(){ ensureAudio(); toggleMusic(); });
+$('set-sfx').addEventListener('click', function(){ ensureAudio(); toggleSfx(); });
+$('set-volume').addEventListener('input', function(){
+  settings.volume = parseInt(this.value, 10) || 0;
+  saveSettings(); applyVolumes();
+});
+$('btn-play').addEventListener('click', function(){ sfx.click(); startGame(); });
+$('btn-howto').addEventListener('click', function(){ sfx.click(); howtoReturn = 'menu'; showOverlay('howto'); });
+$('btn-howto-pause').addEventListener('click', function(){ sfx.click(); howtoReturn = 'pause'; showOverlay('howto'); });
+$('btn-howto-close').addEventListener('click', function(){ closeHowto(); });
+$('btn-settings').addEventListener('click', function(){ sfx.click(); openSettings('menu'); });
+$('btn-howto-play').addEventListener('click', function(){ sfx.click(); startGame(); });
+$('btn-settings-close').addEventListener('click', function(){ closeSettings(); });
+$('btn-resume').addEventListener('click', function(){ resumeGame(); });
+$('btn-restart-pause').addEventListener('click', function(){ startGame(); });
+$('btn-settings-pause').addEventListener('click', function(){ openSettings('pause'); });
+$('btn-quit').addEventListener('click', function(){ quitToMenu(); });
+$('btn-replay').addEventListener('click', function(){ sfx.click(); startGame(); });
+$('btn-menu').addEventListener('click', function(){ quitToMenu(); });
+
+/* ---------------- debug / test API (state inspection only) ---------------- */
+NS.getState = function(){
+  return { state: state, score: score, height: height, best: best, combo: combo,
+    maxCombo: maxCombo, perfectCount: perfectCount, windEnabled: windEnabled,
+    gust: !!gust, gustStrength: gust ? gust.strength : null,
+    level: level, milestones: milestones,
+    fallingY: fallingBlock ? fallingBlock.y : null,
+    fallingAlpha: fallingBlock ? fallingAlphaNow() : null, seaY: groundY(),
+    blocks: blocks.length, topWidth: topBlock() ? topBlock().w : 0,
+    movingX: moving ? moving.x : null, movingW: moving ? moving.w : null,
+    movingSpeed: moving ? moving.speed : null,
+    topX: topBlock() ? topBlock().x : null, camY: camY,
+    music: settings.music, sfx: settings.sfx, volume: settings.volume };
+};
+function fallingAlphaNow(){
+  if (!fallingBlock) return null;
+  var fadeStart = groundY() + 8;
+  return fallingBlock.y < fadeStart ? 1 : Math.max(0, 1 - (fallingBlock.y - fadeStart) / 140);
+}
+NS.debugAlignDrop = function(){ if (moving && state === 'playing'){ moving.x = topBlock().x; moving.phase = 0; dropBlock(); } };
+NS.debugDropAt = function(px){ /* deterministic drop at an offset from tower centre, same JS tick */
+  if (moving && state === 'playing'){
+    var target = topBlock().x + px;
+    var amp = swingAmp();
+    var ratio = Math.max(-1, Math.min(1, (target - centreX() - windOffset) / amp));
+    moving.phase = Math.asin(ratio); moving.x = target; dropBlock();
+  }
+};
+NS.debugSetOffset = function(px){ /* set swing position AND phase so it stays put */
+  if (moving && state === 'playing'){
+    var target = topBlock().x + px;
+    var amp = swingAmp();
+    var ratio = Math.max(-1, Math.min(1, (target - centreX() - windOffset) / amp));
+    moving.phase = Math.asin(ratio); moving.x = target;
+  }
+};
+NS.debugDrop = function(){ dropBlock(); };
+NS.debugSetHeight = function(n){ /* test helper: rebuild a tower of n blocks at full width */
+  if (state !== 'playing') return;
+  blocks = [{ x: centreX(), w: BASE_W }];
+  for (var i = 1; i <= n; i++) blocks.push({ x: centreX(), w: BASE_W });
+  height = blocks.length - 1;
+  level = levelFor(height);
+  if (height >= WIND_HEIGHT && !windEnabled){ windEnabled = true; nextGustIn = 2.5; }
+  var topY = groundY() - blocks.length * BH;
+  if (topY + camTarget < 118) camTarget = 118 - (groundY() - blocks.length * BH);
+  camY = camTarget;
+  spawnMoving(); updateHUD();
+};
+
+/* ---------------- init ---------------- */
+window.addEventListener('resize', resize);
+window.addEventListener('orientationchange', function(){ setTimeout(resize, 200); });
+syncSettingsUI();
+updateHUD();
+resetRun();
+state = 'menu';
+showOverlay('menu');
+resize();
+setTimeout(resize, 120);
+requestAnimationFrame(function(t){ lastT = t; requestAnimationFrame(loop); });
+})();
+</script>
+  </section>
+  <section class="jjb-related" aria-label="More games">
+    <h2>More games to play</h2>
+    <div class="jjb-rel-grid">
+    <a class="jjb-rel-card" href="https://jojosblocks.online/games/flappy-penguin/"><img src="https://jojosblocks.online/games/thumbs/flappy-penguin.svg" alt="Flappy Penguin" width="640" height="360" loading="lazy"><span>Flappy Penguin</span></a>
+    <a class="jjb-rel-card" href="https://jojosblocks.online/games/cloud-hop/"><img src="https://jojosblocks.online/games/thumbs/cloud-hop.svg" alt="Cloud Hop" width="640" height="360" loading="lazy"><span>Cloud Hop</span></a>
+    <a class="jjb-rel-card" href="https://jojosblocks.online/games/hex-garden/"><img src="https://jojosblocks.online/games/thumbs/hex-garden.svg" alt="Hex Garden" width="640" height="360" loading="lazy"><span>Hex Garden</span></a>
+    </div>
+  </section>
+</div></section>
+</main>
+<footer class="site"><div class="wrap">
+  <div class="fgrid">
+    <div>
+      <h3>JoJo's Blocks</h3>
+      <p>Digital products, free resources and games for creating, learning and play.</p>
+      <p style="margin-top:12px"><a class="pin-link" href="https://www.pinterest.com/JoJosBlocks/" target="_blank" rel="noopener"><svg class="pin-icon" viewBox="0 0 24 24" width="19" height="19" aria-hidden="true" fill="#E60023"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.39 18.592.026 11.985.026L12.017 0z"/></svg>Pinterest — @JoJosBlocks</a></p>
+    </div>
+    <div>
+      <h4>Shop</h4>
+      <a href="../../shop/">Our Products</a>
+      <a href="../../free-resources/">Free Resources</a>
+      <a href="../../games/">Games &amp; Play</a>
+      <a href="../../blog/">Blog</a>
+      <a href="../../recommended/">Affiliate Products</a>
+    </div>
+    <div>
+      <h4>Help</h4>
+      <a href="mailto:jojobusiness0101@gmail.com">Contact us</a>
+      <a href="../../#about">About</a>
+      <a href="../../free-printables/">Free Taster Pack</a>
+    </div>
+    <div>
+      <h4>Legal</h4>
+      <a href="../../privacy.html">Privacy Policy</a>
+      <a href="../../terms.html">Terms &amp; Conditions</a>
+      <a href="../../refund-policy.html">Refund Policy</a>
+    </div>
+  </div>
+  <div class="fine">
+    <span>© 2026 JoJo's Blocks. All rights reserved.</span>
+    <span>Sales are completed securely on Gumroad.</span>
+  </div>
+</div></footer>
+<!-- bottom tab bar (mobile only) -->
+<div class="tabbar"><nav aria-label="Quick navigation">
+  <a href="../../shop/" data-tab="shop"><span class="ti">▦</span>Shop</a>
+  <a href="../../free-resources/" data-tab="free"><span class="ti">✦</span>Free</a>
+  <a href="../../games/" data-tab="games" class="on"><span class="ti">▶</span>Play</a>
+  <a href="../../blog/" data-tab="blog"><span class="ti">✎</span>Blog</a>
+  <a href="#" data-tab="search" id="tabSearch"><span class="ti">⌕</span>Search</a>
+</nav></div>
+<div class="modal-back" id="modalBack" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal" id="modalBox">
+    <button class="x" id="modalClose" aria-label="Close product details">✕</button>
+    <div class="mgrid">
+      <div class="mcover" id="modalCover"></div>
+      <div class="mbody">
+        <p class="fmt" id="modalFmt"></p>
+        <h2 id="modalTitle"></h2>
+        <p class="mprice" id="modalPrice"></p>
+        <p class="msave" id="modalSave"></p>
+        <p id="modalDesc"></p>
+        <div class="macts">
+          <a class="btn btn-accent" id="modalBuy" href="#" target="_blank" rel="noopener">Buy on Gumroad</a>
+          <a class="btn btn-ghost btn-sm" id="modalPage" href="#" target="_blank" rel="noopener">View product page</a>
+        </div>
+        <p style="font-size:14px;color:var(--muted);margin-top:12px">Use code JOJOS10 at checkout for 10% off.</p>
+        <h3>What you get</h3>
+        <ul class="get" id="modalGet"></ul>
+        <h3>Good to know</h3>
+        <ul class="get">
+          <li>Instant PDF download</li>
+          <li>Print at home as often as you like</li>
+          <li>Personal &amp; family use</li>
+          <li>Secure checkout on Gumroad</li>
+          <li><a href="../../refund-policy.html" target="_blank" rel="noopener">Refund policy</a></li>
+        </ul>
+        <h3>Sample pages</h3>
+        <p class="sample-note">Real sample pages from this book will appear here once supplied. Try the <a href="https://jojosblocks.online/assets/free-resources/jojos-blocks-free-taster-pack.pdf" target="_blank" rel="noopener">Free Taster Pack</a> first — six sample pages, free.</p>
+      </div>
+    </div>
+    <div class="rel">
+      <h3>You may also like</h3>
+      <div class="chips" id="modalRelated"></div>
+      <a class="page-link" id="modalPageLink" href="#" target="_blank" rel="noopener">View product page →</a>
+    </div>
+    <div class="msticky">
+      <span class="msticky-price" id="mstickyPrice"></span>
+      <a class="btn btn-accent" id="mstickyBuy" href="#" target="_blank" rel="noopener">Buy on Gumroad</a>
+    </div>
+  </div>
+</div>
+<script>window.JB={root:"../../",page:"detail",kind:"games"};</script>
+<script type="application/json" id="product-data">{"bundle":{"title":"JoJo's Blocks Complete Coloring Book Bundle","price":12.99,"sale":11.69,"pages":154,"ages":"2–7","cover":"https://jojosblocks.online/assets/covers/bundle-cover.jpg","desc":"Four favorite adventures in one bundle — 154 pages of coloring, tracing, puzzles and learning for one low price. Includes My First ABC Book (28 pages, ages 2–4), My First Animal Explorer (30 pages), My Little Community Helpers (54 pages, 24 helpers) and My Little Space Adventure (42 pages, ages 3–5). Download the PDFs, print at home, and color!","gum":"https://jojosblocks.gumroad.com/l/jojos-blocks-coloring-bundle?wanted=true","page":"books/complete-coloring-book-bundle.html"},"abc":{"title":"My First ABC Book","price":3.99,"sale":3.59,"pages":28,"ages":"2–4","cover":"https://jojosblocks.online/assets/covers/book-01.jpg","desc":"Meet the alphabet one letter at a time. Each page pairs a big letter with a picture word — A is for Apple, B is for Ball, C is for Cat — with a color guide and tracing practice, so little ones learn, color and write their first letters.","gum":"https://jojosblocks.gumroad.com/l/my-first-abc-book?wanted=true","page":"books/my-first-abc-book.html"},"animal":{"title":"My First Animal Explorer","price":4.99,"sale":4.49,"pages":30,"ages":"3–6","cover":"https://jojosblocks.online/assets/covers/book-02.jpg","desc":"Hello, little explorer! Meet lions, elephants, giraffes, pandas, monkeys and more — learn each animal's name, trace the word, count, match and color. A certificate of achievement waits at the end for every super animal explorer.","gum":"https://jojosblocks.gumroad.com/l/my-first-animal-explorer?wanted=true","page":"books/my-first-animal-explorer.html"},"helpers":{"title":"My Little Community Helpers","price":4.99,"sale":4.49,"pages":54,"ages":"4–7","cover":"https://jojosblocks.online/assets/covers/book-03.jpg","desc":"Meet the people who help us every day! 24 community helpers — doctors, nurses, firefighters, police officers, teachers, veterinarians, electricians, mail carriers and more — with simple job descriptions, big coloring illustrations and a fun matching activity.","gum":"https://jojosblocks.gumroad.com/l/my-little-community-helpers?wanted=true","page":"books/my-little-community-helpers.html"},"space":{"title":"My Little Space Adventure","price":4.99,"sale":4.49,"pages":42,"ages":"3–5","cover":"https://jojosblocks.online/assets/covers/book-04.jpg","desc":"Join Nova, Zippy the alien and Rocket-7 on a mission to find the missing Cosmic Crystal. Color planets and alien worlds, solve mazes and puzzles, decode alien messages and take the Space Explorer Quiz — with a Junior Space Explorer certificate at the end.","gum":"https://jojosblocks.gumroad.com/l/my-little-space-adventure?wanted=true","page":"books/my-little-space-adventure.html"}}</script>
+<script src="../../assets/site.js" defer></script>
+<script>
+/* Play Free (spec §4): smooth-scroll to #play, then start the game via its
+   menu Play button (#btn-play). If the game is already running the start
+   control is hidden, so this just scrolls. Retries once after ~400ms. */
+(function(){
+  var btn=document.getElementById('play-free-btn');
+  var play=document.getElementById('play');
+  if(!btn||!play) return;
+  btn.addEventListener('click', function(ev){
+    ev.preventDefault();
+    play.scrollIntoView({behavior:'smooth', block:'start'});
+    var tries=0;
+    function attempt(){
+      tries++;
+      var start=document.getElementById('btn-play');
+      if(start && start.offsetParent!==null){ start.click(); }
+      else if(tries<2){ setTimeout(attempt, 400); }
+    }
+    setTimeout(attempt, 400);
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1633 @@
+<!DOCTYPE html>
+<html lang="en">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Twin Trails — Free Browser Game | JoJo’s Blocks</title>
+<meta name="description" content="Twin Trails: a dual-lane endless dodger. Guide Flappy Penguin and Pip the seal pup down parallel snowy trails, dodge logs and gaps, and catch fish that match each scarf.">
+<link rel="canonical" href="https://jojosblocks.online/games/twin-trails/">
+<link rel="stylesheet" href="../../assets/styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+
+
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<!-- promo strip -->
+<div class="strip"><b>Instant PDF download, secure checkout on Gumroad.</b> Code JOJOS10 saves 10%.</div>
+
+<!-- header -->
+<header class="site">
+  <div class="hd">
+    <a class="logo" href="../../"><img class="logo-mark" src="../../assets/profile-logo.jpg" alt="JoJo's Blocks logo" width="1000" height="1000">JoJo's Blocks</a>
+    <form class="search" id="headSearch" role="search" aria-label="Search the store" action="../../search/" method="get">
+      <input id="searchInput" name="q" type="search" placeholder="Search books, free printables, games…" aria-label="Search books, free resources, games and articles" autocomplete="off">
+      <button type="submit">Search</button>
+      <div class="suggest" id="headSuggest" role="listbox" aria-label="Search suggestions"></div>
+    </form>
+    <button class="search-icon-btn" id="searchIconBtn" aria-label="Open search" aria-expanded="false">⌕</button>
+  </div>
+</header>
+
+<!-- mobile search overlay -->
+<div class="search-overlay" id="searchOverlay" role="search" aria-label="Search the store">
+  <div class="so-row">
+    <form class="search" id="mobSearch" action="../../search/" method="get" style="display:flex">
+      <input id="mobSearchInput" name="q" type="search" placeholder="Search books, free printables, games…" aria-label="Search books, free resources, games and articles" autocomplete="off">
+      <button type="submit">Search</button>
+    </form>
+    <button class="so-close" id="searchOverlayClose" aria-label="Close search">✕</button>
+  </div>
+  <div class="suggest" id="mobSuggest" role="listbox" aria-label="Search suggestions"></div>
+</div>
+
+<nav class="dept" aria-label="Departments"><div class="wrap" id="deptNav">
+  <a href="../../shop/">Shop</a>
+  <a href="../../recommended/">Affiliate Products</a>
+  <span class="has-fly"><a href="../../free-resources/" aria-haspopup="true">Free resources</a><span class="flyout"><a href="../../free-resources/category/coloring/">Coloring</a><a href="../../free-resources/category/learn-to-draw/">Learn to draw</a><a href="../../free-resources/category/worksheets/">Worksheets</a><a href="../../free-resources/category/planners/">Planners</a><a href="../../free-resources/category/printables/">Printables</a><a href="../../free-resources/category/wallpapers/">Wallpapers</a><a href="../../free-resources/category/ai/">AI</a><a href="../../free-resources/category/stickers/">Stickers</a><a class="viewall" href="../../free-resources/">View all →</a></span></span>
+  <span class="has-fly"><a href="../../games/" class="on" aria-haspopup="true">Games & play</a><span class="flyout"><a href="../../games/category/puzzle/">Puzzle</a><a href="../../games/category/arcade/">Arcade</a><a href="../../games/category/casual/">Casual</a><a href="../../games/category/educational/">Educational</a><a class="viewall" href="../../games/">View all →</a></span></span>
+  <span class="has-fly"><a href="../../blog/" aria-haspopup="true">Blog</a><span class="flyout"><a href="../../blog/category/guides/">Guides</a><a href="../../blog/category/activities/">Activities</a><a href="../../blog/category/fun-facts/">Fun facts</a><a class="viewall" href="../../blog/">View all →</a></span></span>
+</div></nav>
+<main id="main">
+<section class="block"><div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><span>Home</span> <span class="sep">›</span><a href="../../games/">Games &amp; Play</a> <span class="sep">›</span><a href="../../games/category/arcade/">Arcade</a> <span class="sep">›</span><span>Twin Trails</span></nav>
+  <div class="detail"><div class="dgrid">
+    <div class="dcover"><img src="https://jojosblocks.online/games/thumbs/twin-trails.svg" alt="Twin Trails game" width="640" height="360"></div>
+    <div>
+      <p class="dmeta">Browser game · Arcade · Free</p>
+      <h1>Twin Trails</h1>
+      <p>Twin Trails: a dual-lane endless dodger. Guide Flappy Penguin and Pip the seal pup down parallel snowy trails, dodge logs and gaps, and catch fish that match each scarf.</p>
+      <div class="dbuy">
+        <a class="btn btn-ink" href="#play" id="play-free-btn">Play free →</a>
+        <a class="btn btn-ghost" href="../../games/">All games</a>
+      </div>
+      <p class="dnote">Plays right here on jojosblocks.online. No downloads, no accounts.</p>
+    </div>
+  </div></div>
+  <!-- Twin Trails · JJB-GAME-20261116-12 · v1.1.0 (game ID preserved from source footer, dropped in merge) -->
+  <section id="play" class="jjb-play" aria-label="Play Twin Trails">
+  <style>
+
+#play{
+  --cream:#FFF9F0; --ink:#2B2D42; --coral:#FF6B6B; --coral-deep:#C22F40;
+  --sun:#FFC94D; --teal:#2EC4B6; --teal-deep:#147A70; --lavender:#7C6FF0;
+  --panel:#FFFDF8; --shadow:0 10px 30px rgba(43,45,66,.18);
+}
+#play *{box-sizing:border-box; margin:0; padding:0}
+body #play{
+  font-family:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(900px 500px at 85% -10%, rgba(124,111,240,.28), transparent 60%),
+    radial-gradient(700px 420px at -10% 30%, rgba(46,196,182,.22), transparent 60%),
+    radial-gradient(600px 400px at 50% 110%, rgba(255,201,77,.25), transparent 60%),
+    var(--cream);
+   display:flex; flex-direction:column; align-items:center;
+  padding:12px 16px 20px; overscroll-behavior:none;
+}
+#play h1, #play h2, #play h3, #play .display{font-family:'Fredoka','Comic Sans MS',system-ui,sans-serif; font-weight:700; letter-spacing:.2px}
+#play button{font-family:'Fredoka','Comic Sans MS',system-ui,sans-serif; cursor:pointer}
+#play button:focus-visible, #play a:focus-visible, #play input:focus-visible{outline:3px solid var(--sun); outline-offset:2px}
+
+#play .topbar{width:100%; max-width:660px; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:2px 2px 10px}
+#play .brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink)}
+#play .brand .logo{width:44px; height:44px; border-radius:14px; background:linear-gradient(135deg,var(--teal),var(--lavender)); display:grid; place-items:center; font-size:24px; box-shadow:0 4px 12px rgba(124,111,240,.35)}
+#play .brand .name{font-family:'Fredoka',sans-serif; font-weight:700; font-size:20px; line-height:1}
+#play .brand .sub{font-size:11px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:var(--teal-deep)}
+#play .top-actions{display:flex; gap:8px}
+#play .icon-btn{
+  min-width:44px; min-height:44px; padding:0 10px; border-radius:999px; border:2px solid var(--ink);
+  background:var(--panel); color:var(--ink); font-size:19px; font-weight:700;
+  display:inline-flex; align-items:center; justify-content:center; gap:6px;
+  box-shadow:0 3px 0 var(--ink); transition:transform .15s ease-out, box-shadow .15s ease-out;
+}
+#play .icon-btn:active{transform:translateY(2px); box-shadow:0 1px 0 var(--ink)}
+#play .icon-btn[aria-pressed="false"]{opacity:.62}
+
+#play .stage{
+  position:relative; width:min(100%, 660px, calc((100dvh - 170px) * 0.846)); border-radius:26px; overflow:hidden;
+  background:linear-gradient(180deg,#4B4396 0%, #6E63C8 34%, #2EC4B6 78%, #1D9A8E 100%);
+  box-shadow:var(--shadow), 0 0 0 3px rgba(255,255,255,.55) inset;
+}
+#play canvas#game{display:block; width:100%; height:auto; touch-action:none; user-select:none; -webkit-user-select:none; -webkit-tap-highlight-color:transparent}
+
+#play .hud{position:absolute; inset:0; pointer-events:none; display:flex; flex-direction:column; justify-content:flex-start; gap:8px; padding:10px}
+#play .hud-row{display:flex; gap:8px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap}
+#play .hud-group{display:flex; gap:8px; flex-wrap:wrap}
+#play .chip{
+  pointer-events:auto; display:inline-flex; align-items:center; gap:6px; min-height:44px;
+  padding:6px 14px; border-radius:999px; background:rgba(255,249,240,.94);
+  border:2px solid rgba(43,45,66,.9); box-shadow:0 3px 10px rgba(43,45,66,.25);
+  font-weight:800; font-size:15px; color:var(--ink); line-height:1.1;
+}
+#play .chip .num{font-family:'Fredoka',sans-serif; font-weight:700; font-size:18px}
+#play .chip .lbl{font-size:11px; letter-spacing:.08em; text-transform:uppercase; opacity:.75}
+#play .chip.score .num{color:var(--coral-deep)}
+#play .chip.fish .num{color:var(--teal-deep)}
+#play .chip.best .num{color:var(--lavender)}
+#play .hearts{display:inline-flex; align-items:center; gap:2px; font-size:19px; letter-spacing:1px}
+#play .hearts .lost{opacity:.25; filter:grayscale(1)}
+#play .hearts .who{font-size:17px}
+#play .hud .chip.hearts-penguin .hearts{color:var(--coral-deep)}
+#play .hud .chip.hearts-pip .hearts{color:var(--teal-deep)}
+#play .level-chip{align-self:center}
+#play .pause-btn{pointer-events:auto}
+
+#play .floater{position:absolute; font-family:'Fredoka',sans-serif; font-weight:700; font-size:22px; color:var(--sun);
+  text-shadow:0 2px 0 var(--ink), 0 4px 12px rgba(0,0,0,.35); pointer-events:none; animation:floatUp .9s ease-out forwards; z-index:5}
+#play .floater.coral{color:var(--coral)} #play .floater.teal{color:#7DE8DD} #play .floater.lav{color:#CFC8FF}
+@keyframes floatUp{0%{opacity:0; transform:translate(-50%,0) scale(.7)} 20%{opacity:1; transform:translate(-50%,-10px) scale(1.1)} 100%{opacity:0; transform:translate(-50%,-64px) scale(1)}}
+#play .sync-banner{
+  position:absolute; left:50%; top:34%; transform:translate(-50%,-50%) scale(.6); z-index:6; pointer-events:none;
+  font-family:'Fredoka',sans-serif; font-weight:700; font-size:clamp(30px,7vw,46px); color:var(--sun);
+  text-shadow:0 3px 0 var(--ink), 0 8px 24px rgba(0,0,0,.4); opacity:0;
+}
+#play .sync-banner.show{animation:syncPop 1s ease-out forwards}
+@keyframes syncPop{0%{opacity:0; transform:translate(-50%,-50%) scale(.6) rotate(-4deg)} 25%{opacity:1; transform:translate(-50%,-50%) scale(1.12) rotate(2deg)} 60%{opacity:1; transform:translate(-50%,-50%) scale(1)} 100%{opacity:0; transform:translate(-50%,-60%) scale(1.05)}}
+#play .stage-banner{
+  position:absolute; left:50%; top:24%; transform:translate(-50%,-50%) scale(.8); z-index:6; pointer-events:none;
+  font-family:'Fredoka',sans-serif; font-weight:700; font-size:clamp(19px,4.6vw,28px); color:#fff; text-align:center;
+  background:rgba(43,45,66,.86); border:2px solid var(--sun); border-radius:20px; padding:10px 20px; opacity:0;
+  max-width:88%; line-height:1.25;
+}
+#play .stage-banner .sb-note{display:block; font-family:'Nunito',sans-serif; font-size:13.5px; font-weight:800; color:var(--sun); margin-top:2px}
+#play .stage-banner.show{animation:stagePop 2.4s ease-out forwards}
+@keyframes stagePop{0%{opacity:0; transform:translate(-50%,-50%) scale(.8)} 10%{opacity:1; transform:translate(-50%,-50%) scale(1.04)} 16%{transform:translate(-50%,-50%) scale(1)} 82%{opacity:1} 100%{opacity:0; transform:translate(-50%,-58%) scale(1)}}
+#play .stars-row{font-size:26px; letter-spacing:4px; color:var(--sun); text-shadow:0 2px 0 var(--ink); margin-top:6px; min-height:32px}
+#play .stars-row .empty{opacity:.3}
+#play .shake{animation:shakeX .35s ease-out}
+@keyframes shakeX{0%,100%{transform:translateX(0)} 20%{transform:translateX(-7px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(3px)}}
+
+#play .overlay{
+  position:absolute; inset:0; z-index:10; display:flex; align-items:center; justify-content:center;
+  background:rgba(43,45,66,.45); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  padding:16px; opacity:0; pointer-events:none; transition:opacity .25s ease-out;
+}
+/* JJB merge: the overlay (z-index 10) sat BELOW the sticky site header/tabbar
+   (z-index 70), so clicks on an overlay scrolled under the header hit the
+   header/search box. 71 puts it above the header/tabbar but below the search
+   overlay (85) / modal (90). The overlay stays confined to #play. */
+#play .overlay{z-index:71}
+#play .overlay.open{opacity:1; pointer-events:auto}
+#play .panel{
+  width:100%; max-width:480px; max-height:100%; overflow-y:auto; background:var(--panel);
+  border-radius:22px; border:2px solid var(--ink); box-shadow:var(--shadow);
+  padding:22px 20px 20px; text-align:center; transform:scale(.96) translateY(8px);
+  transition:transform .28s ease-out; scrollbar-width:thin;
+}
+#play .overlay.open .panel{transform:scale(1) translateY(0)}
+#play .panel h2{font-size:32px; line-height:1.05; margin:6px 0 4px}
+#play .panel .tagline{font-size:15px; font-weight:700; color:#4A4C63; margin-bottom:14px}
+#play .hero-art{width:100%; max-width:340px; height:auto; display:block; margin:0 auto 4px; animation:bob 3.2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)}}
+#play .btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:52px; min-width:52px;
+  padding:12px 26px; border-radius:999px; border:2px solid var(--ink); font-size:19px; font-weight:700;
+  text-decoration:none; color:var(--ink); box-shadow:0 4px 0 var(--ink);
+  transition:transform .15s ease-out, box-shadow .15s ease-out; touch-action:manipulation;
+}
+#play .btn:active{transform:translateY(2px); box-shadow:0 2px 0 var(--ink)}
+#play .btn-sun{background:linear-gradient(180deg,#FFE08A,var(--sun)); }
+#play .btn-coral{background:linear-gradient(180deg,#FF8A8A,var(--coral)); color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.25)}
+#play .btn-teal{background:linear-gradient(180deg,#7DE8DD,var(--teal)); color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.25)}
+#play .btn-ghost{background:#fff; box-shadow:0 3px 0 var(--ink)}
+#play .btn-row{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:14px}
+#play .btn-row .btn{flex:1 1 160px}
+#play .btn-col{display:flex; flex-direction:column; gap:10px; margin-top:14px}
+#play .score-big{font-family:'Fredoka',sans-serif; font-weight:700; font-size:56px; line-height:1; color:var(--coral-deep)}
+#play .score-lbl{font-size:12px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; opacity:.7}
+#play .stat-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:14px 0 4px}
+#play .stat{background:#FFF3D6; border:2px solid rgba(43,45,66,.15); border-radius:16px; padding:10px 8px}
+#play .stat .v{font-family:'Fredoka',sans-serif; font-weight:700; font-size:24px}
+#play .stat .k{font-size:11px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; opacity:.7}
+#play .new-best{display:inline-block; margin-top:8px; background:linear-gradient(90deg,var(--sun),#FF9F43); color:var(--ink);
+  font-family:'Fredoka',sans-serif; font-weight:700; padding:6px 16px; border-radius:999px; border:2px solid var(--ink);
+  animation:bob 1.6s ease-in-out infinite}
+#play .grade{font-size:44px; line-height:1; margin:2px 0}
+
+#play .rules{text-align:left; margin:12px auto 4px; max-width:400px; display:flex; flex-direction:column; gap:10px}
+#play .rule{display:flex; gap:12px; align-items:flex-start; background:#F2F0FF; border-radius:14px; padding:10px 12px; font-size:14.5px; font-weight:700; line-height:1.35}
+#play .rule .ic{font-size:24px; line-height:1.2; flex:0 0 30px; text-align:center}
+#play .rule b{color:var(--coral-deep)} #play .rule .teal-b{color:var(--teal-deep)}
+#play .keys{display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-top:12px}
+#play .key{background:var(--ink); color:var(--cream); border-radius:8px; padding:6px 10px; font-size:13px; font-weight:800; font-family:'Fredoka',sans-serif}
+
+#play .demo{margin:10px auto 2px; width:100%; max-width:400px; height:96px; border-radius:16px; border:2px solid var(--ink); overflow:hidden; position:relative; background:linear-gradient(180deg,#6E63C8 0%,#2EC4B6 100%)}
+#play .demo .trail{position:absolute; top:0; bottom:0; width:50%; background:#F3EAD8}
+#play .demo .trail.left{left:0} #play .demo .trail.right{right:0}
+#play .demo .river{position:absolute; left:50%; top:0; bottom:0; width:10px; margin-left:-5px; background:#7DE8DD}
+#play .demo .char{position:absolute; bottom:16px; width:34px; height:34px; border-radius:50%; font-size:21px; display:grid; place-items:center; animation:hopDemo 2.4s ease-in-out infinite}
+#play .demo .penguin{left:12%; background:#2B2D42}
+#play .demo .seal{right:12%; background:#8FD8CF; animation-delay:1.2s}
+@keyframes hopDemo{0%,100%{transform:translateX(0)} 25%{transform:translateX(24px)} 50%{transform:translateX(0)} 75%{transform:translateX(-24px)}}
+#play .demo .log{position:absolute; top:-24px; width:44px; height:15px; border-radius:8px; background:#3A3D5C; border:2px solid #2B2D42; animation:fallDemo 2.4s linear infinite}
+#play .demo .log.l{left:16%} #play .demo .log.r{right:16%; animation-delay:1.2s}
+#play .demo .fish{position:absolute; top:-24px; font-size:18px; animation:fallDemo 3.2s linear infinite}
+#play .demo .fish.l{left:34%; animation-delay:.6s} #play .demo .fish.r{right:34%; animation-delay:1.8s}
+@keyframes fallDemo{0%{top:-24px} 100%{top:110px}}
+#play .demo .cap{position:absolute; left:0; right:0; bottom:0; text-align:center; font-size:11px; font-weight:800; color:#2B2D42; background:rgba(255,249,240,.88); padding:2px}
+
+#play .set-row{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 4px; border-bottom:2px dashed rgba(43,45,66,.15); font-weight:800; font-size:16px}
+#play .set-row:last-of-type{border-bottom:none}
+#play .toggle{min-width:64px; height:44px; min-height:44px; border-radius:999px; border:2px solid var(--ink); font-size:15px; font-weight:700;
+  background:#fff; box-shadow:0 3px 0 var(--ink); transition:transform .15s ease-out}
+#play .toggle:active{transform:translateY(2px); box-shadow:0 1px 0 var(--ink)}
+#play .toggle.on{background:linear-gradient(180deg,#7DE8DD,var(--teal)); color:#fff}
+#play input[type="range"]{width:150px; accent-color:var(--teal); height:44px}
+
+#play .footer{width:100%; max-width:660px; display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 4px 0; font-size:13px; font-weight:700; color:#55576E}
+#play .footer a{color:var(--teal-deep); font-weight:800; text-decoration:none}
+#play .footer .id{font-family:'Fredoka',sans-serif; font-size:12px; letter-spacing:.04em}
+#play .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0}
+#play .hint-bar{display:flex; justify-content:space-between; width:100%; max-width:660px; padding:8px 6px 0; font-size:12.5px; font-weight:800; color:#55576E}
+#play .hint-bar span{background:rgba(255,249,240,.8); border-radius:999px; padding:4px 10px}
+
+@media (max-width:420px){
+  body #play{padding:10px 10px 16px}
+  #play .overlay{padding:8px}
+  #play .panel{padding:14px 14px 12px}
+  #play .panel h2{font-size:27px}
+  #play .panel .tagline{font-size:14px; margin-bottom:8px}
+  #play .hero-art{max-width:170px}
+  #play .menu-best-line{font-size:12px !important; margin-top:8px !important}
+  #play .demo{height:44px; margin-top:6px}
+  #play .demo .cap{display:none}
+  #play .demo .char{bottom:4px; width:26px; height:26px; font-size:16px}
+  #play #howOverlay .panel{padding:9px 12px 8px}
+  #play #howOverlay .panel h2{font-size:24px; margin:1px 0}
+  #play #howOverlay .tagline{margin-bottom:2px}
+  #play #howOverlay .rules{gap:5px; margin-top:6px}
+  #play #howOverlay .rule{padding:5px 9px; font-size:12px}
+  #play #howOverlay .rule .ic{font-size:20px; flex-basis:26px}
+  #play #howOverlay .keys{display:none}
+  #play #howOverlay .btn-row{flex-wrap:nowrap; margin-top:4px}
+  #play #howOverlay .btn-row .btn{flex:1 1 0; min-width:0; padding:9px 10px}
+  #play #howOverlay .keys{margin-top:8px}
+  #play #howOverlay .keys .key{padding:4px 8px; font-size:12px}
+  #play .btn-col{margin-top:8px}
+  #play .btn-row{margin-top:8px}
+  #play #overOverlay .grade{font-size:30px; margin:0}
+  #play #overOverlay .panel h2{margin:2px 0}
+  #play #overOverlay .tagline{display:none}
+  #play #overOverlay .new-best{margin-top:4px; padding:4px 12px}
+  #play .stat-grid{margin:8px 0 2px; gap:8px}
+  #play .stat{padding:6px 4px}
+  #play .stat .v{font-size:19px}
+  #play .stat .k{font-size:10px}
+  #play .chip{font-size:13.5px; padding:5px 10px; min-height:44px}
+  #play .chip .num{font-size:16px}
+  #play .btn{font-size:17px; padding:9px 20px; min-height:48px}
+  #play .score-big{font-size:36px}
+}
+@media (prefers-reduced-motion: reduce){
+  #play .hero-art, #play .new-best{animation:none}
+  #play .floater{animation-duration:.01s}
+  #play .sync-banner.show{animation:none; opacity:1}
+  #play .stage-banner.show{animation:none; opacity:1}
+  #play .demo .char, #play .demo .log, #play .demo .fish{animation:none}
+  #play .panel, #play .overlay{transition:none}
+  #play .shake{animation:none}
+}
+
+#play{scroll-margin-top:12px}
+
+  </style>
+<div class="topbar">
+  <div class="top-actions">
+    <button class="icon-btn" id="musicBtn" type="button" aria-pressed="true" aria-label="Toggle music">🎵</button>
+    <button class="icon-btn" id="sfxBtn" type="button" aria-pressed="true" aria-label="Toggle sound effects">🔊</button>
+  </div>
+</div>
+
+<div class="stage" id="stage">
+  <canvas id="game" width="660" height="780" aria-label="Twin Trails game field. Left half controls the penguin, right half controls Pip the seal pup."></canvas>
+
+  <div class="hud" aria-hidden="false">
+    <div class="hud-row">
+      <div class="hud-group">
+        <span class="chip score"><span class="lbl">Score</span><span class="num" id="hudScore">0</span></span>
+        <span class="chip fish"><span aria-hidden="true">🐟</span><span class="num" id="hudFish">0</span><span class="lbl">fish</span></span>
+        <span class="chip best"><span class="lbl">Best</span><span class="num" id="hudBest">0</span></span>
+      </div>
+      <div class="hud-group">
+        <span class="chip level-chip"><span class="lbl">Stage</span><span class="num" id="hudStage">1</span></span>
+        <button class="icon-btn pause-btn" id="pauseBtn" type="button" aria-label="Pause game">⏸</button>
+      </div>
+    </div>
+    <div class="hud-row">
+      <span class="chip hearts-penguin"><span class="who" aria-hidden="true">🐧</span><span class="hearts" id="heartsPenguin" aria-label="Penguin hearts">♥♥♥</span></span>
+      <span class="chip hearts-pip"><span class="hearts" id="heartsPip" aria-label="Pip hearts">♥♥♥</span><span class="who" aria-hidden="true">🦭</span></span>
+    </div>
+  </div>
+
+  <div class="sync-banner" id="syncBanner" aria-hidden="true">SYNC! +25 ✨</div>
+  <div class="stage-banner" id="stageBanner" aria-hidden="true"></div>
+
+  <!-- START -->
+  <div class="overlay open" id="startOverlay" role="dialog" aria-modal="true" aria-labelledby="startTitle">
+    <div class="panel">
+      <svg class="hero-art" viewBox="0 0 340 150" role="img" aria-label="Flappy Penguin and Pip the seal pup running side by side on snowy trails">
+        <defs>
+          <linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7C6FF0"/><stop offset="1" stop-color="#2EC4B6"/></linearGradient>
+        </defs>
+        <rect x="6" y="8" width="328" height="134" rx="20" fill="url(#skyG)"/>
+        <circle cx="292" cy="34" r="16" fill="#FFC94D"/><circle cx="292" cy="34" r="22" fill="#FFC94D" opacity=".35"/>
+        <path d="M20 142 L40 96 L60 142 Z" fill="#2B2D42"/><path d="M52 142 L72 104 L92 142 Z" fill="#3A3D5C"/>
+        <path d="M258 142 L278 100 L298 142 Z" fill="#2B2D42"/><path d="M300 142 L318 108 L332 142 Z" fill="#3A3D5C"/>
+        <path d="M30 142 Q170 118 310 142 L310 142 L30 142 Z" fill="#FFF9F0"/>
+        <path d="M86 142 Q100 96 118 96 Q136 96 150 142 Z" fill="#E9E2D2"/>
+        <path d="M196 142 Q210 96 228 96 Q246 96 260 142 Z" fill="#E9E2D2"/>
+        <g><ellipse cx="118" cy="112" rx="24" ry="27" fill="#2B2D42"/><ellipse cx="118" cy="120" rx="15" ry="17" fill="#FFF9F0"/>
+        <circle cx="110" cy="104" r="4" fill="#fff"/><circle cx="110" cy="104" r="2" fill="#2B2D42"/><circle cx="126" cy="104" r="4" fill="#fff"/><circle cx="126" cy="104" r="2" fill="#2B2D42"/>
+        <path d="M112 114 Q118 120 124 114" stroke="#FFC94D" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M96 132 Q118 124 140 132 L136 140 Q118 135 100 140 Z" fill="#FF6B6B"/><path d="M138 130 L150 134 L138 138 Z" fill="#FF6B6B"/>
+        <ellipse cx="96" cy="140" rx="9" ry="4" fill="#FFC94D"/><ellipse cx="140" cy="140" rx="9" ry="4" fill="#FFC94D"/></g>
+        <g><ellipse cx="228" cy="120" rx="30" ry="19" fill="#8FD8CF"/><ellipse cx="228" cy="128" rx="18" ry="10" fill="#FFF9F0"/>
+        <circle cx="216" cy="110" r="5" fill="#fff"/><circle cx="216" cy="110" r="2.5" fill="#2B2D42"/><circle cx="238" cy="110" r="5" fill="#fff"/><circle cx="238" cy="110" r="2.5" fill="#2B2D42"/>
+        <path d="M222 120 Q227 124 232 120" stroke="#2B2D42" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M206 130 Q227 122 250 130 L246 137 Q227 131 210 137 Z" fill="#2EC4B6"/>
+        <ellipse cx="202" cy="132" rx="8" ry="4" fill="#2EC4B6" transform="rotate(-25 202 132)"/><ellipse cx="254" cy="132" rx="8" ry="4" fill="#2EC4B6" transform="rotate(25 254 132)"/></g>
+        <g fill="#FFF9F0"><circle cx="60" cy="30" r="2.5"/><circle cx="120" cy="22" r="2"/><circle cx="180" cy="28" r="2.5"/><circle cx="240" cy="20" r="2"/><circle cx="40" cy="60" r="2"/><circle cx="320" cy="66" r="2.5"/></g>
+      </svg>
+      <h2 id="startTitle">Twin Trails</h2>
+      <p class="tagline">Two friends, two trails, one frosty dash! Steer the penguin <b>and</b> the seal pup — dodge the logs, leap the gaps, and catch the fish that match each scarf.</p>
+      <div class="btn-col">
+        <button class="btn btn-sun" id="playBtn" type="button">▶&nbsp;Play</button>
+        <div class="btn-row" style="margin-top:0">
+          <button class="btn btn-ghost" id="howBtn" type="button">How to play</button>
+          <button class="btn btn-ghost" id="settingsBtn" type="button">⚙️ Settings</button>
+        </div>
+      </div>
+      <p class="menu-best-line" style="margin-top:14px; font-size:13px; font-weight:700; color:#55576E">Best score: <span id="menuBest">0</span> · 🐧 coral fish for the penguin · 🦭 teal fish for Pip</p>
+    </div>
+  </div>
+
+  <!-- HOW TO -->
+  <div class="overlay" id="howOverlay" role="dialog" aria-modal="true" aria-labelledby="howTitle">
+    <div class="panel">
+      <h2 id="howTitle">How to play</h2>
+      <p class="tagline">You control both friends at once!</p>
+      <div class="demo" aria-hidden="true">
+        <div class="trail left"></div><div class="trail right"></div><div class="river"></div>
+        <div class="log l"></div><div class="log r"></div>
+        <div class="fish l">🐟</div><div class="fish r">🐟</div>
+        <div class="char penguin">🐧</div><div class="char seal">🦭</div>
+        <div class="cap">Watch them hop — dodge the logs, catch your fish!</div>
+      </div>
+      <div class="rules">
+        <div class="rule"><span class="ic" aria-hidden="true">👆</span><span><b>Tap a side to hop:</b> the <b>left half</b> moves the penguin, the <b>right half</b> moves Pip.</span></div>
+        <div class="rule"><span class="ic" aria-hidden="true">🪵</span><span>Dodge <b>logs</b> and <b>gaps</b> — a hit costs a heart. Lose all 3 and the run ends.</span></div>
+        <div class="rule"><span class="ic" aria-hidden="true">🐟</span><span><b>Coral fish</b> → penguin, <b>teal fish</b> → Pip. A wrong-colour fish costs a heart!</span></div>
+        <div class="rule"><span class="ic" aria-hidden="true">✨</span><span><b>SYNC +25</b> if both catch at once. <b>Golden fish</b> (Stage 2+) +20. Catches within 4 s chain into a <b>combo</b>!</span></div>
+        <div class="rule"><span class="ic" aria-hidden="true">💨</span><span>Near-miss <b>+2</b>. New <b>stage</b> every 30 s — finish one with no hearts lost for a ★!</span></div>
+      </div>
+      <div class="keys" aria-label="Keyboard controls">
+        <span class="key">A / D</span><span style="align-self:center; font-weight:800">penguin</span>
+        <span class="key">← / →</span><span style="align-self:center; font-weight:800">Pip</span>
+        <span class="key">P</span><span style="align-self:center; font-weight:800">pause</span>
+        <span class="key">R</span><span style="align-self:center; font-weight:800">restart</span>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-sun" id="howPlayBtn" type="button">▶&nbsp;Play</button>
+        <button class="btn btn-ghost" id="howCloseBtn" type="button">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="overlay" id="settingsOverlay" role="dialog" aria-modal="true" aria-labelledby="setTitle">
+    <div class="panel">
+      <h2 id="setTitle">Settings</h2>
+      <p class="tagline">Sound starts only after you press Play.</p>
+      <div class="set-row"><span>🎵 Music</span><button class="toggle on" id="musicToggle" type="button" aria-pressed="true">On</button></div>
+      <div class="set-row"><span>🔊 Sound effects</span><button class="toggle on" id="sfxToggle" type="button" aria-pressed="true">On</button></div>
+      <div class="set-row"><span>🔈 Volume</span><input type="range" id="volumeSlider" min="0" max="100" value="70" aria-label="Volume"></div>
+      <div class="btn-row"><button class="btn btn-sun" id="settingsCloseBtn" type="button">Done</button></div>
+    </div>
+  </div>
+
+  <!-- PAUSE -->
+  <div class="overlay" id="pauseOverlay" role="dialog" aria-modal="true" aria-labelledby="pauseTitle">
+    <div class="panel">
+      <h2 id="pauseTitle">Paused ❄️</h2>
+      <p class="tagline">The trails are waiting. Take a breath!</p>
+      <p style="font-weight:800">Score <span id="pauseScore">0</span> · 🐟 <span id="pauseFish">0</span> · Stage <span id="pauseStage">1</span> · <span id="pauseStars">★ 0</span></p>
+      <div class="btn-col">
+        <button class="btn btn-sun" id="resumeBtn" type="button">▶&nbsp;Resume</button>
+        <button class="btn btn-teal" id="pauseRestartBtn" type="button">↻&nbsp;Restart</button>
+        <div class="btn-row" style="margin-top:0">
+          <button class="btn btn-ghost" id="pauseHowBtn" type="button">How to play</button>
+          <button class="btn btn-ghost" id="pauseSettingsBtn" type="button">⚙️ Settings</button>
+        </div>
+        <button class="btn btn-ghost" id="quitBtn" type="button">🏠&nbsp;Quit to menu</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GAME OVER -->
+  <div class="overlay" id="overOverlay" role="dialog" aria-modal="true" aria-labelledby="overTitle">
+    <div class="panel">
+      <div class="grade" id="overEmoji" aria-hidden="true">🥶</div>
+      <h2 id="overTitle">Trail's End!</h2>
+      <p class="tagline" id="overMsg">The snow got the better of our runners.</p>
+      <div class="score-lbl">Final score</div>
+      <div class="score-big" id="finalScore">0</div>
+      <div id="newBestWrap" hidden><span class="new-best">★ New best score! ★</span></div>
+      <div class="stars-row" id="overStars" aria-label="Stars earned"></div>
+      <p style="font-weight:800; margin-top:2px; font-size:14px">Best combo ×<span id="overCombo">0</span></p>
+      <div class="stat-grid">
+        <div class="stat"><div class="v" id="overFish">0</div><div class="k">🐟 Fish caught</div></div>
+        <div class="stat"><div class="v" id="overSync">0</div><div class="k">✨ Sync bonuses</div></div>
+        <div class="stat"><div class="v" id="overNear">0</div><div class="k">💨 Near misses</div></div>
+        <div class="stat"><div class="v" id="overBest">0</div><div class="k">🏆 Best score</div></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-sun" id="replayBtn" type="button">↻&nbsp;Play again</button>
+        <button class="btn btn-ghost" id="menuBtn" type="button">Menu</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="hint-bar" aria-hidden="true"><span>🐧 Left half · A / D</span><span>Right half · ← / → 🦭</span></div>
+
+
+<div class="sr-only" aria-live="polite" id="liveRegion"></div>
+  <script>
+(function(){
+'use strict';
+/* Twin Trails — 100% original code, art and music, written for JoJo's Blocks.
+   Dual-lane endless dodger: Flappy Penguin (coral scarf) + Pip the seal pup
+   (teal scarf) run parallel snowy trails. v1.1.0: stages, golden fish, combos. */
+var NS = 'jjb-twin-trails';
+var W = 660, H = 780;
+var TRAIL_X = [165, 495];
+var LANE_DX = [-56, 0, 56];
+var CHAR_Y = 615;
+var REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function $(id){ return document.getElementById(id); }
+function clamp(v,a,b){ return v<a?a:(v>b?b:v); }
+function rand(a,b){ return a + Math.random()*(b-a); }
+function randi(a,b){ return Math.floor(rand(a,b+1)); }
+function choice(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+/* ---------------- persistence ---------------- */
+var store = {
+  get: function(k, d){ try{ var v = localStorage.getItem(NS+'-'+k); return v===null?d:v; }catch(e){ return d; } },
+  set: function(k, v){ try{ localStorage.setItem(NS+'-'+k, v); }catch(e){} }
+};
+var settings = {
+  music: store.get('music','on') === 'on',
+  sfx: store.get('sfx','on') === 'on',
+  volume: clamp(parseInt(store.get('volume','70'),10)||70, 0, 100)
+};
+var best = parseInt(store.get('best','0'),10)||0;
+
+/* ---------------- audio (procedural WebAudio only) ---------------- */
+var AudioBox = {
+  ctx:null, musicGain:null, sfxGain:null, masterGain:null, musicTimer:null, step:0, playing:false,
+  sfxCount:0, musicStepCount:0, /* instrumentation: counts real WebAudio plays for tests */
+  ensure: function(){
+    if(this.ctx) return;
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if(!AC) return;
+    this.ctx = new AC();
+    this.masterGain = this.ctx.createGain();
+    this.masterGain.gain.value = settings.volume/100;
+    this.masterGain.connect(this.ctx.destination);
+    this.musicGain = this.ctx.createGain();
+    this.musicGain.gain.value = settings.music ? 0.5 : 0;
+    this.musicGain.connect(this.masterGain);
+    this.sfxGain = this.ctx.createGain();
+    this.sfxGain.gain.value = settings.sfx ? 0.9 : 0;
+    this.sfxGain.connect(this.masterGain);
+  },
+  resume: function(){ this.ensure(); if(this.ctx && this.ctx.state==='suspended') this.ctx.resume(); },
+  applySettings: function(){
+    if(!this.ctx) return;
+    this.masterGain.gain.value = settings.volume/100;
+    this.musicGain.gain.value = settings.music ? 0.5 : 0;
+    this.sfxGain.gain.value = settings.sfx ? 0.9 : 0;
+  },
+  tone: function(freq, dur, type, vol, when, slideTo){
+    if(!this.ctx || !settings.sfx) return;
+    var t = this.ctx.currentTime + (when||0);
+    var o = this.ctx.createOscillator(), g = this.ctx.createGain();
+    o.type = type||'sine'; o.frequency.setValueAtTime(freq, t);
+    if(slideTo) o.frequency.exponentialRampToValueAtTime(slideTo, t+dur);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol||0.2, t+0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, t+dur);
+    o.connect(g); g.connect(this.sfxGain);
+    o.start(t); o.stop(t+dur+0.05);
+  },
+  noise: function(dur, vol, freq){
+    if(!this.ctx || !settings.sfx) return;
+    var t = this.ctx.currentTime;
+    var len = Math.floor(this.ctx.sampleRate * dur);
+    var buf = this.ctx.createBuffer(1, len, this.ctx.sampleRate);
+    var d = buf.getChannelData(0);
+    for(var i=0;i<len;i++) d[i] = (Math.random()*2-1) * (1 - i/len);
+    var src = this.ctx.createBufferSource(); src.buffer = buf;
+    var f = this.ctx.createBiquadFilter(); f.type='lowpass'; f.frequency.value = freq||800;
+    var g = this.ctx.createGain(); g.gain.value = vol||0.25;
+    src.connect(f); f.connect(g); g.connect(this.sfxGain); src.start(t);
+  },
+  /* SFX — one distinct voice per action */
+  sfx: function(name){
+    if(!this.ctx) return;
+    this.sfxCount++;
+    switch(name){
+      case 'click': this.tone(740, .07, 'triangle', .18); break;
+      case 'collect': this.tone(880, .09, 'sine', .22); this.tone(1318, .14, 'sine', .2, .07); break;
+      case 'wrong': this.tone(220, .22, 'sawtooth', .16, 0, 110); break;
+      case 'hit': this.noise(.18, .3, 500); this.tone(140, .22, 'sine', .3, 0, 60); break;
+      case 'sync': [523,659,784,1047].forEach(function(f,i){ AudioBox.tone(f, .16, 'triangle', .2, i*.07); }); break;
+      case 'near': this.noise(.14, .14, 2400); this.tone(1200, .1, 'sine', .1, 0, 1800); break;
+      case 'start': [392,523,659,784].forEach(function(f,i){ AudioBox.tone(f, .12, 'triangle', .18, i*.06); }); break;
+      case 'over': [523,440,392,330,262].forEach(function(f,i){ AudioBox.tone(f, .22, 'triangle', .18, i*.13); }); break;
+      case 'splash': this.noise(.3, .25, 900); this.tone(300, .25, 'sine', .15, 0, 90); break;
+    }
+  },
+  /* Music — original 16-step loop, A-minor frost waltz, ~107 BPM */
+  LEAD: [440,523,659,523, 784,659,523,440, 587,659,784,659, 523,440,392,440],
+  BASS: [110,0,0,0, 87,0,0,0, 131,0,0,0, 98,0,0,0],
+  startMusic: function(){
+    this.ensure(); if(!this.ctx || this.playing) return;
+    this.playing = true; this.step = 0;
+    var self = this;
+    this.musicTimer = setInterval(function(){ self.musicStep(); }, 140);
+  },
+  stopMusic: function(){
+    this.playing = false;
+    if(this.musicTimer){ clearInterval(this.musicTimer); this.musicTimer = null; }
+  },
+  musicStep: function(){
+    if(!this.ctx || !settings.music) return;
+    this.musicStepCount++;
+    var i = this.step % 16, t = this.ctx.currentTime;
+    var lf = this.LEAD[i], bf = this.BASS[i];
+    if(lf){
+      var o = this.ctx.createOscillator(), g = this.ctx.createGain();
+      o.type='triangle'; o.frequency.value = lf;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.16, t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t+0.32);
+      o.connect(g); g.connect(this.musicGain); o.start(t); o.stop(t+0.36);
+    }
+    if(bf){
+      var o2 = this.ctx.createOscillator(), g2 = this.ctx.createGain();
+      o2.type='sine'; o2.frequency.value = bf;
+      g2.gain.setValueAtTime(0.0001, t);
+      g2.gain.exponentialRampToValueAtTime(0.22, t+0.02);
+      g2.gain.exponentialRampToValueAtTime(0.0001, t+0.5);
+      o2.connect(g2); g2.connect(this.musicGain); o2.start(t); o2.stop(t+0.55);
+    }
+    /* soft sparkle on the off-beat every 4 steps */
+    if(i % 4 === 2){
+      var o3 = this.ctx.createOscillator(), g3 = this.ctx.createGain();
+      o3.type='sine'; o3.frequency.value = this.LEAD[i]*2;
+      g3.gain.setValueAtTime(0.0001, t);
+      g3.gain.exponentialRampToValueAtTime(0.05, t+0.02);
+      g3.gain.exponentialRampToValueAtTime(0.0001, t+0.2);
+      o3.connect(g3); g3.connect(this.musicGain); o3.start(t); o3.stop(t+0.24);
+    }
+    this.step++;
+  }
+};
+
+/* ---------------- game state ---------------- */
+var canvas = $('game'), ctx = canvas.getContext('2d');
+var stage = $('stage');
+var state = {
+  screen: 'menu',           /* menu | playing | paused | over */
+  t: 0,                     /* run time (s) */
+  distance: 0,
+  score: 0,
+  fish: 0,
+  syncs: 0,
+  nears: 0,
+  speed: 175,
+  spawnTimer: 0,
+  spawnOn: true,           /* test hook may pause the spawner; normal play always on */
+  pairTimer: 9,             /* seconds until next paired-fish moment */
+  stage: 1,                 /* v1.1.0: 1 stage per 30 s of run time */
+  stageHearts: 6,           /* hearts total when the current stage began */
+  stars: 0,                 /* stages finished without losing a heart */
+  combo: 0, comboT: 0, bestCombo: 0, lastFishT: -99,
+  golden: 0,                /* golden fish caught this run */
+  scroll: 0,
+  hearts: { penguin: 3, pip: 3 },
+  entities: [],             /* {trail,lane,y,type,color,pair,done,nearDone} */
+  particles: [],
+  snow: [],
+  shakeT: 0,
+  lastCollect: { penguin: 0, pip: 0 },
+  flashTrail: [0, 0]        /* wrong-fish red flash per trail */
+};
+var chars = {
+  penguin: { name:'penguin', lane:1, x:TRAIL_X[0], targetX:TRAIL_X[0], invuln:0, expr:'happy', exprT:0, blink:2, bob:0, color:'coral' },
+  pip:     { name:'pip',     lane:1, x:TRAIL_X[1], targetX:TRAIL_X[1], invuln:0, expr:'happy', exprT:0, blink:2.4, bob:1.2, color:'teal' }
+};
+var CHAR = { penguin: chars.penguin, pip: chars.pip };
+
+function speedNow(){ return 175 + Math.min(205, state.t * 3.2); }
+function spawnInterval(){ return Math.max(430, 980 - state.t * 11) / 1000 * (state.stage >= 5 ? 0.85 : 1); }
+function levelNow(){ return Math.floor(state.t / 18) + 1; }
+function stageNow(){ return Math.floor(state.t / 30) + 1; }
+/* v1.1.0 stage features — each stage adds a real challenge */
+var STAGES = {
+  1: { name:'Frosty Start', note:'Dodge logs, catch matching fish!' },
+  2: { name:'Golden Fish', note:'Golden fish appear — +20 for either friend!' },
+  3: { name:'Log Walls', note:'Log walls block two lanes — find the gap!' },
+  4: { name:'Zigzag Run', note:'Zigzag log rows sweep both trails!' },
+  5: { name:'Blizzard Rush', note:'Everything gets denser and faster!' }
+};
+function stageInfo(n){ return STAGES[n] || STAGES[5]; }
+
+function resetRun(){
+  state.t = 0; state.distance = 0; state.score = 0; state.fish = 0; state.syncs = 0; state.nears = 0;
+  state.speed = 175; state.spawnTimer = 0.7; state.pairTimer = 9; state.scroll = 0;
+  state.spawnOn = true;
+  state.stage = 1; state.stageHearts = 6; state.stars = 0;
+  state.combo = 0; state.comboT = 0; state.bestCombo = 0; state.lastFishT = -99; state.golden = 0;
+  state.hearts = { penguin: 3, pip: 3 };
+  state.entities = []; state.particles = []; state.shakeT = 0;
+  state.lastCollect = { penguin: 0, pip: 0 }; state.flashTrail = [0,0];
+  Object.keys(chars).forEach(function(k){
+    var c = chars[k];
+    c.lane = 1; c.x = TRAIL_X[k==='penguin'?0:1]; c.targetX = c.x;
+    c.invuln = 0; c.expr = 'happy'; c.exprT = 0;
+  });
+  updateHUD(true);
+}
+
+/* ---------------- spawning ---------------- */
+function obstacleNear(trail, y, range){
+  return state.entities.some(function(e){
+    return e.trail===trail && (e.type==='log'||e.type==='gap') && Math.abs(e.y - y) < range;
+  });
+}
+function laneBlocked(trail, lane, y){
+  return state.entities.some(function(e){
+    return e.trail===trail && e.lane===lane && (e.type==='log'||e.type==='gap') && Math.abs(e.y - y) < 130;
+  });
+}
+function spawnEntity(type, trail, lane, color){
+  var y = -46;
+  if(type==='log' || type==='gap'){
+    /* fairness: never block the last free lane in this vertical band */
+    var others = [0,1,2].filter(function(l){ return l!==lane; });
+    var free = others.some(function(l){ return !laneBlocked(trail, l, y); });
+    if(!free) return false;
+  } else {
+    /* fish must not overlap an obstacle in the same lane */
+    var clash = state.entities.some(function(e){ return e.trail===trail && e.lane===lane && Math.abs(e.y-y)<80; });
+    if(clash) return false;
+  }
+  state.entities.push({ trail:trail, lane:lane, y:y, type:type, color:color||null, pair:false, done:false, nearDone:false, wob:rand(0,6.28) });
+  return true;
+}
+function spawnTick(){
+  var stg = state.stage;
+  /* v1.1.0 stage patterns: walls (stage 3+) and zigzags (stage 4+) */
+  if(stg >= 3 && Math.random() < 0.16){ spawnWall(Math.random() < 0.5 ? 0 : 1); return; }
+  if(stg >= 4 && Math.random() < 0.14){ spawnZigzag(); return; }
+  var trail = Math.random() < 0.5 ? 0 : 1;
+  var lane = randi(0,2);
+  var r = Math.random();
+  if(r < 0.52) spawnEntity('log', trail, lane);
+  else if(r < 0.72) spawnEntity('gap', trail, lane);
+  else spawnEntity('fish', trail, lane, (stg >= 2 && Math.random() < 0.14) ? 'gold' : (Math.random()<0.5 ? 'coral' : 'teal'));
+  /* occasionally seed the other trail too, so both friends stay busy */
+  if(Math.random() < 0.35){
+    var t2 = 1 - trail;
+    spawnEntity(Math.random()<0.6 ? 'log' : 'fish', t2, randi(0,2), (stg >= 2 && Math.random() < 0.12) ? 'gold' : (Math.random()<0.5 ? 'coral' : 'teal'));
+  }
+}
+/* log wall: two lanes blocked, one free lane left to dodge through */
+function spawnWall(trail){
+  var free = randi(0,2);
+  var made = 0;
+  [0,1,2].forEach(function(l){ if(l !== free && spawnEntity('log', trail, l)) made++; });
+  return made;
+}
+/* zigzag: a log on each trail in mirrored lanes, same row */
+function spawnZigzag(){
+  var a = randi(0,2);
+  var ok1 = spawnEntity('log', 0, a);
+  var ok2 = spawnEntity('log', 1, 2 - a);
+  return ok1 && ok2;
+}
+function spawnPair(){
+  /* paired fish: one matching fish per trail, same row — a sync chance */
+  var l1 = randi(0,2), l2 = randi(0,2);
+  var a = { trail:0, lane:l1, y:-46, type:'fish', color:'coral', pair:true, done:false, nearDone:false, wob:0 };
+  var b = { trail:1, lane:l2, y:-46, type:'fish', color:'teal',  pair:true, done:false, nearDone:false, wob:0 };
+  state.entities.push(a, b);
+}
+
+/* ---------------- particles & feedback ---------------- */
+function burst(x, y, colors, n, power){
+  if(REDUCED) return;
+  for(var i=0;i<n;i++){
+    var a = rand(0, Math.PI*2), s = rand(40, power||160);
+    state.particles.push({ x:x, y:y, vx:Math.cos(a)*s, vy:Math.sin(a)*s - 40, life:rand(.5,.9), max:.9, size:rand(3,7), color:choice(colors), shape: Math.random()<0.5?'dot':'star' });
+  }
+}
+function floater(x, y, text, cls){
+  if(REDUCED) return;
+  var el = document.createElement('div');
+  el.className = 'floater ' + (cls||'');
+  el.textContent = text;
+  el.style.left = (x / W * 100) + '%';
+  el.style.top = (y / H * 100) + '%';
+  stage.appendChild(el);
+  setTimeout(function(){ el.remove(); }, 950);
+}
+function syncBanner(){
+  var b = $('syncBanner');
+  b.classList.remove('show'); void b.offsetWidth; b.classList.add('show');
+  setTimeout(function(){ b.classList.remove('show'); }, 1050);
+}
+function stageBanner(title, note){
+  var b = $('stageBanner');
+  b.innerHTML = '';
+  b.appendChild(document.createTextNode(title));
+  var n = document.createElement('span');
+  n.className = 'sb-note';
+  n.textContent = note;
+  b.appendChild(n);
+  b.classList.remove('show'); void b.offsetWidth; b.classList.add('show');
+  setTimeout(function(){ b.classList.remove('show'); }, 2450);
+}
+function announce(msg){ $('liveRegion').textContent = msg; }
+
+/* ---------------- moves & scoring ---------------- */
+function moveChar(key, dir){
+  if(state.screen !== 'playing') return;
+  var c = chars[key];
+  var nl = clamp(c.lane + dir, 0, 2);
+  if(nl === c.lane) return;
+  c.lane = nl;
+  c.targetX = TRAIL_X[key==='penguin'?0:1] + LANE_DX[nl];
+  AudioBox.sfx('click');
+}
+function loseHeart(key, why){
+  var c = chars[key];
+  if(c.invuln > 0) return;
+  state.hearts[key]--;
+  state.combo = 0; state.comboT = 0; /* a hit breaks the combo chain */
+  c.invuln = 1.3;
+  c.expr = 'hurt'; c.exprT = 0.9;
+  state.shakeT = 0.35;
+  stage.classList.remove('shake'); void stage.offsetWidth; stage.classList.add('shake');
+  burst(c.x, CHAR_Y, ['#FF6B6B','#FFF9F0','#FFC94D'], REDUCED?0:14, 150);
+  if(why === 'gap') AudioBox.sfx('splash'); else AudioBox.sfx('hit');
+  floater(c.x, CHAR_Y - 60, '−1 ♥', 'coral');
+  announce((key==='penguin'?'Penguin':'Pip') + ' lost a heart. ' + state.hearts[key] + ' left.');
+  updateHUD(true);
+  if(state.hearts[key] <= 0) gameOver(key);
+}
+function collectFish(key, e){
+  var c = chars[key];
+  var gold = e.color === 'gold';
+  var match = gold || (key==='penguin' && e.color==='coral') || (key==='pip' && e.color==='teal');
+  if(match){
+    state.fish++;
+    /* v1.1.0 combo: fish caught within 4 s of the last one chain up */
+    if(state.t - state.lastFishT < 4) state.combo++; else state.combo = 1;
+    state.lastFishT = state.t; state.comboT = 4;
+    if(state.combo > state.bestCombo) state.bestCombo = state.combo;
+    var pts = gold ? 20 : 10 + Math.min(10, (state.combo - 1) * 2);
+    if(gold) state.golden++;
+    state.score += pts;
+    c.expr = 'happy'; c.exprT = 0.7;
+    burst(c.x, CHAR_Y - 10, gold ? ['#FFC94D','#FFF9F0','#FF6B6B'] : ['#FFC94D','#2EC4B6','#FFF9F0'], REDUCED?0:12, 130);
+    floater(c.x, CHAR_Y - 64, '+' + pts + (gold ? ' ✨' : ' 🐟'), gold ? 'lav' : (e.color==='coral' ? 'coral' : 'teal'));
+    if(state.combo >= 3) floater(c.x, CHAR_Y - 100, 'Combo ×' + state.combo + '!', 'lav');
+    AudioBox.sfx('collect');
+    /* sync: both friends catch a fish within 600ms */
+    var now = state.t;
+    var other = key==='penguin' ? 'pip' : 'penguin';
+    state.lastCollect[key] = now;
+    if(now - state.lastCollect[other] < 0.6 && state.lastCollect[other] > 0){
+      state.syncs++;
+      state.score += 25;
+      syncBanner();
+      burst(W/2, H*0.34, ['#FFC94D','#FF6B6B','#2EC4B6','#7C6FF0','#FFF9F0'], REDUCED?0:36, 260);
+      AudioBox.sfx('sync');
+      announce('Sync bonus! Both friends caught a fish together. +25 points.');
+    }
+  } else {
+    state.flashTrail[e.trail] = 0.5;
+    floater(c.x, CHAR_Y - 64, 'Wrong fish!', 'coral');
+    AudioBox.sfx('wrong');
+    loseHeart(key, 'fish');
+  }
+  updateHUD(true);
+}
+
+/* ---------------- update ---------------- */
+function update(dt){
+  state.t += dt;
+  state.speed = speedNow();
+  state.distance += state.speed * dt;
+  state.score += state.speed * dt * 0.045;
+  state.scroll += state.speed * dt;
+  if(state.shakeT > 0) state.shakeT -= dt;
+  /* v1.1.0 stage change: forward only (run time never goes backwards in real
+     play; debug setTime() may jump back, which must not re-trigger stages) */
+  var stg = stageNow();
+  if(stg > state.stage){
+    var heartsNow = state.hearts.penguin + state.hearts.pip;
+    if(heartsNow >= state.stageHearts){
+      state.stars++;
+      floater(W/2, H*0.42, '★ Stage clear! No hearts lost!', 'lav');
+    }
+    state.stage = stg;
+    state.stageHearts = heartsNow;
+    var info = stageInfo(stg);
+    stageBanner('Stage ' + stg + ' — ' + info.name, info.note);
+    announce('Stage ' + stg + ': ' + info.name + '. ' + info.note);
+  }
+  /* combo chain expires after 4 s without a catch */
+  if(state.combo > 0){
+    state.comboT -= dt;
+    if(state.comboT <= 0) state.combo = 0;
+  }
+  state.flashTrail[0] = Math.max(0, state.flashTrail[0]-dt);
+  state.flashTrail[1] = Math.max(0, state.flashTrail[1]-dt);
+
+  state.spawnTimer -= dt;
+  if(state.spawnOn && state.spawnTimer <= 0){ spawnTick(); state.spawnTimer = spawnInterval() * rand(0.85, 1.15); }
+  state.pairTimer -= dt;
+  if(state.spawnOn && state.pairTimer <= 0){ spawnPair(); state.pairTimer = rand(11, 15); }
+
+  Object.keys(chars).forEach(function(k){
+    var c = chars[k];
+    var dx = c.targetX - c.x;
+    c.x += dx * Math.min(1, dt * 14);
+    c.bob += dt * 11;
+    if(c.invuln > 0) c.invuln -= dt;
+    if(c.exprT > 0){ c.exprT -= dt; if(c.exprT <= 0) c.expr = 'happy'; }
+    c.blink -= dt;
+    if(c.blink < -0.12) c.blink = rand(2.2, 4.2);
+  });
+
+  var speed = state.speed;
+  state.entities.forEach(function(e){
+    e.y += speed * dt;
+    e.wob += dt * 3;
+    if(e.done) return;
+    var c = (e.trail===0) ? chars.penguin : chars.pip;
+    var key = e.trail===0 ? 'penguin' : 'pip';
+    var dy = e.y - CHAR_Y;
+    if(e.type === 'fish'){
+      if(e.lane === c.lane && Math.abs(dy) < 46){
+        e.done = true;
+        collectFish(key, e);
+      }
+    } else {
+      if(e.lane === c.lane && Math.abs(dy) < 42){
+        e.done = true;
+        if(c.invuln <= 0) loseHeart(key, e.type);
+      } else if(!e.nearDone && e.y > CHAR_Y + 46 && Math.abs(e.lane - c.lane) === 1){
+        e.nearDone = true;
+        state.nears++;
+        state.score += 2;
+        floater(c.x + (e.lane > c.lane ? 34 : -34), CHAR_Y - 40, 'Close! +2', 'lav');
+        AudioBox.sfx('near');
+        updateHUD(true);
+      }
+    }
+  });
+  state.entities = state.entities.filter(function(e){ return e.y < H + 70 && !e.done; });
+
+  /* particles */
+  for(var i = state.particles.length-1; i >= 0; i--){
+    var p = state.particles[i];
+    p.life -= dt;
+    if(p.life <= 0){ state.particles.splice(i,1); continue; }
+    p.x += p.vx * dt; p.y += p.vy * dt; p.vy += 260 * dt;
+  }
+  /* ambient snow */
+  if(!REDUCED){
+    state.snow.forEach(function(f){
+      f.y += f.vy * dt; f.x += Math.sin(state.t * 0.8 + f.ph) * 12 * dt;
+      if(f.y > H + 6){ f.y = -6; f.x = rand(0, W); }
+    });
+  }
+  updateHUD(false);
+}
+
+/* ---------------- HUD ---------------- */
+var hudCache = {};
+function setText(id, v){
+  if(hudCache[id] !== v){ hudCache[id] = v; $(id).textContent = v; }
+}
+function heartsHTML(n){
+  var s = '';
+  for(var i=0;i<3;i++) s += '<span class="' + (i<n?'':'lost') + '">♥</span>';
+  return s;
+}
+function updateHUD(force){
+  setText('hudScore', Math.floor(state.score));
+  setText('hudFish', state.fish);
+  setText('hudBest', Math.max(best, Math.floor(state.score)));
+  setText('hudStage', state.stage);
+  var hp = heartsHTML(state.hearts.penguin), hq = heartsHTML(state.hearts.pip);
+  if(force || hudCache.hp !== hp){ hudCache.hp = hp; $('heartsPenguin').innerHTML = hp; }
+  if(force || hudCache.hq !== hq){ hudCache.hq = hq; $('heartsPip').innerHTML = hq; }
+}
+
+/* ---------------- rendering ---------------- */
+function drawPine(x, y, s, color){
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(x, y - 34*s); ctx.lineTo(x - 20*s, y + 6*s); ctx.lineTo(x - 8*s, y + 6*s);
+  ctx.lineTo(x - 24*s, y + 26*s); ctx.lineTo(x + 24*s, y + 26*s); ctx.lineTo(x + 8*s, y + 6*s);
+  ctx.lineTo(x + 20*s, y + 6*s); ctx.closePath(); ctx.fill();
+  ctx.fillRect(x - 4*s, y + 26*s, 8*s, 10*s);
+}
+function drawBackground(){
+  var g = ctx.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, '#4B4396'); g.addColorStop(0.34, '#6E63C8');
+  g.addColorStop(0.72, '#2EC4B6'); g.addColorStop(1, '#1D9A8E');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  /* stars + moon */
+  ctx.fillStyle = '#FFF9F0';
+  for(var i=0;i<26;i++){
+    var sx = (i*97)%W, sy = (i*53)%150;
+    ctx.globalAlpha = 0.35 + ((i*7)%10)/18;
+    ctx.beginPath(); ctx.arc(sx, sy, 1.6, 0, 6.29); ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = '#FFC94D';
+  ctx.beginPath(); ctx.arc(580, 62, 26, 0, 6.29); ctx.fill();
+  ctx.fillStyle = 'rgba(255,201,77,.3)';
+  ctx.beginPath(); ctx.arc(580, 62, 36, 0, 6.29); ctx.fill();
+  /* distant pines, scrolling slowly */
+  var off = state.scroll * 0.35 % 130;
+  for(var px = -20; px < W + 40; px += 65){
+    drawPine(px + (px%130===0 ? off : -off), 168, 1.05, 'rgba(43,45,66,.55)');
+  }
+  /* frozen river between the trails */
+  ctx.fillStyle = '#7DE8DD';
+  ctx.beginPath();
+  ctx.moveTo(308, 0); ctx.lineTo(352, 0); ctx.lineTo(342, H); ctx.lineTo(318, H); ctx.closePath(); ctx.fill();
+  ctx.strokeStyle = 'rgba(255,249,240,.75)'; ctx.lineWidth = 3;
+  ctx.beginPath();
+  for(var ry = -20; ry < H + 40; ry += 46){
+    var yy = ry + (state.scroll * 0.6 % 46);
+    ctx.moveTo(320, yy); ctx.quadraticCurveTo(330, yy + 10, 340, yy + 16);
+  }
+  ctx.stroke();
+  /* snowy banks */
+  ctx.fillStyle = '#FFF9F0';
+  ctx.beginPath(); ctx.moveTo(0, 150); ctx.quadraticCurveTo(60, 130, 120, 150); ctx.lineTo(120, H); ctx.lineTo(0, H); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(W, 150); ctx.quadraticCurveTo(W-60, 130, W-120, 150); ctx.lineTo(W-120, H); ctx.lineTo(W, H); ctx.closePath(); ctx.fill();
+  /* near pines on the banks, scrolling */
+  var off2 = state.scroll * 0.7 % 170;
+  drawPine(34 + off2*0.2, 300 + (off2%170), 1.3, '#2B2D42');
+  drawPine(58, 480 + (off2%170)*0.6, 1.1, '#3A3D5C');
+  drawPine(W-34 - off2*0.2, 260 + (off2%170), 1.3, '#2B2D42');
+  drawPine(W-58, 520 + (off2%170)*0.6, 1.1, '#3A3D5C');
+}
+function drawTrails(){
+  TRAIL_X.forEach(function(tx, ti){
+    /* trail bed */
+    ctx.fillStyle = '#F3EAD8';
+    ctx.beginPath();
+    ctx.moveTo(tx-88, 0); ctx.lineTo(tx+88, 0); ctx.lineTo(tx+88, H); ctx.lineTo(tx-88, H); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = 'rgba(43,45,66,.35)'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(tx-88, 0); ctx.lineTo(tx-88, H); ctx.moveTo(tx+88, 0); ctx.lineTo(tx+88, H); ctx.stroke();
+    /* lane dashes, scrolling */
+    ctx.strokeStyle = 'rgba(43,45,66,.28)'; ctx.lineWidth = 4; ctx.setLineDash([16, 22]);
+    ctx.lineDashOffset = -(state.scroll % 38);
+    [-28, 28].forEach(function(dx){
+      ctx.beginPath(); ctx.moveTo(tx+dx, 0); ctx.lineTo(tx+dx, H); ctx.stroke();
+    });
+    ctx.setLineDash([]);
+    /* wrong-fish flash */
+    if(state.flashTrail[ti] > 0){
+      ctx.fillStyle = 'rgba(255,107,107,' + (state.flashTrail[ti]*0.5) + ')';
+      ctx.fillRect(tx-88, 0, 176, H);
+    }
+  });
+}
+function drawGap(e){
+  var x = TRAIL_X[e.trail] + LANE_DX[e.lane];
+  ctx.fillStyle = '#1E2036';
+  ctx.beginPath(); ctx.ellipse(x, e.y, 40, 26, 0, 0, 6.29); ctx.fill();
+  ctx.strokeStyle = '#7DE8DD'; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.ellipse(x, e.y, 40, 26, 0, 0.4, 2.2); ctx.stroke();
+  ctx.fillStyle = '#2EC4B6';
+  ctx.beginPath(); ctx.ellipse(x - 12, e.y + 6, 8, 4, 0, 0, 6.29); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(x + 14, e.y - 4, 6, 3, 0, 0, 6.29); ctx.fill();
+}
+function drawLog(e){
+  var x = TRAIL_X[e.trail] + LANE_DX[e.lane];
+  ctx.save();
+  ctx.translate(x, e.y);
+  ctx.fillStyle = '#3A3D5C';
+  roundRect(-34, -20, 68, 40, 18); ctx.fill();
+  ctx.fillStyle = '#565A7D';
+  roundRect(-34, -20, 68, 14, 9); ctx.fill();
+  ctx.strokeStyle = 'rgba(43,45,66,.5)'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(-20, -6); ctx.lineTo(24, -6); ctx.moveTo(-26, 8); ctx.lineTo(18, 8); ctx.stroke();
+  ctx.fillStyle = '#FFF9F0';
+  ctx.beginPath(); ctx.arc(30, 0, 13, 0, 6.29); ctx.fill();
+  ctx.strokeStyle = '#FFC94D'; ctx.lineWidth = 2.5;
+  ctx.beginPath(); ctx.arc(30, 0, 8, 0, 6.29); ctx.stroke();
+  ctx.beginPath(); ctx.arc(30, 0, 3, 0, 6.29); ctx.stroke();
+  ctx.restore();
+}
+function drawFish(e){
+  var x = TRAIL_X[e.trail] + LANE_DX[e.lane];
+  var y = e.y + Math.sin(e.wob) * 3;
+  var coral = e.color === 'coral';
+  var gold = e.color === 'gold';
+  var body = gold ? '#FFC94D' : (coral ? '#FF6B6B' : '#2EC4B6');
+  var dark = gold ? '#C78D12' : (coral ? '#E14B5A' : '#1D9A8E');
+  ctx.save(); ctx.translate(x, y);
+  if(e.pair){
+    ctx.strokeStyle = 'rgba(255,201,77,.9)'; ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.arc(0, 0, 30 + Math.sin(e.wob*2)*3, 0, 6.29); ctx.stroke();
+  }
+  /* tail */
+  ctx.fillStyle = dark;
+  ctx.beginPath();
+  if(coral){ ctx.moveTo(-18, 0); ctx.lineTo(-32, -11); ctx.lineTo(-32, 11); }
+  else { ctx.moveTo(-18, 0); ctx.quadraticCurveTo(-30, -12, -34, -4); ctx.quadraticCurveTo(-30, 0, -34, 4); ctx.quadraticCurveTo(-30, 12, -18, 0); }
+  ctx.closePath(); ctx.fill();
+  /* body */
+  ctx.fillStyle = body;
+  ctx.beginPath(); ctx.ellipse(0, 0, 22, 13, 0, 0, 6.29); ctx.fill();
+  /* markings: stripes = coral (penguin), spots = teal (Pip), diamonds = golden (either) — never colour alone */
+  ctx.fillStyle = dark;
+  if(gold){
+    ctx.beginPath(); ctx.moveTo(-6, -9); ctx.lineTo(-2, -2); ctx.lineTo(-6, 5); ctx.lineTo(-10, -2); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(6, -8); ctx.lineTo(10, -1); ctx.lineTo(6, 6); ctx.lineTo(2, -1); ctx.closePath(); ctx.fill();
+  } else if(coral){
+    ctx.beginPath(); ctx.ellipse(-6, -2, 3, 11, 0.2, 0, 6.29); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(5, 0, 3, 11, -0.15, 0, 6.29); ctx.fill();
+  } else {
+    ctx.beginPath(); ctx.arc(-8, -4, 2.6, 0, 6.29); ctx.arc(2, 4, 2.6, 0, 6.29); ctx.arc(8, -5, 2.2, 0, 6.29); ctx.fill();
+  }
+  /* belly + eye */
+  ctx.fillStyle = '#FFF9F0';
+  ctx.beginPath(); ctx.ellipse(2, 6, 12, 5, 0, 0, 6.29); ctx.fill();
+  ctx.fillStyle = '#2B2D42';
+  ctx.beginPath(); ctx.arc(12, -3, 2.6, 0, 6.29); ctx.fill();
+  ctx.restore();
+}
+function roundRect(x, y, w, h, r){
+  ctx.beginPath();
+  ctx.moveTo(x+r, y); ctx.arcTo(x+w, y, x+w, y+h, r); ctx.arcTo(x+w, y+h, x, y+h, r);
+  ctx.arcTo(x, y+h, x, y, r); ctx.arcTo(x, y, x+w, y, r); ctx.closePath();
+}
+/* ---- characters (original art, drawn fresh for this game) ---- */
+function drawPenguin(c){
+  var x = c.x, bobY = REDUCED ? 0 : Math.sin(c.bob) * 3;
+  var y = CHAR_Y + bobY;
+  var lean = clamp((c.targetX - c.x) * 0.006, -0.18, 0.18);
+  ctx.save(); ctx.translate(x, y); ctx.rotate(lean);
+  if(c.invuln > 0 && Math.floor(state.t * 12) % 2 === 0) ctx.globalAlpha = 0.35;
+  /* feet */
+  ctx.fillStyle = '#FFC94D';
+  ctx.beginPath(); ctx.ellipse(-11, 26, 9, 4.5, 0, 0, 6.29); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(11, 26, 9, 4.5, 0, 0, 6.29); ctx.fill();
+  /* body */
+  ctx.fillStyle = '#2B2D42';
+  ctx.beginPath(); ctx.ellipse(0, 0, 25, 28, 0, 0, 6.29); ctx.fill();
+  /* belly */
+  ctx.fillStyle = '#FFF9F0';
+  ctx.beginPath(); ctx.ellipse(0, 8, 15, 18, 0, 0, 6.29); ctx.fill();
+  /* wings (flap while running) */
+  var flap = REDUCED ? 0 : Math.sin(c.bob) * 6;
+  ctx.fillStyle = '#3A3D5C';
+  ctx.beginPath(); ctx.ellipse(-24, -2 - flap*0.4, 7, 14, 0.5, 0, 6.29); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(24, -2 + flap*0.4, 7, 14, -0.5, 0, 6.29); ctx.fill();
+  /* eyes */
+  var blink = c.blink < 0;
+  ctx.fillStyle = '#fff';
+  if(c.expr === 'hurt'){
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.moveTo(-12, -14); ctx.lineTo(-5, -7); ctx.moveTo(-5, -14); ctx.lineTo(-12, -7); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(5, -14); ctx.lineTo(12, -7); ctx.moveTo(12, -14); ctx.lineTo(5, -7); ctx.stroke();
+  } else if(c.expr === 'happy'){
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.arc(-8.5, -10, 4, Math.PI*1.1, Math.PI*1.9); ctx.stroke();
+    ctx.beginPath(); ctx.arc(8.5, -10, 4, Math.PI*1.1, Math.PI*1.9); ctx.stroke();
+  } else if(blink){
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(-12, -10); ctx.lineTo(-5, -10); ctx.moveTo(5, -10); ctx.lineTo(12, -10); ctx.stroke();
+  } else {
+    ctx.beginPath(); ctx.arc(-8.5, -10, 4.2, 0, 6.29); ctx.fill();
+    ctx.beginPath(); ctx.arc(8.5, -10, 4.2, 0, 6.29); ctx.fill();
+    ctx.fillStyle = '#2B2D42';
+    ctx.beginPath(); ctx.arc(-8.5, -10, 2.1, 0, 6.29); ctx.fill();
+    ctx.beginPath(); ctx.arc(8.5, -10, 2.1, 0, 6.29); ctx.fill();
+  }
+  /* beak */
+  ctx.fillStyle = '#FFC94D';
+  ctx.beginPath(); ctx.moveTo(-5, -2); ctx.lineTo(5, -2); ctx.lineTo(0, 4); ctx.closePath(); ctx.fill();
+  /* coral scarf */
+  ctx.fillStyle = '#FF6B6B';
+  ctx.beginPath(); ctx.ellipse(0, 13, 20, 7, 0, 0, 6.29); ctx.fill();
+  ctx.save(); ctx.rotate(0.5); ctx.fillRect(8, 14, 9, 16); ctx.restore();
+  ctx.fillStyle = '#E14B5A';
+  ctx.fillRect(8, 27, 9, 3); ctx.fillRect(8, 22, 9, 2);
+  ctx.restore();
+}
+function drawSeal(c){
+  var x = c.x, bobY = REDUCED ? 0 : Math.sin(c.bob) * 2.5;
+  var y = CHAR_Y + 4 + bobY;
+  var lean = clamp((c.targetX - c.x) * 0.005, -0.14, 0.14);
+  ctx.save(); ctx.translate(x, y); ctx.rotate(lean);
+  if(c.invuln > 0 && Math.floor(state.t * 12) % 2 === 0) ctx.globalAlpha = 0.35;
+  /* tail flippers */
+  ctx.fillStyle = '#7DE8DD';
+  ctx.beginPath(); ctx.ellipse(-24, 8, 11, 5, -0.5, 0, 6.29); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(-24, 14, 11, 5, 0.4, 0, 6.29); ctx.fill();
+  /* body */
+  ctx.fillStyle = '#8FD8CF';
+  ctx.beginPath(); ctx.ellipse(0, 0, 31, 20, 0, 0, 6.29); ctx.fill();
+  /* belly */
+  ctx.fillStyle = '#FFF9F0';
+  ctx.beginPath(); ctx.ellipse(2, 7, 19, 10, 0, 0, 6.29); ctx.fill();
+  /* front flipper (waves while running) */
+  var wave = REDUCED ? 0 : Math.sin(c.bob) * 4;
+  ctx.fillStyle = '#6FC9BE';
+  ctx.beginPath(); ctx.ellipse(20, 10 + wave*0.4, 9, 5, 0.7, 0, 6.29); ctx.fill();
+  /* face */
+  var blink = c.blink < 0;
+  if(c.expr === 'hurt'){
+    ctx.strokeStyle = '#2B2D42'; ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.moveTo(8, -12); ctx.lineTo(15, -5); ctx.moveTo(15, -12); ctx.lineTo(8, -5); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(20, -12); ctx.lineTo(27, -5); ctx.moveTo(27, -12); ctx.lineTo(20, -5); ctx.stroke();
+  } else if(c.expr === 'happy'){
+    ctx.strokeStyle = '#2B2D42'; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.arc(11.5, -8, 4, Math.PI*1.1, Math.PI*1.9); ctx.stroke();
+    ctx.beginPath(); ctx.arc(23.5, -8, 4, Math.PI*1.1, Math.PI*1.9); ctx.stroke();
+  } else if(blink){
+    ctx.strokeStyle = '#2B2D42'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(8, -8); ctx.lineTo(15, -8); ctx.moveTo(20, -8); ctx.lineTo(27, -8); ctx.stroke();
+  } else {
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.arc(11.5, -8, 5, 0, 6.29); ctx.fill();
+    ctx.beginPath(); ctx.arc(23.5, -8, 5, 0, 6.29); ctx.fill();
+    ctx.fillStyle = '#2B2D42';
+    ctx.beginPath(); ctx.arc(11.5, -8, 2.5, 0, 6.29); ctx.fill();
+    ctx.beginPath(); ctx.arc(23.5, -8, 2.5, 0, 6.29); ctx.fill();
+  }
+  /* nose + whiskers */
+  ctx.fillStyle = '#2B2D42';
+  ctx.beginPath(); ctx.ellipse(17.5, -1, 3.4, 2.4, 0, 0, 6.29); ctx.fill();
+  ctx.strokeStyle = 'rgba(43,45,66,.55)'; ctx.lineWidth = 1.4;
+  ctx.beginPath(); ctx.moveTo(8, 0); ctx.lineTo(0, -2); ctx.moveTo(8, 3); ctx.lineTo(1, 4); ctx.moveTo(27, 0); ctx.lineTo(34, -3); ctx.moveTo(27, 3); ctx.lineTo(34, 5); ctx.stroke();
+  /* teal scarf */
+  ctx.fillStyle = '#2EC4B6';
+  ctx.beginPath(); ctx.ellipse(-2, 8, 18, 6, 0, 0, 6.29); ctx.fill();
+  ctx.save(); ctx.rotate(-0.45); ctx.fillRect(-14, 9, 8, 14); ctx.restore();
+  ctx.fillStyle = '#1D9A8E';
+  ctx.fillRect(-14, 20, 8, 3);
+  ctx.restore();
+}
+function drawEntities(){
+  state.entities.forEach(function(e){
+    if(e.type === 'gap') drawGap(e);
+    else if(e.type === 'log') drawLog(e);
+    else drawFish(e);
+  });
+}
+function drawParticles(){
+  state.particles.forEach(function(p){
+    ctx.globalAlpha = clamp(p.life / p.max, 0, 1);
+    ctx.fillStyle = p.color;
+    if(p.shape === 'star'){
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.life*4);
+      ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+      ctx.restore();
+    } else {
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.size/2, 0, 6.29); ctx.fill();
+    }
+  });
+  ctx.globalAlpha = 1;
+}
+function drawSnow(){
+  ctx.fillStyle = '#FFF9F0';
+  state.snow.forEach(function(f){
+    ctx.globalAlpha = f.a;
+    ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, 6.29); ctx.fill();
+  });
+  ctx.globalAlpha = 1;
+}
+function drawHints(){
+  if(state.screen !== 'playing' || state.t > 6) return;
+  ctx.save();
+  ctx.globalAlpha = 0.75 - state.t * 0.1;
+  ctx.fillStyle = '#FFF9F0';
+  ctx.font = '700 15px Fredoka, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('◀  TAP  ▶', TRAIL_X[0], H - 18);
+  ctx.fillText('◀  TAP  ▶', TRAIL_X[1], H - 18);
+  ctx.restore();
+}
+function render(){
+  ctx.save();
+  if(state.shakeT > 0){
+    ctx.translate(rand(-5,5) * state.shakeT * 3, rand(-4,4) * state.shakeT * 3);
+  }
+  drawBackground();
+  drawTrails();
+  drawEntities();
+  drawPenguin(chars.penguin);
+  drawSeal(chars.pip);
+  drawParticles();
+  drawSnow();
+  drawHints();
+  ctx.restore();
+}
+
+/* ---------------- screens & flow ---------------- */
+var overlays = { start:'startOverlay', how:'howOverlay', settings:'settingsOverlay', pause:'pauseOverlay', over:'overOverlay' };
+var returnFrom = 'start'; /* where How/Settings was opened from: start | pause */
+function showOverlay(name){
+  Object.keys(overlays).forEach(function(k){ $(overlays[k]).classList.toggle('open', k === name); });
+}
+function showScreen(name){ showOverlay(name); }
+function startGame(){
+  AudioBox.resume();
+  AudioBox.sfx('start');
+  resetRun();
+  state.screen = 'playing';
+  showOverlay(null);
+  $('pauseBtn').focus({preventScroll:true});
+  AudioBox.startMusic();
+  announce('Game started. Guide both friends down the trails.');
+}
+function pauseGame(){
+  if(state.screen !== 'playing') return;
+  state.screen = 'paused';
+  $('pauseScore').textContent = Math.floor(state.score);
+  $('pauseFish').textContent = state.fish;
+  $('pauseStage').textContent = state.stage;
+  $('pauseStars').textContent = '★ ' + state.stars;
+  AudioBox.stopMusic();
+  showScreen('pause');
+  $('resumeBtn').focus({preventScroll:true});
+  announce('Paused.');
+}
+function resumeGame(){
+  if(state.screen !== 'paused') return;
+  AudioBox.resume();
+  state.screen = 'playing';
+  showOverlay(null);
+  AudioBox.startMusic();
+  announce('Resumed.');
+}
+function quitToMenu(){
+  state.screen = 'menu';
+  AudioBox.stopMusic();
+  resetRun();
+  $('menuBest').textContent = best;
+  showScreen('start');
+  $('playBtn').focus({preventScroll:true});
+}
+function gameOver(loser){
+  state.screen = 'over';
+  AudioBox.stopMusic();
+  AudioBox.sfx('over');
+  var finalScore = Math.floor(state.score);
+  var isBest = finalScore > best;
+  if(isBest){ best = finalScore; store.set('best', String(best)); }
+  var who = loser === 'penguin' ? 'the penguin' : 'Pip';
+  var msgs = {
+    penguin: 'The penguin took one tumble too many on the trail.',
+    pip: 'Pip the seal pup slipped one too many times.'
+  };
+  $('overMsg').textContent = msgs[loser] + ' ' + (isBest ? 'But what a run!' : 'The trails will be here tomorrow.');
+  $('overEmoji').textContent = isBest ? '🏆' : (loser === 'penguin' ? '🐧' : '🦭');
+  $('newBestWrap').hidden = !isBest;
+  $('overFish').textContent = state.fish;
+  $('overSync').textContent = state.syncs;
+  $('overNear').textContent = state.nears;
+  $('overBest').textContent = best;
+  $('overCombo').textContent = state.bestCombo;
+  /* stars: one per completed stage finished without losing a heart */
+  var doneStages = Math.max(0, state.stage - 1);
+  var starTxt = '';
+  for(var si = 0; si < doneStages; si++) starTxt += si < state.stars ? '★' : '☆';
+  $('overStars').innerHTML = starTxt ? starTxt : '<span class="empty">☆☆☆</span>';
+  /* animated count-up */
+  var el = $('finalScore'), start = 0, t0 = null;
+  function tick(ts){
+    if(!t0) t0 = ts;
+    var p = Math.min(1, (ts - t0) / 900);
+    el.textContent = Math.floor(finalScore * (1 - Math.pow(1 - p, 3)));
+    if(p < 1) requestAnimationFrame(tick); else el.textContent = finalScore;
+  }
+  if(REDUCED) el.textContent = finalScore; else requestAnimationFrame(tick);
+  showScreen('over');
+  $('replayBtn').focus({preventScroll:true});
+  updateHUD(true);
+  announce('Game over. Final score ' + finalScore + '. Best ' + best + '.');
+}
+
+/* ---------------- input ---------------- */
+function canvasTap(clientX, clientY){
+  if(state.screen !== 'playing') return;
+  var r = canvas.getBoundingClientRect();
+  var x = (clientX - r.left) / r.width * W;
+  if(x < W/2){ moveChar('penguin', x < W/4 ? -1 : 1); }
+  else { moveChar('pip', x < 3*W/4 ? -1 : 1); }
+}
+canvas.addEventListener('pointerdown', function(ev){
+  ev.preventDefault();
+  canvasTap(ev.clientX, ev.clientY);
+});
+document.addEventListener('keydown', function(ev){
+  if(ev.target&&(ev.target.tagName==='INPUT'||ev.target.tagName==='TEXTAREA'||ev.target.tagName==='SELECT'||ev.target.isContentEditable))return; /* JJB merge: don't steal keys typed in site search */
+  var k = ev.key;
+  if(k === 'a' || k === 'A'){ moveChar('penguin', -1); }
+  else if(k === 'd' || k === 'D'){ moveChar('penguin', 1); }
+  else if(k === 'ArrowLeft'){ ev.preventDefault(); moveChar('pip', -1); }
+  else if(k === 'ArrowRight'){ ev.preventDefault(); moveChar('pip', 1); }
+  else if(k === 'p' || k === 'P' || k === 'Escape'){
+    if(state.screen === 'playing') pauseGame();
+    else if(state.screen === 'paused') resumeGame();
+  }
+  else if(k === 'r' || k === 'R'){
+    if(state.screen === 'playing' || state.screen === 'paused' || state.screen === 'over') startGame();
+  }
+});
+
+/* ---------------- buttons & settings ---------------- */
+function bind(id, fn){ $(id).addEventListener('click', function(){ AudioBox.resume(); fn(); }); }
+bind('playBtn', function(){ AudioBox.sfx('click'); startGame(); });
+bind('howPlayBtn', function(){ AudioBox.sfx('click'); startGame(); });
+bind('howBtn', function(){ returnFrom = state.screen === 'paused' ? 'pause' : 'start'; showScreen('how'); });
+bind('pauseHowBtn', function(){ returnFrom = 'pause'; showScreen('how'); });
+bind('howCloseBtn', function(){ showScreen(returnFrom === 'pause' ? 'pause' : 'start'); });
+bind('settingsBtn', function(){ returnFrom = state.screen === 'paused' ? 'pause' : 'start'; showScreen('settings'); });
+bind('pauseSettingsBtn', function(){ returnFrom = 'pause'; showScreen('settings'); });
+bind('settingsCloseBtn', function(){ showScreen(returnFrom === 'pause' ? 'pause' : 'start'); });
+bind('pauseBtn', function(){ if(state.screen==='playing') pauseGame(); });
+bind('resumeBtn', function(){ AudioBox.sfx('click'); resumeGame(); });
+bind('pauseRestartBtn', function(){ AudioBox.sfx('click'); startGame(); });
+bind('replayBtn', function(){ AudioBox.sfx('click'); startGame(); });
+bind('menuBtn', function(){ AudioBox.sfx('click'); quitToMenu(); });
+bind('quitBtn', function(){ AudioBox.sfx('click'); quitToMenu(); });
+
+function syncSettingsUI(){
+  $('musicBtn').setAttribute('aria-pressed', String(settings.music));
+  $('musicBtn').textContent = settings.music ? '🎵' : '🔇';
+  $('sfxBtn').setAttribute('aria-pressed', String(settings.sfx));
+  $('sfxBtn').textContent = settings.sfx ? '🔊' : '🔇';
+  var mt = $('musicToggle'), st = $('sfxToggle');
+  mt.classList.toggle('on', settings.music); mt.setAttribute('aria-pressed', String(settings.music)); mt.textContent = settings.music ? 'On' : 'Off';
+  st.classList.toggle('on', settings.sfx); st.setAttribute('aria-pressed', String(settings.sfx)); st.textContent = settings.sfx ? 'On' : 'Off';
+  $('volumeSlider').value = settings.volume;
+}
+function toggleMusic(){
+  settings.music = !settings.music;
+  store.set('music', settings.music ? 'on' : 'off');
+  AudioBox.applySettings();
+  if(settings.music && state.screen === 'playing') AudioBox.startMusic();
+  if(!settings.music) AudioBox.stopMusic();
+  syncSettingsUI();
+}
+function toggleSfx(){
+  settings.sfx = !settings.sfx;
+  store.set('sfx', settings.sfx ? 'on' : 'off');
+  AudioBox.applySettings();
+  syncSettingsUI();
+  if(settings.sfx) AudioBox.sfx('click');
+}
+bind('musicBtn', toggleMusic);
+bind('musicToggle', toggleMusic);
+bind('sfxBtn', toggleSfx);
+bind('sfxToggle', toggleSfx);
+$('volumeSlider').addEventListener('input', function(){
+  settings.volume = clamp(parseInt(this.value, 10) || 0, 0, 100);
+  store.set('volume', String(settings.volume));
+  AudioBox.applySettings();
+});
+
+/* ---------------- main loop ---------------- */
+var lastTs = 0;
+function loop(ts){
+  requestAnimationFrame(loop);
+  if(!lastTs) lastTs = ts;
+  var dt = Math.min(0.05, (ts - lastTs) / 1000);
+  lastTs = ts;
+  if(state.screen === 'playing'){
+    update(dt);
+  } else if(state.screen === 'menu'){
+    /* gentle idle scene behind the start panel */
+    state.scroll += 24 * dt;
+    chars.penguin.bob += dt * 6;
+    chars.pip.bob += dt * 6 + 1.2;
+    if(!REDUCED){
+      state.snow.forEach(function(f){ f.y += f.vy * dt * 0.5; if(f.y > H + 6){ f.y = -6; f.x = rand(0, W); } });
+    }
+  }
+  render();
+}
+
+/* ---------------- boot ---------------- */
+function initSnow(){
+  state.snow = [];
+  for(var i=0;i<44;i++){
+    state.snow.push({ x:rand(0,W), y:rand(0,H), r:rand(1.2,3), vy:rand(18,46), a:rand(.35,.9), ph:rand(0,6.28) });
+  }
+}
+initSnow();
+$('menuBest').textContent = best;
+syncSettingsUI();
+updateHUD(true);
+showScreen('start');
+requestAnimationFrame(loop);
+
+/* ---------------- test / probe API ---------------- */
+window.JJBTwinTrails = {
+  state: function(){
+    return {
+      screen: state.screen, score: Math.floor(state.score), best: best,
+      fish: state.fish, syncs: state.syncs, nears: state.nears,
+      hearts: { penguin: state.hearts.penguin, pip: state.hearts.pip },
+      invuln: { penguin: Math.round(chars.penguin.invuln * 100) / 100,
+                pip: Math.round(chars.pip.invuln * 100) / 100 },
+      lanes: { penguin: chars.penguin.lane, pip: chars.pip.lane },
+      time: Math.round(state.t * 10) / 10,
+      speed: Math.round(state.speed),
+      level: levelNow(),
+      stage: state.stage,
+      stars: state.stars,
+      combo: state.combo,
+      bestCombo: state.bestCombo,
+      golden: state.golden,
+      entities: state.entities.length,
+      audio: { ctx: !!AudioBox.ctx, ctxState: AudioBox.ctx ? AudioBox.ctx.state : null,
+               musicPlaying: AudioBox.playing, sfxCalls: AudioBox.sfxCount,
+               musicSteps: AudioBox.musicStepCount },
+      settings: { music: settings.music, sfx: settings.sfx, volume: settings.volume }
+    };
+  },
+  start: startGame, pause: pauseGame, resume: resumeGame, quit: quitToMenu,
+  _debug: {
+    spawn: function(type, trail, lane, color){
+      return spawnEntity(type, trail, lane, color || null);
+    },
+    spawnAtY: function(type, trail, lane, color, y){
+      var ok = spawnEntity(type, trail, lane, color || null);
+      if(ok){ state.entities[state.entities.length-1].y = y; }
+      return ok;
+    },
+    setHearts: function(p, q){ state.hearts.penguin = p; state.hearts.pip = q; updateHUD(true); },
+    setSpawning: function(on){ state.spawnOn = !!on; },
+    clearEntities: function(){ state.entities = []; },
+    setTime: function(t){ state.t = t; },
+    setPairTimer: function(t){ state.pairTimer = t; },
+    spawnWall: function(trail){ return spawnWall(trail); },
+    spawnZigzag: function(){ return spawnZigzag(); },
+    entities: function(){ return state.entities.map(function(e){ return { type:e.type, trail:e.trail, lane:e.lane, y:Math.round(e.y), color:e.color }; }); }
+  }
+};
+})();
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('play-free-btn');
+  if(!btn) return;
+  btn.addEventListener('click',function(e){
+    e.preventDefault();
+    var play=document.getElementById('play');
+    if(play) play.scrollIntoView({behavior:'smooth',block:'start'});
+    var tries=0;
+    function tryStart(){
+      var start=document.getElementById('playBtn');
+      if(start && start.offsetParent!==null){ start.click(); return; }
+      if(++tries<2){ setTimeout(tryStart,400); }
+    }
+    setTimeout(tryStart,400);
+  });
+})();
+</script>
+  </section>
+  <section class="jjb-related" aria-label="More games to play" style="margin-top:28px">
+    <h2>More games to play</h2>
+    <div class="ggrid">
+    <article class="gcard">
+      <div class="gthumb"><img src="https://jojosblocks.online/games/thumbs/animal-guess.svg" alt="Animal Guess Game game" width="640" height="360" loading="lazy"></div>
+      <h3>Animal Guess Game</h3><p class="meta">Educational</p>
+      <a href="../../games/animal-guess/">Play free →</a>
+    </article>
+    <article class="gcard">
+      <div class="gthumb"><img src="https://jojosblocks.online/games/thumbs/memory-match.svg" alt="Memory Match Game game" width="640" height="360" loading="lazy"></div>
+      <h3>Memory Match Game</h3><p class="meta">Puzzle</p>
+      <a href="../../games/memory-match/">Play free →</a>
+    </article>
+    <article class="gcard">
+      <div class="gthumb"><img src="https://jojosblocks.online/games/thumbs/flappy-penguin.svg" alt="Flappy Penguin game" width="640" height="360" loading="lazy"></div>
+      <h3>Flappy Penguin</h3><p class="meta">Arcade</p>
+      <a href="../../games/flappy-penguin/">Play free →</a>
+    </article>
+    </div>
+  </section>
+</div></section>
+</main>
+<footer class="site"><div class="wrap">
+  <div class="fgrid">
+    <div>
+      <h3>JoJo's Blocks</h3>
+      <p>Digital products, free resources and games for creating, learning and play.</p>
+      <p style="margin-top:12px"><a class="pin-link" href="https://www.pinterest.com/JoJosBlocks/" target="_blank" rel="noopener"><svg class="pin-icon" viewBox="0 0 24 24" width="19" height="19" aria-hidden="true" fill="#E60023"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.39 18.592.026 11.985.026L12.017 0z"/></svg>Pinterest — @JoJosBlocks</a></p>
+    </div>
+    <div>
+      <h4>Shop</h4>
+      <a href="../../shop/">Our Products</a>
+      <a href="../../free-resources/">Free Resources</a>
+      <a href="../../games/">Games &amp; Play</a>
+      <a href="../../blog/">Blog</a>
+      <a href="../../recommended/">Affiliate Products</a>
+    </div>
+    <div>
+      <h4>Help</h4>
+      <a href="mailto:jojobusiness0101@gmail.com">Contact us</a>
+      <a href="../../#about">About</a>
+      <a href="../../free-printables/">Free Taster Pack</a>
+    </div>
+    <div>
+      <h4>Legal</h4>
+      <a href="../../privacy.html">Privacy Policy</a>
+      <a href="../../terms.html">Terms &amp; Conditions</a>
+      <a href="../../refund-policy.html">Refund Policy</a>
+    </div>
+  </div>
+  <div class="fine">
+    <span>© 2026 JoJo's Blocks. All rights reserved.</span>
+    <span>Sales are completed securely on Gumroad.</span>
+  </div>
+</div></footer>
+<!-- bottom tab bar (mobile only) -->
+<div class="tabbar"><nav aria-label="Quick navigation">
+  <a href="../../shop/" data-tab="shop"><span class="ti">▦</span>Shop</a>
+  <a href="../../free-resources/" data-tab="free"><span class="ti">✦</span>Free</a>
+  <a href="../../games/" data-tab="games" class="on"><span class="ti">▶</span>Play</a>
+  <a href="../../blog/" data-tab="blog"><span class="ti">✎</span>Blog</a>
+  <a href="#" data-tab="search" id="tabSearch"><span class="ti">⌕</span>Search</a>
+</nav></div>
+<div class="modal-back" id="modalBack" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal" id="modalBox">
+    <button class="x" id="modalClose" aria-label="Close product details">✕</button>
+    <div class="mgrid">
+      <div class="mcover" id="modalCover"></div>
+      <div class="mbody">
+        <p class="fmt" id="modalFmt"></p>
+        <h2 id="modalTitle"></h2>
+        <p class="mprice" id="modalPrice"></p>
+        <p class="msave" id="modalSave"></p>
+        <p id="modalDesc"></p>
+        <div class="macts">
+          <a class="btn btn-accent" id="modalBuy" href="#" target="_blank" rel="noopener">Buy on Gumroad</a>
+          <a class="btn btn-ghost btn-sm" id="modalPage" href="#" target="_blank" rel="noopener">View product page</a>
+        </div>
+        <p style="font-size:14px;color:var(--muted);margin-top:12px">Use code JOJOS10 at checkout for 10% off.</p>
+        <h3>What you get</h3>
+        <ul class="get" id="modalGet"></ul>
+        <h3>Good to know</h3>
+        <ul class="get">
+          <li>Instant PDF download</li>
+          <li>Print at home as often as you like</li>
+          <li>Personal &amp; family use</li>
+          <li>Secure checkout on Gumroad</li>
+          <li><a href="../../refund-policy.html" target="_blank" rel="noopener">Refund policy</a></li>
+        </ul>
+        <h3>Sample pages</h3>
+        <p class="sample-note">Real sample pages from this book will appear here once supplied. Try the <a href="https://jojosblocks.online/assets/free-resources/jojos-blocks-free-taster-pack.pdf" target="_blank" rel="noopener">Free Taster Pack</a> first — six sample pages, free.</p>
+      </div>
+    </div>
+    <div class="rel">
+      <h3>You may also like</h3>
+      <div class="chips" id="modalRelated"></div>
+      <a class="page-link" id="modalPageLink" href="#" target="_blank" rel="noopener">View product page →</a>
+    </div>
+    <div class="msticky">
+      <span class="msticky-price" id="mstickyPrice"></span>
+      <a class="btn btn-accent" id="mstickyBuy" href="#" target="_blank" rel="noopener">Buy on Gumroad</a>
+    </div>
+  </div>
+</div>
+<script>window.JB={root:"../../",page:"detail",kind:"games"};</script>
+<script type="application/json" id="product-data">{"bundle":{"title":"JoJo's Blocks Complete Coloring Book Bundle","price":12.99,"sale":11.69,"pages":154,"ages":"2–7","cover":"https://jojosblocks.online/assets/covers/bundle-cover.jpg","desc":"Four favorite adventures in one bundle — 154 pages of coloring, tracing, puzzles and learning for one low price. Includes My First ABC Book (28 pages, ages 2–4), My First Animal Explorer (30 pages), My Little Community Helpers (54 pages, 24 helpers) and My Little Space Adventure (42 pages, ages 3–5). Download the PDFs, print at home, and color!","gum":"https://jojosblocks.gumroad.com/l/jojos-blocks-coloring-bundle?wanted=true","page":"books/complete-coloring-book-bundle.html"},"abc":{"title":"My First ABC Book","price":3.99,"sale":3.59,"pages":28,"ages":"2–4","cover":"https://jojosblocks.online/assets/covers/book-01.jpg","desc":"Meet the alphabet one letter at a time. Each page pairs a big letter with a picture word — A is for Apple, B is for Ball, C is for Cat — with a color guide and tracing practice, so little ones learn, color and write their first letters.","gum":"https://jojosblocks.gumroad.com/l/my-first-abc-book?wanted=true","page":"books/my-first-abc-book.html"},"animal":{"title":"My First Animal Explorer","price":4.99,"sale":4.49,"pages":30,"ages":"3–6","cover":"https://jojosblocks.online/assets/covers/book-02.jpg","desc":"Hello, little explorer! Meet lions, elephants, giraffes, pandas, monkeys and more — learn each animal's name, trace the word, count, match and color. A certificate of achievement waits at the end for every super animal explorer.","gum":"https://jojosblocks.gumroad.com/l/my-first-animal-explorer?wanted=true","page":"books/my-first-animal-explorer.html"},"helpers":{"title":"My Little Community Helpers","price":4.99,"sale":4.49,"pages":54,"ages":"4–7","cover":"https://jojosblocks.online/assets/covers/book-03.jpg","desc":"Meet the people who help us every day! 24 community helpers — doctors, nurses, firefighters, police officers, teachers, veterinarians, electricians, mail carriers and more — with simple job descriptions, big coloring illustrations and a fun matching activity.","gum":"https://jojosblocks.gumroad.com/l/my-little-community-helpers?wanted=true","page":"books/my-little-community-helpers.html"},"space":{"title":"My Little Space Adventure","price":4.99,"sale":4.49,"pages":42,"ages":"3–5","cover":"https://jojosblocks.online/assets/covers/book-04.jpg","desc":"Join Nova, Zippy the alien and Rocket-7 on a mission to find the missing Cosmic Crystal. Color planets and alien worlds, solve mazes and puzzles, decode alien messages and take the Space Explorer Quiz — with a Junior Space Explorer certificate at the end.","gum":"https://jojosblocks.gumroad.com/l/my-little-space-adventure?wanted=true","page":"books/my-little-space-adventure.html"}}</script>
+<script src="../../assets/site.js" defer></script>
+</body>
+</html>
