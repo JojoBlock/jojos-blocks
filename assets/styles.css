@@ -441,6 +441,14 @@ body.tab-hidden .tabbar{display:none}
 }
 /* Dept flyout needs visible overflow on desktop (bar only scrolls on small screens) */
 @media (min-width:1024px){.dept .wrap{overflow:visible}}
+/* Mobile: dropdowns are disabled where the dept bar scrolls (below 1024px).
+   Tapping a parent link navigates directly instead of opening its flyout:
+   an open flyout extends the bar's scrollable area and shifts the bar, so
+   the tapped link slides out from under the finger and the tap is lost
+   (seen on Blog at 390px). Desktop keeps the hover/focus flyout. */
+@media (max-width:1023px){
+  .dept .has-fly:hover .flyout,.dept .has-fly:focus-within .flyout{display:none}
+}
 /* Print: resource pages print the content only */
 @media print{
   .strip,header.site,.dept,.tabbar,footer.site,.search-overlay,.modal-back,.skip-link,.filters-btn,.facet-bar,.pager,.loadmore-wrap{display:none !important}
