@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Beat Blocks — Rhythm Tapping Game | JoJo's Blocks</title>
+<meta name="description" content="Beat Blocks: tap the falling blocks on the beat line across three original chiptune songs. Compose your own tune in Compose Mode.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============ Beat Blocks — 100% original. Palette per DESIGN-SYSTEM §1 ============ */
+:root{
+  --cream:#FFF9F0; --ink:#2B2D42; --coral:#FF6B6B; --sun:#FFC94D;
+  --teal:#2EC4B6; --lavender:#7C6FF0;
+  --lane0:#FF6B6B; --lane1:#FFC94D; --lane2:#2EC4B6; --lane3:#7C6FF0;
+  --stage-top:#3A2E6B; --stage-mid:#2B2D42; --stage-bottom:#1E1B38;
+  --shadow:0 10px 30px rgba(20,12,50,.35);
+  --font-display:'Fredoka','Comic Sans MS',system-ui,sans-serif;
+  --font-body:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:var(--font-body); color:var(--ink); background:var(--cream);
+  overscroll-behavior:none; -webkit-tap-highlight-color:transparent;
+  background-image:radial-gradient(circle at 15% 10%, rgba(124,111,240,.14) 0 120px, transparent 121px),
+    radial-gradient(circle at 88% 22%, rgba(255,201,77,.20) 0 90px, transparent 91px),
+    radial-gradient(circle at 80% 90%, rgba(46,196,182,.14) 0 130px, transparent 131px);
+}
+button{font-family:var(--font-display); cursor:pointer; touch-action:manipulation}
+button:focus-visible, a:focus-visible, input:focus-visible{outline:3px solid var(--sun); outline-offset:2px}
+#app{max-width:560px; margin:0 auto; min-height:100dvh; position:relative; padding:0 16px 12px}
+@media(min-width:640px){#app{padding:0 24px 16px}}
+
+/* ---------- shared bits ---------- */
+.screen{display:none; flex-direction:column; align-items:center; width:100%}
+.screen.active{display:flex; animation:screenIn .35s ease-out}
+@keyframes screenIn{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  min-height:48px; min-width:48px; padding:12px 26px; border:2px solid var(--ink);
+  border-radius:999px; font-size:19px; font-weight:700; color:var(--ink);
+  background:linear-gradient(180deg,#FFE9A8,#FFC94D); box-shadow:0 4px 0 var(--ink), 0 8px 18px rgba(43,45,66,.25);
+  transition:transform .15s ease-out, box-shadow .15s ease-out; text-decoration:none;
+}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(2px); box-shadow:0 2px 0 var(--ink)}
+.btn.secondary{background:linear-gradient(180deg,#FFFFFF,#FFF1D6)}
+.btn.teal{background:linear-gradient(180deg,#8FE8DE,#2EC4B6); color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.25)}
+.btn.coral{background:linear-gradient(180deg,#FF9D9D,#FF6B6B); color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.25)}
+.btn.lav{background:linear-gradient(180deg,#B7AEFF,#7C6FF0); color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.25)}
+.btn.small{padding:9px 18px; font-size:16px; min-height:44px}
+.icon-btn{
+  width:48px; height:48px; border-radius:14px; border:2px solid var(--ink);
+  background:rgba(255,249,240,.92); font-size:22px; line-height:1; color:var(--ink);
+  display:inline-flex; align-items:center; justify-content:center;
+  box-shadow:0 3px 0 var(--ink); transition:transform .15s ease-out;
+}
+.icon-btn:active{transform:translateY(2px); box-shadow:0 1px 0 var(--ink)}
+.icon-btn[aria-pressed="true"]{background:linear-gradient(180deg,#8FE8DE,#2EC4B6); color:#fff}
+.panel{
+  background:var(--cream); border:2px solid var(--ink); border-radius:20px;
+  box-shadow:var(--shadow); padding:20px; width:100%;
+}
+.chip{
+  display:inline-flex; align-items:center; gap:6px; background:rgba(255,249,240,.94);
+  border:2px solid var(--ink); border-radius:999px; padding:6px 12px;
+  font-family:var(--font-display); font-weight:700; font-size:16px; box-shadow:0 3px 0 rgba(43,45,66,.25);
+}
+.chip .num{font-size:19px}
+.topbar{width:100%; display:flex; align-items:center; justify-content:space-between; gap:8px; padding:14px 0 6px}
+.brand{font-family:var(--font-display); font-weight:700; font-size:20px; color:var(--ink); text-decoration:none; display:flex; align-items:center; gap:8px; min-height:44px}
+.brand .dot{width:14px; height:14px; border-radius:50%; background:var(--coral); border:2px solid var(--ink); display:inline-block}
+footer.site{width:100%; text-align:center; font-size:13px; color:#5A5C72; padding:14px 4px 4px; line-height:1.5}
+footer.site a{color:var(--lavender); font-weight:800}
+.sr-only{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+
+/* ---------- menu / hero ---------- */
+.hero{width:100%; border-radius:24px; border:2px solid var(--ink); overflow:hidden; position:relative;
+  background:linear-gradient(180deg,var(--stage-top) 0%, var(--stage-mid) 55%, var(--stage-bottom) 100%);
+  box-shadow:var(--shadow); margin-top:6px}
+.hero svg{display:block; width:100%; height:auto}
+.hero-bea{animation:bob 2.4s ease-in-out infinite; transform-origin:50% 80%}
+@keyframes bob{0%,100%{transform:translateY(0)} 50%{transform:translateY(-9px)}}
+.eq-bar{animation:eqPulse .5s ease-in-out infinite alternate; transform-origin:bottom}
+@keyframes eqPulse{from{transform:scaleY(.35)} to{transform:scaleY(1)}}
+/* Play pulse animates shadow only (no transform) so the button stays
+   layout-stable for automation and assistive tech while still glowing. */
+.play-pulse{animation:playPulse 1.6s ease-in-out infinite}
+@keyframes playPulse{0%,100%{box-shadow:0 4px 0 var(--ink),0 8px 18px rgba(43,45,66,.25)} 50%{box-shadow:0 4px 0 var(--ink),0 10px 30px rgba(255,201,77,.8)}}
+h1.game-title{font-family:var(--font-display); font-weight:700; font-size:40px; line-height:1.05; text-align:center; margin:16px 0 4px; letter-spacing:.5px}
+@media(max-width:420px){h1.game-title{font-size:30px}}
+.tagline{text-align:center; font-size:17px; font-weight:700; color:#4A4C66; margin-bottom:14px}
+.menu-actions{display:flex; flex-direction:column; gap:10px; width:100%; max-width:340px; margin-bottom:14px}
+.menu-row{display:flex; gap:10px; width:100%; max-width:340px}
+.menu-row .btn{flex:1}
+.song-picker{width:100%; margin-top:4px}
+.song-picker h2{font-family:var(--font-display); font-size:21px; margin:2px 0 8px; text-align:center}
+.song-list{display:flex; flex-direction:column; gap:10px}
+.song-card{
+  display:flex; align-items:center; gap:12px; width:100%; text-align:left;
+  background:#fff; border:2px solid var(--ink); border-radius:16px; padding:12px 14px;
+  box-shadow:0 3px 0 var(--ink); transition:transform .15s ease-out; min-height:64px;
+}
+.song-card:hover{transform:translateY(-1px)}
+.song-card:active{transform:translateY(2px); box-shadow:0 1px 0 var(--ink)}
+.song-card.selected{outline:3px solid var(--sun); background:#FFF3D0}
+.song-swatch{width:46px; height:46px; border-radius:12px; border:2px solid var(--ink); flex:0 0 46px;
+  display:flex; align-items:center; justify-content:center; font-size:22px; color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.3)}
+.song-card .meta{flex:1; min-width:0}
+.song-card .name{font-family:var(--font-display); font-weight:700; font-size:18px}
+.song-card .sub{font-size:13.5px; color:#5A5C72; font-weight:700}
+.song-card .best{font-family:var(--font-display); font-weight:700; font-size:14px; color:var(--teal); white-space:nowrap}
+.best-line{text-align:center; font-weight:800; color:#4A4C66; margin-top:10px}
+
+/* ---------- stage / gameplay ---------- */
+#stage{
+  width:100%; border:2px solid var(--ink); border-radius:24px; overflow:hidden; position:relative;
+  background:linear-gradient(180deg,var(--stage-top) 0%, var(--stage-mid) 52%, var(--stage-bottom) 100%);
+  box-shadow:var(--shadow); user-select:none; -webkit-user-select:none;
+}
+#stage .stars{position:absolute; inset:0; pointer-events:none; opacity:.9}
+.hud{position:relative; z-index:5; display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:10px 10px 0}
+.hud .spacer{flex:1}
+#hud-combo.hot{background:linear-gradient(180deg,#FFE9A8,#FFC94D)}
+#hud-combo .num{color:#B34700}
+.meters{position:relative; z-index:5; padding:8px 12px 0; display:flex; flex-direction:column; gap:6px}
+.meter-row{display:flex; align-items:center; gap:8px; font-family:var(--font-display); font-weight:700; font-size:13px; color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.5)}
+.meter{flex:1; height:12px; border-radius:999px; background:rgba(255,255,255,.22); border:1.5px solid rgba(255,255,255,.55); overflow:hidden}
+.meter > i{display:block; height:100%; width:0%; border-radius:999px; transition:width .2s ease-out}
+#accuracy-fill{background:linear-gradient(90deg,#2EC4B6,#FFC94D)}
+#progress-fill{background:linear-gradient(90deg,#7C6FF0,#FF6B6B)}
+#bea-mini{position:absolute; z-index:4; top:86px; left:50%; transform:translateX(-50%); width:64px; height:64px; pointer-events:none; filter:drop-shadow(0 4px 8px rgba(0,0,0,.4))}
+#stage.playing #bea-mini{animation:beaBounce .5s ease-in-out infinite}
+@keyframes beaBounce{0%,100%{transform:translateX(-50%) translateY(0) scale(1)} 30%{transform:translateX(-50%) translateY(-7px) scale(1.06)}}
+#bea-mini.dizzy{animation:none; transform:translateX(-50%) rotate(-14deg)}
+#lanes{
+  position:relative; z-index:3; display:flex; gap:8px; padding:14px 12px 12px;
+  height:clamp(400px,56vh,540px); touch-action:none; overscroll-behavior:none;
+}
+.lane{
+  flex:1; position:relative; border-radius:16px; overflow:visible;
+  background:rgba(255,255,255,.07); border:2px solid rgba(255,255,255,.28);
+  cursor:pointer; touch-action:none;
+}
+.lane.flash{animation:laneFlash .18s ease-out}
+@keyframes laneFlash{from{background:rgba(255,255,255,.45)} to{background:rgba(255,255,255,.07)}}
+.lane .key{
+  position:absolute; left:50%; bottom:10px; transform:translateX(-50%);
+  width:44px; height:44px; border-radius:12px; border:2px solid var(--ink);
+  display:flex; align-items:center; justify-content:center; z-index:6;
+  font-family:var(--font-display); font-weight:700; font-size:19px; color:var(--ink);
+  background:var(--cream); box-shadow:0 3px 0 var(--ink); pointer-events:none;
+}
+.lane.hit-perfect .key{background:var(--sun)}
+.lane.hit-good .key{background:var(--teal); color:#fff}
+.lane.hit-miss .key{background:var(--coral); color:#fff}
+#beat-line{
+  position:absolute; left:10px; right:10px; bottom:74px; height:6px; z-index:5;
+  border-radius:999px; background:linear-gradient(90deg,var(--coral),var(--sun),var(--teal),var(--lavender));
+  box-shadow:0 0 14px rgba(255,201,77,.8); pointer-events:none;
+}
+#beat-line::after{content:"♪ BEAT LINE ♪"; position:absolute; right:8px; top:-22px; font-family:var(--font-display); font-size:12px; font-weight:700; color:var(--sun); text-shadow:0 1px 3px rgba(0,0,0,.7); letter-spacing:1px}
+#stage.playing #beat-line{animation:linePulse .5s ease-in-out infinite}
+@keyframes linePulse{0%,100%{box-shadow:0 0 10px rgba(255,201,77,.55)} 50%{box-shadow:0 0 26px rgba(255,201,77,1)}}
+#blocks-layer{position:absolute; inset:0; z-index:4; pointer-events:none; overflow:hidden}
+.block{
+  position:absolute; width:calc((100% - 40px)/4 - 4px); height:54px; border-radius:14px;
+  border:2.5px solid var(--ink); display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-display); font-weight:700; font-size:22px; color:#fff;
+  text-shadow:0 2px 3px rgba(0,0,0,.35); box-shadow:0 4px 12px rgba(0,0,0,.4);
+  will-change:transform; left:0; top:0;
+}
+.block.lane0{background:linear-gradient(180deg,#FF9D9D,#FF6B6B)}
+.block.lane1{background:linear-gradient(180deg,#FFDD7E,#FFC94D); color:var(--ink); text-shadow:none}
+.block.lane2{background:linear-gradient(180deg,#7FE3D9,#2EC4B6)}
+.block.lane3{background:linear-gradient(180deg,#A89DFF,#7C6FF0)}
+.block.near{box-shadow:0 0 0 3px #fff, 0 0 18px rgba(255,255,255,.9)}
+.block.judged-perfect{animation:popGood .22s ease-out forwards}
+.block.judged-good{animation:popGood .22s ease-out forwards; opacity:.85}
+.block.judged-miss{animation:popMiss .3s ease-out forwards}
+@keyframes popGood{to{transform:scale(1.25); opacity:0}}
+@keyframes popMiss{to{opacity:0}}
+.float-score{
+  position:absolute; z-index:8; font-family:var(--font-display); font-weight:700; font-size:22px;
+  color:var(--sun); text-shadow:0 2px 4px rgba(0,0,0,.6); pointer-events:none;
+  animation:floatUp .8s ease-out forwards;
+}
+.float-score.good{color:#7FE3D9}
+.float-score.miss{color:var(--coral); font-size:19px}
+@keyframes floatUp{from{opacity:1; transform:translate(-50%,0)} to{opacity:0; transform:translate(-50%,-56px)}}
+.particle{position:absolute; z-index:8; width:9px; height:9px; border-radius:50%; pointer-events:none; animation:burst .6s ease-out forwards}
+@keyframes burst{from{opacity:1; transform:translate(-50%,-50%) scale(1)} to{opacity:0; transform:translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(.3)}}
+.song-now{position:relative; z-index:5; text-align:center; color:#fff; font-family:var(--font-display); font-weight:600; font-size:15px; padding:8px 10px 12px; text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.song-now b{color:var(--sun)}
+
+/* ---------- overlays ---------- */
+.overlay{
+  position:fixed; inset:0; z-index:50; display:none; align-items:center; justify-content:center;
+  background:rgba(30,27,56,.62); backdrop-filter:blur(4px); padding:18px;
+}
+.overlay.show{display:flex}
+.overlay .panel{max-width:480px; max-height:88dvh; overflow-y:auto; animation:panelIn .3s ease-out}
+@keyframes panelIn{from{opacity:0; transform:translateY(16px) scale(.97)} to{opacity:1; transform:none}}
+.overlay h2{font-family:var(--font-display); font-size:28px; text-align:center; margin-bottom:6px}
+.overlay p{line-height:1.55; margin-bottom:10px}
+.overlay .actions{display:flex; flex-direction:column; gap:10px; margin-top:14px}
+.overlay .actions .row{display:flex; gap:10px}
+.overlay .actions .row .btn{flex:1}
+.grade-big{
+  font-family:var(--font-display); font-weight:700; font-size:84px; line-height:1; text-align:center;
+  background:linear-gradient(180deg,#FFE9A8,#FFC94D); -webkit-background-clip:text; background-clip:text; color:transparent;
+  filter:drop-shadow(0 3px 0 var(--ink)); margin:4px 0;
+}
+.grade-big.s{background:linear-gradient(180deg,#FFE9A8,#FFC94D); -webkit-background-clip:text; background-clip:text}
+.grade-big.a{background:linear-gradient(180deg,#B7F5EE,#2EC4B6); -webkit-background-clip:text; background-clip:text}
+.grade-big.b{background:linear-gradient(180deg,#DCD6FF,#7C6FF0); -webkit-background-clip:text; background-clip:text}
+.grade-big.c{background:linear-gradient(180deg,#FFC2C2,#FF6B6B); -webkit-background-clip:text; background-clip:text}
+.stat-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:12px 0}
+.stat-grid .stat{background:#fff; border:2px solid var(--ink); border-radius:14px; padding:10px; text-align:center}
+.stat-grid .stat .k{font-size:13px; font-weight:800; color:#5A5C72; text-transform:uppercase; letter-spacing:.5px}
+.stat-grid .stat .v{font-family:var(--font-display); font-weight:700; font-size:24px}
+.new-best{text-align:center; font-family:var(--font-display); font-weight:700; font-size:20px; color:#B34700;
+  background:linear-gradient(180deg,#FFE9A8,#FFC94D); border:2px solid var(--ink); border-radius:999px; padding:6px 14px; margin:6px auto 0; display:none}
+.new-best.show{display:inline-block; animation:playPulse 1.2s ease-in-out infinite}
+.howto-steps{display:flex; flex-direction:column; gap:10px; margin:10px 0}
+.howto-step{display:flex; gap:12px; align-items:flex-start; background:#fff; border:2px solid var(--ink); border-radius:14px; padding:10px 12px}
+.howto-step .n{flex:0 0 40px; width:40px; height:40px; border-radius:50%; background:var(--sun); border:2px solid var(--ink); display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:700; font-size:19px}
+.howto-step p{margin:0; font-weight:700}
+kbd{display:inline-block; min-width:30px; text-align:center; padding:3px 8px; border:2px solid var(--ink); border-bottom-width:4px; border-radius:8px; background:#fff; font-family:var(--font-display); font-weight:700; font-size:15px}
+.setting-row{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 4px; border-bottom:2px dashed rgba(43,45,66,.2); font-weight:800}
+.setting-row:last-child{border-bottom:none}
+.setting-row input[type="checkbox"]{width:28px; height:28px; accent-color:var(--teal); cursor:pointer}
+.setting-row input[type="range"]{width:150px; accent-color:var(--coral); cursor:pointer}
+
+/* ---------- compose mode ---------- */
+.compose-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; width:100%; margin:12px 0}
+.compose-col{display:flex; flex-direction:column; gap:6px}
+.compose-cell{
+  width:100%; aspect-ratio:1.35; border-radius:12px; border:2px solid var(--ink);
+  background:rgba(255,255,255,.75); font-size:20px; color:rgba(43,45,66,.35);
+  display:flex; align-items:center; justify-content:center; transition:transform .12s ease-out; min-height:44px;
+}
+.compose-cell[aria-pressed="true"]{color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.3); transform:scale(1.04)}
+.compose-cell.lane0[aria-pressed="true"]{background:linear-gradient(180deg,#FF9D9D,#FF6B6B)}
+.compose-cell.lane1[aria-pressed="true"]{background:linear-gradient(180deg,#FFDD7E,#FFC94D); color:var(--ink); text-shadow:none}
+.compose-cell.lane2[aria-pressed="true"]{background:linear-gradient(180deg,#7FE3D9,#2EC4B6)}
+.compose-cell.lane3[aria-pressed="true"]{background:linear-gradient(180deg,#A89DFF,#7C6FF0)}
+.compose-cell.now{outline:3px solid var(--ink); outline-offset:1px}
+.compose-hint{text-align:center; font-weight:700; color:#4A4C66; margin-bottom:6px}
+.compose-actions{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; width:100%}
+.compose-actions .btn{flex:1 1 44%}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.001s !important; animation-iteration-count:1 !important; transition-duration:.001s !important}
+}
+@media (max-width:480px){
+  /* Keep the HUD on one row so Bea never collides with the meters. */
+  .hud{gap:6px; padding:8px 8px 0}
+  .hud .chip{font-size:14px; padding:5px 9px}
+  .hud .chip .num{font-size:16px}
+  .hud .icon-btn{width:44px; height:44px; font-size:20px}
+  #bea-mini{top:96px; width:54px; height:54px}
+}
+@media (max-width:340px){
+  .chip{font-size:14px; padding:5px 9px}
+  .chip .num{font-size:17px}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="topbar">
+    <a class="brand" href="/games/" aria-label="Back to JoJo's Blocks games"><span class="dot" aria-hidden="true"></span>JoJo&rsquo;s Blocks</a>
+    <div style="display:flex; gap:8px">
+      <button class="icon-btn" id="btn-mute-quick" aria-label="Toggle music" aria-pressed="false" title="Music on/off">♪</button>
+      <button class="icon-btn" id="btn-settings-top" aria-label="Open settings" title="Settings">⚙</button>
+    </div>
+  </div>
+  <div id="live-region" class="sr-only" aria-live="polite"></div>
+
+  <!-- ================= MENU ================= -->
+  <main class="screen active" id="screen-menu" aria-label="Beat Blocks menu">
+    <div class="hero" aria-hidden="true">
+      <!-- Original hero art: Bea the beat-blob on her neon rhythm stage -->
+      <svg viewBox="0 0 560 260" role="img" aria-label="Bea the beat blob dancing on a neon stage with four coloured lanes">
+        <defs>
+          <linearGradient id="heroSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#3A2E6B"/><stop offset=".55" stop-color="#2B2D42"/><stop offset="1" stop-color="#1E1B38"/>
+          </linearGradient>
+          <linearGradient id="heroFloor" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#7C6FF0"/><stop offset="1" stop-color="#2B2D42"/>
+          </linearGradient>
+        </defs>
+        <rect width="560" height="260" fill="url(#heroSky)"/>
+        <g fill="#FFF9F0"><circle cx="40" cy="34" r="2.4"/><circle cx="120" cy="20" r="1.8"/><circle cx="210" cy="44" r="2.2"/><circle cx="330" cy="22" r="1.8"/><circle cx="430" cy="38" r="2.4"/><circle cx="510" cy="24" r="1.8"/><circle cx="80" cy="80" r="1.6"/><circle cx="480" cy="86" r="1.6"/></g>
+        <g fill="#FFC94D" font-family="sans-serif" font-size="20" font-weight="bold">
+          <text x="52" y="70">♪</text><text x="500" y="64">♫</text><text x="290" y="46">♪</text>
+        </g>
+        <!-- equaliser bars -->
+        <g>
+          <rect class="eq-bar" x="30" y="150" width="18" height="70" rx="6" fill="#FF6B6B" style="animation-delay:0s"/>
+          <rect class="eq-bar" x="58" y="130" width="18" height="90" rx="6" fill="#FFC94D" style="animation-delay:.12s"/>
+          <rect class="eq-bar" x="482" y="140" width="18" height="80" rx="6" fill="#2EC4B6" style="animation-delay:.2s"/>
+          <rect class="eq-bar" x="510" y="160" width="18" height="60" rx="6" fill="#7C6FF0" style="animation-delay:.06s"/>
+        </g>
+        <!-- stage floor + four lanes -->
+        <path d="M0 210 L560 210 L560 260 L0 260 Z" fill="url(#heroFloor)" opacity=".85"/>
+        <g stroke="#FFF9F0" stroke-opacity=".45" stroke-width="3">
+          <line x1="150" y1="210" x2="110" y2="260"/><line x1="260" y1="210" x2="240" y2="260"/>
+          <line x1="330" y1="210" x2="340" y2="260"/><line x1="430" y1="210" x2="470" y2="260"/>
+        </g>
+        <g>
+          <rect x="120" y="120" width="52" height="34" rx="10" fill="#FF6B6B" stroke="#2B2D42" stroke-width="3"/>
+          <rect x="215" y="86" width="52" height="34" rx="10" fill="#FFC94D" stroke="#2B2D42" stroke-width="3"/>
+          <rect x="310" y="120" width="52" height="34" rx="10" fill="#2EC4B6" stroke="#2B2D42" stroke-width="3"/>
+          <rect x="400" y="70" width="52" height="34" rx="10" fill="#7C6FF0" stroke="#2B2D42" stroke-width="3"/>
+        </g>
+        <!-- Bea the beat-blob -->
+        <g class="hero-bea">
+          <ellipse cx="280" cy="196" rx="52" ry="12" fill="#000" opacity=".35"/>
+          <path d="M232 196 C228 148 252 122 280 122 C308 122 332 148 328 196 C326 214 306 222 280 222 C254 222 234 214 232 196 Z" fill="#FF6B6B" stroke="#2B2D42" stroke-width="4"/>
+          <path d="M246 150 C250 132 262 124 280 124" fill="none" stroke="#FF9D9D" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="264" cy="172" r="7" fill="#2B2D42"/><circle cx="296" cy="172" r="7" fill="#2B2D42"/>
+          <circle cx="266.5" cy="169.5" r="2.4" fill="#FFF9F0"/><circle cx="298.5" cy="169.5" r="2.4" fill="#FFF9F0"/>
+          <path d="M268 190 Q280 200 292 190" fill="none" stroke="#2B2D42" stroke-width="4" stroke-linecap="round"/>
+          <path d="M238 158 Q226 146 232 132" fill="none" stroke="#2B2D42" stroke-width="5" stroke-linecap="round"/>
+          <path d="M322 158 Q334 146 328 132" fill="none" stroke="#2B2D42" stroke-width="5" stroke-linecap="round"/>
+          <rect x="224" y="126" width="18" height="30" rx="9" fill="#7C6FF0" stroke="#2B2D42" stroke-width="3"/>
+          <rect x="318" y="126" width="18" height="30" rx="9" fill="#7C6FF0" stroke="#2B2D42" stroke-width="3"/>
+          <path d="M233 132 Q280 108 327 132" fill="none" stroke="#2B2D42" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="252" cy="186" r="5" fill="#FFC94D" opacity=".85"/><circle cx="308" cy="186" r="5" fill="#FFC94D" opacity=".85"/>
+        </g>
+        <text x="280" y="252" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#FFC94D" letter-spacing="3">TAP THE BEAT • FEEL THE MUSIC</text>
+      </svg>
+    </div>
+    <h1 class="game-title">🎵 Beat Blocks</h1>
+    <p class="tagline">Blocks fall. The beat drops. Tap right on the line!</p>
+    <div class="menu-actions">
+      <button class="btn play-pulse" id="btn-play" type="button">▶&nbsp;Play</button>
+    </div>
+    <div class="menu-row">
+      <button class="btn secondary" id="btn-howto" type="button">How to play</button>
+      <button class="btn teal" id="btn-compose-open" type="button">🎛️ Compose</button>
+    </div>
+    <div class="song-picker" aria-label="Pick a song">
+      <h2>🎶 Pick your tune</h2>
+      <div class="song-list" id="song-list" role="listbox" aria-label="Songs"></div>
+      <p class="best-line" id="best-line">Best score: 0</p>
+    </div>
+  </main>
+
+  <!-- ================= GAMEPLAY ================= -->
+  <main class="screen" id="screen-game" aria-label="Beat Blocks gameplay">
+    <div id="stage">
+      <svg class="stars" viewBox="0 0 560 700" preserveAspectRatio="none" aria-hidden="true">
+        <g fill="#FFF9F0"><circle cx="30" cy="40" r="2"/><circle cx="120" cy="24" r="1.6"/><circle cx="260" cy="52" r="2.2"/><circle cx="400" cy="30" r="1.7"/><circle cx="520" cy="60" r="2"/><circle cx="70" cy="130" r="1.5"/><circle cx="490" cy="140" r="1.6"/></g>
+        <g fill="#FFC94D" font-size="18" font-weight="bold"><text x="36" y="200">♪</text><text x="512" y="220">♫</text></g>
+      </svg>
+      <div class="hud">
+        <span class="chip" id="hud-score-chip">⭐ <span class="num" id="hud-score">0</span></span>
+        <span class="chip" id="hud-combo">🔥 Combo <span class="num" id="hud-combo-num">0</span> <span id="hud-mult">×1</span></span>
+        <span class="spacer"></span>
+        <button class="icon-btn" id="btn-mute-game" aria-label="Toggle music" aria-pressed="false" title="Music on/off">♪</button>
+        <button class="icon-btn" id="btn-pause" aria-label="Pause game" title="Pause (P)">⏸</button>
+      </div>
+      <div class="meters">
+        <div class="meter-row"><span>🎯 Accuracy</span><div class="meter"><i id="accuracy-fill"></i></div><span id="accuracy-num">100%</span></div>
+        <div class="meter-row"><span>🎵 Song</span><div class="meter"><i id="progress-fill"></i></div><span id="progress-num">0%</span></div>
+      </div>
+      <div id="bea-mini" aria-hidden="true">
+        <svg viewBox="0 0 64 64"><ellipse cx="32" cy="56" rx="20" ry="4" fill="#000" opacity=".3"/><path d="M10 52 C8 30 18 12 32 12 C46 12 56 30 54 52 C53 58 44 60 32 60 C20 60 11 58 10 52 Z" fill="#FF6B6B" stroke="#2B2D42" stroke-width="3"/><circle cx="24" cy="34" r="4" fill="#2B2D42"/><circle cx="40" cy="34" r="4" fill="#2B2D42"/><path d="M26 44 Q32 49 38 44" fill="none" stroke="#2B2D42" stroke-width="2.5" stroke-linecap="round"/><rect x="6" y="26" width="9" height="15" rx="4.5" fill="#7C6FF0" stroke="#2B2D42" stroke-width="2"/><rect x="49" y="26" width="9" height="15" rx="4.5" fill="#7C6FF0" stroke="#2B2D42" stroke-width="2"/></svg>
+      </div>
+      <div id="lanes" role="group" aria-label="Four tap lanes. Desktop keys D, F, J, K.">
+        <div class="lane" data-lane="0" role="button" tabindex="0" aria-label="Lane 1, key D"><span class="key">D</span></div>
+        <div class="lane" data-lane="1" role="button" tabindex="0" aria-label="Lane 2, key F"><span class="key">F</span></div>
+        <div class="lane" data-lane="2" role="button" tabindex="0" aria-label="Lane 3, key J"><span class="key">J</span></div>
+        <div class="lane" data-lane="3" role="button" tabindex="0" aria-label="Lane 4, key K"><span class="key">K</span></div>
+        <div id="beat-line" aria-hidden="true"></div>
+        <div id="blocks-layer" aria-hidden="true"></div>
+      </div>
+      <p class="song-now">Now playing: <b id="now-song">—</b> • <span id="now-bpm">120 BPM</span></p>
+    </div>
+    <p style="text-align:center; font-weight:800; color:#4A4C66; margin-top:10px">Tap a lane — or press <kbd>D</kbd> <kbd>F</kbd> <kbd>J</kbd> <kbd>K</kbd> — right as a block crosses the glowing beat line.</p>
+  </main>
+
+  <!-- ================= COMPOSE MODE ================= -->
+  <main class="screen" id="screen-compose" aria-label="Compose Mode">
+    <h1 class="game-title">🎛️ Compose Mode</h1>
+    <p class="tagline">Tap squares to place blocks. Press play and hear your own tune loop!</p>
+    <div class="panel">
+      <p class="compose-hint">Each column is one beat step (4 seconds per loop). Each row is a lane — and its own note.</p>
+      <div class="compose-grid" id="compose-grid" role="group" aria-label="Compose grid: 4 lanes by 16 steps"></div>
+      <div class="compose-actions">
+        <button class="btn" id="btn-compose-play" type="button">▶ Play my tune</button>
+        <button class="btn secondary" id="btn-compose-stop" type="button">⏹ Stop</button>
+        <button class="btn teal" id="btn-compose-demo" type="button">✨ Demo groove</button>
+        <button class="btn coral" id="btn-compose-clear" type="button">🗑 Clear</button>
+      </div>
+      <p style="text-align:center; margin-top:12px; font-weight:800" id="compose-status">Your tune is saved on this device automatically.</p>
+    </div>
+    <div class="menu-row" style="margin-top:14px">
+      <button class="btn secondary" id="btn-compose-back" type="button">← Back to menu</button>
+    </div>
+  </main>
+
+  <!-- ================= PAUSE OVERLAY ================= -->
+  <div class="overlay" id="overlay-pause" role="dialog" aria-modal="true" aria-labelledby="pause-title">
+    <div class="panel">
+      <h2 id="pause-title">⏸ Paused</h2>
+      <p style="text-align:center">The music is holding its breath. Take your time!</p>
+      <div class="stat-grid">
+        <div class="stat"><div class="k">Score</div><div class="v" id="pause-score">0</div></div>
+        <div class="stat"><div class="k">Combo</div><div class="v" id="pause-combo">0</div></div>
+      </div>
+      <div class="actions">
+        <button class="btn" id="btn-resume" type="button">▶ Resume</button>
+        <div class="row">
+          <button class="btn secondary" id="btn-restart" type="button">↻ Restart</button>
+          <button class="btn secondary" id="btn-pause-howto" type="button">How to play</button>
+        </div>
+        <div class="row">
+          <button class="btn teal" id="btn-pause-settings" type="button">⚙ Settings</button>
+          <button class="btn coral" id="btn-quit-menu" type="button">🏠 Menu</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= RESULTS OVERLAY ================= -->
+  <div class="overlay" id="overlay-results" role="dialog" aria-modal="true" aria-labelledby="results-title">
+    <div class="panel">
+      <h2 id="results-title">🎉 Song complete!</h2>
+      <div class="grade-big" id="result-grade">S</div>
+      <p style="text-align:center; font-family:var(--font-display); font-weight:700; font-size:22px">Final score: <span id="result-score">0</span></p>
+      <p style="text-align:center"><span class="new-best" id="result-newbest">🌟 NEW BEST!</span></p>
+      <div class="stat-grid">
+        <div class="stat"><div class="k">Perfect</div><div class="v" id="result-perfect" style="color:#B34700">0</div></div>
+        <div class="stat"><div class="k">Good</div><div class="v" id="result-good" style="color:#0E7C74">0</div></div>
+        <div class="stat"><div class="k">Miss</div><div class="v" id="result-miss" style="color:#D43D3D">0</div></div>
+        <div class="stat"><div class="k">Max combo</div><div class="v" id="result-maxcombo">0</div></div>
+        <div class="stat"><div class="k">Accuracy</div><div class="v" id="result-accuracy">0%</div></div>
+        <div class="stat"><div class="k">Best score</div><div class="v" id="result-best">0</div></div>
+      </div>
+      <div class="actions">
+        <button class="btn" id="btn-replay" type="button">↻ Play again</button>
+        <div class="row">
+          <button class="btn secondary" id="btn-results-menu" type="button">🏠 Menu</button>
+          <button class="btn lav" id="btn-results-compose" type="button">🎛️ Compose</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= HOW TO PLAY OVERLAY ================= -->
+  <div class="overlay" id="overlay-howto" role="dialog" aria-modal="true" aria-labelledby="howto-title">
+    <div class="panel">
+      <h2 id="howto-title">How to play 🎵</h2>
+      <div class="howto-steps">
+        <div class="howto-step"><span class="n">1</span><p>Pick one of the three original tunes, then press Play. Blocks slide down four coloured lanes.</p></div>
+        <div class="howto-step"><span class="n">2</span><p>Tap a lane — or press <kbd>D</kbd> <kbd>F</kbd> <kbd>J</kbd> <kbd>K</kbd> — exactly when its block crosses the glowing beat line.</p></div>
+        <div class="howto-step"><span class="n">3</span><p><b style="color:#B34700">Perfect</b> (within 60&nbsp;ms) scores 300, <b style="color:#0E7C74">Good</b> (within 120&nbsp;ms) scores 100. A late or missed block breaks your combo.</p></div>
+        <div class="howto-step"><span class="n">4</span><p>Combos raise your multiplier up to ×3. Finish the song for your grade: <b>S</b>, <b>A</b>, <b>B</b> or <b>C</b>.</p></div>
+        <div class="howto-step"><span class="n">5</span><p>Try <b>Compose Mode</b>: place blocks on the grid and hear your own tune loop. Bea dances when you&rsquo;re on beat!</p></div>
+      </div>
+      <div class="actions">
+        <button class="btn" id="btn-howto-play" type="button">▶ Got it — play!</button>
+        <button class="btn secondary" id="btn-howto-close" type="button">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= SETTINGS OVERLAY ================= -->
+  <div class="overlay" id="overlay-settings" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+    <div class="panel">
+      <h2 id="settings-title">⚙ Settings</h2>
+      <div class="setting-row"><label for="set-music">🎵 Music</label><input type="checkbox" id="set-music" checked></div>
+      <div class="setting-row"><label for="set-sfx">🔔 Sound effects</label><input type="checkbox" id="set-sfx" checked></div>
+      <div class="setting-row"><label for="set-volume">🔊 Volume <span id="volume-num">70</span>%</label><input type="range" id="set-volume" min="0" max="100" value="70" step="1" aria-label="Volume"></div>
+      <div class="setting-row"><span>⏱️ Input latency compensation</span><span id="latency-readout" style="font-weight:800">auto</span></div>
+      <p style="margin-top:12px; font-size:14px; color:#5A5C72">Music and effects are made live by your device with WebAudio — no audio files, no downloads. Sound only starts after you tap or press a key.</p>
+      <div class="actions">
+        <button class="btn" id="btn-settings-close" type="button">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site">
+    <a href="/games/">← All games</a> · Beat Blocks · JJB-GAME-20261116-16 · v1.0.0<br>
+    Three original tunes, composed in code. No audio files, no copied music.
+  </footer>
+</div>
+
+<script>
+(function(){
+'use strict';
+/* =====================================================================
+   Beat Blocks — JJB-GAME-20261116-16 — 100% original.
+   Rhythm tapping on a lookahead AudioContext scheduler (never setInterval
+   for beat timing: a 25 ms poll only *checks* the audio clock; every note
+   is scheduled at an exact ctx.currentTime timestamp).
+   ===================================================================== */
+var NS = window.JJBBeatBlocks = window.JJBBeatBlocks || {};
+
+var BPM = 120, BEAT_SEC = 60 / BPM;          // 0.5 s per beat
+var PERFECT_MS = 60, GOOD_MS = 120, MISS_MS = 150;
+var TRAVEL_SEC = 1.8;                        // block travel time to beat line
+var LOOKAHEAD_SEC = 0.12, SCHED_POLL_MS = 25;
+var SONG_BEATS = 48;                          // 24 s of music + 1 s count-in
+var LEAD_BEATS = 2;                           // count-in so the first block can travel in
+var LANE_KEYS = ['d','f','j','k'];
+var LANE_SYMBOLS = ['▲','●','◆','★'];
+var LANE_NAMES = ['Coral','Sun','Teal','Lavender'];
+var LANE_WAVE = ['square','triangle','sawtooth','sine'];
+var LANE_FREQ = [523.25, 659.25, 783.99, 1046.50]; // compose-mode lane notes C5 E5 G5 C6
+
+function midiToFreq(m){ return 440 * Math.pow(2, (m - 69) / 12); }
+
+/* ---------- The three original tunes (composed for this game) ----------
+   Each phrase is 8 beats = 16 eighth-note slots. A slot holds a scale
+   degree (0-based) or -1 for a rest. Phrases repeat with variation:
+   A A B A B A = 48 beats. Lane = degree % 4, so the melody dances
+   across lanes. Backing (kick / hat / bass) is audio-only, never a block. */
+var SONGS = [
+  { id:'sunrise', name:'Sunrise Groove', emoji:'🌅', colour:'#FFC94D', diff:1, diffLabel:'Easy ★☆☆',
+    scale:[72,74,76,79,81,84], bass:[48,55],
+    phraseA:[0,-1,2,-1,4,-1,3,-1, 4,-1,3,-1,2,-1,1,-1],
+    phraseB:[4,-1,5,-1,4,-1,2,-1, 3,-1,2,-1,1,-1,0,-1],
+    order:['A','A','B','A','B','A'],
+    blurb:'Bright C-major bounce to wake your fingers up.' },
+  { id:'teal-tide', name:'Teal Tide', emoji:'🌊', colour:'#2EC4B6', diff:2, diffLabel:'Medium ★★☆',
+    scale:[69,72,74,76,79,81], bass:[45,52],
+    phraseA:[0,-1,2,-1,3,-1,2,-1, 1,-1,0,-1,2,3,1,2],
+    phraseB:[5,-1,4,-1,3,-1,4,-1, 2,-1,3,-1,1,0,2,3],
+    order:['A','B','A','B','A','B'],
+    blurb:'A smooth A-minor groove with a rolling tide feel.' },
+  { id:'lavender', name:'Lavender Lights', emoji:'💜', colour:'#7C6FF0', diff:3, diffLabel:'Tricky ★★★',
+    scale:[65,67,69,72,74,77,81], bass:[53,48],
+    phraseA:[2,4,5,-1,4,-1,3,2, 1,0,2,-1,4,-1,5,3],
+    phraseB:[5,6,5,-1,3,-1,4,3, 2,-1,4,5,6,-1,3,2],
+    order:['A','B','B','A','B','A'],
+    blurb:'F-major sparkle — denser patterns, quicker feet.' }
+];
+
+function buildChart(song){
+  var notes = [];
+  song.order.forEach(function(ph, pi){
+    var phrase = ph === 'A' ? song.phraseA : song.phraseB;
+    phrase.forEach(function(deg, slot){
+      if (deg < 0) return;
+      var beat = pi * 8 + slot * 0.5;
+      notes.push({ beat:beat, time:(beat + LEAD_BEATS) * BEAT_SEC, lane:deg % 4,
+                   freq:midiToFreq(song.scale[deg]), state:'pending', el:null });
+    });
+  });
+  return notes;
+}
+function buildEvents(song, chart){
+  // One sorted event list: tappable notes + audio-only backing.
+  var ev = chart.map(function(n){ return { time:n.time, kind:'note', lane:n.lane, freq:n.freq, note:n }; });
+  for (var b = 0; b < SONG_BEATS + LEAD_BEATS; b++){
+    ev.push({ time:b * BEAT_SEC, kind:'kick' });
+    ev.push({ time:b * BEAT_SEC + BEAT_SEC / 2, kind:'hat' });
+    if (b % 4 === 0){
+      var root = song.bass[(b / 4) % 2];
+      ev.push({ time:b * BEAT_SEC, kind:'bass', freq:midiToFreq(root) });
+    }
+  }
+  ev.sort(function(a,c){ return a.time - c.time; });
+  return ev;
+}
+
+/* ---------- persistence ---------- */
+var K = { best:'jjb-beat-blocks-best', music:'jjb-beat-blocks-music',
+          sfx:'jjb-beat-blocks-sfx', volume:'jjb-beat-blocks-volume',
+          compose:'jjb-beat-blocks-compose', song:'jjb-beat-blocks-song' };
+function lsGet(k, d){ try { var v = localStorage.getItem(k); return v === null ? d : v; } catch(e){ return d; } }
+function lsSet(k, v){ try { localStorage.setItem(k, v); } catch(e){} }
+function loadSettings(){
+  return { music: lsGet(K.music,'on') !== 'off',
+           sfx: lsGet(K.sfx,'on') !== 'off',
+           volume: Math.max(0, Math.min(100, parseInt(lsGet(K.volume,'70'),10) || 70)) };
+}
+
+/* ---------- state ---------- */
+var settings = loadSettings();
+var state = {
+  screen:'menu', songId: lsGet(K.song,'sunrise'),
+  song:null, chart:[], events:[], totalNotes:0,
+  songStartTime:0, pausedPos:0, schedulerTimer:null, nextEventIdx:0,
+  score:0, combo:0, maxCombo:0, perfect:0, good:0, miss:0,
+  rafId:0, lastBeat:-1, finished:false, songEndedAt:0,
+  schedLog:[], lastLatencyMs:0, audioReady:false
+};
+NS.state = state;
+NS.config = { BPM:BPM, PERFECT_MS:PERFECT_MS, GOOD_MS:GOOD_MS, MISS_MS:MISS_MS,
+              TRAVEL_SEC:TRAVEL_SEC, LOOKAHEAD_SEC:LOOKAHEAD_SEC };
+NS.gradeOffset = gradeOffset;   // pure function, used by the timing test suite
+NS.SONGS = SONGS;
+
+/* ---------- DOM ---------- */
+function $(id){ return document.getElementById(id); }
+var els = {};
+['screen-menu','screen-game','screen-compose','overlay-pause','overlay-results',
+ 'overlay-howto','overlay-settings','song-list','best-line','hud-score','hud-combo',
+ 'hud-combo-num','hud-mult','hud-score-chip','accuracy-fill','accuracy-num',
+ 'progress-fill','progress-num','lanes','blocks-layer','beat-line','bea-mini',
+ 'now-song','now-bpm','live-region','stage','btn-mute-quick','btn-mute-game',
+ 'set-music','set-sfx','set-volume','volume-num','latency-readout',
+ 'result-grade','result-score','result-newbest','result-perfect','result-good',
+ 'result-miss','result-maxcombo','result-accuracy','result-best',
+ 'pause-score','pause-combo','compose-grid','compose-status'].forEach(function(id){
+  els[id] = $(id);
+});
+var laneEls = Array.prototype.slice.call(document.querySelectorAll('.lane'));
+var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- audio engine (WebAudio only, procedural) ---------- */
+var actx = null, musicGain = null, sfxGain = null, noiseBuf = null;
+function ensureAudio(){
+  if (actx) { if (actx.state === 'suspended' && state.screen !== 'paused') actx.resume(); return actx; }
+  var AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC) return null;
+  actx = new AC();
+  musicGain = actx.createGain(); musicGain.connect(actx.destination);
+  sfxGain = actx.createGain(); sfxGain.connect(actx.destination);
+  applyAudioSettings();
+  noiseBuf = actx.createBuffer(1, actx.sampleRate * 0.1, actx.sampleRate);
+  var d = noiseBuf.getChannelData(0);
+  for (var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  state.audioReady = true;
+  return actx;
+}
+function applyAudioSettings(){
+  // UI sync always runs — even before the first gesture creates the
+  // AudioContext — so persisted settings are visible on a fresh load.
+  [els['btn-mute-quick'], els['btn-mute-game']].forEach(function(b){
+    if (b) b.setAttribute('aria-pressed', settings.music ? 'false' : 'true');
+  });
+  if (els['set-music']) els['set-music'].checked = settings.music;
+  if (els['set-sfx']) els['set-sfx'].checked = settings.sfx;
+  if (els['set-volume']) els['set-volume'].value = settings.volume;
+  if (els['volume-num']) els['volume-num'].textContent = settings.volume;
+  updateLatencyReadout();
+  if (!actx) return;
+  var v = settings.volume / 100;
+  musicGain.gain.value = settings.music ? v * 0.9 : 0;
+  sfxGain.gain.value = settings.sfx ? v : 0;
+}
+function updateLatencyReadout(){
+  var lat = 0;
+  if (actx){
+    if (typeof actx.outputLatency === 'number') lat = actx.outputLatency;
+    else if (typeof actx.baseLatency === 'number') lat = actx.baseLatency;
+  }
+  state.lastLatencyMs = Math.round(lat * 1000);
+  if (els['latency-readout']) els['latency-readout'].textContent =
+    actx ? (state.lastLatencyMs + ' ms (auto)') : 'auto';
+}
+function outputLatencySec(){
+  if (!actx) return 0;
+  if (typeof actx.outputLatency === 'number') return actx.outputLatency;
+  if (typeof actx.baseLatency === 'number') return actx.baseLatency;
+  return 0;
+}
+/* One note voice: lane timbre + octave shimmer, short pluck envelope. */
+function playNoteAt(when, freq, lane, dur){
+  if (!actx || !settings.music) return;
+  dur = dur || 0.28;
+  var t = when;
+  var g = actx.createGain();
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(0.5, t + 0.008);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  g.connect(musicGain);
+  var o1 = actx.createOscillator(); o1.type = LANE_WAVE[lane]; o1.frequency.value = freq;
+  o1.connect(g); o1.start(t); o1.stop(t + dur + 0.02);
+  var o2 = actx.createOscillator(); o2.type = 'sine'; o2.frequency.value = freq * 2;
+  var g2 = actx.createGain(); g2.gain.value = 0.12; o2.connect(g2); g2.connect(musicGain);
+  o2.start(t); o2.stop(t + dur * 0.6);
+}
+function playKickAt(when){
+  if (!actx || !settings.music) return;
+  var o = actx.createOscillator(), g = actx.createGain();
+  o.type = 'sine'; o.frequency.setValueAtTime(150, when);
+  o.frequency.exponentialRampToValueAtTime(48, when + 0.11);
+  g.gain.setValueAtTime(0.55, when); g.gain.exponentialRampToValueAtTime(0.001, when + 0.14);
+  o.connect(g); g.connect(musicGain); o.start(when); o.stop(when + 0.16);
+}
+function playHatAt(when){
+  if (!actx || !settings.music) return;
+  var src = actx.createBufferSource(); src.buffer = noiseBuf;
+  var f = actx.createBiquadFilter(); f.type = 'highpass'; f.frequency.value = 7000;
+  var g = actx.createGain();
+  g.gain.setValueAtTime(0.10, when); g.gain.exponentialRampToValueAtTime(0.001, when + 0.05);
+  src.connect(f); f.connect(g); g.connect(musicGain); src.start(when); src.stop(when + 0.06);
+}
+function playBassAt(when, freq){
+  if (!actx || !settings.music) return;
+  var o = actx.createOscillator(), g = actx.createGain();
+  o.type = 'triangle'; o.frequency.value = freq;
+  g.gain.setValueAtTime(0.0001, when);
+  g.gain.exponentialRampToValueAtTime(0.30, when + 0.02);
+  g.gain.exponentialRampToValueAtTime(0.001, when + 1.6);
+  o.connect(g); g.connect(musicGain); o.start(when); o.stop(when + 1.7);
+}
+/* SFX (separate bus, short synth blips). */
+function sfx(kind){
+  if (!actx || !settings.sfx) return;
+  var t = actx.currentTime;
+  function blip(type, f0, f1, dur, vol){
+    var o = actx.createOscillator(), g = actx.createGain();
+    o.type = type; o.frequency.setValueAtTime(f0, t);
+    if (f1) o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+    o.connect(g); g.connect(sfxGain); o.start(t); o.stop(t + dur + 0.02);
+  }
+  if (kind === 'perfect'){ blip('sine', 880, 1320, 0.12, 0.5); }
+  else if (kind === 'good'){ blip('sine', 660, 880, 0.10, 0.35); }
+  else if (kind === 'miss'){ blip('sawtooth', 180, 70, 0.25, 0.3); }
+  else if (kind === 'click'){ blip('triangle', 520, 700, 0.06, 0.3); }
+  else if (kind === 'combo'){ blip('sine', 1046, 1568, 0.14, 0.4); }
+  else if (kind === 'win'){ [523.25, 659.25, 783.99, 1046.5].forEach(function(f, i){
+    var o = actx.createOscillator(), g = actx.createGain();
+    o.type = 'triangle'; o.frequency.value = f;
+    var tt = t + i * 0.09;
+    g.gain.setValueAtTime(0.0001, tt); g.gain.exponentialRampToValueAtTime(0.4, tt + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.001, tt + 0.35);
+    o.connect(g); g.connect(sfxGain); o.start(tt); o.stop(tt + 0.4);
+  }); }
+}
+
+/* ---------- lookahead scheduler ----------
+   A 25 ms poll ONLY reads the audio clock. Beats are never driven by it:
+   each event is scheduled at songStartTime + event.time on the audio clock.
+   state.schedLog records, per note, the dispatch clock vs its target, so
+   AUDIO-TIMING-TESTS.md can measure drift with real numbers. */
+function scheduleEvent(ev, when){
+  if (ev.kind === 'note') playNoteAt(when, ev.freq, ev.lane);
+  else if (ev.kind === 'kick') playKickAt(when);
+  else if (ev.kind === 'hat') playHatAt(when);
+  else if (ev.kind === 'bass') playBassAt(when, ev.freq);
+}
+function schedulerTick(){
+  if (!actx || state.screen !== 'playing') return;
+  var now = actx.currentTime;
+  var horizon = now + LOOKAHEAD_SEC;
+  while (state.nextEventIdx < state.events.length){
+    var ev = state.events[state.nextEventIdx];
+    var when = state.songStartTime + ev.time;
+    if (when > horizon) break;
+    scheduleEvent(ev, when);
+    if (ev.kind === 'note'){
+      state.schedLog.push({ target:when, dispatchedAt:now,
+        leadMs: Math.round((when - now) * 1000) });
+    }
+    state.nextEventIdx++;
+  }
+}
+function startScheduler(){
+  stopScheduler();
+  state.schedulerTimer = setInterval(schedulerTick, SCHED_POLL_MS); // poll only — see header
+  schedulerTick();
+}
+function stopScheduler(){
+  if (state.schedulerTimer){ clearInterval(state.schedulerTimer); state.schedulerTimer = null; }
+}
+
+/* ---------- grading ---------- */
+function gradeOffset(offsetMs){
+  var a = Math.abs(offsetMs);
+  if (a <= PERFECT_MS) return 'perfect';
+  if (a <= GOOD_MS) return 'good';
+  return 'miss';
+}
+function multiplier(){
+  return 1 + Math.min(2, Math.floor(state.combo / 8) * 0.5);
+}
+function accuracyPct(){
+  var judged = state.perfect + state.good + state.miss;
+  if (!judged) return 100;
+  return Math.round(((state.perfect + state.good * 0.5) / judged) * 100);
+}
+function gradeFor(perfect, good, miss, total){
+  var ratio = total ? (perfect * 300 + good * 100) / (total * 300) : 0;
+  if (ratio >= 0.90) return 'S';
+  if (ratio >= 0.75) return 'A';
+  if (ratio >= 0.55) return 'B';
+  return 'C';
+}
+function songPos(){
+  if (!actx) return 0;
+  if (state.screen === 'paused') return state.pausedPos;
+  return actx.currentTime - state.songStartTime;
+}
+/* Tap a lane: find the nearest pending note in that lane, grade by the
+   audio-clock offset, compensated for output latency (the player hears
+   the beat late by outputLatency, so they tap late by the same amount). */
+function tapLane(lane, source){
+  if (state.screen !== 'playing' || !actx) return null;
+  var pos = songPos();
+  var best = null, bestDt = Infinity;
+  state.chart.forEach(function(n){
+    if (n.lane !== lane || n.state !== 'pending') return;
+    var dt = (pos - n.time) * 1000;
+    if (Math.abs(dt) < Math.abs(bestDt)){ best = n; bestDt = dt; }
+  });
+  flashLane(lane);
+  if (!best || Math.abs(bestDt) > MISS_MS){
+    // stray tap: tiny feedback, no penalty
+    if (best) { /* too far — ignore */ }
+    return { grade:'none', offsetMs: best ? Math.round(bestDt) : null };
+  }
+  var latencyMs = outputLatencySec() * 1000;
+  var effDt = bestDt - latencyMs;   // compensate for heard-late beat
+  var grade = gradeOffset(effDt);
+  judgeNote(best, grade, effDt, lane);
+  return { grade:grade, offsetMs: Math.round(effDt), rawMs: Math.round(bestDt), latencyMs: Math.round(latencyMs) };
+}
+function judgeNote(note, grade, offsetMs, lane){
+  note.state = grade === 'miss' ? 'miss' : 'hit';
+  if (note.el){
+    note.el.classList.add(grade === 'perfect' ? 'judged-perfect' : grade === 'good' ? 'judged-good' : 'judged-miss');
+    setTimeout(function(){ if (note.el && note.el.parentNode) note.el.parentNode.removeChild(note.el); }, 320);
+  }
+  var laneEl = laneEls[lane];
+  if (grade === 'perfect'){
+    state.perfect++; state.combo++; state.maxCombo = Math.max(state.maxCombo, state.combo);
+    var pts = Math.round(300 * multiplier());
+    state.score += pts;
+    sfx('perfect'); floatScore(lane, '+' + pts, 'perfect'); burst(lane, '#FFC94D');
+    if (state.combo > 0 && state.combo % 10 === 0) sfx('combo');
+    announce('Perfect! Combo ' + state.combo);
+  } else if (grade === 'good'){
+    state.good++; state.combo++; state.maxCombo = Math.max(state.maxCombo, state.combo);
+    var pts2 = Math.round(100 * multiplier());
+    state.score += pts2;
+    sfx('good'); floatScore(lane, '+' + pts2, 'good'); burst(lane, '#2EC4B6');
+    announce('Good. Combo ' + state.combo);
+  } else {
+    state.miss++; state.combo = 0;
+    sfx('miss'); floatScore(lane, 'Miss', 'miss');
+    if (els['bea-mini']) els['bea-mini'].classList.add('dizzy');
+    setTimeout(function(){ if (els['bea-mini']) els['bea-mini'].classList.remove('dizzy'); }, 500);
+    announce('Miss. Combo lost.');
+  }
+  if (laneEl){
+    laneEl.classList.remove('hit-perfect','hit-good','hit-miss');
+    laneEl.classList.add(grade === 'perfect' ? 'hit-perfect' : grade === 'good' ? 'hit-good' : 'hit-miss');
+    setTimeout(function(){ laneEl.classList.remove('hit-perfect','hit-good','hit-miss'); }, 220);
+  }
+  updateHUD();
+}
+
+/* ---------- visual feedback ---------- */
+function flashLane(lane){
+  var el = laneEls[lane];
+  if (!el) return;
+  el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
+}
+function laneCenterX(lane){
+  var r = laneEls[lane].getBoundingClientRect();
+  var pr = els['lanes'].getBoundingClientRect();
+  return r.left - pr.left + r.width / 2;
+}
+function beatLineY(){
+  var pr = els['lanes'].getBoundingClientRect();
+  var br = els['beat-line'].getBoundingClientRect();
+  return br.top - pr.top + br.height / 2;
+}
+function floatScore(lane, text, kind){
+  if (reducedMotion) return;
+  var s = document.createElement('div');
+  s.className = 'float-score ' + (kind === 'good' ? 'good' : kind === 'miss' ? 'miss' : '');
+  s.textContent = text;
+  s.style.left = laneCenterX(lane) + 'px';
+  s.style.top = (beatLineY() - 30) + 'px';
+  els['lanes'].appendChild(s);
+  setTimeout(function(){ if (s.parentNode) s.parentNode.removeChild(s); }, 850);
+}
+function burst(lane, colour){
+  if (reducedMotion) return;
+  var layer = els['lanes'];
+  for (var i = 0; i < 8; i++){
+    var p = document.createElement('div');
+    p.className = 'particle'; p.style.background = colour;
+    p.style.left = laneCenterX(lane) + 'px'; p.style.top = beatLineY() + 'px';
+    var a = (i / 8) * Math.PI * 2;
+    p.style.setProperty('--dx', Math.round(Math.cos(a) * 46) + 'px');
+    p.style.setProperty('--dy', Math.round(Math.sin(a) * 46 - 18) + 'px');
+    layer.appendChild(p);
+    (function(el){ setTimeout(function(){ if (el.parentNode) el.parentNode.removeChild(el); }, 650); })(p);
+  }
+}
+function announce(msg){ if (els['live-region']) els['live-region'].textContent = msg; }
+
+/* ---------- HUD ---------- */
+function updateHUD(){
+  els['hud-score'].textContent = state.score;
+  els['hud-combo-num'].textContent = state.combo;
+  els['hud-mult'].textContent = '×' + multiplier();
+  els['hud-combo'].classList.toggle('hot', state.combo >= 8);
+  var acc = accuracyPct();
+  els['accuracy-fill'].style.width = acc + '%';
+  els['accuracy-num'].textContent = acc + '%';
+  var prog = state.totalNotes ? Math.round(((state.perfect + state.good + state.miss) / state.totalNotes) * 100) : 0;
+  els['progress-fill'].style.width = prog + '%';
+  els['progress-num'].textContent = prog + '%';
+}
+
+/* ---------- screens ---------- */
+function showScreen(name){
+  state.screen = name;
+  var map = { menu:'screen-menu', playing:'screen-game', compose:'screen-compose' };
+  Object.keys(map).forEach(function(k){
+    $(map[k]).classList.toggle('active', k === name);
+  });
+  ['overlay-pause','overlay-results','overlay-howto','overlay-settings'].forEach(function(id){
+    $(id).classList.remove('show');
+  });
+  if (name === 'menu') renderSongList();
+  window.scrollTo(0, 0);
+}
+function openOverlay(id){
+  $(id).classList.add('show');
+  var f = $(id).querySelector('button'); if (f) f.focus();
+}
+function closeOverlay(id){ $(id).classList.remove('show'); }
+
+/* ---------- song picker ---------- */
+function songById(id){ return SONGS.filter(function(s){ return s.id === id; })[0] || SONGS[0]; }
+function bestFor(songId){
+  return parseInt(lsGet('jjb-beat-blocks-best-' + songId, '0'), 10) || 0;
+}
+function renderSongList(){
+  var list = els['song-list']; list.innerHTML = '';
+  SONGS.forEach(function(song){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'song-card' + (song.id === state.songId ? ' selected' : '');
+    b.setAttribute('role','option'); b.setAttribute('aria-selected', song.id === state.songId ? 'true' : 'false');
+    b.innerHTML = '<span class="song-swatch" style="background:' + song.colour + '">' + song.emoji +
+      '</span><span class="meta"><span class="name">' + song.name + '</span><br>' +
+      '<span class="sub">' + song.diffLabel + ' • 120 BPM • 25 sec<br>' + song.blurb + '</span></span>' +
+      '<span class="best">Best ' + bestFor(song.id) + '</span>';
+    b.addEventListener('click', function(){
+      state.songId = song.id; lsSet(K.song, song.id); sfx('click'); renderSongList();
+    });
+    list.appendChild(b);
+  });
+  var overall = parseInt(lsGet(K.best, '0'), 10) || 0;
+  els['best-line'].textContent = 'Best score: ' + overall + '  •  Pick a tune, then press Play';
+}
+
+/* ---------- game flow ---------- */
+function startGame(songId){
+  ensureAudio();
+  if (songId) state.songId = songId;
+  state.song = songById(state.songId);
+  state.chart = buildChart(state.song);
+  state.events = buildEvents(state.song, state.chart);
+  state.totalNotes = state.chart.length;
+  state.score = 0; state.combo = 0; state.maxCombo = 0;
+  state.perfect = 0; state.good = 0; state.miss = 0;
+  state.finished = false; state.schedLog = []; state.nextEventIdx = 0; state.lastBeat = -1;
+  showScreen('playing');
+  buildBlocks();
+  els['now-song'].textContent = state.song.emoji + ' ' + state.song.name;
+  els['now-bpm'].textContent = '120 BPM • ' + state.song.diffLabel;
+  updateHUD();
+  if (actx && actx.state === 'suspended') actx.resume();
+  els['stage'].classList.add('playing');
+  state.songStartTime = actx.currentTime + 0.15;
+  startScheduler();
+  cancelAnimationFrame(state.rafId);
+  state.rafId = requestAnimationFrame(gameLoop);
+  announce('Playing ' + state.song.name + '. Tap blocks on the beat line!');
+}
+function buildBlocks(){
+  var layer = els['blocks-layer']; layer.innerHTML = '';
+  var lanesBox = els['lanes'].getBoundingClientRect();
+  var laneW = (lanesBox.width - 48) / 4;
+  state.chart.forEach(function(n){
+    var el = document.createElement('div');
+    el.className = 'block lane' + n.lane;
+    el.textContent = LANE_SYMBOLS[n.lane];
+    el.style.width = Math.max(40, laneW - 4) + 'px';
+    el.style.left = (12 + n.lane * (laneW + 8) + 2) + 'px';
+    el.style.display = 'none';
+    layer.appendChild(el);
+    n.el = el;
+  });
+}
+function gameLoop(){
+  if (state.screen !== 'playing'){ return; }
+  var pos = songPos();
+  var lanesBox = els['lanes'].getBoundingClientRect();
+  var lineY = beatLineY();
+  var topY = -70;
+  var pxPerSec = (lineY - topY) / TRAVEL_SEC;
+  // beat pulse: Bea + beat-line already animate by CSS; track beat index for HUD only
+  var beatIdx = Math.floor(pos / BEAT_SEC);
+  if (beatIdx !== state.lastBeat){ state.lastBeat = beatIdx; }
+  state.chart.forEach(function(n){
+    if (!n.el) return;
+    if (n.state !== 'pending'){
+      if (n.el.style.display !== 'none' && !n.el.classList.contains('judged-perfect') &&
+          !n.el.classList.contains('judged-good') && !n.el.classList.contains('judged-miss')){
+        n.el.style.display = 'none';
+      }
+      return;
+    }
+    var dt = n.time - pos;               // >0 approaching, <0 passed
+    var y = lineY - dt * pxPerSec;
+    if (y < topY - 60 || y > lanesBox.height + 40){ n.el.style.display = 'none'; }
+    else {
+      n.el.style.display = 'flex';
+      n.el.style.transform = 'translateY(' + (y - 27) + 'px)';
+      n.el.classList.toggle('near', Math.abs(dt) <= 0.12);
+    }
+    if (dt < -MISS_MS / 1000){
+      // unhit note sailed past the line: Miss
+      n.state = 'miss';
+      n.el.style.display = 'none';
+      state.miss++; state.combo = 0;
+      sfx('miss'); updateHUD();
+      announce('Miss. Combo lost.');
+    }
+  });
+  // song end: last note + 1.2 s of tail
+  var lastTime = state.chart.length ? state.chart[state.chart.length - 1].time : 0;
+  if (pos > lastTime + 1.2 && !state.finished){
+    state.finished = true;
+    finishGame();
+    return;
+  }
+  state.rafId = requestAnimationFrame(gameLoop);
+}
+function finishGame(){
+  stopScheduler();
+  cancelAnimationFrame(state.rafId);
+  els['stage'].classList.remove('playing');
+  var total = state.totalNotes;
+  var grade = gradeFor(state.perfect, state.good, state.miss, total);
+  var acc = accuracyPct();
+  var prevBest = bestFor(state.songId);
+  var overallBest = parseInt(lsGet(K.best, '0'), 10) || 0;
+  var isNew = state.score > prevBest;
+  if (isNew){
+    lsSet('jjb-beat-blocks-best-' + state.songId, String(state.score));
+    if (state.score > overallBest) lsSet(K.best, String(state.score));
+  }
+  $('result-grade').textContent = grade;
+  $('result-grade').className = 'grade-big ' + grade.toLowerCase();
+  $('result-newbest').classList.toggle('show', isNew);
+  $('result-perfect').textContent = state.perfect;
+  $('result-good').textContent = state.good;
+  $('result-miss').textContent = state.miss;
+  $('result-maxcombo').textContent = state.maxCombo;
+  $('result-accuracy').textContent = acc + '%';
+  $('result-best').textContent = Math.max(prevBest, state.score);
+  sfx('win');
+  // count-up animation on the final score
+  var target = state.score, el = $('result-score'), t0 = null;
+  function countUp(ts){
+    if (!t0) t0 = ts;
+    var p = Math.min(1, (ts - t0) / 800);
+    el.textContent = Math.round(target * p);
+    if (p < 1 && !reducedMotion) requestAnimationFrame(countUp);
+    else el.textContent = target;
+  }
+  el.textContent = '0';
+  requestAnimationFrame(countUp);
+  state.screen = 'results';
+  openOverlay('overlay-results');
+  announce('Song complete. Grade ' + grade + '. Score ' + state.score + '.');
+  if (!reducedMotion){
+    for (var i = 0; i < 24; i++){
+      var p = document.createElement('div');
+      p.className = 'particle';
+      p.style.background = ['#FF6B6B','#FFC94D','#2EC4B6','#7C6FF0'][i % 4];
+      p.style.left = (20 + Math.random() * 60) + '%'; p.style.top = '30%';
+      var a = Math.random() * Math.PI * 2;
+      p.style.setProperty('--dx', Math.round(Math.cos(a) * 90) + 'px');
+      p.style.setProperty('--dy', Math.round(Math.sin(a) * 90 + 30) + 'px');
+      document.querySelector('#overlay-results .panel').appendChild(p);
+      (function(node){ setTimeout(function(){ if (node.parentNode) node.parentNode.removeChild(node); }, 700); })(p);
+    }
+  }
+}
+function pauseGame(){
+  if (state.screen !== 'playing') return;
+  state.pausedPos = songPos();
+  state.screen = 'paused';
+  stopScheduler();
+  cancelAnimationFrame(state.rafId);
+  els['stage'].classList.remove('playing');
+  if (actx && actx.state === 'running') actx.suspend();
+  els['pause-score'].textContent = state.score;
+  els['pause-combo'].textContent = state.combo;
+  openOverlay('overlay-pause');
+  announce('Paused.');
+}
+function resumeGame(){
+  if (state.screen !== 'paused') return;
+  closeOverlay('overlay-pause');
+  // The audio clock froze while suspended, so songStartTime stays valid;
+  // re-arm the scheduler from the first event after the pause horizon.
+  var resumeFrom = function(){
+    state.nextEventIdx = 0;
+    while (state.nextEventIdx < state.events.length &&
+           state.songStartTime + state.events[state.nextEventIdx].time <= actx.currentTime + LOOKAHEAD_SEC){
+      state.nextEventIdx++;
+    }
+    state.screen = 'playing';
+    els['stage'].classList.add('playing');
+    startScheduler();
+    state.rafId = requestAnimationFrame(gameLoop);
+    announce('Resumed.');
+  };
+  if (actx && actx.state === 'suspended'){ actx.resume().then(resumeFrom, resumeFrom); }
+  else resumeFrom();
+}
+function quitToMenu(){
+  stopScheduler();
+  cancelAnimationFrame(state.rafId);
+  if (actx && actx.state === 'suspended') actx.resume();
+  els['stage'].classList.remove('playing');
+  state.screen = 'menu';
+  showScreen('menu');
+}
+NS.startGame = startGame; NS.tapLane = tapLane; NS.pauseGame = pauseGame;
+NS.resumeGame = resumeGame; NS.finishGame = finishGame;
+NS.getStats = function(){ return { score:state.score, combo:state.combo, maxCombo:state.maxCombo,
+  perfect:state.perfect, good:state.good, miss:state.miss, total:state.totalNotes,
+  accuracy:accuracyPct(), multiplier:multiplier(), screen:state.screen,
+  songPos:Math.round(songPos()*1000)/1000, schedLog:state.schedLog.slice(),
+  latencyMs:Math.round(outputLatencySec()*1000) }; };
+
+/* ---------- Compose Mode ----------
+   4 lanes × 16 eighth-note steps (0.25 s/step, 4 s loop at 120 BPM).
+   Its own lookahead scheduler loops the pattern on the audio clock. */
+var compose = { pattern:null, playing:false, timer:null, loopStart:0, stepDur:BEAT_SEC / 2, nextStep:0 };
+function composeDefault(){
+  var p = [];
+  for (var l = 0; l < 4; l++){ p.push(new Array(16).fill(false)); }
+  return p;
+}
+function loadCompose(){
+  try {
+    var raw = lsGet(K.compose, null);
+    if (raw){ var p = JSON.parse(raw);
+      if (p && p.length === 4 && p[0].length === 16) return p; }
+  } catch(e){}
+  return composeDefault();
+}
+function saveCompose(){ lsSet(K.compose, JSON.stringify(compose.pattern)); }
+compose.pattern = loadCompose();
+function buildComposeGrid(){
+  var grid = els['compose-grid']; grid.innerHTML = '';
+  for (var lane = 0; lane < 4; lane++){
+    var col = document.createElement('div');
+    col.className = 'compose-col';
+    for (var step = 0; step < 16; step++){
+      (function(l, s){
+        var cell = document.createElement('button');
+        cell.type = 'button'; cell.className = 'compose-cell lane' + l;
+        cell.dataset.lane = l; cell.dataset.step = s;
+        cell.textContent = LANE_SYMBOLS[l];
+        cell.setAttribute('aria-pressed', compose.pattern[l][s] ? 'true' : 'false');
+        cell.setAttribute('aria-label', LANE_NAMES[l] + ' lane, step ' + (s + 1));
+        cell.addEventListener('click', function(){
+          compose.pattern[l][s] = !compose.pattern[l][s];
+          cell.setAttribute('aria-pressed', compose.pattern[l][s] ? 'true' : 'false');
+          saveCompose();
+          if (compose.pattern[l][s]){ ensureAudio(); playNoteAt(actx.currentTime + 0.01, LANE_FREQ[l], l, 0.3); }
+          sfx('click');
+        });
+        col.appendChild(cell);
+      })(lane, step);
+    }
+    grid.appendChild(col);
+  }
+}
+function composeTick(){
+  if (!compose.playing || !actx) return;
+  var now = actx.currentTime;
+  var horizon = now + LOOKAHEAD_SEC;
+  while (true){
+    var when = compose.loopStart + compose.nextStep * compose.stepDur;
+    if (when > horizon) break;
+    for (var lane = 0; lane < 4; lane++){
+      if (compose.pattern[lane][compose.nextStep % 16]) playNoteAt(when, LANE_FREQ[lane], lane, 0.3);
+    }
+    if (compose.nextStep % 4 === 0) playKickAt(when);
+    compose.nextStep++;
+  }
+}
+function composePlay(){
+  ensureAudio();
+  if (compose.playing) return;
+  compose.playing = true;
+  compose.loopStart = actx.currentTime + 0.1;
+  compose.nextStep = 0;
+  compose.timer = setInterval(composeTick, SCHED_POLL_MS); // poll only — audio clock schedules
+  composeTick();
+  $('btn-compose-play').textContent = '▶ Playing…';
+  els['compose-status'].textContent = '♪ Your tune is looping — tap squares to change it live!';
+  highlightComposeStep();
+}
+function highlightComposeStep(){
+  if (!compose.playing) return;
+  var pos = actx.currentTime - compose.loopStart;
+  var step = pos < 0 ? 0 : Math.floor(pos / compose.stepDur) % 16;
+  var cells = els['compose-grid'].querySelectorAll('.compose-cell');
+  cells.forEach(function(c){ c.classList.toggle('now', parseInt(c.dataset.step, 10) === step); });
+  requestAnimationFrame(highlightComposeStep);
+}
+function composeStop(){
+  compose.playing = false;
+  if (compose.timer){ clearInterval(compose.timer); compose.timer = null; }
+  $('btn-compose-play').textContent = '▶ Play my tune';
+  els['compose-status'].textContent = 'Your tune is saved on this device automatically.';
+  els['compose-grid'].querySelectorAll('.compose-cell').forEach(function(c){ c.classList.remove('now'); });
+}
+function composeDemo(){
+  // Original starter groove: a little call-and-response across the lanes.
+  var p = composeDefault();
+  [[0,0],[1,2],[2,4],[0,6],[3,8],[2,10],[1,12],[0,14]].forEach(function(pt){ p[pt[0]][pt[1]] = true; });
+  [[1,4],[3,12]].forEach(function(pt){ p[pt[0]][pt[1]] = true; });
+  compose.pattern = p; saveCompose(); buildComposeGrid();
+  els['compose-status'].textContent = '✨ Demo groove loaded — press Play to hear it, then make it yours!';
+  sfx('click');
+}
+NS.compose = { get pattern(){ return compose.pattern; }, play:composePlay, stop:composeStop,
+               demo:composeDemo, get playing(){ return compose.playing; } };
+
+/* ---------- settings ---------- */
+function bindSettings(){
+  els['set-music'].addEventListener('change', function(){
+    settings.music = els['set-music'].checked; lsSet(K.music, settings.music ? 'on' : 'off');
+    applyAudioSettings();
+  });
+  els['set-sfx'].addEventListener('change', function(){
+    settings.sfx = els['set-sfx'].checked; lsSet(K.sfx, settings.sfx ? 'on' : 'off');
+    applyAudioSettings();
+  });
+  els['set-volume'].addEventListener('input', function(){
+    settings.volume = parseInt(els['set-volume'].value, 10); lsSet(K.volume, String(settings.volume));
+    applyAudioSettings();
+  });
+}
+function toggleMusic(){
+  settings.music = !settings.music; lsSet(K.music, settings.music ? 'on' : 'off');
+  applyAudioSettings();
+  announce(settings.music ? 'Music on.' : 'Music off.');
+}
+
+/* ---------- input: touch + keyboard ---------- */
+laneEls.forEach(function(laneEl, i){
+  laneEl.addEventListener('pointerdown', function(e){
+    e.preventDefault();
+    tapLane(i, 'touch');
+  });
+  laneEl.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); tapLane(i, 'keyboard'); }
+  });
+});
+document.addEventListener('keydown', function(e){
+  if (e.repeat) return;
+  var k = e.key.toLowerCase();
+  if (state.screen === 'playing'){
+    var lane = LANE_KEYS.indexOf(k);
+    if (lane >= 0){ e.preventDefault(); tapLane(lane, 'keyboard'); return; }
+    if (k === 'p' || k === 'escape'){ e.preventDefault(); pauseGame(); return; }
+    if (k === 'r'){ e.preventDefault(); startGame(); return; }
+  } else if (state.screen === 'paused'){
+    if (k === 'p' || k === 'escape'){ e.preventDefault(); resumeGame(); return; }
+    if (k === 'r'){ e.preventDefault(); closeOverlay('overlay-pause'); startGame(); return; }
+  } else if (state.screen === 'menu'){
+    if (k === 'enter' && document.activeElement === document.body){ startGame(); }
+  }
+  if (k === 'm' && (state.screen === 'playing' || state.screen === 'menu')){ toggleMusic(); }
+});
+// prevent double-tap zoom / scroll gestures on the play surface
+els['lanes'].addEventListener('touchmove', function(e){ e.preventDefault(); }, { passive:false });
+els['lanes'].addEventListener('contextmenu', function(e){ e.preventDefault(); });
+
+/* ---------- wire buttons ---------- */
+function bindUI(){
+  $('btn-play').addEventListener('click', function(){ sfx('click'); startGame(); });
+  $('btn-howto').addEventListener('click', function(){ sfx('click'); openOverlay('overlay-howto'); });
+  $('btn-howto-close').addEventListener('click', function(){ closeOverlay('overlay-howto'); });
+  $('btn-howto-play').addEventListener('click', function(){ closeOverlay('overlay-howto'); startGame(); });
+  $('btn-pause-howto').addEventListener('click', function(){ openOverlay('overlay-howto'); });
+  $('btn-compose-open').addEventListener('click', function(){
+    composeStop(); buildComposeGrid(); showScreen('compose'); sfx('click');
+  });
+  $('btn-compose-back').addEventListener('click', function(){ composeStop(); showScreen('menu'); });
+  $('btn-compose-play').addEventListener('click', composePlay);
+  $('btn-compose-stop').addEventListener('click', composeStop);
+  $('btn-compose-demo').addEventListener('click', composeDemo);
+  $('btn-compose-clear').addEventListener('click', function(){
+    compose.pattern = composeDefault(); saveCompose(); buildComposeGrid();
+    els['compose-status'].textContent = 'Grid cleared — build a brand-new tune!';
+  });
+  $('btn-pause').addEventListener('click', pauseGame);
+  $('btn-resume').addEventListener('click', resumeGame);
+  $('btn-restart').addEventListener('click', function(){ closeOverlay('overlay-pause'); startGame(); });
+  $('btn-quit-menu').addEventListener('click', quitToMenu);
+  $('btn-pause-settings').addEventListener('click', function(){ openOverlay('overlay-settings'); });
+  $('btn-replay').addEventListener('click', function(){ closeOverlay('overlay-results'); startGame(); });
+  $('btn-results-menu').addEventListener('click', function(){ closeOverlay('overlay-results'); showScreen('menu'); });
+  $('btn-results-compose').addEventListener('click', function(){
+    closeOverlay('overlay-results'); composeStop(); buildComposeGrid(); showScreen('compose');
+  });
+  $('btn-mute-quick').addEventListener('click', function(){ ensureAudio(); toggleMusic(); });
+  $('btn-mute-game').addEventListener('click', function(){ ensureAudio(); toggleMusic(); });
+  $('btn-settings-top').addEventListener('click', function(){ ensureAudio(); applyAudioSettings(); openOverlay('overlay-settings'); });
+  $('btn-settings-close').addEventListener('click', function(){ closeOverlay('overlay-settings'); });
+  bindSettings();
+  // overlay backdrop click closes how-to / settings only (never pause/results mid-game)
+  ['overlay-howto','overlay-settings'].forEach(function(id){
+    $(id).addEventListener('click', function(e){ if (e.target === $(id)) closeOverlay(id); });
+  });
+}
+
+/* ---------- init ---------- */
+function init(){
+  buildComposeGrid();
+  renderSongList();
+  bindUI();
+  applyAudioSettings();
+  updateLatencyReadout();
+  showScreen('menu');
+  NS.ready = true;
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+else init();
+})();
+</script>
+</body>
+</html>
