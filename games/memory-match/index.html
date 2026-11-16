@@ -2,454 +2,150 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Memory Match Game | JoJo's Blocks — Games &amp; Play</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Memory Match Game — Free Browser Game | JoJo’s Blocks</title>
 <meta name="description" content="Flip the cards and match the pairs! A free JoJo's Blocks memory game with three difficulties, best times and a timer that starts when you do. No sign-up, no download.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-<!--
-  JoJo's Blocks — Memory Match Game
-  Version: v2.1.0 (2026-11-15) · ID: JJB-GAME-20261115-02 · Namespace: JJBMemoryMatch
-  Fix pass 2026-11-15 (readiness audit B1/S1/S2/S4)
-  Original: Memory Match Game, Aarifjojo/JoJo-Games, 15 Feb 2025 (games/memory-match-game.html)
-  Upgrade history: v2.0.0 — JoJo's Blocks rebrand, start/instructions/pause/win screens,
-  3 difficulties, moves counted per PAIR (original counted every flip), timer starts on first
-  flip (original started on page load), best time/moves saved, confetti leak fixed (original
-  never removed confetti nodes), keyboard play, sound toggle, WebAudio sounds (replaces
-  broken absolute /mp3/ paths), responsive grid, ARIA labels.
-  v2.1.0 — shared UI polish (blobs, overlay pop, stat pop, floater, celebrate), original
-  relaxing music loop (~76 BPM, sine pad + gentle arpeggio, low volume) with music toggle
-  + volume, click SFX; no mechanic changes.
--->
-<style>
-:root{--cream:#FFF9F0;--white:#fff;--ink:#2B2D42;--muted:#5B5E73;--coral:#FF6B6B;--coral-dark:#E85050;--sun:#FFC94D;--teal:#2EC4B6;--lav:#7C6FF0;--pink:#FF8FAB;--mint:#D8F3DC;--radius:20px;--shadow:0 10px 30px rgba(43,45,66,.10)}
-*{box-sizing:border-box}
-body{margin:0;font-family:'Nunito',system-ui,sans-serif;background:var(--cream);color:var(--ink);line-height:1.6;font-size:17px;min-height:100vh}
-h1,h2,h3{font-family:'Fredoka','Nunito',sans-serif;line-height:1.15;margin:0 0 .4em}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:720px;margin:0 auto;padding:16px 20px 0}
-.brand{font-family:'Fredoka',sans-serif;font-weight:700;font-size:1.35rem;text-decoration:none;color:var(--ink);display:inline-flex;align-items:center;min-height:44px}
-.brand span{color:var(--coral)}
-.icon-btn{background:var(--white);border:2px solid var(--ink);border-radius:999px;padding:10px 14px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.95rem;color:var(--ink);cursor:pointer;min-height:44px}
-.icon-btn:hover{background:var(--sun)}
-main{max-width:720px;margin:0 auto;padding:12px 20px 40px}
-.card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px 24px;text-align:center}
-.eyebrow{font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#4A3FBF;font-size:.85rem;margin:0 0 6px}
-h1{font-size:2rem}
-.lede{color:var(--muted);margin:0 0 16px}
-.stats{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:0 0 16px}
-.stat{background:var(--cream);border-radius:12px;padding:8px 14px;font-weight:800;font-size:.95rem;min-width:86px}
-.stat small{display:block;font-size:.75rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
-.controls-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
-.controls-row label{font-weight:800;font-size:.95rem;align-self:center}
-select{padding:10px 12px;font-family:'Nunito',sans-serif;font-weight:700;font-size:1rem;border:2px solid var(--ink);border-radius:12px;background:var(--white);color:var(--ink);cursor:pointer;min-height:44px}
-.progress{height:10px;background:var(--cream);border-radius:99px;overflow:hidden;margin:10px auto;max-width:420px}
-.progress>div{height:100%;width:0%;background:linear-gradient(90deg,var(--teal),var(--sun));transition:width .3s ease}
-.grid{display:grid;gap:10px;justify-content:center;margin:16px auto;max-width:460px}
-.grid.cols-3{grid-template-columns:repeat(3,minmax(64px,96px))}
-.grid.cols-4{grid-template-columns:repeat(4,minmax(56px,88px))}
-.grid.cols-6{grid-template-columns:repeat(6,minmax(44px,64px))}
-.tile{aspect-ratio:1;border:none;border-radius:14px;cursor:pointer;position:relative;perspective:600px;background:none;padding:0;-webkit-tap-highlight-color:transparent}
-.tile:focus-visible{outline:3px solid var(--lav);outline-offset:2px}
-.tile-inner{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .45s ease}
-.tile.flipped .tile-inner{transform:rotateY(180deg)}
-.tile-face{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;border-radius:14px;font-size:1.9rem;backface-visibility:hidden;-webkit-backface-visibility:hidden}
-.tile-front{background:linear-gradient(135deg,var(--lav),#FF8FAB);box-shadow:0 4px 0 rgba(0,0,0,.12);color:#fff;font-size:1.5rem}
-.tile-back{background:var(--sun);transform:rotateY(180deg)}
-.tile.matched{cursor:default}
-.tile.matched .tile-back{background:#7ED491}
-.tile.matched .tile-inner{transform:rotateY(180deg) scale(1.04)}
-.tile:disabled{cursor:default}
-#jjb-mm-message{font-weight:800;font-size:1.05rem;min-height:1.5em;margin:6px 0;color:var(--muted)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 22px;border-radius:999px;font-weight:800;font-family:'Nunito',sans-serif;font-size:1rem;border:2px solid transparent;cursor:pointer;text-decoration:none}
-.btn-primary{background:var(--coral);color:var(--ink)}
-.btn-primary:hover{background:var(--coral)}
-.btn-ghost{background:transparent;border-color:var(--ink);color:var(--ink)}
-.btn-ghost:hover{background:var(--sun)}
-.btn-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}
-.overlay{position:fixed;inset:0;background:rgba(43,45,66,.72);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}
-.overlay.open{display:flex}
-.overlay-card{background:var(--white);color:var(--ink);border-radius:var(--radius);max-width:460px;width:100%;padding:30px 26px;text-align:center;box-shadow:var(--shadow);max-height:90vh;overflow:auto}
-.overlay-card h2{font-size:1.7rem}
-.overlay-card p{color:var(--muted)}
-.overlay-card ul{text-align:left;color:var(--muted);margin:0 0 14px;padding-left:22px}
-.overlay-card .big{font-size:3rem}
-.confetti{position:fixed;top:-12px;width:10px;height:10px;border-radius:50%;z-index:60;pointer-events:none;animation:jjb-mm-fall linear forwards}
-@keyframes jjb-mm-fall{to{transform:translateY(105vh) rotate(540deg);opacity:.2}}
-footer{max-width:720px;margin:0 auto;padding:0 20px 30px;text-align:center;color:var(--muted);font-size:.85rem}
-footer a{display:inline-flex;align-items:center;min-height:44px;color:var(--coral);font-weight:700}
-/* v2.1.0 UI polish: animated background blobs, overlay pop, stat pop, floater, celebrate */
-.jjb-blob{position:fixed;border-radius:50%;filter:blur(70px);opacity:.32;pointer-events:none;z-index:0}
-.jjb-blob-a{width:340px;height:340px;background:var(--lav);top:-90px;left:-90px;animation:jjb-mm-drift 18s ease-in-out infinite alternate}
-.jjb-blob-b{width:300px;height:300px;background:var(--teal);bottom:-110px;right:-70px;animation:jjb-mm-drift 22s ease-in-out infinite alternate-reverse}
-@keyframes jjb-mm-drift{from{transform:translate(0,0)}to{transform:translate(40px,30px)}}
-header.topbar,main,footer{position:relative;z-index:1}
-.card{position:relative}
-.overlay.open .overlay-card{animation:jjb-mm-pop .28s ease}
-@keyframes jjb-mm-pop{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1}}
-.stat span{display:inline-block;transition:transform .18s ease}
-.jjb-stat-pop{transform:scale(1.18)}
-.jjb-floater{position:absolute;left:50%;top:8px;transform:translateX(-50%);font-weight:800;font-size:1.05rem;color:var(--coral);pointer-events:none;animation:jjb-mm-float .9s ease forwards;z-index:5}
-@keyframes jjb-mm-float{from{opacity:0;transform:translate(-50%,8px)}30%{opacity:1}to{opacity:0;transform:translate(-50%,-44px)}}
-.btn:active{transform:scale(.97)}
-.btn-primary{box-shadow:0 4px 14px rgba(255,107,107,.35)}
-.overlay-card.jjb-celebrate .big{display:inline-block;animation:jjb-mm-bounce 1s ease-in-out infinite}
-@keyframes jjb-mm-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-.topbar-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
-.jjb-volume{accent-color:var(--coral);min-height:44px;width:110px;cursor:pointer}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+<link rel="canonical" href="https://jojosblocks.online/games/memory-match/">
+<link rel="stylesheet" href="../../assets/styles.css">
 
-/* v2.1.0 presentation: hero cover + related games (design pass, 2026-11-16) */
-.jjb-hero{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:14px;display:block;margin:0 0 16px}
-.jjb-controls-line{color:var(--muted);font-size:.92rem;font-weight:700;margin:-6px 0 16px}
-.jjb-related{margin-top:22px;text-align:left}
-.jjb-related h2{font-size:1.25rem;text-align:center}
-.jjb-related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:12px}
-.jjb-related a{display:flex;flex-direction:column;gap:6px;align-items:center;text-decoration:none;color:var(--ink);font-weight:800;font-size:.9rem;line-height:1.3;background:var(--white);border-radius:14px;padding:10px;min-height:44px;box-shadow:var(--shadow);text-align:center}
-.jjb-related a img{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:8px;display:block}
-.jjb-related a:hover{background:var(--sun)}
-</style>
 </head>
 <body>
-<div class="jjb-blob jjb-blob-a" aria-hidden="true"></div>
-<div class="jjb-blob jjb-blob-b" aria-hidden="true"></div>
-<header class="topbar">
-  <a class="brand" href="/">🧱 JoJo's <span>Blocks</span></a>
-  <div class="topbar-controls">
-    <button class="icon-btn" id="jjb-mm-sound" type="button" aria-pressed="true" aria-label="Toggle sound">🔊 Sound on</button>
-    <button class="icon-btn" id="jjb-mm-music" type="button" aria-pressed="true" aria-label="Toggle music">🎵 Music on</button>
-    <input type="range" class="jjb-volume" id="jjb-mm-volume" min="0" max="100" value="70" aria-label="Music volume">
+<a class="skip-link" href="#main">Skip to content</a>
+<!-- promo strip -->
+<div class="strip"><b>Instant PDF download, secure checkout on Gumroad.</b> Code JOJOS10 saves 10%.</div>
+
+<!-- header -->
+<header class="site">
+  <div class="hd">
+    <a class="logo" href="../../">JoJo's Blocks<small>Digital products · Free resources · Games</small></a>
+    <form class="search" id="headSearch" role="search" aria-label="Search the store" action="../../search/" method="get">
+      <input id="searchInput" name="q" type="search" placeholder="Search books, free printables, games…" aria-label="Search books, free resources, games and articles" autocomplete="off">
+      <button type="submit">Search</button>
+      <div class="suggest" id="headSuggest" role="listbox" aria-label="Search suggestions"></div>
+    </form>
+    <button class="search-icon-btn" id="searchIconBtn" aria-label="Open search" aria-expanded="false">⌕</button>
   </div>
 </header>
-<main>
-  <div class="card">
-    <img class="jjb-hero" src="../thumbs/memory-match.svg" alt="Memory Match — flip the cards and find the pairs" width="640" height="360">
-    <p class="eyebrow">Games &amp; Play · Puzzle</p>
-    <h1>🧠 Memory Match Game</h1>
-    <p class="lede">Flip two cards at a time and find all the matching pairs. Fewer moves, faster time — better score!</p>
-    <p class="jjb-controls-line">Tap two cards to flip them · Tab + Enter works too · P pauses</p>
-    <div class="stats" role="status" aria-live="polite">
-      <div class="stat"><small>Moves (pairs)</small><span id="jjb-mm-moves">0</span></div>
-      <div class="stat"><small>Time</small><span id="jjb-mm-time">0s</span></div>
-      <div class="stat"><small>Matched</small><span id="jjb-mm-matched">0 / 8</span></div>
-      <div class="stat"><small>Best</small><span id="jjb-mm-best">—</span></div>
-    </div>
-    <div class="controls-row">
-      <label for="jjb-mm-difficulty">Difficulty</label>
-      <select id="jjb-mm-difficulty">
-        <option value="easy">Easy · 6 pairs</option>
-        <option value="normal" selected>Normal · 8 pairs</option>
-        <option value="hard">Hard · 12 pairs</option>
-      </select>
-    </div>
-    <div class="progress" aria-hidden="true"><div id="jjb-mm-progress"></div></div>
-    <div class="grid cols-4" id="jjb-mm-grid" role="grid" aria-label="Memory cards"></div>
-    <p id="jjb-mm-message" aria-live="polite"></p>
-    <div class="btn-row">
-      <button class="btn btn-ghost" id="jjb-mm-pause" type="button">⏸ Pause</button>
-      <button class="btn btn-ghost" id="jjb-mm-restart" type="button">↻ Restart</button>
-      <button class="btn btn-ghost" id="jjb-mm-howto" type="button">? How to play</button>
-    </div>
+
+<!-- mobile search overlay -->
+<div class="search-overlay" id="searchOverlay" role="search" aria-label="Search the store">
+  <div class="so-row">
+    <form class="search" id="mobSearch" action="../../search/" method="get" style="display:flex">
+      <input id="mobSearchInput" name="q" type="search" placeholder="Search books, free printables, games…" aria-label="Search books, free resources, games and articles" autocomplete="off">
+      <button type="submit">Search</button>
+    </form>
+    <button class="so-close" id="searchOverlayClose" aria-label="Close search">✕</button>
   </div>
-  <section class="jjb-related" aria-label="Related games">
-    <h2>More games to try</h2>
-    <div class="jjb-related-grid">
-      <a href="../animal-guess/"><img src="../thumbs/animal-guess.svg" alt="" width="640" height="360" loading="lazy">Animal Guess</a>
-      <a href="../tic-tac-toe/"><img src="../thumbs/tic-tac-toe.svg" alt="" width="640" height="360" loading="lazy">Tic-Tac-Toe</a>
-      <a href="../click-the-box/"><img src="../thumbs/click-the-box.svg" alt="" width="640" height="360" loading="lazy">Click the Box</a>
-      <a href="../flappy-penguin/"><img src="../thumbs/flappy-penguin.svg" alt="" width="640" height="360" loading="lazy">Flappy Penguin</a>
-      <a href="../block-drop/"><img src="../thumbs/block-drop.svg" alt="" width="640" height="360" loading="lazy">Block Drop</a>
+  <div class="suggest" id="mobSuggest" role="listbox" aria-label="Search suggestions"></div>
+</div>
+
+<nav class="dept" aria-label="Departments"><div class="wrap" id="deptNav">
+  <a href="../../shop/">Shop</a>
+  <span class="has-fly"><a href="../../free-resources/" aria-haspopup="true">Free resources</a><span class="flyout"><a href="../../free-resources/category/coloring/">Coloring</a><a href="../../free-resources/category/learn-to-draw/">Learn to draw</a><a href="../../free-resources/category/worksheets/">Worksheets</a><a href="../../free-resources/category/planners/">Planners</a><a href="../../free-resources/category/printables/">Printables</a><a href="../../free-resources/category/wallpapers/">Wallpapers</a><a href="../../free-resources/category/ai/">AI</a><a href="../../free-resources/category/stickers/">Stickers</a><a class="viewall" href="../../free-resources/">View all →</a></span></span>
+  <span class="has-fly"><a href="../../games/" class="on" aria-haspopup="true">Games & play</a><span class="flyout"><a href="../../games/category/puzzle/">Puzzle</a><a href="../../games/category/arcade/">Arcade</a><a href="../../games/category/casual/">Casual</a><a href="../../games/category/educational/">Educational</a><a class="viewall" href="../../games/">View all →</a></span></span>
+  <span class="has-fly"><a href="../../blog/" aria-haspopup="true">Blog</a><span class="flyout"><a href="../../blog/category/guides/">Guides</a><a href="../../blog/category/activities/">Activities</a><a href="../../blog/category/fun-facts/">Fun facts</a><a class="viewall" href="../../blog/">View all →</a></span></span>
+</div></nav>
+<main id="main">
+<section class="block"><div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><span>Home</span> <span class="sep">›</span><a href="../../games/">Games &amp; Play</a> <span class="sep">›</span><a href="../../games/category/puzzle/">Puzzle</a> <span class="sep">›</span><span>Memory Match Game</span></nav>
+  <div class="detail"><div class="dgrid">
+    <div class="dcover"><img src="https://jojosblocks.online/games/thumbs/memory-match.svg" alt="Memory Match Game game" width="640" height="360"></div>
+    <div>
+      <p class="dmeta">Browser game · Puzzle · Free</p>
+      <h1>Memory Match Game</h1>
+      <p>Flip the cards and match the pairs! A free JoJo's Blocks memory game with three difficulties, best times and a timer that starts when you do. No sign-up, no download.</p>
+      <div class="dbuy">
+        <a class="btn btn-ink" href="https://jojosblocks.online/games/memory-match/" target="_blank" rel="noopener">Play free →</a>
+        <a class="btn btn-ghost" href="../../games/">All games</a>
+      </div>
+      <p class="dnote">This game plays on jojosblocks.online and opens in a new tab. No downloads, no accounts.</p>
     </div>
-  </section>
+  </div></div>
+</div></section>
 </main>
-<footer>
-  <p>Free to play — no sign-up, no download. · Memory Match Game v2.1.0 · <strong>JJB-GAME-20261115-02</strong><br>
-  Original: JoJo Games, Feb 2025 · Upgraded for JoJo's Blocks, 15 Nov 2026 · <a href="/games/">← Back to Games &amp; Play</a></p>
-</footer>
-
-<div class="overlay open" id="jjb-mm-start" role="dialog" aria-modal="true" aria-labelledby="jjb-mm-start-title">
-  <div class="overlay-card">
-    <div class="big">🧠</div>
-    <h2 id="jjb-mm-start-title">Memory Match</h2>
-    <p>All the cards are face down. Flip two at a time and remember where each animal is hiding!</p>
-    <ul>
-      <li>Tap a card — or use Tab / arrow keys and press Enter.</li>
-      <li>Moves count per <strong>pair</strong> of flips, not per card.</li>
-      <li>The timer starts on your first flip.</li>
-    </ul>
-    <button class="btn btn-primary" id="jjb-mm-start-btn" type="button">▶ Start playing</button>
+<footer class="site"><div class="wrap">
+  <div class="fgrid">
+    <div>
+      <h3>JoJo's Blocks</h3>
+      <p>Digital products, free resources and games for creating, learning and play.</p>
+      <p style="margin-top:12px"><a href="https://www.pinterest.com/JoJosBlocks/" target="_blank" rel="noopener">Pinterest — @JoJosBlocks</a></p>
+    </div>
+    <div>
+      <h4>Shop</h4>
+      <a href="../../shop/">Our Products</a>
+      <a href="../../free-resources/">Free Resources</a>
+      <a href="../../games/">Games &amp; Play</a>
+      <a href="../../blog/">Blog</a>
+    </div>
+    <div>
+      <h4>Help</h4>
+      <a href="mailto:jojobusiness0101@gmail.com">Contact us</a>
+      <a href="../../#about">About</a>
+      <a href="../../free-printables/">Free Taster Pack</a>
+    </div>
+    <div>
+      <h4>Legal</h4>
+      <a href="../../privacy.html">Privacy Policy</a>
+      <a href="../../terms.html">Terms &amp; Conditions</a>
+      <a href="../../refund-policy.html">Refund Policy</a>
+    </div>
   </div>
-</div>
-
-<div class="overlay" id="jjb-mm-howto-ov" role="dialog" aria-modal="true" aria-labelledby="jjb-mm-howto-title">
-  <div class="overlay-card">
-    <h2 id="jjb-mm-howto-title">How to play</h2>
-    <ul>
-      <li>Flip any two cards. If they match, they stay face up.</li>
-      <li>If they don't match, they flip back — remember them!</li>
-      <li>Match every pair to win. Your best time and fewest moves are saved per difficulty.</li>
-      <li>Keyboard: Tab to move, Enter or Space to flip, arrow keys move between cards.</li>
-    </ul>
-    <button class="btn btn-primary" id="jjb-mm-howto-close" type="button">Got it</button>
+  <div class="fine">
+    <span>© 2026 JoJo's Blocks. All rights reserved. — Preview: Round 2, scalable platform preview.</span>
+    <span>Sales are completed securely on Gumroad.</span>
   </div>
-</div>
-
-<div class="overlay" id="jjb-mm-pause-ov" role="dialog" aria-modal="true" aria-labelledby="jjb-mm-pause-title">
-  <div class="overlay-card">
-    <div class="big">⏸</div>
-    <h2 id="jjb-mm-pause-title">Paused</h2>
-    <p>The timer is stopped and the cards are hidden. Take your time!</p>
-    <button class="btn btn-primary" id="jjb-mm-resume" type="button">▶ Resume</button>
-    <button class="btn btn-ghost" id="jjb-mm-pause-restart" type="button">↻ Restart game</button>
-  </div>
-</div>
-
-<div class="overlay" id="jjb-mm-win" role="dialog" aria-modal="true" aria-labelledby="jjb-mm-win-title">
-  <div class="overlay-card">
-    <div class="big">🎉</div>
-    <h2 id="jjb-mm-win-title">You won!</h2>
-    <p id="jjb-mm-win-text"></p>
-    <div class="btn-row">
-      <button class="btn btn-primary" id="jjb-mm-again" type="button">▶ Play again</button>
-      <button class="btn btn-ghost" id="jjb-mm-win-close" type="button">Close</button>
+</div></footer>
+<!-- bottom tab bar (mobile only) -->
+<div class="tabbar"><nav aria-label="Quick navigation">
+  <a href="../../shop/" data-tab="shop"><span class="ti">▦</span>Shop</a>
+  <a href="../../free-resources/" data-tab="free"><span class="ti">✦</span>Free</a>
+  <a href="../../games/" data-tab="games" class="on"><span class="ti">▶</span>Play</a>
+  <a href="../../blog/" data-tab="blog"><span class="ti">✎</span>Blog</a>
+  <a href="#" data-tab="search" id="tabSearch"><span class="ti">⌕</span>Search</a>
+</nav></div>
+<div class="modal-back" id="modalBack" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal" id="modalBox">
+    <button class="x" id="modalClose" aria-label="Close product details">✕</button>
+    <div class="mgrid">
+      <div class="mcover" id="modalCover"></div>
+      <div class="mbody">
+        <p class="fmt" id="modalFmt"></p>
+        <h2 id="modalTitle"></h2>
+        <p class="mprice" id="modalPrice"></p>
+        <p class="msave" id="modalSave"></p>
+        <p id="modalDesc"></p>
+        <div class="macts">
+          <a class="btn btn-accent" id="modalBuy" href="#" target="_blank" rel="noopener">Buy on Gumroad</a>
+          <a class="btn btn-ghost btn-sm" id="modalPage" href="#" target="_blank" rel="noopener">View product page</a>
+        </div>
+        <p style="font-size:14px;color:var(--muted);margin-top:12px">Use code JOJOS10 at checkout for 10% off.</p>
+        <h3>What you get</h3>
+        <ul class="get" id="modalGet"></ul>
+        <h3>Good to know</h3>
+        <ul class="get">
+          <li>Instant PDF download</li>
+          <li>Print at home as often as you like</li>
+          <li>Personal &amp; family use</li>
+          <li>Secure checkout on Gumroad</li>
+          <li><a href="../../refund-policy.html" target="_blank" rel="noopener">Refund policy</a></li>
+        </ul>
+        <h3>Sample pages</h3>
+        <p class="sample-note">Real sample pages from this book will appear here once supplied. Try the <a href="https://jojosblocks.online/assets/free-resources/jojos-blocks-free-taster-pack.pdf" target="_blank" rel="noopener">Free Taster Pack</a> first — six sample pages, free.</p>
+      </div>
+    </div>
+    <div class="rel">
+      <h3>You may also like</h3>
+      <div class="chips" id="modalRelated"></div>
+      <a class="page-link" id="modalPageLink" href="#" target="_blank" rel="noopener">View product page →</a>
+    </div>
+    <div class="msticky">
+      <span class="msticky-price" id="mstickyPrice"></span>
+      <a class="btn btn-accent" id="mstickyBuy" href="#" target="_blank" rel="noopener">Buy on Gumroad</a>
     </div>
   </div>
 </div>
-
-<script>
-(function(){
-'use strict';
-var NS='JJBMemoryMatch';
-var $=function(id){return document.getElementById(id);};
-var grid=$('jjb-mm-grid'),msg=$('jjb-mm-message');
-var DIFF={
-  easy:{pairs:6,cols:3,emojis:['🐘','🦁','🐯','🐻','🦓','🐒']},
-  normal:{pairs:8,cols:4,emojis:['🐘','🦁','🐯','🐻','🦓','🐒','🐧','🐰']},
-  hard:{pairs:12,cols:6,emojis:['🐘','🦁','🐯','🐻','🦓','🐒','🐧','🐰','🐸','🦊','🐼','🦄']}
-};
-var SOUND_KEY='jjb-memory-match-sound';
-var MUSIC_KEY='jjb-memory-match-music',VOL_KEY='jjb-memory-match-volume';
-var soundOn=localStorage.getItem(SOUND_KEY)!=='off';
-var musicOn=localStorage.getItem(MUSIC_KEY)!=='off';
-var musicVol=parseInt(localStorage.getItem(VOL_KEY)||'70',10);if(isNaN(musicVol)||musicVol<0||musicVol>100)musicVol=70;
-var musicTimer=null,musicStep=0;
-var cards=[],first=null,second=null,lock=false,moves=0,matched=0,totalPairs=8;
-var timer=0,timerId=null,timerStarted=false,started=false,paused=false,won=false,cols=4;
-var actx=null;
-function tone(freq,dur,type,vol,delay){
-  if(!soundOn)return;
-  try{
-    actx=actx||new (window.AudioContext||window.webkitAudioContext)();
-    var t0=actx.currentTime+(delay||0);
-    var o=actx.createOscillator(),g=actx.createGain();
-    o.type=type||'sine';o.frequency.value=freq;
-    g.gain.setValueAtTime(vol||0.12,t0);
-    g.gain.exponentialRampToValueAtTime(0.001,t0+dur);
-    o.connect(g);g.connect(actx.destination);o.start(t0);o.stop(t0+dur);
-  }catch(e){}
-}
-function snd(k){
-  if(k==='flip')tone(520,.08,'sine',.1);
-  else if(k==='match'){tone(660,.15,'sine');tone(880,.2,'sine',.12,.1);}
-  else if(k==='win'){[523,659,784,1047].forEach(function(f,i){tone(f,.22,'triangle',.12,i*.11);});}
-  else if(k==='click')tone(700,.07,'sine',.12);
-  else tone(180,.18,'sawtooth',.07);
-}
-function refreshSoundBtn(){
-  var b=$('jjb-mm-sound');
-  b.textContent=soundOn?'🔊 Sound on':'🔇 Sound off';
-  b.setAttribute('aria-pressed',String(soundOn));
-}
-$('jjb-mm-sound').addEventListener('click',function(){
-  soundOn=!soundOn;localStorage.setItem(SOUND_KEY,soundOn?'on':'off');refreshSoundBtn();
-  if(soundOn)tone(660,.12,'sine');
-});
-refreshSoundBtn();
-
-/* --- v2.1.0 music: original relaxing loop, ~76 BPM, sine pad long notes + gentle
-   arpeggio, low volume. WebAudio only; nothing downloaded. Starts only on Start. --- */
-var MELODY=[262,330,392,494,392,330,440,392];
-var PAD=[131,175];
-var MUSIC_STEP_MS=395; /* eighth notes at ~76 BPM */
-function musicNote(freq,dur,type,vol){
-  if(!musicOn)return;
-  try{
-    actx=actx||new (window.AudioContext||window.webkitAudioContext)();
-    if(actx.state==='suspended')actx.resume();
-    var o=actx.createOscillator(),g=actx.createGain();
-    o.type=type||'sine';o.frequency.value=freq;
-    g.gain.setValueAtTime(Math.max((vol||0.04)*(musicVol/100),0.0001),actx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+dur);
-    o.connect(g);g.connect(actx.destination);o.start();o.stop(actx.currentTime+dur);
-  }catch(e){}
-}
-function musicTick(){
-  if(!musicOn||!started||won||paused)return;
-  musicNote(MELODY[musicStep%MELODY.length],1.1,'sine',0.045);
-  if(musicStep%4===0)musicNote(PAD[Math.floor(musicStep/4)%2],1.8,'sine',0.035);
-  musicStep++;
-}
-function stopMusic(){if(musicTimer){clearInterval(musicTimer);musicTimer=null;}}
-function startMusic(){
-  stopMusic();
-  if(!musicOn||!started||won||paused)return;
-  musicTimer=setInterval(musicTick,MUSIC_STEP_MS);
-}
-function restartMusic(){musicStep=0;startMusic();}
-function musicState(){return {on:musicOn,volume:musicVol,step:musicStep,playing:musicTimer!==null};}
-function refreshMusicBtn(){
-  var b=$('jjb-mm-music');
-  b.textContent=musicOn?'🎵 Music on':'🎵 Music off';
-  b.setAttribute('aria-pressed',String(musicOn));
-}
-$('jjb-mm-music').addEventListener('click',function(){
-  musicOn=!musicOn;localStorage.setItem(MUSIC_KEY,musicOn?'on':'off');refreshMusicBtn();
-  if(musicOn)startMusic();else stopMusic();
-});
-$('jjb-mm-volume').addEventListener('input',function(){
-  musicVol=parseInt(this.value,10)||0;localStorage.setItem(VOL_KEY,String(musicVol));
-});
-$('jjb-mm-volume').value=musicVol;
-refreshMusicBtn();
-
-/* --- v2.1.0 UI polish helpers --- */
-function popStat(el){if(!el)return;el.classList.add('jjb-stat-pop');setTimeout(function(){el.classList.remove('jjb-stat-pop');},180);}
-function floater(text){
-  var card=document.querySelector('.card');if(!card)return;
-  var s=document.createElement('span');s.className='jjb-floater';s.textContent=text;
-  card.appendChild(s);
-  var done=false;
-  function rm(){if(done)return;done=true;if(s.parentNode)s.parentNode.removeChild(s);}
-  s.addEventListener('animationend',rm);
-  setTimeout(rm,950);
-}
-
-function bestKey(){return 'jjb-memory-match-best-'+$('jjb-mm-difficulty').value;}
-function showBest(){
-  var b=localStorage.getItem(bestKey());
-  $('jjb-mm-best').textContent=b?b:'—';
-}
-function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
-function fmtTime(s){return s+'s';}
-function stopTimer(){if(timerId){clearInterval(timerId);timerId=null;}}
-function startTimer(){
-  if(timerStarted)return;timerStarted=true;
-  timerId=setInterval(function(){
-    if(paused)return;
-    timer++;$('jjb-mm-time').textContent=fmtTime(timer);
-  },1000);
-}
-function buildGrid(){
-  var d=DIFF[$('jjb-mm-difficulty').value];
-  totalPairs=d.pairs;cols=d.cols;
-  var deck=shuffle(d.emojis.concat(d.emojis).slice());
-  grid.innerHTML='';grid.className='grid cols-'+cols;
-  cards=[];first=null;second=null;lock=false;moves=0;matched=0;timer=0;timerStarted=false;won=false;
-  stopTimer();
-  $('jjb-mm-moves').textContent='0';
-  $('jjb-mm-time').textContent='0s';
-  $('jjb-mm-matched').textContent='0 / '+totalPairs;
-  $('jjb-mm-progress').style.width='0%';
-  msg.textContent='';
-  deck.forEach(function(emoji,i){
-    var b=document.createElement('button');
-    b.type='button';b.className='tile';b.setAttribute('role','gridcell');
-    b.setAttribute('aria-label','Card '+(i+1));
-    b.dataset.emoji=emoji;
-    b.innerHTML='<span class="tile-inner"><span class="tile-face tile-front">?</span><span class="tile-face tile-back">'+emoji+'</span></span>';
-    b.addEventListener('click',function(){flip(b);});
-    b.addEventListener('keydown',function(e){
-      var r=Math.floor(i/cols),c=i%cols,nr=r,nc=c;
-      if(e.key==='ArrowRight')nc=Math.min(cols-1,c+1);
-      else if(e.key==='ArrowLeft')nc=Math.max(0,c-1);
-      else if(e.key==='ArrowDown')nr=Math.min(Math.ceil(deck.length/cols)-1,r+1);
-      else if(e.key==='ArrowUp')nr=Math.max(0,r-1);
-      else return;
-      e.preventDefault();
-      var t=grid.children[nr*cols+nc];if(t)t.focus();
-    });
-    grid.appendChild(b);cards.push(b);
-  });
-  showBest();
-}
-function flip(card){
-  if(!started||paused||won||lock||card.classList.contains('flipped')||card.classList.contains('matched'))return;
-  startTimer();
-  card.classList.add('flipped');snd('flip');
-  if(!first){first=card;return;}
-  second=card;moves++;$('jjb-mm-moves').textContent=moves;
-  if(first.dataset.emoji===second.dataset.emoji){
-    snd('match');
-    first.classList.add('matched');second.classList.add('matched');
-    first.disabled=true;second.disabled=true;
-    matched++;$('jjb-mm-matched').textContent=matched+' / '+totalPairs;
-    floater('✅ Match!');popStat($('jjb-mm-matched'));
-    $('jjb-mm-progress').style.width=Math.round(matched/totalPairs*100)+'%';
-    msg.textContent='✅ Match! '+(totalPairs-matched)+' pair'+((totalPairs-matched)===1?'':'s')+' left.';
-    first=null;second=null;
-    if(matched===totalPairs)winGame();
-  }else{
-    lock=true;
-    setTimeout(function(){
-      first.classList.remove('flipped');second.classList.remove('flipped');
-      first=null;second=null;lock=false;
-    },900);
-  }
-}
-function confetti(){
-  var colors=['#FFC94D','#FF6B6B','#2EC4B6','#7C6FF0','#FF8FAB'];
-  for(var i=0;i<60;i++){
-    var c=document.createElement('div');
-    c.className='confetti';
-    c.style.left=(Math.random()*100)+'vw';
-    c.style.backgroundColor=colors[i%colors.length];
-    c.style.animationDuration=(Math.random()*2+2.5)+'s';
-    c.style.animationDelay=(Math.random()*0.4)+'s';
-    document.body.appendChild(c);
-    (function(el){setTimeout(function(){el.remove();},5500);})(c);
-  }
-}
-function winGame(){
-  won=true;stopTimer();stopMusic();snd('win');confetti();
-  var prev=localStorage.getItem(bestKey());
-  var prevMoves=prev?parseInt(prev.split(' · ')[1],10):Infinity;
-  var isBest=!prev||moves<prevMoves;
-  if(isBest)localStorage.setItem(bestKey(),fmtTime(timer)+' · '+moves+' moves');
-  $('jjb-mm-win-text').textContent='You matched all '+totalPairs+' pairs in '+fmtTime(timer)+' with '+moves+' moves'+(isBest?' — a new best for this difficulty! 🎉':'.');
-  $('jjb-mm-win').querySelector('.overlay-card').classList.add('jjb-celebrate');
-  showBest();
-  setTimeout(function(){$('jjb-mm-win').classList.add('open');},500);
-}
-function resetGame(){buildGrid();}
-$('jjb-mm-start-btn').addEventListener('click',function(){
-  snd('click');$('jjb-mm-start').classList.remove('open');started=true;buildGrid();restartMusic();
-  var f=grid.querySelector('.tile');if(f)f.focus();
-});
-$('jjb-mm-restart').addEventListener('click',function(){if(started){snd('click');$('jjb-mm-win').classList.remove('open');resetGame();restartMusic();}});
-$('jjb-mm-again').addEventListener('click',function(){snd('click');$('jjb-mm-win').classList.remove('open');resetGame();restartMusic();});
-$('jjb-mm-win-close').addEventListener('click',function(){$('jjb-mm-win').classList.remove('open');});
-$('jjb-mm-difficulty').addEventListener('change',function(){if(started)resetGame();showBest();});
-$('jjb-mm-pause').addEventListener('click',function(){
-  if(!started||won)return;paused=true;stopMusic();
-  grid.style.visibility='hidden';
-  $('jjb-mm-pause-ov').classList.add('open');
-});
-function resume(){
-  paused=false;grid.style.visibility='visible';
-  $('jjb-mm-pause-ov').classList.remove('open');
-  startMusic();
-}
-$('jjb-mm-resume').addEventListener('click',function(){snd('click');resume();});
-$('jjb-mm-pause-restart').addEventListener('click',function(){snd('click');resume();resetGame();restartMusic();});
-$('jjb-mm-howto').addEventListener('click',function(){$('jjb-mm-howto-ov').classList.add('open');});
-$('jjb-mm-howto-close').addEventListener('click',function(){$('jjb-mm-howto-ov').classList.remove('open');});
-document.addEventListener('keydown',function(e){
-  if(e.key==='Escape'){$('jjb-mm-howto-ov').classList.remove('open');if(paused)resume();}
-  if((e.key==='p'||e.key==='P')&&started&&!won){if(paused)resume();else $('jjb-mm-pause').click();}
-});
-buildGrid();showBest();
-window[NS]={version:'2.1.0',id:'JJB-GAME-20261115-02',reset:resetGame,musicState:musicState};
-})();
-</script>
+<script>window.JB={root:"../../",page:"detail",kind:"games"};</script>
+<script type="application/json" id="product-data">{"bundle":{"title":"JoJo's Blocks Complete Coloring Book Bundle","price":12.99,"sale":11.69,"pages":154,"ages":"2–7","cover":"https://jojosblocks.online/assets/covers/bundle-cover.jpg","desc":"Four favorite adventures in one bundle — 154 pages of coloring, tracing, puzzles and learning for one low price. Includes My First ABC Book (28 pages, ages 2–4), My First Animal Explorer (30 pages), My Little Community Helpers (54 pages, 24 helpers) and My Little Space Adventure (42 pages, ages 3–5). Download the PDFs, print at home, and color!","gum":"https://jojosblocks.gumroad.com/l/jojos-blocks-coloring-bundle?wanted=true","page":"books/complete-coloring-book-bundle.html"},"abc":{"title":"My First ABC Book","price":3.99,"sale":3.59,"pages":28,"ages":"2–4","cover":"https://jojosblocks.online/assets/covers/book-01.jpg","desc":"Meet the alphabet one letter at a time. Each page pairs a big letter with a picture word — A is for Apple, B is for Ball, C is for Cat — with a color guide and tracing practice, so little ones learn, color and write their first letters.","gum":"https://jojosblocks.gumroad.com/l/my-first-abc-book?wanted=true","page":"books/my-first-abc-book.html"},"animal":{"title":"My First Animal Explorer","price":4.99,"sale":4.49,"pages":30,"ages":"3–6","cover":"https://jojosblocks.online/assets/covers/book-02.jpg","desc":"Hello, little explorer! Meet lions, elephants, giraffes, pandas, monkeys and more — learn each animal's name, trace the word, count, match and color. A certificate of achievement waits at the end for every super animal explorer.","gum":"https://jojosblocks.gumroad.com/l/my-first-animal-explorer?wanted=true","page":"books/my-first-animal-explorer.html"},"helpers":{"title":"My Little Community Helpers","price":4.99,"sale":4.49,"pages":54,"ages":"4–7","cover":"https://jojosblocks.online/assets/covers/book-03.jpg","desc":"Meet the people who help us every day! 24 community helpers — doctors, nurses, firefighters, police officers, teachers, veterinarians, electricians, mail carriers and more — with simple job descriptions, big coloring illustrations and a fun matching activity.","gum":"https://jojosblocks.gumroad.com/l/my-little-community-helpers?wanted=true","page":"books/my-little-community-helpers.html"},"space":{"title":"My Little Space Adventure","price":4.99,"sale":4.49,"pages":42,"ages":"3–5","cover":"https://jojosblocks.online/assets/covers/book-04.jpg","desc":"Join Nova, Zippy the alien and Rocket-7 on a mission to find the missing Cosmic Crystal. Color planets and alien worlds, solve mazes and puzzles, decode alien messages and take the Space Explorer Quiz — with a Junior Space Explorer certificate at the end.","gum":"https://jojosblocks.gumroad.com/l/my-little-space-adventure?wanted=true","page":"books/my-little-space-adventure.html"}}</script>
+<script src="../../assets/site.js" defer></script>
 </body>
 </html>
