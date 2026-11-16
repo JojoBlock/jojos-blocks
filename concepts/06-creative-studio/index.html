@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JoJo's Blocks — Creative Studio (Design Concept 06)</title>
+<meta name="description" content="Design concept: JoJo's Blocks as a professional creative studio and marketplace. Preview only, not the live site.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#131313; --ink2:#1E1E1E; --paper:#F5F1E8; --white:#FFFFFF;
+  --accent:#FF4D00; --accent-ink:#C23A00; --lime:#D9F24F; --violet:#6C5CE7; --teal:#0E7C6B;
+  --line:#131313; --muted:#6B655C;
+  --disp:"Archivo",system-ui,sans-serif; --body:"Space Grotesk",system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16.5px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--ink);text-decoration:none}
+button{font-family:var(--body);cursor:pointer}
+.wrap{max-width:1220px;margin:0 auto;padding:0 20px}
+.tag{font-family:var(--disp);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+.tag .dot{color:var(--accent)}
+/* ---------- header ---------- */
+header.top{position:sticky;top:0;z-index:60;background:var(--ink);color:#fff}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:64px}
+.logo{display:flex;align-items:center;gap:10px;color:#fff;font-family:var(--disp);font-weight:900;font-size:20px;letter-spacing:-.01em}
+.logo .mark{width:38px;height:38px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:17px;border-radius:8px;flex-shrink:0}
+.logo:hover{text-decoration:none}
+nav.desk ul{list-style:none;display:flex;gap:4px;flex-wrap:wrap}
+nav.desk a{display:block;color:#EDEAE2;font-size:14.5px;font-weight:500;padding:10px 12px;border-radius:8px}
+nav.desk a:hover{background:#2A2A2A;color:#fff;text-decoration:none}
+nav.desk a.active{color:var(--lime)}
+.top-actions{display:flex;align-items:center;gap:8px}
+.top-actions .searchbox{display:flex;align-items:center;background:#2A2A2A;border-radius:999px;padding:2px 6px 2px 14px}
+.top-actions .searchbox input{background:transparent;border:0;color:#fff;font-family:var(--body);font-size:14px;padding:8px 4px;width:150px;outline:none}
+.top-actions .searchbox input::placeholder{color:#9A938A}
+.top-actions .searchbox button{background:var(--accent);border:0;color:#fff;border-radius:999px;padding:8px 14px;font-weight:700;font-size:13px;min-height:36px}
+.hamb{display:none;background:var(--accent);border:0;color:#fff;font-family:var(--disp);font-weight:800;font-size:14px;padding:12px 16px;border-radius:10px;min-height:44px}
+/* mobile overlay menu */
+.overlay{position:fixed;inset:0;background:var(--ink);color:#fff;z-index:90;display:none;flex-direction:column;padding:20px}
+.overlay.open{display:flex}
+.overlay .o-top{display:flex;justify-content:space-between;align-items:center}
+.overlay .o-close{background:var(--accent);border:0;color:#fff;font-family:var(--disp);font-weight:800;font-size:14px;padding:12px 18px;border-radius:10px;min-height:44px}
+.overlay nav{margin-top:34px}
+.overlay nav a{display:block;color:#fff;font-family:var(--disp);font-weight:900;font-size:clamp(30px,8vw,44px);line-height:1.25;letter-spacing:-.01em;padding:8px 0;border-bottom:1px solid #2A2A2A}
+.overlay nav a span{color:var(--accent);font-size:15px;vertical-align:super;margin-right:8px}
+.overlay .o-search{margin-top:26px}
+.overlay .o-search input{width:100%;background:#2A2A2A;border:1px solid #3A3A3A;color:#fff;border-radius:12px;padding:14px 16px;font-size:16px;font-family:var(--body)}
+.overlay .o-foot{margin-top:auto;font-size:14px;color:#9A938A}
+.overlay .o-foot a{color:var(--lime)}
+/* ---------- hero ---------- */
+.hero{background:var(--ink);color:#fff;padding:56px 0 0;overflow:hidden}
+.hero .kicker-line{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#9A938A}
+.hero h1{font-family:var(--disp);font-weight:900;font-size:clamp(40px,7.4vw,96px);line-height:.98;letter-spacing:-.02em;margin:22px 0 18px;text-transform:uppercase}
+.hero h1 .hl{color:var(--accent)}
+.hero h1 .out{color:transparent;-webkit-text-stroke:2px #fff}
+.hero .lede{font-size:18px;line-height:1.55;color:#CFC9BE;max-width:62ch}
+.hero .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 40px}
+.btn{display:inline-block;font-family:var(--disp);font-size:14px;font-weight:800;letter-spacing:.04em;padding:14px 24px;border-radius:999px;min-height:48px;line-height:1.2;border:2px solid #fff;color:#fff;background:transparent}
+.btn:hover{text-decoration:none;background:#fff;color:var(--ink)}
+.btn-accent{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-accent:hover{background:#E64500;color:#fff}
+.btn-dark{background:var(--ink);border-color:var(--ink);color:#fff}
+.btn-dark:hover{background:#000;color:#fff}
+/* work index (portfolio hero) */
+.work-index{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding-bottom:48px}
+.work{border-radius:16px;padding:20px;min-height:190px;display:flex;flex-direction:column;justify-content:space-between;color:#fff;position:relative;overflow:hidden}
+.work .w-top{display:flex;justify-content:space-between;align-items:flex-start}
+.work .w-cat{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;background:rgba(0,0,0,.3);padding:5px 9px;border-radius:999px}
+.work .w-big{font-family:var(--disp);font-weight:900;font-size:64px;line-height:.85;letter-spacing:-.03em}
+.work h3{font-family:var(--disp);font-weight:800;font-size:20px;line-height:1.15;margin-top:10px}
+.work p{font-size:13.5px;opacity:.92;margin-top:4px}
+.work .w-link{font-weight:700;font-size:13.5px;margin-top:12px;display:inline-block}
+/* marquee */
+.marquee{background:var(--accent);color:#fff;overflow:hidden;white-space:nowrap;padding:12px 0;font-family:var(--disp);font-weight:900;font-size:17px;letter-spacing:.06em;text-transform:uppercase}
+.marquee span{display:inline-block;padding-left:24px;animation:scroll 22s linear infinite}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+/* ---------- sections ---------- */
+section{padding:64px 0}
+section.dark{background:var(--ink);color:#fff}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:10px}
+.sec-head h2{font-family:var(--disp);font-weight:900;font-size:clamp(30px,4.4vw,48px);line-height:1.02;letter-spacing:-.015em;text-transform:uppercase}
+.sec-head h2 .accent{color:var(--accent)}
+.sec-head .side{font-size:14px;color:var(--muted);max-width:40ch}
+.dark .sec-head .side{color:#9A938A}
+.sec-intro{font-size:17px;color:var(--muted);max-width:72ch;margin-bottom:28px}
+.dark .sec-intro{color:#CFC9BE}
+/* studio facts */
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:34px}
+.fact{border:2px solid #fff;border-radius:14px;padding:20px}
+.fact .n{font-family:var(--disp);font-weight:900;font-size:44px;line-height:1;color:var(--lime)}
+.fact .l{font-size:13.5px;color:#CFC9BE;margin-top:8px}
+.studio-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:start}
+.studio-grid p.big{font-size:20px;line-height:1.6;color:#EDEAE2}
+.studio-grid p.big b{color:var(--lime)}
+/* chips + product cards */
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.chip{font-family:var(--disp);font-size:13px;font-weight:700;padding:10px 18px;border:2px solid var(--ink);border-radius:999px;background:transparent;color:var(--ink);min-height:44px}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{background:var(--white);border:2px solid var(--ink);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;box-shadow:6px 6px 0 var(--ink)}
+.card .cover{height:180px;display:flex;align-items:flex-end;justify-content:space-between;padding:18px;color:#fff}
+.card .cover .letter{font-family:var(--disp);font-weight:900;font-size:76px;line-height:.8;letter-spacing:-.03em}
+.card .cover .pill{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;background:rgba(0,0,0,.3);padding:5px 10px;border-radius:999px}
+.card .body{padding:18px;display:flex;flex-direction:column;gap:7px;flex:1}
+.card h3{font-family:var(--disp);font-size:20px;font-weight:800;line-height:1.2}
+.card h3 a{color:var(--ink)}
+.card .spec{font-size:13px;color:var(--muted);font-weight:500}
+.card .desc{font-size:15px;color:#4A453E;line-height:1.55}
+.card .price{font-family:var(--disp);font-size:19px;font-weight:900;margin-top:auto;padding-top:8px}
+.card .price s{color:var(--muted);font-weight:500;font-size:15px;margin-right:8px}
+.card .price .save{font-size:12px;font-weight:700;color:var(--teal);display:block;margin-top:2px}
+.card .actions{display:flex;gap:10px;margin-top:12px}
+.card .actions .btn{flex:1;text-align:center;padding:12px 10px;border-color:var(--ink);color:var(--ink)}
+.card .actions .btn:hover{background:var(--ink);color:#fff}
+.card .actions .btn-accent{border-color:var(--accent);color:#fff}
+.card .actions .btn-accent:hover{background:#E64500;color:#fff}
+.card.soon{box-shadow:none;border-style:dashed;background:transparent}
+.card.soon .cover{background:transparent;color:var(--muted);border-bottom:2px dashed var(--ink);align-items:center;justify-content:center;text-align:center}
+.card.soon .cover span{font-family:var(--disp);font-size:15px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.empty{color:var(--muted);padding:26px 0;display:none}
+/* affiliate */
+.aff-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.aff-tile{background:#fff;border:2px solid var(--ink);border-radius:16px;padding:22px 18px;min-height:180px;display:flex;flex-direction:column;gap:8px;box-shadow:5px 5px 0 var(--ink)}
+.aff-tile .icon{font-size:30px}
+.aff-tile h3{font-family:var(--disp);font-size:18px;font-weight:800}
+.aff-tile p{font-size:14px;color:#4A453E;line-height:1.5}
+.aff-tile .soon-lbl{margin-top:auto;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-ink)}
+.disclosure{font-size:13.5px;color:var(--muted);border:2px dashed var(--ink);border-radius:12px;padding:16px 18px;margin-top:22px;line-height:1.6;background:#fff}
+/* resources */
+.taster{background:var(--lime);border:2px solid var(--ink);border-radius:18px;padding:26px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;margin-bottom:24px;box-shadow:6px 6px 0 var(--ink)}
+.taster h3{font-family:var(--disp);font-size:26px;font-weight:900;text-transform:uppercase;line-height:1.1}
+.taster p{font-size:15px;margin-top:6px;color:#33302A}
+.res-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.res-card{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:18px 16px;display:flex;flex-direction:column;gap:6px}
+.res-card .ric{font-size:26px}
+.res-card h3{font-family:var(--disp);font-size:16.5px;font-weight:800;line-height:1.25}
+.res-card h3 a{color:var(--ink)}
+.res-card .spec{font-size:12.5px;color:var(--muted)}
+.res-card .get{font-size:13.5px;font-weight:700;margin-top:auto;padding-top:8px;color:var(--accent-ink)}
+/* games */
+.game-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.game-card{background:var(--ink);color:#fff;border-radius:16px;padding:22px;display:flex;gap:16px;align-items:flex-start}
+.game-card .gicon{font-size:40px;line-height:1;flex-shrink:0}
+.game-card h3{font-family:var(--disp);font-size:20px;font-weight:800}
+.game-card p{font-size:14px;color:#CFC9BE;margin-top:4px}
+.game-card .play{font-size:13.5px;font-weight:700;margin-top:10px;display:inline-block;color:var(--lime)}
+/* blog */
+.blog-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.blog-card{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:20px 18px;box-shadow:5px 5px 0 var(--ink)}
+.blog-card .bcat{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink)}
+.blog-card h3{font-family:var(--disp);font-size:18px;font-weight:800;line-height:1.25;margin-top:8px}
+.blog-card h3 a{color:var(--ink)}
+.blog-card .meta{font-size:12.5px;color:var(--muted);margin-top:10px}
+/* footer */
+footer{background:var(--ink);color:#fff;padding:56px 0 90px}
+footer .big{font-family:var(--disp);font-weight:900;font-size:clamp(44px,9vw,110px);line-height:.95;letter-spacing:-.02em;text-transform:uppercase}
+footer .big .accent{color:var(--accent)}
+footer .f-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:32px;margin-top:36px}
+footer p{font-size:14.5px;color:#CFC9BE;margin-top:10px;max-width:44ch}
+footer h4{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#9A938A;margin-bottom:12px}
+footer ul{list-style:none}
+footer ul a{display:block;padding:7px 0;color:#EDEAE2;font-size:14.5px;min-height:32px}
+footer ul a:hover{color:#fff}
+footer .f-bot{border-top:1px solid #2A2A2A;margin-top:36px;padding-top:18px;font-size:12.5px;color:#9A938A;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+/* bottom quick bar (mobile) */
+.quickbar{display:none;position:fixed;left:12px;right:12px;bottom:12px;z-index:70;background:var(--ink);border-radius:999px;padding:6px;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.quickbar .qb-in{display:flex;justify-content:space-around}
+.quickbar a{color:#EDEAE2;font-size:12px;font-weight:700;text-align:center;padding:10px 6px;flex:1;border-radius:999px;min-height:44px;display:flex;flex-direction:column;justify-content:center}
+.quickbar a:hover{color:#fff;text-decoration:none}
+.quickbar a.hot{color:var(--lime)}
+/* modal */
+.modal-backdrop{position:fixed;inset:0;background:rgba(10,10,10,.65);display:none;align-items:flex-start;justify-content:center;padding:20px 12px;z-index:100;overflow-y:auto}
+.modal-backdrop.open{display:flex}
+.modal{background:var(--paper);border:2px solid var(--ink);border-radius:20px;max-width:700px;width:100%;overflow:hidden;position:relative;box-shadow:8px 8px 0 var(--ink)}
+.modal .m-cover{height:190px;display:flex;align-items:flex-end;justify-content:space-between;padding:20px;color:#fff}
+.modal .m-cover .letter{font-family:var(--disp);font-weight:900;font-size:88px;line-height:.8}
+.modal .m-body{padding:24px}
+.modal h2{font-family:var(--disp);font-size:28px;font-weight:900;line-height:1.15;text-transform:uppercase;letter-spacing:-.01em}
+.modal .spec{font-size:13px;color:var(--muted);margin:8px 0 12px;font-weight:500}
+.modal .m-desc{font-size:16px;color:#4A453E}
+.modal .m-price{font-family:var(--disp);font-size:22px;font-weight:900;margin:18px 0 4px}
+.modal .m-price s{color:var(--muted);font-weight:500;margin-right:10px;font-size:16px}
+.modal .m-note{font-size:12.5px;color:var(--muted)}
+.modal .m-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.modal .m-close{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.35);color:#fff;border:0;width:44px;height:44px;border-radius:50%;font-size:20px;line-height:1}
+.modal .related{border-top:2px solid var(--ink);margin-top:24px;padding-top:16px}
+.modal .related h3{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.modal .related a{display:block;padding:8px 0;font-family:var(--disp);font-size:17px;color:var(--ink);font-weight:700}
+/* responsive */
+@media (max-width:1024px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .aff-grid,.res-grid,.blog-grid{grid-template-columns:repeat(2,1fr)}
+  .work-index{grid-template-columns:repeat(2,1fr)}
+  .facts{grid-template-columns:repeat(2,1fr)}
+  .studio-grid{grid-template-columns:1fr}
+  footer .f-grid{grid-template-columns:1fr 1fr}
+  .top-actions .searchbox{display:none}
+}
+@media (max-width:768px){
+  nav.desk{display:none}
+  .hamb{display:block}
+  .quickbar{display:block}
+  .grid,.aff-grid,.res-grid,.blog-grid,.work-index,.game-grid{grid-template-columns:1fr}
+  .facts{grid-template-columns:1fr 1fr}
+  .taster{grid-template-columns:1fr}
+  section{padding:48px 0}
+  footer .f-grid{grid-template-columns:1fr}
+  .hero{padding-top:40px}
+}
+</style>
+</head>
+<body>
+<!-- ======= header ======= -->
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#top"><span class="mark">JB</span>JoJo&rsquo;s Blocks</a>
+    <nav class="desk" aria-label="Main navigation">
+      <ul>
+        <li><a href="#top" class="active">Home</a></li>
+        <li><a href="#products">Shop</a></li>
+        <li><a href="#affiliate">Marketplace</a></li>
+        <li><a href="#resources">Free Stuff</a></li>
+        <li><a href="#games">Games</a></li>
+        <li><a href="#blog">Notes</a></li>
+        <li><a href="#studio">Studio</a></li>
+      </ul>
+    </nav>
+    <div class="top-actions">
+      <div class="searchbox">
+        <input type="search" id="search" placeholder="Search the studio&hellip;" aria-label="Search products and resources" autocomplete="off">
+        <button type="button" id="search-go">Search</button>
+      </div>
+      <button class="hamb" id="hamb" aria-expanded="false" aria-controls="overlay" aria-label="Open menu">Menu &#9776;</button>
+    </div>
+  </div>
+</header>
+
+<!-- mobile overlay menu -->
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="o-top">
+    <span class="logo"><span class="mark">JB</span>JoJo&rsquo;s Blocks</span>
+    <button class="o-close" id="overlay-close">Close &times;</button>
+  </div>
+  <div class="o-search"><input type="search" id="search-m" placeholder="Search books, resources, games&hellip;" aria-label="Search products and resources" autocomplete="off"></div>
+  <nav aria-label="Mobile navigation">
+    <a href="#top"><span>01</span>Home</a>
+    <a href="#products"><span>02</span>Shop the Work</a>
+    <a href="#affiliate"><span>03</span>Marketplace</a>
+    <a href="#resources"><span>04</span>Free Stuff</a>
+    <a href="#games"><span>05</span>Games</a>
+    <a href="#blog"><span>06</span>Notes</a>
+    <a href="#studio"><span>07</span>The Studio</a>
+  </nav>
+  <div class="o-foot">Questions? <a href="mailto:jojobusiness0101@gmail.com">jojobusiness0101@gmail.com</a><br>Free resources &middot; No sign-up &middot; Replies within 2 business days</div>
+</div>
+
+<main id="top">
+<!-- ======= hero: work index ======= -->
+<section class="hero" style="padding-bottom:0">
+  <div class="wrap">
+    <div class="kicker-line"><span>The Studio &mdash; Est. 2026</span><span>Books &middot; Games &middot; Free Resources</span></div>
+    <h1>We make things to <span class="hl">colour,</span><br><span class="out">play</span> &amp; learn<span class="hl">.</span></h1>
+    <p class="lede">JoJo&rsquo;s Blocks is a creative studio and marketplace. We design our own colouring books, build original browser games, and give away free printables &mdash; then sell the good stuff on Gumroad.</p>
+    <div class="cta-row">
+      <a class="btn btn-accent" href="#products">Shop the work &rarr;</a>
+      <a class="btn" href="#resources">Get free stuff</a>
+      <a class="btn" href="#games">Play a game</a>
+    </div>
+    <div class="work-index">
+      <a class="work" href="#products" style="background:linear-gradient(140deg,#FF4D00,#8C3B22)"><span class="w-top"><span class="w-cat">Books</span><span class="w-big">Aa</span></span><span><h3>My First ABC Book</h3><p>28 pages &middot; Ages 2&ndash;4 &middot; $3.59 on sale</p><span class="w-link">View the book &rarr;</span></span></a>
+      <a class="work" href="#games" style="background:linear-gradient(140deg,#6C5CE7,#3D2C8D)"><span class="w-top"><span class="w-cat">Games</span><span class="w-big">&#127918;</span></span><span><h3>Six original games</h3><p>Free in your browser &middot; Original music &middot; No download</p><span class="w-link">Play now &rarr;</span></span></a>
+      <a class="work" href="#resources" style="background:linear-gradient(140deg,#0E7C6B,#0A4A41)"><span class="w-top"><span class="w-cat">Free</span><span class="w-big">&#10022;</span></span><span><h3>Free Taster Pack</h3><p>6 pages &middot; A4 PDF &middot; No sign-up</p><span class="w-link">Download free &rarr;</span></span></a>
+    </div>
+  </div>
+</section>
+<div class="marquee" aria-hidden="true"><span>Books &bull; Games &bull; Free Resources &bull; Printables &bull; Planners &bull; Blog &bull; Books &bull; Games &bull; Free Resources &bull; Printables &bull; Planners &bull; Blog &bull;&nbsp;</span><span>Books &bull; Games &bull; Free Resources &bull; Printables &bull; Planners &bull; Blog &bull; Books &bull; Games &bull; Free Resources &bull; Printables &bull; Planners &bull; Blog &bull;&nbsp;</span></div>
+
+<!-- ======= studio story ======= -->
+<section class="dark" id="studio">
+  <div class="wrap">
+    <div class="studio-grid">
+      <div>
+        <p class="tag"><span class="dot">&#9679;</span> The Studio</p>
+        <h2 style="font-family:var(--disp);font-weight:900;font-size:clamp(28px,4vw,44px);line-height:1.05;text-transform:uppercase;margin:14px 0 18px">A small studio,<br>making useful<br>beautiful things.</h2>
+        <p class="big">JoJo&rsquo;s Blocks started with one experiment: children&rsquo;s colouring books. The books were the beginning, not the whole story. Today the studio makes <b>books, games, printables and tools</b> &mdash; and sells them directly, honestly, and without fuss.</p>
+      </div>
+      <div>
+        <p style="color:#CFC9BE;font-size:16px;line-height:1.6">Everything here is designed in-house: the books, the games, the free resources and the writing. What you see is what you get &mdash; digital PDFs you print at home, games you play in the browser, and free downloads with no sign-up and no catch.</p>
+        <p style="color:#CFC9BE;font-size:16px;line-height:1.6;margin-top:14px">Support replies within 2 business days on weekdays. Contact: <a href="mailto:jojobusiness0101@gmail.com" style="color:var(--lime)">jojobusiness0101@gmail.com</a></p>
+      </div>
+    </div>
+    <div class="facts">
+      <div class="fact"><div class="n">5</div><div class="l">Colouring books published and on sale</div></div>
+      <div class="fact"><div class="n">6</div><div class="l">Original browser games, free to play</div></div>
+      <div class="fact"><div class="n">12</div><div class="l">Free resources to download &mdash; no sign-up</div></div>
+      <div class="fact"><div class="n">8</div><div class="l">Journal articles on learning and play</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= products ======= -->
+<section id="products">
+  <div class="wrap">
+    <div class="sec-head"><h2>Shop the <span class="accent">work</span></h2><span class="side">Our own books &mdash; digital PDFs, sold on Gumroad. Code JOJOS10 gives 10% off.</span></div>
+    <p class="sec-intro">Buy on Gumroad, download the PDF, print at home as many times as you like. Personal &amp; family use.</p>
+    <div class="chips" role="group" aria-label="Filter products">
+      <button class="chip" data-filter="all" aria-pressed="true">Everything</button>
+      <button class="chip" data-filter="books" aria-pressed="false">Colouring books</button>
+      <button class="chip" data-filter="bundle" aria-pressed="false">Bundle</button>
+      <button class="chip" data-filter="soon" aria-pressed="false">Coming soon</button>
+    </div>
+    <div class="grid" id="product-grid"></div>
+    <p class="empty" id="product-empty">No products match your search. Try a different word, or clear the search.</p>
+  </div>
+</section>
+
+<!-- ======= affiliate ======= -->
+<section id="affiliate" style="background:#fff;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)">
+  <div class="wrap">
+    <div class="sec-head"><h2>The <span class="accent">Marketplace</span></h2><span class="side">Tools and products we recommend &mdash; coming soon.</span></div>
+    <p class="sec-intro">A dedicated shelf for the software, tools and creative products we actually use. Nothing is listed yet &mdash; when recommendations arrive, each one will be clearly labelled and honestly described.</p>
+    <div class="aff-grid">
+      <div class="aff-tile"><div class="icon">&#127912;</div><h3>Creative software</h3><p>Design and illustration tools for makers.</p><span class="soon-lbl">Recommendations coming soon</span></div>
+      <div class="aff-tile"><div class="icon">&#128218;</div><h3>Learning tools</h3><p>Apps and resources for creative learning.</p><span class="soon-lbl">Recommendations coming soon</span></div>
+      <div class="aff-tile"><div class="icon">&#128396;</div><h3>Art supplies</h3><p>Materials for colouring, drawing and making.</p><span class="soon-lbl">Recommendations coming soon</span></div>
+      <div class="aff-tile"><div class="icon">&#9889;</div><h3>Productivity apps</h3><p>Planners and workflow tools we trust.</p><span class="soon-lbl">Recommendations coming soon</span></div>
+    </div>
+    <p class="disclosure"><b>Affiliate disclosure:</b> When recommendations are published here, some links may be affiliate links. We may earn a commission if you buy through our links, at no extra cost to you. We only recommend products we would use ourselves.</p>
+  </div>
+</section>
+
+<!-- ======= free resources ======= -->
+<section id="resources">
+  <div class="wrap">
+    <div class="sec-head"><h2>Free from <span class="accent">the studio</span></h2><span class="side">12 free downloads &mdash; no sign-up.</span></div>
+    <div class="taster">
+      <div><p class="tag"><span class="dot">&#9679;</span> Featured free download</p><h3>Free Taster Pack</h3><p>6 pages, A4 PDF &mdash; a sample of the colouring books, free to print at home.</p></div>
+      <a class="btn btn-dark" href="https://jojosblocks.online/free-printables/">Get it free &rarr;</a>
+    </div>
+    <div class="chips" role="group" aria-label="Filter free resources">
+      <button class="chip rchip" data-rfilter="all" aria-pressed="true">All</button>
+      <button class="chip rchip" data-rfilter="colouring" aria-pressed="false">Colouring</button>
+      <button class="chip rchip" data-rfilter="draw" aria-pressed="false">Learn to draw</button>
+      <button class="chip rchip" data-rfilter="worksheet" aria-pressed="false">Worksheets</button>
+      <button class="chip rchip" data-rfilter="planner" aria-pressed="false">Planners</button>
+      <button class="chip rchip" data-rfilter="printable" aria-pressed="false">Printables</button>
+      <button class="chip rchip" data-rfilter="wallpaper" aria-pressed="false">Wallpaper</button>
+      <button class="chip rchip" data-rfilter="ai" aria-pressed="false">AI</button>
+    </div>
+    <div class="res-grid" id="res-grid"></div>
+    <p class="empty" id="res-empty">No free resources match your search. Try a different word, or clear the search.</p>
+  </div>
+</section>
+
+<!-- ======= games ======= -->
+<section id="games" style="background:var(--lime)">
+  <div class="wrap">
+    <div class="sec-head"><h2>The <span class="accent">Playground</span></h2><span class="side">Six original games &mdash; free, in your browser, no download.</span></div>
+    <p class="sec-intro" style="color:#33302A">Built by the studio, with original music and sound. Pick one and play.</p>
+    <div class="game-grid" id="game-grid"></div>
+  </div>
+</section>
+
+<!-- ======= blog ======= -->
+<section id="blog">
+  <div class="wrap">
+    <div class="sec-head"><h2>Notes from <span class="accent">the studio</span></h2><span class="side">Articles, guides and ideas from the Journal.</span></div>
+    <div class="blog-grid" id="blog-grid"></div>
+    <p style="margin-top:26px"><a class="btn btn-dark" href="https://jojosblocks.online/blog/">Read all articles &rarr;</a></p>
+  </div>
+</section>
+</main>
+
+<!-- ======= footer ======= -->
+<footer>
+  <div class="wrap">
+    <div class="big">JoJo&rsquo;s<br>Blocks<span class="accent">.</span></div>
+    <div class="f-grid">
+      <div>
+        <h4>The Studio</h4>
+        <p>Creative digital products, free resources &amp; games. Digital products for creative learning and play.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#products">Shop the Work</a></li>
+          <li><a href="#affiliate">Marketplace</a></li>
+          <li><a href="#resources">Free Stuff</a></li>
+          <li><a href="#games">Games</a></li>
+          <li><a href="#blog">Notes</a></li>
+          <li><a href="#studio">The Studio</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact &amp; legal</h4>
+        <ul>
+          <li><a href="mailto:jojobusiness0101@gmail.com">jojobusiness0101@gmail.com</a></li>
+          <li><a href="https://www.pinterest.com/JoJosBlocks/">Pinterest &mdash; @JoJosBlocks</a></li>
+          <li><a href="https://jojosblocks.online/privacy.html">Privacy Policy</a></li>
+          <li><a href="https://jojosblocks.online/terms.html">Terms &amp; Conditions</a></li>
+          <li><a href="https://jojosblocks.online/refund-policy.html">Refund Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="f-bot">
+      <span>&copy; 2026 JoJo&rsquo;s Blocks. All rights reserved.</span>
+      <span>Design concept 06 &mdash; Creative Studio. Preview only.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- mobile quick bar -->
+<nav class="quickbar" aria-label="Quick navigation">
+  <div class="qb-in">
+    <a href="#top">&#127968;<br>Home</a>
+    <a href="#products">&#128218;<br>Shop</a>
+    <a href="#resources" class="hot">&#9733;<br>Free</a>
+    <a href="#games">&#127918;<br>Games</a>
+    <a href="#blog">&#9998;<br>Notes</a>
+  </div>
+</nav>
+
+<!-- ======= product detail modal ======= -->
+<div class="modal-backdrop" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal">
+    <button class="m-close" id="modal-close" aria-label="Close product details">&times;</button>
+    <div class="m-cover" id="modal-cover"><span class="letter" id="modal-letter">Aa</span><span class="pill" id="modal-tag" style="font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;background:rgba(0,0,0,.3);padding:5px 10px;border-radius:999px">Colouring book</span></div>
+    <div class="m-body">
+      <h2 id="modal-title">Book title</h2>
+      <p class="spec" id="modal-spec"></p>
+      <p class="m-desc" id="modal-desc"></p>
+      <p class="m-price" id="modal-price"></p>
+      <p class="m-note">Digital PDF &middot; Personal &amp; family use &middot; Sold securely through Gumroad &middot; Code JOJOS10 gives 10% off.</p>
+      <div class="m-actions">
+        <a class="btn btn-accent" id="modal-buy" href="#" target="_blank" rel="noopener">Buy on Gumroad &rarr;</a>
+        <a class="btn btn-dark" id="modal-live" href="#" target="_blank" rel="noopener">View on the live site</a>
+      </div>
+      <div class="related"><h3>You may also like</h3><div id="modal-related"></div></div>
+    </div>
+  </div>
+</div>
+<script>
+const BOOKS=[
+ {id:'abc',title:'My First ABC Book',price:'$3.99',sale:'$3.59',pages:'28 pages',ages:'Ages 2\u20134',cat:'books',letter:'Aa',color:'linear-gradient(140deg,#FFC94D,#E8862E)',desc:'A\u2013Z colouring and tracing \u2014 the first book, made for little hands learning their letters.',gumroad:'https://jojosblocks.gumroad.com/l/my-first-abc-book?wanted=true',live:'https://jojosblocks.online/books/my-first-abc-book.html'},
+ {id:'animal',title:'My First Animal Explorer',price:'$4.99',sale:'$4.49',pages:'30 pages',ages:'Ages 3\u20136',cat:'books',letter:'\u{1F981}',color:'linear-gradient(140deg,#3FA34D,#1E6B34)',desc:'20 animals to colour plus 5 learning activity pages \u2014 a gentle first safari through the animal kingdom.',gumroad:'https://jojosblocks.gumroad.com/l/my-first-animal-explorer?wanted=true',live:'https://jojosblocks.online/books/my-first-animal-explorer.html'},
+ {id:'helpers',title:'My Little Community Helpers',price:'$4.99',sale:'$4.49',pages:'54 pages',ages:'Ages 4\u20137',cat:'books',letter:'\u{1F692}',color:'linear-gradient(140deg,#3D7EDB,#1F3F7A)',desc:'Firefighters, doctors, teachers and more \u2014 54 pages about the people who help our neighbourhoods.',gumroad:'https://jojosblocks.gumroad.com/l/my-little-community-helpers?wanted=true',live:'https://jojosblocks.online/books/my-little-community-helpers.html'},
+ {id:'space',title:'My Little Space Adventure',price:'$4.99',sale:'$4.49',pages:'42 pages',ages:'Ages 3\u20135',cat:'books',letter:'\u{1F680}',color:'linear-gradient(140deg,#6C5CE7,#2B1B5E)',desc:'Rockets, planets and stars \u2014 42 pages of space colouring and discovery for young astronauts.',gumroad:'https://jojosblocks.gumroad.com/l/my-little-space-adventure?wanted=true',live:'https://jojosblocks.online/books/my-little-space-adventure.html'},
+ {id:'bundle',title:'JoJo\u2019s Blocks Complete Coloring Book Bundle',price:'$12.99',sale:'$11.69',pages:'154 pages',ages:'Ages 2\u20137',cat:'bundle',letter:'4\u00d71',color:'linear-gradient(140deg,#FF4D00,#8C3B22)',desc:'All four books in one bundle \u2014 154 pages, saving $5.97 compared with buying them separately.',gumroad:'https://jojosblocks.gumroad.com/l/jojos-blocks-coloring-bundle?wanted=true',live:'https://jojosblocks.online/books/complete-coloring-book-bundle.html'}
+];
+const SOON=[
+ {title:'Ebooks & Guides',desc:'Longer guides and ebooks on creative learning.'},
+ {title:'Templates & Planners',desc:'Printable templates and planners for home and work.'},
+ {title:'Journals & Workbooks',desc:'Journals and workbooks for drawing, writing and learning.'},
+ {title:'AI Prompt Packs',desc:'Prompt collections for AI image and art creation.'}
+];
+const RESOURCES=[
+ {name:'Forest Friends Colouring Pages',cat:'colouring',icon:'\u{1F332}',spec:'Colouring \u00b7 PDF \u00b7 Free',url:'https://jojosblocks.online/free-resources/forest-friends-coloring/'},
+ {name:'Under the Sea Colouring Pages',cat:'colouring',icon:'\u{1F420}',spec:'Colouring \u00b7 PDF \u00b7 Free',url:'https://jojosblocks.online/free-resources/under-the-sea-coloring/'},
+ {name:'Learn to Draw a Cat',cat:'draw',icon:'\u{1F431}',spec:'Learn to draw \u00b7 PDF \u00b7 Free',url:'https://jojosblocks.online/free-resources/learn-to-draw-cat/'},
+ {name:'Learn to Draw a Butterfly',cat:'draw',icon:'\u{1F98B}',spec:'Learn to draw \u00b7 PDF \u00b7 Free',url:'https://jojosblocks.online/free-resources/learn-to-draw-butterfly/'},
+ {name:'Alphabet Tracing A\u2013E',cat:'worksheet',icon:'\u270F\uFE0F',spec:'Worksheet \u00b7 PDF \u00b7 Free',url:'https://jojosblocks.online/free-resources/alphabet-tracing-a-e/'},
+ {name:'Counting 1\u201310',cat:'worksheet',icon:'\u{1F522}',spec:'Worksheet \u00b7 PDF \u00b7 Free',url:'https://jojosblocks.online/free-resources/counting-1-10/'},
+ {name:'Weekly Planner',cat:'planner',icon:'\u{1F4C5}',spec:'Planner \u00b7 PDF \u00b7 Free',url:'https://jojosblocks.online/free-resources/weekly-planner/'},
+ {name:'Daily Routine Chart',cat:'planner',icon:'\u2600\uFE0F',spec:'Planner \u00b7 PDF \u00b7 Free',url:'https://jojosblocks.online/free-resources/daily-routine-chart/'},
+ {name:'Sticker Sheet \u2014 Stars & Animals',cat:'printable',icon:'\u2B50',spec:'Printable \u00b7 PDF \u00b7 Free',url:'https://jojosblocks.online/free-resources/sticker-sheet-stars-animals/'},
+ {name:'Bookmark Set',cat:'printable',icon:'\u{1F516}',spec:'Printable \u00b7 PDF \u00b7 Free',url:'https://jojosblocks.online/free-resources/bookmark-set/'},
+ {name:'Sunset Mountains Phone Wallpaper',cat:'wallpaper',icon:'\u{1F304}',spec:'Wallpaper \u00b7 JPG 1080\u00d71920 \u00b7 Free',url:'https://jojosblocks.online/free-resources/sunset-mountains-wallpaper/'},
+ {name:'AI Art Prompt Pack',cat:'ai',icon:'\u2728',spec:'AI resources \u00b7 PDF \u00b7 Free',url:'https://jojosblocks.online/free-resources/ai-art-prompt-pack/'}
+];
+const GAMES=[
+ {name:'Animal Guess',icon:'\u{1F981}',desc:'Guess the animal from the clues.',url:'https://jojosblocks.online/games/animal-guess/'},
+ {name:'Memory Match',icon:'\u{1F0CF}',desc:'Flip the cards, find every pair.',url:'https://jojosblocks.online/games/memory-match/'},
+ {name:'Tic-Tac-Toe',icon:'\u2716\uFE0F',desc:'Three in a row wins.',url:'https://jojosblocks.online/games/tic-tac-toe/'},
+ {name:'Click the Box',icon:'\u{1F5B1}\uFE0F',desc:'Click the box the instant it appears.',url:'https://jojosblocks.online/games/click-the-box/'},
+ {name:'Flappy Penguin',icon:'\u{1F427}',desc:'Guide the penguin through the gaps.',url:'https://jojosblocks.online/games/flappy-penguin/'},
+ {name:'Block Drop',icon:'\u{1F9F1}',desc:'Stack the falling blocks into rows.',url:'https://jojosblocks.online/games/block-drop/'}
+];
+const ARTICLES=[
+ {title:'Benefits of Coloring for Preschoolers',cat:'Learning',url:'https://jojosblocks.online/blog/benefits-of-coloring-for-preschoolers.html'},
+ {title:'How Coloring Helps Your Child Learn the Alphabet',cat:'Learning',url:'https://jojosblocks.online/blog/how-coloring-helps-your-child-learn-the-alphabet.html'},
+ {title:'Fun Animal Facts for Kids',cat:'Discovery',url:'https://jojosblocks.online/blog/fun-animal-facts-for-kids.html'},
+ {title:'Easy Alphabet Activities for Toddlers at Home',cat:'Activities',url:'https://jojosblocks.online/blog/easy-alphabet-activities-for-toddlers-at-home.html'},
+ {title:'Homeschool Preschool Daily Routine with Printables',cat:'Routine',url:'https://jojosblocks.online/blog/homeschool-preschool-daily-routine-with-printables.html'},
+ {title:'Screen-Free Activities for Kids on Rainy Days',cat:'Activities',url:'https://jojosblocks.online/blog/screen-free-activities-for-kids-on-rainy-days.html'},
+ {title:'Space Facts for Preschoolers',cat:'Discovery',url:'https://jojosblocks.online/blog/space-facts-for-preschoolers.html'},
+ {title:'What Do Community Helpers Do?',cat:'Learning',url:'https://jojosblocks.online/blog/what-do-community-helpers-do.html'}
+];
+/* ---- render products ---- */
+const grid=document.getElementById('product-grid');
+grid.innerHTML=BOOKS.map(b=>`
+  <article class="card" data-cat="${b.cat}" data-search="${(b.title+' '+b.desc).toLowerCase()}">
+    <div class="cover" style="background:${b.color}"><span class="letter">${b.letter}</span><span class="pill">${b.cat==='bundle'?'Bundle':'Colouring book'}</span></div>
+    <div class="body">
+      <h3><a href="#" data-book="${b.id}">${b.title}</a></h3>
+      <p class="spec">${b.pages} &middot; ${b.ages}</p>
+      <p class="desc">${b.desc}</p>
+      <p class="price"><s>${b.price}</s>${b.sale}${b.id==='bundle'?'<span class="save">Save $5.97 vs buying separately</span>':''}</p>
+      <div class="actions">
+        <button class="btn" data-book="${b.id}">Details</button>
+        <a class="btn btn-accent" href="${b.gumroad}" target="_blank" rel="noopener">Buy on Gumroad</a>
+      </div>
+    </div>
+  </article>`).join('')+SOON.map(s=>`
+  <article class="card soon" data-cat="soon" data-search="${s.title.toLowerCase()} ${s.desc.toLowerCase()}">
+    <div class="cover"><span>${s.title} &mdash; Coming soon</span></div>
+    <div class="body">
+      <h3>${s.title}</h3>
+      <p class="desc">${s.desc}</p>
+      <p class="price" style="color:var(--muted);font-size:14px">Coming soon &mdash; no price yet</p>
+    </div>
+  </article>`).join('');
+/* ---- render resources / games / blog ---- */
+const resGrid=document.getElementById('res-grid');
+resGrid.innerHTML=RESOURCES.map(r=>`
+  <article class="res-card" data-cat="${r.cat}" data-search="${r.name.toLowerCase()} ${r.spec.toLowerCase()}">
+    <span class="ric">${r.icon}</span>
+    <h3><a href="${r.url}" target="_blank" rel="noopener">${r.name}</a></h3>
+    <p class="spec">${r.spec}</p>
+    <a class="get" href="${r.url}" target="_blank" rel="noopener">View &amp; download &rarr;</a>
+  </article>`).join('');
+document.getElementById('game-grid').innerHTML=GAMES.map(g=>`
+  <article class="game-card"><span class="gicon">${g.icon}</span><div>
+    <h3>${g.name}</h3><p>${g.desc}</p>
+    <a class="play" href="${g.url}" target="_blank" rel="noopener">Play free &rarr;</a>
+  </div></article>`).join('');
+document.getElementById('blog-grid').innerHTML=ARTICLES.map(a=>`
+  <article class="blog-card"><span class="bcat">${a.cat}</span><h3><a href="${a.url}" target="_blank" rel="noopener">${a.title}</a></h3><p class="meta">JoJo&rsquo;s Blocks Journal</p></article>`).join('');
+/* ---- search + filters ---- */
+let prodFilter='all', resFilter='all';
+function applyFilters(){
+  const q=(document.getElementById('search').value||document.getElementById('search-m').value||'').trim().toLowerCase();
+  let pv=0;
+  grid.querySelectorAll('.card').forEach(c=>{
+    const ok=(prodFilter==='all'||c.dataset.cat===prodFilter)&&(!q||c.dataset.search.includes(q));
+    c.style.display=ok?'':'none'; if(ok)pv++;
+  });
+  document.getElementById('product-empty').style.display=pv?'none':'block';
+  let rv=0;
+  resGrid.querySelectorAll('.res-card').forEach(c=>{
+    const ok=(resFilter==='all'||c.dataset.cat===resFilter)&&(!q||c.dataset.search.includes(q));
+    c.style.display=ok?'':'none'; if(ok)rv++;
+  });
+  document.getElementById('res-empty').style.display=rv?'none':'block';
+}
+function syncSearch(from){
+  document.getElementById(from.id==='search'?'search-m':'search').value=from.value; applyFilters();
+}
+document.getElementById('search').addEventListener('input',e=>syncSearch(e.target));
+document.getElementById('search-m').addEventListener('input',e=>syncSearch(e.target));
+document.getElementById('search-go').addEventListener('click',()=>{
+  document.getElementById('products').scrollIntoView({behavior:'smooth'}); applyFilters();
+});
+document.querySelectorAll('#products .chip').forEach(ch=>ch.addEventListener('click',()=>{
+  document.querySelectorAll('#products .chip').forEach(c=>c.setAttribute('aria-pressed','false'));
+  ch.setAttribute('aria-pressed','true'); prodFilter=ch.dataset.filter; applyFilters();
+}));
+document.querySelectorAll('.rchip').forEach(ch=>ch.addEventListener('click',()=>{
+  document.querySelectorAll('.rchip').forEach(c=>c.setAttribute('aria-pressed','false'));
+  ch.setAttribute('aria-pressed','true'); resFilter=ch.dataset.rfilter; applyFilters();
+}));
+/* ---- product detail modal ---- */
+const modal=document.getElementById('modal');
+function openBook(id){
+  const b=BOOKS.find(x=>x.id===id); if(!b)return;
+  document.getElementById('modal-cover').style.background=b.color;
+  document.getElementById('modal-letter').textContent=b.letter;
+  document.getElementById('modal-tag').textContent=b.cat==='bundle'?'Bundle \u00b7 154 pages':'Colouring book';
+  document.getElementById('modal-title').textContent=b.title;
+  document.getElementById('modal-spec').textContent=b.pages+' \u00b7 '+b.ages+' \u00b7 Digital PDF';
+  document.getElementById('modal-desc').textContent=b.desc;
+  document.getElementById('modal-price').innerHTML='<s>'+b.price+'</s>'+b.sale+(b.id==='bundle'?' <span style="font-size:13px;color:var(--teal)">Save $5.97</span>':'');
+  document.getElementById('modal-buy').href=b.gumroad;
+  document.getElementById('modal-live').href=b.live;
+  document.getElementById('modal-related').innerHTML=BOOKS.filter(x=>x.id!==id).slice(0,3).map(x=>`<a href="#" data-book="${x.id}">${x.title} \u2014 ${x.sale}</a>`).join('');
+  modal.classList.add('open'); document.body.style.overflow='hidden';
+  document.getElementById('modal-close').focus();
+}
+function closeModal(){ modal.classList.remove('open'); document.body.style.overflow=''; }
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-book]');
+  if(t){ e.preventDefault(); openBook(t.dataset.book); }
+});
+document.getElementById('modal-close').addEventListener('click',closeModal);
+modal.addEventListener('click',e=>{ if(e.target===modal) closeModal(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeModal(); closeOverlay(); }});
+/* ---- mobile overlay menu ---- */
+const hamb=document.getElementById('hamb'), overlay=document.getElementById('overlay');
+function closeOverlay(){ overlay.classList.remove('open'); hamb.setAttribute('aria-expanded','false'); document.body.style.overflow=''; }
+hamb.addEventListener('click',()=>{
+  overlay.classList.add('open'); hamb.setAttribute('aria-expanded','true');
+  document.body.style.overflow='hidden';
+  document.getElementById('search-m').focus();
+});
+document.getElementById('overlay-close').addEventListener('click',closeOverlay);
+overlay.querySelectorAll('nav a').forEach(a=>a.addEventListener('click',closeOverlay));
+</script>
+</body>
+</html>

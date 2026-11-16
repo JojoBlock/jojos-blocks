@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JoJo's Blocks — Creative Digital Products, Free Resources &amp; Games | Concept 09: Multi-Category Platform</title>
+<meta name="description" content="Design preview 09: a balanced multi-category platform for JoJo's Blocks — books, affiliate recommendations, free resources, games and blog, all given equal weight.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0f1b2d; --ink-soft:#33415c; --muted:#5b6b82; --line:#dce3ea; --paper:#f4f6f8;
+  --card:#ffffff; --accent:#3b5bdb; --accent-dark:#2b44a8; --teal:#0e9f8a; --amber:#e8a13a;
+  --navy:#0f1b2d; --radius:14px; --shadow:0 1px 2px rgba(15,27,45,.06),0 8px 24px rgba(15,27,45,.07);
+  --max:1200px; --pad:20px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--ink);background:var(--paper);font-size:16px;line-height:1.55;-webkit-text-size-adjust:100%}
+h1,h2,h3,.font-display{font-family:'Sora','Inter',sans-serif;line-height:1.2;letter-spacing:-.01em}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+img{max-width:100%}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wrap{max-width:var(--max);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.muted{color:var(--muted)}
+/* ---------- utility bar ---------- */
+.utility{background:var(--navy);color:#c7d2e0;font-size:13px}
+.utility .wrap{display:flex;justify-content:space-between;gap:16px;padding-top:8px;padding-bottom:8px}
+.utility a{color:#fff;font-weight:600}
+/* ---------- header ---------- */
+.site-header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:60}
+.header-main{display:flex;align-items:center;gap:20px;padding-top:14px;padding-bottom:14px}
+.brand{display:flex;align-items:center;gap:10px;flex-shrink:0;color:var(--ink)}
+.brand:hover{text-decoration:none}
+.brand-mark{width:40px;height:40px;border-radius:10px;background:var(--ink);display:grid;grid-template-columns:1fr 1fr;gap:3px;padding:7px;flex-shrink:0}
+.brand-mark i{border-radius:3px}
+.brand-mark i:nth-child(1){background:var(--accent)}
+.brand-mark i:nth-child(2){background:var(--teal)}
+.brand-mark i:nth-child(3){background:var(--amber)}
+.brand-mark i:nth-child(4){background:#fff}
+.brand-name{font-family:'Sora',sans-serif;font-weight:800;font-size:20px;line-height:1.05}
+.brand-name small{display:block;font-family:'Inter',sans-serif;font-weight:600;font-size:11px;color:var(--muted);letter-spacing:.06em}
+.global-search{flex:1;display:flex;min-width:0}
+.global-search input{flex:1;min-width:0;height:46px;border:1.5px solid var(--line);border-right:0;border-radius:10px 0 0 10px;padding:0 14px;font-size:15px;font-family:inherit;background:#f8fafc}
+.global-search input:focus{outline:none;border-color:var(--accent);background:#fff}
+.global-search button{height:46px;padding:0 18px;border:0;border-radius:0 10px 10px 0;background:var(--accent);color:#fff;font-weight:700;font-size:15px;min-width:64px}
+.global-search button:hover{background:var(--accent-dark)}
+.header-cta{flex-shrink:0;background:var(--ink);color:#fff;border:0;border-radius:10px;height:46px;padding:0 18px;font-weight:700;font-size:14px;white-space:nowrap}
+.header-cta:hover{background:#1c2f4d}
+.hamburger{display:none;background:#fff;border:1.5px solid var(--line);border-radius:10px;width:46px;height:46px;font-size:22px;line-height:1;flex-shrink:0}
+.desktop-nav{background:#fff;border-top:1px solid var(--line)}
+.desktop-nav .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.desktop-nav .wrap::-webkit-scrollbar{display:none}
+.desktop-nav a{color:var(--ink-soft);font-weight:600;font-size:14.5px;padding:12px 13px;white-space:nowrap;border-bottom:3px solid transparent}
+.desktop-nav a:hover{color:var(--ink);text-decoration:none;border-bottom-color:var(--accent)}
+.desktop-nav a.active{color:var(--accent);border-bottom-color:var(--accent)}
+.mobile-nav{display:none;background:#fff;border-bottom:1px solid var(--line);padding:8px var(--pad) 14px}
+.mobile-nav.open{display:block}
+.mobile-nav a{display:block;padding:13px 6px;font-weight:600;color:var(--ink);border-bottom:1px solid var(--line);font-size:16px}
+.mobile-nav a:last-child{border-bottom:0}
+.mobile-nav .mobile-search{display:flex;margin-bottom:8px}
+.mobile-nav .mobile-search input{flex:1;height:46px;border:1.5px solid var(--line);border-right:0;border-radius:10px 0 0 10px;padding:0 14px;font-size:16px}
+.mobile-nav .mobile-search button{height:46px;padding:0 16px;border:0;border-radius:0 10px 10px 0;background:var(--accent);color:#fff;font-weight:700}
+/* ---------- hero ---------- */
+.hero{background:linear-gradient(180deg,#fff 0%,#eef2f7 100%);border-bottom:1px solid var(--line);padding:44px 0 40px}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
+.hero h1{font-size:44px;font-weight:800;margin:12px 0 14px}
+.hero h1 .hl{color:var(--accent)}
+.hero p.lead{font-size:18px;color:var(--ink-soft);max-width:52ch}
+.hero-ctas{display:flex;gap:12px;margin:22px 0 18px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;border-radius:10px;font-weight:700;font-size:15px;border:1.5px solid transparent}
+.btn:hover{text-decoration:none}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-dark)}
+.btn-ghost{background:#fff;color:var(--ink);border-color:var(--line)}
+.btn-ghost:hover{border-color:var(--ink)}
+.hero-facts{display:flex;gap:0;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:16px}
+.hero-facts div{padding-right:22px;margin-right:22px;border-right:1px solid var(--line)}
+.hero-facts div:last-child{border-right:0;margin-right:0;padding-right:0}
+.hero-facts b{display:block;font-family:'Sora',sans-serif;font-size:22px}
+.hero-facts span{font-size:13px;color:var(--muted)}
+/* dashboard panel */
+.dashboard{background:var(--navy);border-radius:18px;padding:22px;box-shadow:var(--shadow)}
+.dashboard h2{color:#fff;font-size:17px;margin-bottom:4px}
+.dashboard>p{color:#aebdd2;font-size:13.5px;margin-bottom:16px}
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.dash-tile{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:14px;color:#fff;display:block}
+.dash-tile:hover{background:rgba(255,255,255,.12);text-decoration:none}
+.dash-tile .ic{font-size:22px;line-height:1}
+.dash-tile b{display:block;font-size:15px;margin:8px 0 2px}
+.dash-tile span{font-size:12.5px;color:#aebdd2}
+/* ---------- sections ---------- */
+section.block{padding:52px 0 8px}
+.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:8px 16px;margin-bottom:6px;flex-wrap:wrap}
+.section-head h2{font-size:28px}
+.section-head .view-all{font-weight:700;font-size:14.5px;white-space:nowrap}
+.section-sub{color:var(--muted);max-width:72ch;margin-bottom:22px}
+/* chips */
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.chip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:9px 16px;font-size:14px;font-weight:600;color:var(--ink-soft);min-height:44px}
+.chip:hover{border-color:var(--ink)}
+.chip.active{background:var(--ink);border-color:var(--ink);color:#fff}
+/* cards */
+.grid{display:grid;gap:18px}
+.grid-4{grid-template-columns:repeat(4,1fr)}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+.grid-2{grid-template-columns:repeat(2,1fr)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow)}
+.card:hover{border-color:#b9c6d6}
+.card-cover{aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;color:#fff;font-family:'Sora',sans-serif;text-align:center;padding:16px;position:relative}
+.card-cover .big{font-size:52px;line-height:1}
+.card-cover .ct{font-weight:700;font-size:17px}
+.card-cover .cs{font-size:12.5px;opacity:.9}
+.cover-abc{background:linear-gradient(135deg,#3b5bdb,#7c6ff0)}
+.cover-animal{background:linear-gradient(135deg,#0e9f8a,#2fbf71)}
+.cover-helpers{background:linear-gradient(135deg,#e8a13a,#e0653a)}
+.cover-space{background:linear-gradient(135deg,#1c2f4d,#5b4bc4)}
+.cover-bundle{background:linear-gradient(135deg,#0f1b2d,#3b5bdb)}
+.cover-soon{background:linear-gradient(135deg,#eef2f7,#dbe4ee);color:var(--ink-soft)}
+.cover-game{background:linear-gradient(135deg,#33415c,#0e9f8a)}
+.cover-res{background:linear-gradient(135deg,#f4f6f8,#e2e8f0);color:var(--ink-soft)}
+.cover-blog{background:linear-gradient(135deg,#eef2f7,#dbe4ee);color:var(--ink-soft)}
+.badge{position:absolute;top:12px;left:12px;background:#fff;color:var(--ink);font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:5px 9px;border-radius:999px}
+.badge.sale{background:#e5484d;color:#fff}
+.badge.free{background:var(--teal);color:#fff}
+.badge.soon{background:var(--ink);color:#fff}
+.card-body{padding:16px 16px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+.card-body h3{font-size:17px}
+.card-body h3 a{color:var(--ink)}
+.card-meta{font-size:13.5px;color:var(--muted)}
+.price-row{display:flex;align-items:baseline;gap:8px;margin-top:auto}
+.price{font-family:'Sora',sans-serif;font-weight:800;font-size:19px}
+.price-old{color:var(--muted);text-decoration:line-through;font-size:14px}
+.price-save{font-size:12.5px;font-weight:700;color:#0e7a5f;background:#e3f5ef;border-radius:999px;padding:3px 8px}
+.card-actions{display:flex;gap:8px;margin-top:4px}
+.card-actions .btn{flex:1;min-height:44px;padding:0 10px;font-size:14px}
+.btn-outline{background:#fff;color:var(--accent);border-color:var(--accent)}
+.btn-outline:hover{background:#eef2ff}
+.btn-dark{background:var(--ink);color:#fff}
+.btn-dark:hover{background:#1c2f4d}
+.tag{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+/* affiliate */
+.aff-banner{background:#fff;border:1px dashed #b9c6d6;border-radius:var(--radius);padding:22px;display:flex;gap:18px;align-items:flex-start}
+.aff-banner .ic{font-size:30px}
+.aff-banner h3{font-size:18px;margin-bottom:4px}
+.aff-banner p{color:var(--muted);font-size:14.5px}
+.aff-tiles{margin-top:18px}
+.aff-tile{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+.aff-tile .ic{font-size:26px}
+.aff-tile h3{font-size:16.5px;margin:8px 0 4px}
+.aff-tile p{font-size:14px;color:var(--muted)}
+.aff-tile .status{display:inline-block;margin-top:12px;font-size:12.5px;font-weight:700;color:var(--muted);background:var(--paper);border-radius:999px;padding:5px 10px}
+.disclosure{font-size:13px;color:var(--muted);margin-top:14px}
+/* resources */
+.res-card .card-cover{aspect-ratio:16/10}
+.res-card .big{font-size:40px}
+.taster{background:var(--navy);color:#fff;border-radius:var(--radius);padding:24px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;margin-bottom:22px}
+.taster h3{font-size:21px;margin-bottom:6px}
+.taster p{color:#c7d2e0;font-size:14.5px;max-width:56ch}
+.taster .btn{white-space:nowrap}
+/* games */
+.game-card .card-cover{aspect-ratio:16/10}
+.game-card .big{font-size:44px}
+/* blog */
+.blog-meta{font-size:13px;color:var(--muted)}
+/* future */
+.future-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.future-slot{border:1.5px dashed #b9c6d6;border-radius:var(--radius);padding:18px;background:#fff;text-align:center}
+.future-slot .ic{font-size:26px}
+.future-slot b{display:block;font-size:14.5px;margin:8px 0 3px}
+.future-slot span{font-size:12.5px;color:var(--muted)}
+/* search status */
+.search-status{display:none;background:#fff;border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:14.5px}
+.search-status.show{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+.search-status button{border:0;background:none;color:var(--accent);font-weight:700;font-size:14px}
+.empty-note{display:none;color:var(--muted);padding:18px 0;font-size:15px}
+.empty-note.show{display:block}
+/* footer */
+footer{background:var(--navy);color:#c7d2e0;margin-top:64px}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px;padding:44px 0 28px}
+footer h3{color:#fff;font-size:15px;margin-bottom:12px}
+footer a{color:#c7d2e0;display:block;padding:5px 0;font-size:14.5px}
+footer a:hover{color:#fff}
+footer p{font-size:14px;line-height:1.6}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.14);padding:16px 0;font-size:13px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+/* bottom mobile nav */
+.bottom-nav{display:none;position:fixed;left:0;right:0;bottom:0;z-index:70;background:#fff;border-top:1px solid var(--line);padding:4px 2px calc(4px + env(safe-area-inset-bottom))}
+.bottom-nav .wrap{display:grid;grid-template-columns:repeat(5,1fr);padding-left:4px;padding-right:4px}
+.bottom-nav a{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0 6px;color:var(--muted);font-size:11px;font-weight:600;min-height:48px;justify-content:center}
+.bottom-nav a .ic{font-size:20px;line-height:1}
+.bottom-nav a.active{color:var(--accent)}
+.bottom-nav a:hover{text-decoration:none}
+/* modal */
+.modal-backdrop{position:fixed;inset:0;background:rgba(15,27,45,.6);z-index:100;display:none;align-items:flex-start;justify-content:center;padding:24px 16px;overflow-y:auto}
+.modal-backdrop.open{display:flex}
+.modal{background:#fff;border-radius:16px;max-width:860px;width:100%;box-shadow:0 24px 64px rgba(0,0,0,.3);overflow:hidden}
+.modal-inner{display:grid;grid-template-columns:320px 1fr}
+.modal-cover{aspect-ratio:auto;min-height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;color:#fff;padding:32px 20px;text-align:center}
+.modal-cover .big{font-size:72px}
+.modal-cover .ct{font-family:'Sora',sans-serif;font-weight:700;font-size:21px}
+.modal-body{padding:28px}
+.modal-body h2{font-size:25px;margin-bottom:8px}
+.modal-body .meta{color:var(--muted);font-size:14.5px;margin-bottom:12px}
+.modal-body p.desc{color:var(--ink-soft);margin-bottom:16px}
+.modal-price{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
+.modal-note{font-size:13.5px;color:var(--muted);margin-bottom:18px}
+.modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.modal-actions .btn{min-height:48px}
+.related h3{font-size:15px;margin-bottom:10px}
+.related-list{display:flex;gap:8px;flex-wrap:wrap}
+.related-list button{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font-size:13.5px;font-weight:600;min-height:40px}
+.related-list button:hover{border-color:var(--accent);color:var(--accent)}
+.modal-close{position:absolute;top:12px;right:12px;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.9);font-size:20px;line-height:1}
+.modal-wrap{position:relative}
+/* responsive */
+@media (max-width:1024px){
+  .hero h1{font-size:36px}
+  .grid-4{grid-template-columns:repeat(3,1fr)}
+  .future-strip{grid-template-columns:repeat(3,1fr)}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:768px){
+  .hero-grid{grid-template-columns:1fr;gap:28px}
+  .hero{padding:32px 0}
+  .hero h1{font-size:32px}
+  .grid-4{grid-template-columns:repeat(2,1fr)}
+  .grid-3{grid-template-columns:repeat(2,1fr)}
+  .modal-inner{grid-template-columns:1fr}
+  .modal-cover{min-height:180px}
+  .taster{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .desktop-nav{display:none}
+  .hamburger{display:block}
+  .header-cta{display:none}
+  .global-search{display:none}
+  .utility .wrap{justify-content:center}
+  .utility .hide-m{display:none}
+  .bottom-nav{display:block}
+  body{padding-bottom:64px}
+  section.block{padding:40px 0 4px}
+  .section-head h2{font-size:23px}
+  .section-head .view-all{white-space:normal;font-size:13.5px;line-height:1.4}
+  .grid-4,.grid-3,.grid-2{grid-template-columns:1fr 1fr}
+  .future-strip{grid-template-columns:1fr 1fr}
+  .hero h1{font-size:29px}
+  .hero p.lead{font-size:16px}
+  .dash-grid{grid-template-columns:1fr 1fr}
+  .footer-grid{grid-template-columns:1fr;gap:24px}
+  .card-cover .big{font-size:42px}
+  .card-body h3{font-size:15.5px}
+}
+@media (max-width:380px){
+  .header-main{gap:10px}
+  .brand-mark{width:34px;height:34px;padding:5px}
+  .brand-name{font-size:17px}
+  .brand-name small{font-size:10px}
+  .grid-4,.grid-3,.grid-2{grid-template-columns:1fr}
+  .future-strip{grid-template-columns:1fr}
+  .hero-facts div{padding-right:14px;margin-right:14px}
+  .card-actions{flex-direction:column}
+  .card-actions .btn{width:100%}
+}
+</style>
+</head>
+<body>
+<!-- utility bar -->
+<div class="utility">
+  <div class="wrap">
+    <span>Digital products for creative learning and play</span>
+    <span class="hide-m">Free resources, no sign-up &nbsp;·&nbsp; <a href="mailto:jojobusiness0101@gmail.com">jojobusiness0101@gmail.com</a></span>
+  </div>
+</div>
+
+<!-- header -->
+<header class="site-header">
+  <div class="wrap header-main">
+    <a class="brand" href="#top" aria-label="JoJo's Blocks home">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      <span class="brand-name">JoJo's Blocks<small>CREATIVE DIGITAL MARKETPLACE</small></span>
+    </a>
+    <div class="global-search" role="search">
+      <input type="search" id="globalSearch" placeholder="Search books, free resources, games, articles…" aria-label="Search the whole platform" autocomplete="off">
+      <button type="button" id="globalSearchBtn">Search</button>
+    </div>
+    <button class="header-cta" type="button" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Browse all products</button>
+    <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav">☰</button>
+  </div>
+  <nav class="desktop-nav" aria-label="Main navigation">
+    <div class="wrap">
+      <a href="#top" class="active">Home</a>
+      <a href="#products">Our Products</a>
+      <a href="#affiliate">Affiliate Marketplace</a>
+      <a href="#resources">Free Resources</a>
+      <a href="#games">Games &amp; Play</a>
+      <a href="#blog">Blog</a>
+      <a href="#about">About</a>
+      <a href="mailto:jojobusiness0101@gmail.com">Contact</a>
+    </div>
+  </nav>
+  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
+    <div class="mobile-search" role="search">
+      <input type="search" id="mobileSearch" placeholder="Search books, resources, games…" aria-label="Search the whole platform" autocomplete="off">
+      <button type="button" id="mobileSearchBtn">Go</button>
+    </div>
+    <a href="#top">Home</a>
+    <a href="#products">Our Products</a>
+    <a href="#affiliate">Affiliate Marketplace</a>
+    <a href="#resources">Free Resources</a>
+    <a href="#games">Games &amp; Play</a>
+    <a href="#blog">Blog</a>
+    <a href="#about">About</a>
+    <a href="mailto:jojobusiness0101@gmail.com">Contact</a>
+  </nav>
+</header>
+
+<main id="top">
+<!-- hero + platform dashboard -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">A multi-category creative platform</span>
+      <h1>Books, tools &amp; free resources for <span class="hl">creative learning and play</span></h1>
+      <p class="lead">JoJo's Blocks is a growing digital marketplace: our own colouring books and printables, honest recommendations, free downloads for everyone, and browser games — all in one place.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="#products">Shop our books</a>
+        <a class="btn btn-ghost" href="#resources">Get free resources</a>
+      </div>
+      <div class="hero-facts">
+        <div><b>5</b><span>books for sale</span></div>
+        <div><b>12</b><span>free resources</span></div>
+        <div><b>6</b><span>free games</span></div>
+        <div><b>8</b><span>blog articles</span></div>
+      </div>
+    </div>
+    <div class="dashboard" aria-label="Platform at a glance">
+      <h2>Everything in one place</h2>
+      <p>Six areas, one platform. Pick a starting point — nothing is buried.</p>
+      <div class="dash-grid">
+        <a class="dash-tile" href="#products"><span class="ic">📚</span><b>Our Products</b><span>5 books · from $3.59</span></a>
+        <a class="dash-tile" href="#affiliate"><span class="ic">🛍️</span><b>Affiliate Marketplace</b><span>Recommendations coming soon</span></a>
+        <a class="dash-tile" href="#resources"><span class="ic">🎁</span><b>Free Resources</b><span>12 free downloads</span></a>
+        <a class="dash-tile" href="#games"><span class="ic">🎮</span><b>Games &amp; Play</b><span>6 free browser games</span></a>
+        <a class="dash-tile" href="#blog"><span class="ic">✏️</span><b>Blog</b><span>8 guides &amp; articles</span></a>
+        <a class="dash-tile" href="#future"><span class="ic">🌱</span><b>Future Categories</b><span>More coming soon</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- search status (appears when searching) -->
+<div class="wrap"><div class="search-status" id="searchStatus" role="status"></div></div>
+
+<!-- OUR PRODUCTS -->
+<section class="block" id="products">
+  <div class="wrap">
+    <div class="section-head"><h2>Our Products</h2><a class="view-all" href="https://jojosblocks.gumroad.com/" target="_blank" rel="noopener">Visit our Gumroad store →</a></div>
+    <p class="section-sub">Our own digital books — printable PDFs, bought securely on Gumroad. Personal &amp; family use. Discount code <strong>JOJOS10</strong> gives 10% off.</p>
+    <div class="chips" id="productChips" role="group" aria-label="Filter products">
+      <button class="chip active" data-filter="all">All products</button>
+      <button class="chip" data-filter="book">Colouring books</button>
+      <button class="chip" data-filter="bundle">Bundle</button>
+      <button class="chip" data-filter="soon">Coming soon</button>
+    </div>
+    <div class="grid grid-4" id="productGrid">
+      <article class="card filterable" data-cat="book" data-search="my first abc book a-z colouring tracing letters alphabet ages 2-4">
+        <div class="card-cover cover-abc"><span class="badge sale">Sale</span><span class="big">🔤</span><span class="ct">My First ABC Book</span><span class="cs">28 pages · Ages 2–4</span></div>
+        <div class="card-body">
+          <span class="tag">Colouring book</span>
+          <h3><a href="#" data-detail="abc">My First ABC Book</a></h3>
+          <p class="card-meta">A–Z colouring + tracing.</p>
+          <div class="price-row"><span class="price">$3.59</span><span class="price-old">$3.99</span><span class="price-save">Save 10%</span></div>
+          <div class="card-actions"><button class="btn btn-outline" data-detail="abc">Details</button><a class="btn btn-dark" href="https://jojosblocks.gumroad.com/l/my-first-abc-book?wanted=true" target="_blank" rel="noopener">Buy on Gumroad</a></div>
+        </div>
+      </article>
+      <article class="card filterable" data-cat="book" data-search="my first animal explorer animals colouring activity pages ages 3-6">
+        <div class="card-cover cover-animal"><span class="badge sale">Sale</span><span class="big">🦁</span><span class="ct">My First Animal Explorer</span><span class="cs">30 pages · Ages 3–6</span></div>
+        <div class="card-body">
+          <span class="tag">Colouring book</span>
+          <h3><a href="#" data-detail="animal">My First Animal Explorer</a></h3>
+          <p class="card-meta">20 animals to colour + 5 learning activity pages.</p>
+          <div class="price-row"><span class="price">$4.49</span><span class="price-old">$4.99</span><span class="price-save">Save 10%</span></div>
+          <div class="card-actions"><button class="btn btn-outline" data-detail="animal">Details</button><a class="btn btn-dark" href="https://jojosblocks.gumroad.com/l/my-first-animal-explorer?wanted=true" target="_blank" rel="noopener">Buy on Gumroad</a></div>
+        </div>
+      </article>
+      <article class="card filterable" data-cat="book" data-search="my little community helpers jobs people colouring ages 4-7">
+        <div class="card-cover cover-helpers"><span class="badge sale">Sale</span><span class="big">🧑‍🚒</span><span class="ct">My Little Community Helpers</span><span class="cs">54 pages · Ages 4–7</span></div>
+        <div class="card-body">
+          <span class="tag">Colouring book</span>
+          <h3><a href="#" data-detail="helpers">My Little Community Helpers</a></h3>
+          <p class="card-meta">54 pages about the people who help us every day.</p>
+          <div class="price-row"><span class="price">$4.49</span><span class="price-old">$4.99</span><span class="price-save">Save 10%</span></div>
+          <div class="card-actions"><button class="btn btn-outline" data-detail="helpers">Details</button><a class="btn btn-dark" href="https://jojosblocks.gumroad.com/l/my-little-community-helpers?wanted=true" target="_blank" rel="noopener">Buy on Gumroad</a></div>
+        </div>
+      </article>
+      <article class="card filterable" data-cat="book" data-search="my little space adventure planets stars rockets colouring ages 3-5">
+        <div class="card-cover cover-space"><span class="badge sale">Sale</span><span class="big">🚀</span><span class="ct">My Little Space Adventure</span><span class="cs">42 pages · Ages 3–5</span></div>
+        <div class="card-body">
+          <span class="tag">Colouring book</span>
+          <h3><a href="#" data-detail="space">My Little Space Adventure</a></h3>
+          <p class="card-meta">42 pages of planets, stars and rockets.</p>
+          <div class="price-row"><span class="price">$4.49</span><span class="price-old">$4.99</span><span class="price-save">Save 10%</span></div>
+          <div class="card-actions"><button class="btn btn-outline" data-detail="space">Details</button><a class="btn btn-dark" href="https://jojosblocks.gumroad.com/l/my-little-space-adventure?wanted=true" target="_blank" rel="noopener">Buy on Gumroad</a></div>
+        </div>
+      </article>
+      <article class="card filterable" data-cat="bundle" data-search="complete coloring book bundle all four books ages 2-7 saves 5.97">
+        <div class="card-cover cover-bundle"><span class="badge sale">Best value</span><span class="big">📚</span><span class="ct">Complete Coloring Book Bundle</span><span class="cs">154 pages · Ages 2–7</span></div>
+        <div class="card-body">
+          <span class="tag">Bundle · All four books</span>
+          <h3><a href="#" data-detail="bundle">Complete Coloring Book Bundle</a></h3>
+          <p class="card-meta">All four books in one bundle. Saves $5.97 vs buying separately.</p>
+          <div class="price-row"><span class="price">$11.69</span><span class="price-old">$12.99</span><span class="price-save">Save 10%</span></div>
+          <div class="card-actions"><button class="btn btn-outline" data-detail="bundle">Details</button><a class="btn btn-dark" href="https://jojosblocks.gumroad.com/l/jojos-blocks-coloring-bundle?wanted=true" target="_blank" rel="noopener">Buy on Gumroad</a></div>
+        </div>
+      </article>
+      <article class="card filterable" data-cat="soon" data-search="ebooks guides coming soon">
+        <div class="card-cover cover-soon"><span class="badge soon">Coming soon</span><span class="big">📖</span><span class="ct">Ebooks &amp; Guides</span><span class="cs">Future category</span></div>
+        <div class="card-body">
+          <span class="tag">Future category</span>
+          <h3>Ebooks &amp; Guides</h3>
+          <p class="card-meta">Longer guides and ebooks are planned. No products here yet.</p>
+          <div class="price-row"><span class="price" style="font-size:15px;color:var(--muted)">Coming soon</span></div>
+          <div class="card-actions"><button class="btn btn-ghost" disabled style="opacity:.6;cursor:default">Not available yet</button></div>
+        </div>
+      </article>
+      <article class="card filterable" data-cat="soon" data-search="templates planners coming soon">
+        <div class="card-cover cover-soon"><span class="badge soon">Coming soon</span><span class="big">🗓️</span><span class="ct">Templates &amp; Planners</span><span class="cs">Future category</span></div>
+        <div class="card-body">
+          <span class="tag">Future category</span>
+          <h3>Templates &amp; Planners</h3>
+          <p class="card-meta">Printable templates and planners are planned. No products here yet.</p>
+          <div class="price-row"><span class="price" style="font-size:15px;color:var(--muted)">Coming soon</span></div>
+          <div class="card-actions"><button class="btn btn-ghost" disabled style="opacity:.6;cursor:default">Not available yet</button></div>
+        </div>
+      </article>
+      <article class="card filterable" data-cat="soon" data-search="ai prompt packs coming soon">
+        <div class="card-cover cover-soon"><span class="badge soon">Coming soon</span><span class="big">✨</span><span class="ct">AI Prompt Packs</span><span class="cs">Future category</span></div>
+        <div class="card-body">
+          <span class="tag">Future category</span>
+          <h3>AI Prompt Packs</h3>
+          <p class="card-meta">Curated AI prompt collections are planned. No products here yet.</p>
+          <div class="price-row"><span class="price" style="font-size:15px;color:var(--muted)">Coming soon</span></div>
+          <div class="card-actions"><button class="btn btn-ghost" disabled style="opacity:.6;cursor:default">Not available yet</button></div>
+        </div>
+      </article>
+    </div>
+    <p class="empty-note" id="productEmpty">No products match that search. Try a different word, or clear the search.</p>
+  </div>
+</section>
+
+<!-- AFFILIATE MARKETPLACE -->
+<section class="block" id="affiliate">
+  <div class="wrap">
+    <div class="section-head"><h2>Affiliate Marketplace</h2><span class="view-all muted">Recommendations coming soon</span></div>
+    <p class="section-sub">A dedicated place for software, tools and creative products we genuinely recommend. Nothing is listed here yet — this is how it will work.</p>
+    <div class="aff-banner">
+      <span class="ic" aria-hidden="true">🛍️</span>
+      <div>
+        <h3>Recommendations coming soon</h3>
+        <p>When recommendations launch, every product will be one we have actually used, with a clear note on why we recommend it. There are no affiliate products, prices or links on this page yet.</p>
+      </div>
+    </div>
+    <div class="grid grid-4 aff-tiles">
+      <div class="aff-tile"><span class="ic">🎨</span><h3>Creative Software</h3><p>Design and illustration tools for makers and creators.</p><span class="status">Category planned</span></div>
+      <div class="aff-tile"><span class="ic">📖</span><h3>Learning Tools</h3><p>Apps and tools that support learning through play.</p><span class="status">Category planned</span></div>
+      <div class="aff-tile"><span class="ic">🖍️</span><h3>Art Supplies</h3><p>Physical supplies for colouring, drawing and crafts.</p><span class="status">Category planned</span></div>
+      <div class="aff-tile"><span class="ic">⚡</span><h3>Productivity Apps</h3><p>Planners and apps that help families and creators stay organised.</p><span class="status">Category planned</span></div>
+    </div>
+    <p class="disclosure">Affiliate disclosure: we may earn a commission if you buy through our links, at no extra cost to you. Recommendations will always be clearly labelled.</p>
+  </div>
+</section>
+
+<!-- FREE RESOURCES -->
+<section class="block" id="resources">
+  <div class="wrap">
+    <div class="section-head"><h2>Free Resources</h2><a class="view-all" href="https://jojosblocks.online/free-resources/" target="_blank" rel="noopener">Open the free hub →</a></div>
+    <p class="section-sub">Free printables, sketches, wallpapers, stickers, worksheets and AI resources. Free to download, no sign-up.</p>
+    <div class="taster">
+      <div>
+        <span class="eyebrow" style="color:#8fb4ff">Featured free download</span>
+        <h3>JoJo's Blocks Free Taster Pack</h3>
+        <p>6 pages, A4 PDF — a sample of our colouring pages, free for personal &amp; family use.</p>
+      </div>
+      <a class="btn btn-primary" href="https://jojosblocks.online/free-printables/" target="_blank" rel="noopener">Download free</a>
+    </div>
+    <div class="chips" id="resourceChips" role="group" aria-label="Filter free resources">
+      <button class="chip active" data-filter="all">All resources</button>
+      <button class="chip" data-filter="colouring">Colouring</button>
+      <button class="chip" data-filter="draw">Learn to draw</button>
+      <button class="chip" data-filter="worksheet">Worksheets</button>
+      <button class="chip" data-filter="planner">Planners</button>
+      <button class="chip" data-filter="printable">Printables</button>
+      <button class="chip" data-filter="wallpaper">Wallpapers</button>
+      <button class="chip" data-filter="ai">AI resources</button>
+    </div>
+    <div class="grid grid-4" id="resourceGrid">
+      <article class="card res-card filterable" data-cat="colouring" data-search="forest friends colouring pages pdf free"><div class="card-cover cover-res"><span class="badge free">Free · PDF</span><span class="big">🌲</span><span class="ct">Forest Friends</span><span class="cs">Colouring pages</span></div><div class="card-body"><span class="tag">Colouring</span><h3><a href="https://jojosblocks.online/free-resources/forest-friends-coloring/" target="_blank" rel="noopener">Forest Friends Colouring Pages</a></h3><p class="card-meta">Free PDF · Print at home</p><div class="card-actions"><a class="btn btn-dark" href="https://jojosblocks.online/free-resources/forest-friends-coloring/" target="_blank" rel="noopener">View &amp; Print</a></div></div></article>
+      <article class="card res-card filterable" data-cat="colouring" data-search="under the sea colouring pages pdf free"><div class="card-cover cover-res"><span class="badge free">Free · PDF</span><span class="big">🐠</span><span class="ct">Under the Sea</span><span class="cs">Colouring pages</span></div><div class="card-body"><span class="tag">Colouring</span><h3><a href="https://jojosblocks.online/free-resources/under-the-sea-coloring/" target="_blank" rel="noopener">Under the Sea Colouring Pages</a></h3><p class="card-meta">Free PDF · Print at home</p><div class="card-actions"><a class="btn btn-dark" href="https://jojosblocks.online/free-resources/under-the-sea-coloring/" target="_blank" rel="noopener">View &amp; Print</a></div></div></article>
+      <article class="card res-card filterable" data-cat="draw" data-search="learn to draw a cat pdf free"><div class="card-cover cover-res"><span class="badge free">Free · PDF</span><span class="big">🐱</span><span class="ct">Learn to Draw a Cat</span><span class="cs">Learn to draw</span></div><div class="card-body"><span class="tag">Learn to draw</span><h3><a href="https://jojosblocks.online/free-resources/learn-to-draw-cat/" target="_blank" rel="noopener">Learn to Draw a Cat</a></h3><p class="card-meta">Free PDF · Step-by-step drawing</p><div class="card-actions"><a class="btn btn-dark" href="https://jojosblocks.online/free-resources/learn-to-draw-cat/" target="_blank" rel="noopener">View &amp; Print</a></div></div></article>
+      <article class="card res-card filterable" data-cat="draw" data-search="learn to draw a butterfly pdf free"><div class="card-cover cover-res"><span class="badge free">Free · PDF</span><span class="big">🦋</span><span class="ct">Learn to Draw a Butterfly</span><span class="cs">Learn to draw</span></div><div class="card-body"><span class="tag">Learn to draw</span><h3><a href="https://jojosblocks.online/free-resources/learn-to-draw-butterfly/" target="_blank" rel="noopener">Learn to Draw a Butterfly</a></h3><p class="card-meta">Free PDF · Step-by-step drawing</p><div class="card-actions"><a class="btn btn-dark" href="https://jojosblocks.online/free-resources/learn-to-draw-butterfly/" target="_blank" rel="noopener">View &amp; Print</a></div></div></article>
+      <article class="card res-card filterable" data-cat="worksheet" data-search="alphabet tracing a-e worksheet pdf free letters"><div class="card-cover cover-res"><span class="badge free">Free · PDF</span><span class="big">✏️</span><span class="ct">Alphabet Tracing A–E</span><span class="cs">Worksheet</span></div><div class="card-body"><span class="tag">Worksheet</span><h3><a href="https://jojosblocks.online/free-resources/alphabet-tracing-a-e/" target="_blank" rel="noopener">Alphabet Tracing A–E</a></h3><p class="card-meta">Free PDF · Letter tracing practice</p><div class="card-actions"><a class="btn btn-dark" href="https://jojosblocks.online/free-resources/alphabet-tracing-a-e/" target="_blank" rel="noopener">View &amp; Print</a></div></div></article>
+      <article class="card res-card filterable" data-cat="worksheet" data-search="counting 1-10 numbers worksheet pdf free"><div class="card-cover cover-res"><span class="badge free">Free · PDF</span><span class="big">🔢</span><span class="ct">Counting 1–10</span><span class="cs">Worksheet</span></div><div class="card-body"><span class="tag">Worksheet</span><h3><a href="https://jojosblocks.online/free-resources/counting-1-10/" target="_blank" rel="noopener">Counting 1–10</a></h3><p class="card-meta">Free PDF · Early number practice</p><div class="card-actions"><a class="btn btn-dark" href="https://jojosblocks.online/free-resources/counting-1-10/" target="_blank" rel="noopener">View &amp; Print</a></div></div></article>
+      <article class="card res-card filterable" data-cat="planner" data-search="weekly planner pdf free printable"><div class="card-cover cover-res"><span class="badge free">Free · PDF</span><span class="big">🗓️</span><span class="ct">Weekly Planner</span><span class="cs">Planner</span></div><div class="card-body"><span class="tag">Planner</span><h3><a href="https://jojosblocks.online/free-resources/weekly-planner/" target="_blank" rel="noopener">Weekly Planner</a></h3><p class="card-meta">Free PDF · Plan the week</p><div class="card-actions"><a class="btn btn-dark" href="https://jojosblocks.online/free-resources/weekly-planner/" target="_blank" rel="noopener">View &amp; Print</a></div></div></article>
+      <article class="card res-card filterable" data-cat="planner" data-search="daily routine chart pdf free printable"><div class="card-cover cover-res"><span class="badge free">Free · PDF</span><span class="big">⏰</span><span class="ct">Daily Routine Chart</span><span class="cs">Planner</span></div><div class="card-body"><span class="tag">Planner</span><h3><a href="https://jojosblocks.online/free-resources/daily-routine-chart/" target="_blank" rel="noopener">Daily Routine Chart</a></h3><p class="card-meta">Free PDF · Daily routine at a glance</p><div class="card-actions"><a class="btn btn-dark" href="https://jojosblocks.online/free-resources/daily-routine-chart/" target="_blank" rel="noopener">View &amp; Print</a></div></div></article>
+      <article class="card res-card filterable" data-cat="printable" data-search="sticker sheet stars animals printable pdf free"><div class="card-cover cover-res"><span class="badge free">Free · PDF</span><span class="big">⭐</span><span class="ct">Sticker Sheet</span><span class="cs">Printable</span></div><div class="card-body"><span class="tag">Printable</span><h3><a href="https://jojosblocks.online/free-resources/sticker-sheet-stars-animals/" target="_blank" rel="noopener">Sticker Sheet — Stars &amp; Animals</a></h3><p class="card-meta">Free PDF · Print and cut out</p><div class="card-actions"><a class="btn btn-dark" href="https://jojosblocks.online/free-resources/sticker-sheet-stars-animals/" target="_blank" rel="noopener">View &amp; Print</a></div></div></article>
+      <article class="card res-card filterable" data-cat="printable" data-search="bookmark set printable pdf free"><div class="card-cover cover-res"><span class="badge free">Free · PDF</span><span class="big">🔖</span><span class="ct">Bookmark Set</span><span class="cs">Printable</span></div><div class="card-body"><span class="tag">Printable</span><h3><a href="https://jojosblocks.online/free-resources/bookmark-set/" target="_blank" rel="noopener">Bookmark Set</a></h3><p class="card-meta">Free PDF · Print and cut out</p><div class="card-actions"><a class="btn btn-dark" href="https://jojosblocks.online/free-resources/bookmark-set/" target="_blank" rel="noopener">View &amp; Print</a></div></div></article>
+      <article class="card res-card filterable" data-cat="wallpaper" data-search="sunset mountains phone wallpaper jpg free"><div class="card-cover cover-res"><span class="badge free">Free · JPG</span><span class="big">🌄</span><span class="ct">Sunset Mountains</span><span class="cs">Phone wallpaper</span></div><div class="card-body"><span class="tag">Wallpaper</span><h3><a href="https://jojosblocks.online/free-resources/sunset-mountains-wallpaper/" target="_blank" rel="noopener">Sunset Mountains Phone Wallpaper</a></h3><p class="card-meta">Free JPG · 1080×1920</p><div class="card-actions"><a class="btn btn-dark" href="https://jojosblocks.online/free-resources/sunset-mountains-wallpaper/" target="_blank" rel="noopener">View &amp; Download</a></div></div></article>
+      <article class="card res-card filterable" data-cat="ai" data-search="ai art prompt pack pdf free"><div class="card-cover cover-res"><span class="badge free">Free · PDF</span><span class="big">✨</span><span class="ct">AI Art Prompt Pack</span><span class="cs">AI resources</span></div><div class="card-body"><span class="tag">AI resources</span><h3><a href="https://jojosblocks.online/free-resources/ai-art-prompt-pack/" target="_blank" rel="noopener">AI Art Prompt Pack</a></h3><p class="card-meta">Free PDF · Prompts for AI art</p><div class="card-actions"><a class="btn btn-dark" href="https://jojosblocks.online/free-resources/ai-art-prompt-pack/" target="_blank" rel="noopener">View &amp; Download</a></div></div></article>
+    </div>
+    <p class="empty-note" id="resourceEmpty">No free resources match that search. Try a different word, or clear the search.</p>
+  </div>
+</section>
+
+<!-- GAMES & PLAY -->
+<section class="block" id="games">
+  <div class="wrap">
+    <div class="section-head"><h2>Games &amp; Play</h2><a class="view-all" href="https://jojosblocks.online/games/" target="_blank" rel="noopener">Open the games hub →</a></div>
+    <p class="section-sub">Six original browser games, free to play — no download, no account. Each game has its own original music with mute and volume controls.</p>
+    <div class="grid grid-3" id="gameGrid">
+      <article class="card game-card filterable" data-search="animal guess game guessing animals"><div class="card-cover cover-game"><span class="badge free">Free · Play now</span><span class="big">🦁</span><span class="ct">Animal Guess</span><span class="cs">Guessing game</span></div><div class="card-body"><span class="tag">Original browser game</span><h3><a href="https://jojosblocks.online/games/animal-guess/" target="_blank" rel="noopener">Animal Guess</a></h3><p class="card-meta">Guess the animal from the clues.</p><div class="card-actions"><a class="btn btn-dark" href="https://jojosblocks.online/games/animal-guess/" target="_blank" rel="noopener">Play now →</a></div></div></article>
+      <article class="card game-card filterable" data-search="memory match game cards pairs"><div class="card-cover cover-game"><span class="badge free">Free · Play now</span><span class="big">🃏</span><span class="ct">Memory Match</span><span class="cs">Memory game</span></div><div class="card-body"><span class="tag">Original browser game</span><h3><a href="https://jojosblocks.online/games/memory-match/" target="_blank" rel="noopener">Memory Match</a></h3><p class="card-meta">Flip the cards and find every matching pair.</p><div class="card-actions"><a class="btn btn-dark" href="https://jojosblocks.online/games/memory-match/" target="_blank" rel="noopener">Play now →</a></div></div></article>
+      <article class="card game-card filterable" data-search="tic-tac-toe game noughts crosses classic"><div class="card-cover cover-game"><span class="badge free">Free · Play now</span><span class="big">✖️</span><span class="ct">Tic-Tac-Toe</span><span class="cs">Classic game</span></div><div class="card-body"><span class="tag">Original browser game</span><h3><a href="https://jojosblocks.online/games/tic-tac-toe/" target="_blank" rel="noopener">Tic-Tac-Toe</a></h3><p class="card-meta">The classic game of noughts and crosses.</p><div class="card-actions"><a class="btn btn-dark" href="https://jojosblocks.online/games/tic-tac-toe/" target="_blank" rel="noopener">Play now →</a></div></div></article>
+      <article class="card game-card filterable" data-search="click the box game speed reflexes"><div class="card-cover cover-game"><span class="badge free">Free · Play now</span><span class="big">🖱️</span><span class="ct">Click the Box</span><span class="cs">Reaction game</span></div><div class="card-body"><span class="tag">Original browser game</span><h3><a href="https://jojosblocks.online/games/click-the-box/" target="_blank" rel="noopener">Click the Box</a></h3><p class="card-meta">Click the box as soon as it appears.</p><div class="card-actions"><a class="btn btn-dark" href="https://jojosblocks.online/games/click-the-box/" target="_blank" rel="noopener">Play now →</a></div></div></article>
+      <article class="card game-card filterable" data-search="flappy penguin game flying bird gaps"><div class="card-cover cover-game"><span class="badge free">Free · Play now</span><span class="big">🐧</span><span class="ct">Flappy Penguin</span><span class="cs">Flying game</span></div><div class="card-body"><span class="tag">Original browser game</span><h3><a href="https://jojosblocks.online/games/flappy-penguin/" target="_blank" rel="noopener">Flappy Penguin</a></h3><p class="card-meta">Guide the penguin through the gaps.</p><div class="card-actions"><a class="btn btn-dark" href="https://jojosblocks.online/games/flappy-penguin/" target="_blank" rel="noopener">Play now →</a></div></div></article>
+      <article class="card game-card filterable" data-search="block drop game falling blocks rows puzzle tetris"><div class="card-cover cover-game"><span class="badge free">Free · Play now</span><span class="big">🧱</span><span class="ct">Block Drop</span><span class="cs">Puzzle game</span></div><div class="card-body"><span class="tag">Original browser game</span><h3><a href="https://jojosblocks.online/games/block-drop/" target="_blank" rel="noopener">Block Drop</a></h3><p class="card-meta">Stack the falling blocks into complete rows.</p><div class="card-actions"><a class="btn btn-dark" href="https://jojosblocks.online/games/block-drop/" target="_blank" rel="noopener">Play now →</a></div></div></article>
+    </div>
+    <p class="empty-note" id="gameEmpty">No games match that search. Try a different word, or clear the search.</p>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section class="block" id="blog">
+  <div class="wrap">
+    <div class="section-head"><h2>From the Blog</h2><a class="view-all" href="https://jojosblocks.online/blog/" target="_blank" rel="noopener">All articles →</a></div>
+    <p class="section-sub">Guides, activities and ideas for creative learning at home.</p>
+    <div class="grid grid-4" id="blogGrid">
+      <article class="card filterable" data-search="benefits of coloring for preschoolers"><div class="card-cover cover-blog"><span class="big">🖍️</span><span class="ct">Benefits of Coloring</span></div><div class="card-body"><span class="tag">Guide</span><h3><a href="https://jojosblocks.online/blog/benefits-of-coloring-for-preschoolers.html" target="_blank" rel="noopener">Benefits of Coloring for Preschoolers</a></h3><p class="blog-meta">Read the article →</p></div></article>
+      <article class="card filterable" data-search="easy alphabet activities for toddlers at home"><div class="card-cover cover-blog"><span class="big">🔤</span><span class="ct">Alphabet Activities</span></div><div class="card-body"><span class="tag">Activities</span><h3><a href="https://jojosblocks.online/blog/easy-alphabet-activities-for-toddlers-at-home.html" target="_blank" rel="noopener">Easy Alphabet Activities for Toddlers at Home</a></h3><p class="blog-meta">Read the article →</p></div></article>
+      <article class="card filterable" data-search="fun animal facts for kids"><div class="card-cover cover-blog"><span class="big">🦁</span><span class="ct">Animal Facts</span></div><div class="card-body"><span class="tag">Facts</span><h3><a href="https://jojosblocks.online/blog/fun-animal-facts-for-kids.html" target="_blank" rel="noopener">Fun Animal Facts for Kids</a></h3><p class="blog-meta">Read the article →</p></div></article>
+      <article class="card filterable" data-search="homeschool preschool daily routine with printables"><div class="card-cover cover-blog"><span class="big">🏠</span><span class="ct">Homeschool Routine</span></div><div class="card-body"><span class="tag">Guide</span><h3><a href="https://jojosblocks.online/blog/homeschool-preschool-daily-routine-with-printables.html" target="_blank" rel="noopener">Homeschool Preschool Daily Routine with Printables</a></h3><p class="blog-meta">Read the article →</p></div></article>
+      <article class="card filterable" data-search="how coloring helps your child learn the alphabet"><div class="card-cover cover-blog"><span class="big">✏️</span><span class="ct">Coloring &amp; Alphabet</span></div><div class="card-body"><span class="tag">Guide</span><h3><a href="https://jojosblocks.online/blog/how-coloring-helps-your-child-learn-the-alphabet.html" target="_blank" rel="noopener">How Coloring Helps Your Child Learn the Alphabet</a></h3><p class="blog-meta">Read the article →</p></div></article>
+      <article class="card filterable" data-search="screen-free activities for kids on rainy days"><div class="card-cover cover-blog"><span class="big">🌧️</span><span class="ct">Rainy Day Activities</span></div><div class="card-body"><span class="tag">Activities</span><h3><a href="https://jojosblocks.online/blog/screen-free-activities-for-kids-on-rainy-days.html" target="_blank" rel="noopener">Screen-Free Activities for Kids on Rainy Days</a></h3><p class="blog-meta">Read the article →</p></div></article>
+      <article class="card filterable" data-search="space facts for preschoolers"><div class="card-cover cover-blog"><span class="big">🪐</span><span class="ct">Space Facts</span></div><div class="card-body"><span class="tag">Facts</span><h3><a href="https://jojosblocks.online/blog/space-facts-for-preschoolers.html" target="_blank" rel="noopener">Space Facts for Preschoolers</a></h3><p class="blog-meta">Read the article →</p></div></article>
+      <article class="card filterable" data-search="what do community helpers do"><div class="card-cover cover-blog"><span class="big">🧑‍🚒</span><span class="ct">Community Helpers</span></div><div class="card-body"><span class="tag">Guide</span><h3><a href="https://jojosblocks.online/blog/what-do-community-helpers-do.html" target="_blank" rel="noopener">What Do Community Helpers Do?</a></h3><p class="blog-meta">Read the article →</p></div></article>
+    </div>
+    <p class="empty-note" id="blogEmpty">No articles match that search. Try a different word, or clear the search.</p>
+  </div>
+</section>
+
+<!-- FUTURE CATEGORIES -->
+<section class="block" id="future">
+  <div class="wrap">
+    <div class="section-head"><h2>Future Categories</h2></div>
+    <p class="section-sub">The platform is designed to grow. These categories are planned — no products are listed here yet.</p>
+    <div class="future-strip">
+      <div class="future-slot"><span class="ic">📖</span><b>Ebooks &amp; Guides</b><span>Coming soon</span></div>
+      <div class="future-slot"><span class="ic">🖨️</span><b>Printables</b><span>Coming soon</span></div>
+      <div class="future-slot"><span class="ic">🗓️</span><b>Templates &amp; Planners</b><span>Coming soon</span></div>
+      <div class="future-slot"><span class="ic">📓</span><b>Journals &amp; Workbooks</b><span>Coming soon</span></div>
+      <div class="future-slot"><span class="ic">✨</span><b>AI Prompt Packs</b><span>Coming soon</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="block" id="about">
+  <div class="wrap">
+    <div class="aff-banner">
+      <span class="ic" aria-hidden="true">🧱</span>
+      <div>
+        <h3>About JoJo's Blocks</h3>
+        <p>JoJo's Blocks started with children's colouring books and is growing into a multi-category digital marketplace — our own books and digital products, honest recommendations, free resources, games and articles. Digital products are sold through Gumroad; the website itself takes no payment. All downloads are for personal &amp; family use. Support replies within 2 business days on weekdays. Contact: <a href="mailto:jojobusiness0101@gmail.com">jojobusiness0101@gmail.com</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap footer-grid">
+    <div>
+      <h3>JoJo's Blocks</h3>
+      <p>Creative digital products, free resources &amp; games. A growing multi-category marketplace for creative learning and play.</p>
+      <p style="margin-top:10px"><a href="https://www.pinterest.com/JoJosBlocks/" target="_blank" rel="noopener">Pinterest — @JoJosBlocks ↗</a></p>
+    </div>
+    <div>
+      <h3>Shop</h3>
+      <a href="#products">Our Products</a>
+      <a href="#affiliate">Affiliate Marketplace</a>
+      <a href="https://jojosblocks.gumroad.com/" target="_blank" rel="noopener">Gumroad Store ↗</a>
+      <a href="#future">Future Categories</a>
+    </div>
+    <div>
+      <h3>Explore</h3>
+      <a href="#resources">Free Resources</a>
+      <a href="#games">Games &amp; Play</a>
+      <a href="#blog">Blog</a>
+      <a href="#about">About</a>
+    </div>
+    <div>
+      <h3>Help &amp; Legal</h3>
+      <a href="mailto:jojobusiness0101@gmail.com">Contact — jojobusiness0101@gmail.com</a>
+      <a href="https://jojosblocks.online/privacy.html" target="_blank" rel="noopener">Privacy Policy ↗</a>
+      <a href="https://jojosblocks.online/terms.html" target="_blank" rel="noopener">Terms &amp; Conditions ↗</a>
+      <a href="https://jojosblocks.online/refund-policy.html" target="_blank" rel="noopener">Refund Policy ↗</a>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <span>© 2026 JoJo's Blocks — Design preview 09: Professional Multi-Category Platform (not the live site).</span>
+    <span>Concept preview · No cart or checkout on this page</span>
+  </div>
+</footer>
+
+<!-- bottom mobile nav -->
+<nav class="bottom-nav" aria-label="Quick navigation">
+  <div class="wrap">
+    <a href="#top" class="active"><span class="ic">🏠</span>Home</a>
+    <a href="#products"><span class="ic">📚</span>Shop</a>
+    <a href="#resources"><span class="ic">🎁</span>Free</a>
+    <a href="#games"><span class="ic">🎮</span>Games</a>
+    <a href="#blog"><span class="ic">✏️</span>Blog</a>
+  </div>
+</nav>
+
+<!-- product detail modal -->
+<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-wrap">
+    <div class="modal">
+      <div class="modal-inner">
+        <div class="modal-cover" id="modalCover"></div>
+        <div class="modal-body">
+          <span class="tag" id="modalTag"></span>
+          <h2 id="modalTitle"></h2>
+          <p class="meta" id="modalMeta"></p>
+          <p class="desc" id="modalDesc"></p>
+          <div class="modal-price"><span class="price" id="modalPrice"></span><span class="price-old" id="modalOld"></span><span class="price-save" id="modalSave"></span></div>
+          <p class="modal-note">Digital PDF · Personal &amp; family use · Sold securely on Gumroad. Use code <strong>JOJOS10</strong> for 10% off.</p>
+          <div class="modal-actions">
+            <a class="btn btn-primary" id="modalBuy" href="#" target="_blank" rel="noopener">Buy on Gumroad →</a>
+            <a class="btn btn-ghost" id="modalLive" href="#" target="_blank" rel="noopener">View on live site</a>
+          </div>
+          <div class="related">
+            <h3>You may also like</h3>
+            <div class="related-list" id="modalRelated"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="modal-close" id="modalClose" aria-label="Close product details">✕</button>
+  </div>
+</div>
+
+<script>
+var PRODUCTS = {
+  abc: {title:"My First ABC Book", tag:"Colouring book", meta:"28 pages · Ages 2–4", desc:"A–Z colouring + tracing — every letter of the alphabet to colour and trace, made for little hands learning their first letters.", price:"$3.59", old:"$3.99", save:"Save 10%", cover:"cover-abc", icon:"🔤", buy:"https://jojosblocks.gumroad.com/l/my-first-abc-book?wanted=true", live:"https://jojosblocks.online/books/my-first-abc-book.html"},
+  animal: {title:"My First Animal Explorer", tag:"Colouring book", meta:"30 pages · Ages 3–6", desc:"20 animals to colour + 5 learning activity pages — meet the animals and learn along the way.", price:"$4.49", old:"$4.99", save:"Save 10%", cover:"cover-animal", icon:"🦁", buy:"https://jojosblocks.gumroad.com/l/my-first-animal-explorer?wanted=true", live:"https://jojosblocks.online/books/my-first-animal-explorer.html"},
+  helpers: {title:"My Little Community Helpers", tag:"Colouring book", meta:"54 pages · Ages 4–7", desc:"54 pages about the people who help us every day — firefighters, doctors, teachers and more.", price:"$4.49", old:"$4.99", save:"Save 10%", cover:"cover-helpers", icon:"🧑‍🚒", buy:"https://jojosblocks.gumroad.com/l/my-little-community-helpers?wanted=true", live:"https://jojosblocks.online/books/my-little-community-helpers.html"},
+  space: {title:"My Little Space Adventure", tag:"Colouring book", meta:"42 pages · Ages 3–5", desc:"42 pages of planets, stars and rockets — a first space adventure to colour.", price:"$4.49", old:"$4.99", save:"Save 10%", cover:"cover-space", icon:"🚀", buy:"https://jojosblocks.gumroad.com/l/my-little-space-adventure?wanted=true", live:"https://jojosblocks.online/books/my-little-space-adventure.html"},
+  bundle: {title:"Complete Coloring Book Bundle", tag:"Bundle · All four books", meta:"154 pages · Ages 2–7", desc:"All four books in one bundle — ABC, Animal Explorer, Community Helpers and Space Adventure. Saves $5.97 vs buying separately.", price:"$11.69", old:"$12.99", save:"Save 10%", cover:"cover-bundle", icon:"📚", buy:"https://jojosblocks.gumroad.com/l/jojos-blocks-coloring-bundle?wanted=true", live:"https://jojosblocks.online/books/complete-coloring-book-bundle.html"}
+};
+var ORDER = ["abc","animal","helpers","space","bundle"];
+
+function openDetail(key){
+  var p = PRODUCTS[key]; if(!p) return;
+  document.getElementById("modalCover").className = "modal-cover " + p.cover;
+  document.getElementById("modalCover").innerHTML = '<span class="big">'+p.icon+'</span><span class="ct">'+p.title+'</span><span class="cs">'+p.meta+'</span>';
+  document.getElementById("modalTag").textContent = p.tag;
+  document.getElementById("modalTitle").textContent = p.title;
+  document.getElementById("modalMeta").textContent = p.meta;
+  document.getElementById("modalDesc").textContent = p.desc;
+  document.getElementById("modalPrice").textContent = p.price;
+  document.getElementById("modalOld").textContent = p.old;
+  document.getElementById("modalSave").textContent = p.save;
+  document.getElementById("modalBuy").href = p.buy;
+  document.getElementById("modalLive").href = p.live;
+  var rel = document.getElementById("modalRelated"); rel.innerHTML = "";
+  ORDER.filter(function(k){return k!==key;}).forEach(function(k){
+    var b = document.createElement("button"); b.type="button"; b.textContent = PRODUCTS[k].title;
+    b.addEventListener("click", function(){ openDetail(k); });
+    rel.appendChild(b);
+  });
+  document.getElementById("modalBackdrop").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function closeDetail(){
+  document.getElementById("modalBackdrop").classList.remove("open");
+  document.body.style.overflow = "";
+}
+document.querySelectorAll("[data-detail]").forEach(function(el){
+  el.addEventListener("click", function(e){ e.preventDefault(); openDetail(el.getAttribute("data-detail")); });
+});
+document.getElementById("modalClose").addEventListener("click", closeDetail);
+document.getElementById("modalBackdrop").addEventListener("click", function(e){ if(e.target === this) closeDetail(); });
+document.addEventListener("keydown", function(e){ if(e.key === "Escape") closeDetail(); });
+
+/* mobile nav */
+var burger = document.getElementById("hamburger"), mnav = document.getElementById("mobileNav");
+burger.addEventListener("click", function(){
+  var open = mnav.classList.toggle("open");
+  burger.setAttribute("aria-expanded", open ? "true" : "false");
+  burger.textContent = open ? "✕" : "☰";
+});
+mnav.querySelectorAll("a").forEach(function(a){ a.addEventListener("click", function(){ mnav.classList.remove("open"); burger.textContent="☰"; burger.setAttribute("aria-expanded","false"); }); });
+
+/* search: one global query filters all filterable cards */
+var state = { q:"", productCat:"all", resourceCat:"all" };
+function norm(s){ return (s||"").toLowerCase(); }
+function applyFilters(){
+  var q = norm(state.q);
+  var counts = {products:0, resources:0, games:0, blog:0};
+  document.querySelectorAll("#productGrid .filterable").forEach(function(card){
+    var okQ = !q || norm(card.getAttribute("data-search")).indexOf(q) !== -1 || norm(card.textContent).indexOf(q) !== -1;
+    var okC = state.productCat === "all" || card.getAttribute("data-cat") === state.productCat;
+    var show = okQ && okC; card.style.display = show ? "" : "none"; if(show) counts.products++;
+  });
+  document.querySelectorAll("#resourceGrid .filterable").forEach(function(card){
+    var okQ = !q || norm(card.getAttribute("data-search")).indexOf(q) !== -1 || norm(card.textContent).indexOf(q) !== -1;
+    var okC = state.resourceCat === "all" || card.getAttribute("data-cat") === state.resourceCat;
+    var show = okQ && okC; card.style.display = show ? "" : "none"; if(show) counts.resources++;
+  });
+  document.querySelectorAll("#gameGrid .filterable").forEach(function(card){
+    var show = !q || norm(card.getAttribute("data-search")).indexOf(q) !== -1 || norm(card.textContent).indexOf(q) !== -1;
+    card.style.display = show ? "" : "none"; if(show) counts.games++;
+  });
+  document.querySelectorAll("#blogGrid .filterable").forEach(function(card){
+    var show = !q || norm(card.getAttribute("data-search")).indexOf(q) !== -1 || norm(card.textContent).indexOf(q) !== -1;
+    card.style.display = show ? "" : "none"; if(show) counts.blog++;
+  });
+  document.getElementById("productEmpty").classList.toggle("show", counts.products === 0);
+  document.getElementById("resourceEmpty").classList.toggle("show", counts.resources === 0);
+  document.getElementById("gameEmpty").classList.toggle("show", counts.games === 0);
+  document.getElementById("blogEmpty").classList.toggle("show", counts.blog === 0);
+  var status = document.getElementById("searchStatus");
+  if(q){
+    var total = counts.products + counts.resources + counts.games + counts.blog;
+    status.innerHTML = "<span>Showing <strong>" + total + "</strong> result" + (total===1?"":"s") + " for “" + state.q + "” — " + counts.products + " products · " + counts.resources + " free resources · " + counts.games + " games · " + counts.blog + " articles.</span><button type='button' id='clearSearch'>Clear search ✕</button>";
+    status.classList.add("show");
+    document.getElementById("clearSearch").addEventListener("click", function(){ setQuery(""); });
+  } else {
+    status.classList.remove("show"); status.innerHTML = "";
+  }
+}
+function setQuery(v){
+  state.q = v;
+  document.getElementById("globalSearch").value = v;
+  document.getElementById("mobileSearch").value = v;
+  applyFilters();
+}
+["globalSearch","mobileSearch"].forEach(function(id){
+  var el = document.getElementById(id);
+  el.addEventListener("input", function(){ state.q = el.value; if(id==="globalSearch"){document.getElementById("mobileSearch").value = el.value;} else {document.getElementById("globalSearch").value = el.value;} applyFilters(); });
+});
+document.getElementById("globalSearchBtn").addEventListener("click", function(){ applyFilters(); document.getElementById("products").scrollIntoView({behavior:"smooth"}); });
+document.getElementById("mobileSearchBtn").addEventListener("click", function(){ applyFilters(); mnav.classList.remove("open"); burger.textContent="☰"; document.getElementById("products").scrollIntoView({behavior:"smooth"}); });
+
+/* chips */
+function wireChips(containerId, key){
+  document.querySelectorAll("#"+containerId+" .chip").forEach(function(chip){
+    chip.addEventListener("click", function(){
+      document.querySelectorAll("#"+containerId+" .chip").forEach(function(c){ c.classList.remove("active"); });
+      chip.classList.add("active");
+      state[key] = chip.getAttribute("data-filter");
+      applyFilters();
+    });
+  });
+}
+wireChips("productChips", "productCat");
+wireChips("resourceChips", "resourceCat");
+
+/* bottom nav active state */
+var bottomLinks = document.querySelectorAll(".bottom-nav a");
+bottomLinks.forEach(function(a){ a.addEventListener("click", function(){ bottomLinks.forEach(function(x){x.classList.remove("active");}); a.classList.add("active"); }); });
+</script>
+</body>
+</html>
