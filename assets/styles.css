@@ -146,6 +146,9 @@ section.block{padding:64px 0;border-bottom:1px solid var(--line)}
 .af-card .tag{font-family:'Archivo',sans-serif;font-size:13px;font-weight:700;color:var(--ink)}
 .af-note{font-size:13px;color:var(--muted);margin-top:8px}
 .af-label{font-weight:700;color:var(--ink)}
+.af-gallery{display:flex;gap:10px;margin-top:10px}
+.af-gallery img{flex:1;min-width:0;width:100%;height:auto;display:block;border-radius:var(--radius);border:1px solid var(--line)}
+.af-video{width:100%;height:auto;display:block;border-radius:var(--radius-lg);border:1px solid var(--line);margin-top:16px}
 /* ---------- free resources ---------- */
 .taster{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:28px;margin-bottom:24px;box-shadow:var(--shadow)}
 .taster .art{min-height:200px;border-radius:var(--radius);background:var(--tile);color:var(--ink);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;padding:24px;text-align:center}

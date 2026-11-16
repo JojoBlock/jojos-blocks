@@ -179,11 +179,11 @@ if ($('#tabSearch')) $('#tabSearch').addEventListener('click', e => { e.preventD
     }
     if (kind === 'affiliates') {
       const price = it.price ? '<div class="price-row"><span class="price">' + it.price + '</span></div>' : '';
-      const thumb = it.thumb ? '<img src="' + it.thumb + '" alt="' + it.title.replace(/"/g, '&quot;') + '" loading="lazy">' : '';
+      const thumb = it.thumb ? '<a href="' + JB.root + it.url + '" aria-label="View ' + it.title.replace(/"/g, '&quot;') + ' details"><img src="' + it.thumb + '" alt="' + it.title.replace(/"/g, '&quot;') + '" loading="lazy"></a>' : '';
       return '<article class="card af-card" id="af-' + it.key + '" data-cat="' + it.filterKey + '">'
         + '<div class="cover">' + thumb + '</div>'
         + '<div class="body"><span class="tag">' + it.categoryName + ' · ' + it.merchant + '</span>'
-        + '<h3>' + it.title + '</h3><p class="meta">' + (it.desc || '') + '</p>' + price
+        + '<h3><a href="' + JB.root + it.url + '">' + it.title + '</a></h3><p class="meta">' + (it.desc || '') + '</p>' + price
         + '<div class="actions"><a class="btn btn-ink" href="' + it.affiliateUrl + '" target="_blank" rel="sponsored noopener">Visit ' + it.merchant + ' →</a></div>'
         + '<p class="af-note"><span class="af-label">Affiliate link</span> ' + (it.disclosure || '') + '</p></div></article>';
     }
