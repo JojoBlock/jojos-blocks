@@ -30,8 +30,9 @@ img{display:block;max-width:100%}
 .skip-link:focus{left:0;color:#fff}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:12px 20px;border-radius:9px;font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;border:1px solid transparent;text-decoration:none;text-align:center}
 .btn:hover{text-decoration:none}
-.btn-accent{background:var(--accent);color:var(--accent-text)}
-.btn-accent:hover{background:var(--accent-hov)}
+.btn-accent{background:var(--ink);color:#fff;transition:background .18s ease,transform .12s ease}
+.btn-accent:hover{background:#000}
+.btn-accent:active{transform:scale(.97)}
 .btn-ink{background:var(--ink);color:#fff}
 .btn-ink:hover{background:#000}
 .btn-ghost{background:#fff;border:1px solid var(--line);color:var(--ink)}
