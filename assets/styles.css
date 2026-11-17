@@ -37,9 +37,6 @@ img{display:block;max-width:100%}
 .btn-ghost{background:#fff;border:1px solid var(--line);color:var(--ink)}
 .btn-ghost:hover{border-color:var(--ink)}
 .btn-sm{min-height:44px;padding:10px 16px;font-size:14px}
-/* ---------- promo strip ---------- */
-.strip{background:var(--ink);color:var(--paper);font-size:13px;text-align:center;padding:6px 16px;line-height:1.45}
-.strip b{font-weight:700}
 /* ---------- header ---------- */
 header.site{position:sticky;top:0;z-index:70;background:rgba(250,249,246,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 .hd{max-width:1200px;margin:0 auto;padding:0 32px;height:72px;display:flex;align-items:center;gap:16px}
@@ -193,11 +190,6 @@ html.js #seeAllBtn{display:inline-flex}
 .bcard h3 a{color:var(--ink)}
 .bcard p{font-size:14px;color:var(--muted)}
 .bcard .read{margin-top:auto;font-size:14px;font-weight:700;font-family:'Archivo',sans-serif;padding-top:8px}
-/* ---------- recommended band ---------- */
-.band{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:22px 24px;display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap;box-shadow:var(--shadow)}
-.band h2{font-size:22px;margin-bottom:4px}
-.band p{font-size:14px;color:var(--muted);max-width:560px}
-.band .band-links{display:flex;gap:10px;flex-wrap:wrap}
 /* ---------- about / faq / newsletter ---------- */
 .about p{max-width:70ch;margin-bottom:12px}
 .about ul{list-style:none;display:grid;gap:6px;margin:16px 0;max-width:70ch}
@@ -330,7 +322,6 @@ body.tab-hidden .tabbar{display:none}
   .msticky .msticky-price s{font-family:'Inter',sans-serif;font-size:13px;color:var(--muted);font-weight:400;margin-left:6px}
   .msticky .btn{min-height:56px;flex:1;max-width:260px}
   footer.site .fgrid{grid-template-columns:1fr}
-  .strip{font-size:13px}
 }
 @media (max-width:380px){
   .hero h1{font-size:24px}
@@ -454,7 +445,7 @@ body.tab-hidden .tabbar{display:none}
 }
 /* Print: resource pages print the content only */
 @media print{
-  .strip,header.site,.dept,.tabbar,footer.site,.search-overlay,.modal-back,.skip-link,.filters-btn,.facet-bar,.pager,.loadmore-wrap{display:none !important}
+  header.site,.dept,.tabbar,footer.site,.search-overlay,.modal-back,.skip-link,.filters-btn,.facet-bar,.pager,.loadmore-wrap{display:none !important}
   body{background:#fff}
   .detail{padding:0}
 }
