@@ -24,6 +24,7 @@ const modalBack = $('#modalBack'), modalBox = $('#modalBox');
 let lastFocused = null;
 function openModal(id) {
   const p = PRODUCTS[id]; if (!p || !modalBack) return;
+  if (p.kofi) { window.location.href = JB.root + p.page; return; } // Ko-fi product: go to its detail page, never the book modal
   lastFocused = document.activeElement;
   $('#modalCover').innerHTML = '<img src="' + p.cover + '" alt="' + p.title.replace(/"/g, '&quot;') + ' cover" width="600" height="849">';
   $('#modalFmt').textContent = 'PDF · ' + p.pages + ' pages · Ages ' + p.ages;
@@ -39,7 +40,7 @@ function openModal(id) {
   $('#modalPageLink').href = JB.root + p.page;
   $('#mstickyPrice').innerHTML = money(p.sale) + ' <s>' + money(p.price) + '</s>';
   $('#mstickyBuy').href = p.gum;
-  $('#modalRelated').innerHTML = Object.keys(PRODUCTS).filter(k => k !== id).map(k =>
+  $('#modalRelated').innerHTML = Object.keys(PRODUCTS).filter(k => k !== id && !PRODUCTS[k].kofi).map(k =>
     '<button class="chip" data-related="' + k + '" aria-pressed="false">' + PRODUCTS[k].title + '</button>').join('');
   modalBack.classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -159,6 +160,17 @@ if ($('#tabSearch')) $('#tabSearch').addEventListener('click', e => { e.preventD
 
   function cardHtml(kind, it) {
     if (kind === 'products') {
+      if (it.kofiUrl) {
+        // Ko-fi showcase product: no product modal (the shared modal is book/Gumroad-specific),
+        // so the cover and title link straight to the detail page, and Buy goes to Ko-fi.
+        const badge = it.badge ? '<span class="badge">' + it.badge + '</span>' : '';
+        return '<article class="card" data-id="' + it.key + '" data-cat="' + it.filterKey + '" data-price="' + (it.salePriceNum ?? '') + '">'
+          + '<div class="cover">' + badge + '<a href="' + JB.root + it.url + '" aria-label="View ' + it.title.replace(/"/g, '&quot;') + ' details"><img src="' + it.thumb + '" alt="' + (it.coverAlt || it.title).replace(/"/g, '&quot;') + '" width="480" height="480" loading="lazy"></a></div>'
+          + '<div class="body"><h3><a href="' + JB.root + it.url + '">' + it.title + '</a></h3>'
+          + '<p class="meta">' + it.format + ' · Instant download</p>'
+          + '<div class="price-row"><span class="price">' + it.salePrice + '</span></div>'
+          + '<div class="actions"><a class="btn btn-accent" href="' + it.kofiUrl + '" target="_blank" rel="noopener">Buy on Ko-fi</a></div></div></article>';
+      }
       const badge = it.badge ? '<span class="badge">' + it.badge + '</span>' : '';
       const price = it.salePrice ? '<div class="price-row"><span class="price">' + it.salePrice + '</span><s>' + it.price + '</s></div>' : '';
       const buy = it.gumroadUrl ? '<div class="actions"><a class="btn btn-accent" href="' + it.gumroadUrl + '" target="_blank" rel="noopener">Buy ' + it.salePrice + '</a></div>' : '';
