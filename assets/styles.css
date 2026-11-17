@@ -68,11 +68,12 @@ header.site{position:sticky;top:0;z-index:70;background:rgba(250,249,246,.97);ba
 .dept{background:var(--bar)}
 .dept .wrap{display:flex;gap:2px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;padding:0 26px}
 .dept .wrap::-webkit-scrollbar{display:none}
-.dept a{color:#fff;font-family:'Archivo',sans-serif;font-size:15px;font-weight:700;white-space:nowrap;padding:13px 14px;min-height:48px;display:inline-flex;align-items:center;scroll-snap-align:start;border-radius:6px}
+.dept a{color:#fff;font-family:'Archivo',sans-serif;font-size:15px;font-weight:700;white-space:nowrap;padding:10px 14px;min-height:44px;margin:4px 0;display:inline-flex;align-items:center;scroll-snap-align:start;border-radius:999px;transition:background .18s ease,color .18s ease}
 /* White hover is for top-level dept-bar links only (dark bar). Flyout links
    live on a light background — their own rule below keeps them dark. */
 .dept .wrap > a:hover,.dept .wrap > .has-fly > a:hover{background:rgba(255,255,255,.12);color:#fff;text-decoration:none}
-.dept .wrap > a.on,.dept .wrap > .has-fly > a.on{background:rgba(255,255,255,.14);color:#fff}
+.dept .wrap > a.on,.dept .wrap > .has-fly > a.on{background:rgba(255,255,255,.18);color:#fff}
+.dept .wrap > a:active,.dept .wrap > .has-fly > a:active{background:rgba(255,255,255,.24);color:#fff}
 .dept a:focus-visible{outline-color:#fff}
 /* ---------- hero ---------- */
 .hero{padding:44px 0 52px;border-bottom:1px solid var(--line)}
@@ -103,9 +104,13 @@ section.block{padding:64px 0;border-bottom:1px solid var(--line)}
 /* filter rail */
 .rail{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:14px}
 .chips{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.chip{border:1.5px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:10px 16px;font-family:'Archivo',sans-serif;font-size:14px;font-weight:700;min-height:44px}
-.chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-text);border-color:var(--accent)}
-.chip:hover{border-color:var(--ink)}
+.chip{border:1.5px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:10px 16px;font-family:'Archivo',sans-serif;font-size:14px;font-weight:700;min-height:44px;transition:background .18s ease,color .18s ease,border-color .18s ease,transform .12s ease}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip:hover{border-color:var(--ink);background:var(--paper)}
+.chip[aria-pressed="true"]:hover{background:#000;border-color:#000}
+.chip:active{transform:scale(.96)}
+.chip:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.chip[aria-pressed="true"]:focus-visible{outline-offset:3px}
 .age-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:20px}
 .age-row .age-label{font-size:14px;font-weight:600;color:var(--muted);margin-right:2px}
 .sort{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--muted)}
@@ -295,7 +300,6 @@ body.tab-hidden .tabbar{display:none}
   .hero p.lede{font-size:16px;line-height:1.45;margin-bottom:10px}
   .hero .trust{margin-top:8px;font-size:13px;line-height:1.4}
   .hero .cta-row .btn{flex:1 1 0;padding:10px 12px;font-size:14px;white-space:nowrap}
-  .dept{height:44px}
   .spot{padding:10px 12px;gap:10px}
   .spot .cover{width:96px}
   .spot .tag{margin-bottom:2px}
