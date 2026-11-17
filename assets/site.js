@@ -169,8 +169,10 @@ if ($('#tabSearch')) $('#tabSearch').addEventListener('click', e => { e.preventD
     }
     if (kind === 'resources') {
       const thumb = it.thumb ? '<div class="rthumb"><img src="' + it.thumb + '" alt="' + it.title.replace(/"/g, '&quot;') + ' preview" loading="lazy"></div>' : '';
-      return '<article class="res-item" data-cat="' + it.filterKey + '">' + thumb + '<div class="rbody"><span class="tag">' + it.tag + '</span><h3>' + it.title + '</h3><p>' + (it.desc || '') + '</p>'
-        + '<a href="' + JB.root + it.url + '">View &amp; download →</a></div></article>';
+      return '<article class="res-item" data-cat="' + it.filterKey + '">'
+        + '<a class="card-link" href="' + JB.root + it.url + '" aria-label="' + it.title.replace(/"/g, '&quot;') + ' — View &amp; download"></a>' + thumb
+        + '<div class="rbody"><span class="tag">' + it.tag + '</span><h3>' + it.title + '</h3>'
+        + '<span class="go">View &amp; download →</span></div></article>';
     }
     if (kind === 'games') {
       return '<article class="gcard"><div class="gthumb"><img src="' + it.thumb + '" alt="' + it.title.replace(/"/g, '&quot;') + ' game" width="640" height="360" loading="lazy"></div>'
@@ -186,9 +188,11 @@ if ($('#tabSearch')) $('#tabSearch').addEventListener('click', e => { e.preventD
         + '<h3><a href="' + JB.root + it.url + '">' + it.title + '</a></h3>' + price
         + '<div class="actions"><a class="btn btn-ink" href="' + JB.root + it.url + '">View Product</a></div></div></article>';
     }
-    return '<article class="bcard"><div class="bcover"><img src="' + it.thumb + '" alt="' + it.title.replace(/"/g, '&quot;') + '" width="1200" height="675" loading="lazy"></div>'
-      + '<div class="body"><span class="tag">' + it.tag + '</span><h3><a href="' + JB.root + it.url + '">' + it.title + '</a></h3><p>' + (it.desc || '') + '</p>'
-      + '<a class="read" href="' + JB.root + it.url + '">Read article →</a></div></article>';
+    return '<article class="bcard">'
+      + '<a class="card-link" href="' + JB.root + it.url + '" aria-label="Read ' + it.title.replace(/"/g, '&quot;') + '"></a>'
+      + '<div class="bcover"><img src="' + it.thumb + '" alt="' + it.title.replace(/"/g, '&quot;') + '" width="1200" height="675" loading="lazy"></div>'
+      + '<div class="body"><span class="tag">' + it.tag + '</span><h3>' + it.title + '</h3>'
+      + '<span class="read">Read article →</span></div></article>';
   }
 
 /* ================= listing engine (query-string filters/sort/pagination) ================= */
