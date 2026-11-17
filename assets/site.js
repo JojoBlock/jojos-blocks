@@ -499,3 +499,39 @@ document.addEventListener('keydown', e => {
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   }
 });
+/* Round 2 fix (2026-11-17, staging): "Play free" button clear of the tab bar.
+   Mobile-games verification-report fix (Click the Box): on short phone screens
+   the detail hero is taller than the viewport, so the "Play free" button can
+   land partly behind the fixed bottom tab bar — or below the fold — on first
+   load (measured: fully visible at 390x844 and 430x932, below the fold at
+   320x568 and 360x640). On load, if the button exists and its bottom edge sits
+   below the tab-bar clear line, scroll the minimum amount (instant, no
+   animation) so the whole button sits above the bar. Acts only when the tab
+   bar is actually visible, the page loaded at the top with no #play hash, and
+   the user hasn't scrolled yet. Never clicks anything; the per-page Play Free
+   handler is untouched. */
+(function () {
+  function nudgePlayFree() {
+    try {
+      var btn = document.getElementById('play-free-btn');
+      if (!btn) return;
+      if (window.location.hash === '#play') return;
+      if (window.scrollY > 0) return;
+      var bar = document.querySelector('.tabbar');
+      if (!bar || window.getComputedStyle(bar).display === 'none') return;
+      var barH = bar.getBoundingClientRect().height;
+      if (!barH) return;
+      var r = btn.getBoundingClientRect();
+      var clearLine = window.innerHeight - barH - 8;
+      if (r.bottom > clearLine) {
+        window.scrollTo({ top: window.scrollY + (r.bottom - clearLine), behavior: 'instant' });
+      }
+    } catch (e) { /* never break the page for this */ }
+  }
+  if (document.readyState === 'complete') {
+    requestAnimationFrame(nudgePlayFree);
+  } else {
+    window.addEventListener('load', function () { requestAnimationFrame(nudgePlayFree); });
+  }
+})();
+

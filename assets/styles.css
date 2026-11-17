@@ -127,6 +127,16 @@ section.block{padding:64px 0;border-bottom:1px solid var(--line)}
    shop rail reuses #sortSelect, so this is scoped with :has, not by id):
    pill-shaped like the chips, with the same rounded focus ring. */
 .rail:has(#listingChips) .sort select{border-radius:999px}
+/* Round 2 §3 — chevron alignment. Root cause: the native chevron sat
+   only ~5px from the pill's right edge, where the 999px-radius border
+   curves sharply inward, so it read as cramped / outside the pill
+   (measured: chevron x 92.5–101 of a 106px select, 5px right-edge gap).
+   Custom chevron, scoped to the games listing only (homepage shop rail
+   reuses #sortSelect and keeps its native arrow): appearance:none +
+   ink SVG chevron at right 16px, vertically centred, padding-right
+   sized so the label never crowds it. Native dropdown behaviour is
+   unchanged — appearance:none only replaces the arrow glyph. */
+.rail:has(#listingChips) .sort select{appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:40px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%23111214' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;background-size:12px 8px}
 .rail:has(#listingChips) .sort select:hover{border-color:var(--ink)}
 .rail:has(#listingChips) .sort select:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:999px}
 .count{font-size:14px;color:var(--muted);margin:0 0 18px}

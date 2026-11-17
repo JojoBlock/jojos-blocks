@@ -108,6 +108,70 @@
 #play .jjb-main:has(.overlay.open){z-index:71}
 /* merged-page addition: anchor offset for #play */
 #play{scroll-margin-top:12px}
+
+/* Round 2 (2026-11-17, staging only): dedicated play screen + 3-2-1-START! countdown. */
+body.jjb-playing{overflow:hidden}
+body.jjb-playing #play{position:fixed;inset:0;z-index:300;overflow-y:auto;overscroll-behavior:contain;background:#FFF9F0;padding:0 12px 24px}
+body.jjb-playing #play .jjb-related{display:none}
+body.jjb-playing #play .jjb-blob{display:none}
+body.jjb-playing #play .topbar{padding:8px 4px 0}
+body.jjb-playing #play .jjb-main{padding:8px 0 0}
+body.jjb-playing #play .card{padding:14px 14px 18px}
+body.jjb-playing #play .card .lede,body.jjb-playing #play .card .jjb-controls-line,body.jjb-playing #play .card .eyebrow{display:none}
+body.jjb-playing #play .card h1{font-size:1.35rem;line-height:1.2;margin:2px 0 6px}
+body.jjb-playing #play .card .eyebrow{margin:0 0 2px}
+body.jjb-playing #play .stats{margin:10px 0}
+body.jjb-playing #play .controls-row{margin:8px 0}
+body.jjb-playing #play .grid{margin:10px auto;max-width:300px}
+body.jjb-playing #play .btn-row{gap:8px}
+body.jjb-playing #play .btn-row .btn{padding:10px 12px}
+/* G2 Round 2 fix: compact play-mode chrome so Pause + primary controls fit the viewport at 390x844 (Fix 1).
+   Topbar: drop the volume slider (sound/music buttons stay, one row). Stats: single row.
+   Controls: hide the redundant labels (select options are self-describing), selects share one row.
+   Grid/board slightly smaller; tighter card/btn spacing. */
+body.jjb-playing #play{padding:0 12px 16px}
+body.jjb-playing #play .topbar{padding:6px 4px 0;gap:8px}
+body.jjb-playing #play .topbar .jjb-volume{display:none}
+body.jjb-playing #play .topbar .icon-btn{padding:8px 12px;font-size:.85rem;min-height:40px}
+body.jjb-playing #play .card{padding:12px 14px 14px}
+body.jjb-playing #play .card h1{font-size:1.15rem;line-height:1.2;margin:0 0 4px}
+body.jjb-playing #play .card>p{margin:4px 0}
+body.jjb-playing #play .stats{margin:6px 0;gap:6px}
+body.jjb-playing #play .stat{padding:5px 8px;font-size:.85rem;min-width:0}
+body.jjb-playing #play .stat small{font-size:.65rem}
+body.jjb-playing #play .controls-row{margin:6px 0;gap:8px}
+body.jjb-playing #play .controls-row label{display:none}
+body.jjb-playing #play .controls-row select{padding:8px;font-size:.9rem;min-height:40px;flex:1 1 0;min-width:0}
+body.jjb-playing #play .grid{margin:8px auto;max-width:270px;gap:8px}
+body.jjb-playing #play .btn-row{margin-top:8px;gap:6px}
+body.jjb-playing #play .btn-row .btn{padding:9px 12px;font-size:.9rem}
+@media (max-width:360px){
+/* G2 Fix 2: aggressive play-mode compaction so gameplay + controls fit 320x568.
+   Topbar + title hidden in play mode at this width (sound/music toggles remain
+   reachable by backing out to the detail view); grids/boards scaled down. */
+body.jjb-playing #play{padding:0 8px 12px}
+body.jjb-playing #play .topbar{display:none}
+body.jjb-playing #play .card{padding:10px 10px 12px}
+body.jjb-playing #play .card h1{display:none}
+body.jjb-playing #play .stats{margin:4px 0}
+body.jjb-playing #play .stat{padding:4px 6px;font-size:.8rem}
+body.jjb-playing #play .controls-row select{padding:6px;font-size:.85rem;min-height:38px}
+body.jjb-playing #play .grid{max-width:200px;gap:6px}
+body.jjb-playing #play .grid{grid-template-columns:repeat(3,minmax(62px,1fr))}
+body.jjb-playing #play .grid.cols-4{grid-template-columns:repeat(4,minmax(44px,1fr))}
+body.jjb-playing #play .btn-row .btn{padding:7px 9px;font-size:.8rem}
+body.jjb-playing #play #jjb-mm-message{min-height:0;margin:2px 0}
+}
+.jjb-back-btn{position:sticky;top:8px;z-index:80;display:inline-flex;align-items:center;min-height:44px;padding:10px 18px;margin:8px 0 0;border:0;border-radius:999px;background:#fff;color:#2B2D42;font-family:'Fredoka','Nunito',sans-serif;font-weight:700;font-size:1rem;box-shadow:0 4px 14px rgba(43,45,66,.18);cursor:pointer}
+.jjb-back-btn:hover{background:#FFF9F0}
+.jjb-back-btn:focus-visible{outline:3px solid #2EC4B6;outline-offset:2px}
+.jjb-countdown{position:fixed;inset:0;z-index:400;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.jjb-countdown[hidden]{display:none}
+.jjb-count-num{display:flex;align-items:center;justify-content:center;width:220px;height:220px;border-radius:50%;background:#FFF9F0;border:6px solid #2EC4B6;color:#FF6B6B;font-family:'Fredoka','Nunito',sans-serif;font-weight:700;font-size:88px;line-height:1;box-shadow:0 10px 30px rgba(43,45,66,.25)}
+.jjb-count-num.is-start{color:#2EC4B6;font-size:52px}
+.jjb-count-num.pop{animation:jjb-count-pop .25s ease}
+@keyframes jjb-count-pop{from{transform:scale(.7);opacity:.4}to{transform:scale(1);opacity:1}}
+@media (prefers-reduced-motion:reduce){.jjb-count-num.pop{animation:none}}
 </style>
 
 </head>
@@ -165,6 +229,8 @@
     </div>
   </div></div>
 <section id="play" class="jjb-play" aria-label="Play Memory Match Game">
+<button type="button" class="jjb-back-btn">← Back</button>
+<div class="jjb-countdown" hidden><div class="jjb-count-num">3</div></div>
 <div class="jjb-blob jjb-blob-a" aria-hidden="true"></div>
 <div class="jjb-blob jjb-blob-b" aria-hidden="true"></div>
 <div class="topbar">
@@ -259,8 +325,6 @@
       <a href="../animal-guess/"><img src="../thumbs/animal-guess.svg" alt="" width="640" height="360" loading="lazy">Animal Guess</a>
       <a href="../tic-tac-toe/"><img src="../thumbs/tic-tac-toe.svg" alt="" width="640" height="360" loading="lazy">Tic-Tac-Toe</a>
       <a href="../click-the-box/"><img src="../thumbs/click-the-box.svg" alt="" width="640" height="360" loading="lazy">Click the Box</a>
-      <a href="../flappy-penguin/"><img src="../thumbs/flappy-penguin.svg" alt="" width="640" height="360" loading="lazy">Flappy Penguin</a>
-      <a href="../block-drop/"><img src="../thumbs/block-drop.svg" alt="" width="640" height="360" loading="lazy">Block Drop</a>
     </div>
   </section>
 </div>
@@ -500,7 +564,89 @@ buildGrid();showBest();
 window[NS]={version:'2.1.0',id:'JJB-GAME-20261115-02',reset:resetGame,musicState:musicState};
 })();
 </script>
-<script>(function(){var btn=document.getElementById('play-free-btn');if(!btn)return;btn.addEventListener('click',function(e){e.preventDefault();var play=document.getElementById('play');if(play)play.scrollIntoView({behavior:'smooth',block:'start'});var start=document.getElementById('jjb-mm-start-btn');var ov=document.getElementById('jjb-mm-start');var tries=0;function attempt(){if(start&&ov&&ov.classList.contains('open')){start.click();}else if(tries<1){tries++;setTimeout(attempt,400);}}setTimeout(attempt,400);});})();</script>
+<script>
+/* Round 2 (2026-11-17, staging only): dedicated play screen + 3-2-1-START! countdown.
+   Replaces the round-1 Play Free smooth-scroll handler. The game's own start /
+   restart buttons are countdown-gated via a document capture-phase click
+   interceptor (capture on document, so it runs before the game's own target
+   listeners); the game's own handlers are untouched, so the real start runs
+   exactly once, after START!. Resume is never gated. */
+(function(){
+  var play=document.getElementById('play');
+  var playFree=document.getElementById('play-free-btn');
+  var backBtn=document.querySelector('.jjb-back-btn');
+  var cd=document.querySelector('.jjb-countdown');
+  var cdNum=cd?cd.querySelector('.jjb-count-num'):null;
+  if(!play||!playFree||!backBtn||!cd||!cdNum)return;
+  var GATED=['jjb-mm-start-btn','jjb-mm-restart','jjb-mm-again','jjb-mm-pause-restart'];
+  var timers=[];var countdownActive=false;var passThrough=false;var backPaused=false;var savedScrollY=0;
+  function clearTimers(){for(var i=0;i<timers.length;i++)clearTimeout(timers[i]);timers=[];countdownActive=false;}
+  function openPlay(){savedScrollY=window.scrollY;document.body.classList.add('jjb-playing');play.scrollTop=0;}
+  function runCountdown(done){
+    clearTimers();countdownActive=true;cd.hidden=false;
+    var seq=['3','2','1','START!'];var at=[0,800,1600,2400];
+    for(var i=0;i<seq.length;i++){
+      (function(txt,ms){
+        timers.push(setTimeout(function(){
+          cdNum.textContent=txt;
+          cdNum.classList.toggle('is-start',txt==='START!');
+          cdNum.classList.remove('pop');void cdNum.offsetWidth;cdNum.classList.add('pop');
+        },ms));
+      })(seq[i],at[i]);
+    }
+    timers.push(setTimeout(function(){countdownActive=false;cd.hidden=true;done();},3000));
+  }
+  function gatedClick(el){
+    if(!el||el.disabled||countdownActive)return;
+    if(!document.body.classList.contains('jjb-playing'))openPlay();
+    runCountdown(function(){passThrough=true;el.click();});
+  }
+  document.addEventListener('click',function(e){
+    var el=e.target&&e.target.closest?e.target.closest('button'):null;
+    if(!el||GATED.indexOf(el.id)<0)return;
+    if(passThrough){passThrough=false;return;}
+    e.preventDefault();e.stopPropagation();
+    if(countdownActive)return;
+    gatedClick(el);
+  },true);
+
+  playFree.addEventListener('click',function(e){
+    e.preventDefault();
+    if(document.body.classList.contains('jjb-playing'))return;
+    openPlay();
+    if(backPaused){
+      backPaused=false;
+      var r=document.getElementById('jjb-mm-resume');
+      if(r)r.click();
+      return;
+    }
+    var ov=document.getElementById('jjb-mm-start');
+    if(ov&&ov.classList.contains('open')){
+      var s=document.getElementById('jjb-mm-start-btn');
+      if(s){s.click();return;}
+    }
+    var m=document.getElementById('jjb-mm-restart');
+    if(m)m.click();
+  });
+  backBtn.addEventListener('click',function(){
+    clearTimers();cd.hidden=true;
+    var pauseOv=document.getElementById('jjb-mm-pause-ov');
+    var pauseBtn=document.getElementById('jjb-mm-pause');
+    if(pauseBtn&&!pauseBtn.disabled){try{pauseBtn.click();}catch(err){}}
+    if(pauseOv&&pauseOv.classList.contains('open')){
+      pauseOv.classList.remove('open');backPaused=true;
+    }else{
+      backPaused=false;
+    }
+    var endOv=document.getElementById('jjb-mm-win');
+    if(endOv)endOv.classList.remove('open');
+    var howOv=document.getElementById('jjb-mm-howto-ov');
+    if(howOv)howOv.classList.remove('open');
+    document.body.classList.remove('jjb-playing');
+    window.scrollTo(0,savedScrollY);
+  });
+})();
+</script>
 </section>
 </div></section>
 </main>
