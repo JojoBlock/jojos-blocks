@@ -82,7 +82,12 @@ body #play{
   background:#1d1e33;
   color:var(--cream);
    display:flex; flex-direction:column; align-items:center;
-  overscroll-behavior:none; overflow-x:hidden;
+  overscroll-behavior:auto; overflow-x:hidden;
+  /* Mobile fix 2026-11-17: overscroll-behavior was "none". #play is a scroll
+     container (overflow-x:hidden computes overflow-y:auto) that cannot scroll
+     (content height == own height), so "none" swallowed every touch-scroll
+     starting inside it and trapped the page. "auto" restores chaining to the
+     window; the ring keeps its own touch-action:none. */
 }
 #play h1, #play h2, #play h3, #play .display{font-family:'Fredoka','Comic Sans MS',system-ui,sans-serif;}
 #play button{font-family:'Fredoka','Comic Sans MS',system-ui,sans-serif; cursor:pointer;}

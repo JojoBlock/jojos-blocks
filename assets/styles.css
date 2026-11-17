@@ -109,10 +109,26 @@ section.block{padding:64px 0;border-bottom:1px solid var(--line)}
 .chip{border:1.5px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:10px 16px;font-family:'Archivo',sans-serif;font-size:14px;font-weight:700;min-height:44px}
 .chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-text);border-color:var(--accent)}
 .chip:hover{border-color:var(--ink)}
+/* Games listing chips only (buttons on the landing page, links on category
+   pages): pill hover/pressed states and a ROUNDED focus ring that follows
+   the pill — the global :focus-visible outline on its own renders as a
+   rectangle around the pill, so the radius is restated here. */
+#listingChips .chip{cursor:pointer;-webkit-tap-highlight-color:transparent}
+#listingChips .chip:hover{background:var(--paper);border-color:var(--ink)}
+#listingChips .chip:active{background:#EFEDEA;transform:translateY(1px)}
+#listingChips .chip[aria-pressed="true"]:hover{background:var(--accent-hov);border-color:var(--accent-hov)}
+#listingChips .chip[aria-pressed="true"]:active{background:var(--accent);transform:translateY(1px)}
+#listingChips .chip:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:999px}
 .age-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:20px}
 .age-row .age-label{font-size:14px;font-weight:600;color:var(--muted);margin-right:2px}
 .sort{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--muted)}
 .sort select{border:1.5px solid var(--line);border-radius:8px;background:#fff;font-family:'Archivo',sans-serif;font-size:14px;font-weight:700;color:var(--ink);padding:10px 12px;min-height:44px}
+/* Games listing sort only (the rail that holds #listingChips — the homepage
+   shop rail reuses #sortSelect, so this is scoped with :has, not by id):
+   pill-shaped like the chips, with the same rounded focus ring. */
+.rail:has(#listingChips) .sort select{border-radius:999px}
+.rail:has(#listingChips) .sort select:hover{border-color:var(--ink)}
+.rail:has(#listingChips) .sort select:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:999px}
 .count{font-size:14px;color:var(--muted);margin:0 0 18px}
 .empty{display:none;border:1.5px dashed var(--line);border-radius:var(--radius);padding:32px;text-align:center;color:var(--muted);font-size:15px;margin-bottom:8px}
 .empty.show{display:block}
@@ -174,10 +190,21 @@ html.js #seeAllBtn{display:inline-flex}
 .ggrid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
 .gcard{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)}
 .gcard:hover{border-color:var(--ink)}
+/* Whole-card link: the card itself is the anchor (no nested links). The
+   global a:hover underline is suppressed on the card — only the Play Free
+   CTA underlines on hover. */
+a.gcard{color:var(--ink);text-decoration:none;cursor:pointer}
+a.gcard:hover{text-decoration:none;border-color:var(--ink)}
+a.gcard:active{transform:translateY(1px)}
+a.gcard:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+a.gcard:hover .play{text-decoration:underline}
 .gcard .gthumb{aspect-ratio:16/9;background:var(--tile);border-radius:8px;overflow:hidden}
 .gcard .gthumb img{width:100%;height:100%;object-fit:contain}
 .gcard h3{font-size:16px}
-.gcard a{font-size:14px;font-weight:700;font-family:'Archivo',sans-serif}
+/* .play is the CTA span in whole-card links; the plain `a` selector keeps the
+   old article-style cards (game-page "More games" sections, out of scope
+   here) looking identical. */
+.gcard .play,.gcard a{font-size:14px;font-weight:700;font-family:'Archivo',sans-serif}
 /* ---------- blog ---------- */
 .bgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .bcard{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow)}
@@ -315,8 +342,8 @@ body.tab-hidden .tabbar{display:none}
   .card .price{font-size:18px;line-height:1.2}
   .card .actions .btn{min-height:48px}
   .res-grid,.bgrid{grid-template-columns:repeat(2,1fr);gap:12px}
-  .ggrid{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 12px;scrollbar-width:thin}
-  .ggrid .gcard{flex:0 0 200px;scroll-snap-align:start}
+  .ggrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;overflow:visible;scroll-snap-type:none;padding:0}
+  .ggrid .gcard{flex:none;scroll-snap-align:none}
   .taster{padding:20px}
   .modal-back{padding:0;align-items:stretch}
   .modal{border-radius:0;min-height:100dvh;display:flex;flex-direction:column}
@@ -333,6 +360,9 @@ body.tab-hidden .tabbar{display:none}
   .hero h1{font-size:24px}
   .chip{padding:9px 13px}
   .spot .cover{width:88px}
+  .ggrid{gap:8px}
+  .gcard{padding:10px}
+  .gcard h3{font-size:15px}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}

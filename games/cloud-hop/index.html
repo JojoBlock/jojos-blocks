@@ -233,12 +233,22 @@ body.in-game #play #pauseBtn{display:flex;}
 #play input[type="range"]{width:150px; accent-color:var(--lav); height:34px;}
 #play .vol-val{font-family:'Fredoka',system-ui,sans-serif; font-weight:700; min-width:44px; text-align:right;}
 
-#play .toast{position:absolute; left:0; right:0; width:max-content; max-width:calc(100% - 20px); margin:0 auto; top:64px; transform:translateY(-8px); z-index:5;
-  background:rgba(255,249,240,.96); border:2px solid var(--ink); border-radius:999px; padding:8px 18px;
-  font-family:'Fredoka','Comic Sans MS',system-ui,sans-serif; font-weight:700; font-size:17px; color:var(--ink);
-  box-shadow:var(--shadow); opacity:0; pointer-events:none; transition:opacity .25s ease-out, transform .25s ease-out;
-  max-width:calc(100% - 20px); text-align:center; white-space:normal;}
-#play .toast.show{opacity:1; transform:translateY(0);}
+/* Mobile fix 2026-11-17 (revised): the toast used to sit at top:64px INSIDE the
+   stage, a wide pill across the play field that covered the penguin, clouds and
+   sun tokens. A first attempt moved it to a fixed bottom snackbar, but the
+   canvas runs to the bottom of the viewport while playing, so the snackbar
+   still covered the penguin when it bounced low. It is now an in-flow chip
+   between the HUD and the stage — above the game area, visible during play,
+   and never over the canvas. It takes no space when hidden (display:none), so
+   the stage/canvas never shift or clip when it appears; only content below the
+   game moves down briefly. The Burst ability itself is unchanged (Burst chip /
+   Space). */
+#play .toast{display:none; margin:0 auto 10px; width:max-content; max-width:100%;
+  background:rgba(255,249,240,.97); border:2px solid var(--ink); border-radius:999px; padding:10px 18px;
+  font-family:'Fredoka','Comic Sans MS',system-ui,sans-serif; font-weight:700; font-size:15px; color:var(--ink);
+  box-shadow:var(--shadow); pointer-events:none; text-align:center; white-space:normal;}
+#play .toast.show{display:flex; align-items:center; justify-content:center; animation:toastIn .25s ease-out;}
+@keyframes toastIn{from{opacity:0; transform:translateY(-6px);} to{opacity:1; transform:none;}}
 #play .toast.sun{background:linear-gradient(90deg,#FFE08A,var(--sun));}
 
 #play .foot{width:100%; max-width:560px; text-align:center; padding:2px 16px 14px; font-size:12.5px; font-weight:700; color:rgba(43,45,66,.6);}
@@ -278,9 +288,11 @@ body.in-game #play #pauseBtn{display:flex;}
     </button>
   </div>
 
+  <!-- Toast: in-flow chip ABOVE the stage (see .toast CSS) — never over the canvas. -->
+  <div class="toast" id="toast" role="status"></div>
+
   <div class="stage" id="stage">
     <canvas id="game" role="img" aria-label="Cloud Hop play field. A penguin with an umbrella bounces on clouds. Steer with arrow keys or by dragging."></canvas>
-    <div class="toast" id="toast" role="status"></div>
 
     <!-- START / MENU -->
     <div class="overlay" id="menuOverlay">

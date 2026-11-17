@@ -30,7 +30,14 @@
     radial-gradient(circle at 88% 14%, rgba(255,255,255,.7) 0 46px, transparent 47px),
     radial-gradient(circle at 78% 22%, rgba(255,255,255,.55) 0 30px, transparent 31px),
     linear-gradient(180deg,#CDEFD6 0%,#A8DFAE 34%,#8FD09A 62%,#6FBF7E 100%);
-  min-height:100vh; overflow-x:hidden; overscroll-behavior:none;
+  min-height:100vh; overflow-x:hidden; overscroll-behavior:auto;
+  /* Mobile fix 2026-11-17 — ROOT CAUSE of the stuck board: overscroll-behavior
+     was "none" on #play, which is a scroll container (overflow-x:hidden
+     computes overflow-y:auto) that cannot scroll (scrollHeight == clientHeight,
+     844px). "none" swallowed every touch-scroll starting inside #play, so the
+     page could not be scrolled from the board, tray, HUD or buttons — only
+     from chrome outside #play. "auto" restores chaining to the window; the
+     tray pieces keep touch-action:none for dragging. */
   -webkit-tap-highlight-color:transparent;
 }
 /* decorative garden ground */
@@ -80,7 +87,13 @@
 #play .board-wrap::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
   background:radial-gradient(circle at 20% 90%, rgba(63,163,77,.25) 0 40px, transparent 41px),
   radial-gradient(circle at 85% 10%, rgba(255,201,77,.35) 0 36px, transparent 37px)}
-#play #board{position:relative;width:100%;max-width:380px;height:380px;margin:0 auto;touch-action:none;user-select:none;-webkit-user-select:none}
+#play #board{position:relative;width:100%;max-width:380px;height:380px;margin:0 auto;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+/* Mobile fix 2026-11-17: board touch-action was "none", so a vertical swipe
+   starting on the board could never scroll the page — the board is the
+   largest touch target on the page, so the page felt stuck. "pan-y" lets
+   vertical swipes scroll while taps still place pieces (the game uses no
+   drag gesture on the board). touch-action:none stays ONLY on .tray-piece,
+   the real drag source. */
 #play .hex-cell{position:absolute;width:56px;height:64px;transform:translate(-50%,-50%);cursor:pointer;
   clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
   background:#E7D3A7;border:none;display:flex;align-items:center;justify-content:center;
@@ -672,6 +685,18 @@ function renderTray(){
     slot.appendChild(div); tray.appendChild(slot);
   });
 }
+/* Mobile fix 2026-11-17: mark the selected tray piece in place WITHOUT
+   rebuilding the tray DOM. The old code called renderTray() here, which did
+   tray.innerHTML="" — destroying the very element holding pointer capture
+   mid-drag. On browsers that fire pointercancel when the capture element is
+   removed (notably iOS Safari) the drag aborted after ~10px and the piece
+   never placed, so the board felt "stuck". Selection visuals are identical. */
+function markSelectedTray(idx){
+  var pieces=$("tray").querySelectorAll(".tray-piece");
+  for(var i=0;i<pieces.length;i++){
+    pieces[i].classList.toggle("selected", parseInt(pieces[i].dataset.idx,10)===idx);
+  }
+}
 function selectPiece(idx){
   if(!state.tray[idx] || state.gameOver || state.paused) return;
   state.selected = (state.selected===idx) ? -1 : idx;
@@ -920,7 +945,7 @@ function startDrag(e, idx, el){
     if(!active){
       if(Math.hypot(ev.clientX-startX, ev.clientY-startY) < 10) return;
       active=true; suppressClick=true;
-      state.selected=idx; renderTray();
+      state.selected=idx; markSelectedTray(idx);
       ghost.innerHTML="";
       var mini=document.createElement("div"); mini.className="mini";
       var s=17;
@@ -957,6 +982,8 @@ function moveGhost(e){
   g.style.left=(e.clientX-40)+"px"; g.style.top=(e.clientY-30)+"px";
 }
 function updateDragTarget(e){
+  if(!drag) return; /* Mobile fix 2026-11-17: the drag may have ended
+    (pointercancel) before this runs; never dereference a null drag. */
   var el=document.elementFromPoint(e.clientX, e.clientY);
   var cellEl = el && el.closest ? el.closest(".hex-cell") : null;
   clearPreview();

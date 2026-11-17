@@ -173,9 +173,9 @@ if ($('#tabSearch')) $('#tabSearch').addEventListener('click', e => { e.preventD
         + '<a href="' + JB.root + it.url + '">View &amp; download →</a></div></article>';
     }
     if (kind === 'games') {
-      return '<article class="gcard"><div class="gthumb"><img src="' + it.thumb + '" alt="' + it.title.replace(/"/g, '&quot;') + ' game" width="640" height="360" loading="lazy"></div>'
+      return '<a class="gcard" href="' + JB.root + it.url + '" aria-label="' + it.title.replace(/"/g, '&quot;') + '"><div class="gthumb"><img src="' + it.thumb + '" alt="' + it.title.replace(/"/g, '&quot;') + ' game" width="640" height="360" loading="lazy"></div>'
         + '<h3>' + it.title + '</h3><p class="meta">' + (it.categoryName || '') + '</p>'
-        + '<a href="' + JB.root + it.url + '">Play free →</a></article>';
+        + '<span class="play">Play free →</span></a>';
     }
     if (kind === 'affiliates') {
       const price = it.price ? '<div class="price-row"><span class="price">' + it.price + '</span></div>' : '';

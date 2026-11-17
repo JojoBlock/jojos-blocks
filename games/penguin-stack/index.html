@@ -31,7 +31,11 @@
   font-family:var(--font-body); color:var(--ink); background:#1B1E33;
   background-image:radial-gradient(1200px 600px at 50% -10%, #3A3E6E 0%, #1B1E33 60%);
   display:flex; justify-content:center; overflow:hidden;
-  overscroll-behavior:none; -webkit-tap-highlight-color:transparent;
+  overscroll-behavior:auto; -webkit-tap-highlight-color:transparent;
+  /* Mobile fix 2026-11-17: overscroll-behavior was "none". #play is a scroll
+     container (overflow:hidden) that cannot scroll, so "none" swallowed every
+     touch-scroll starting inside it and trapped the page. "auto" restores
+     chaining to the window; the canvas keeps its own touch-action:none. */
 }
 #play button{font-family:var(--font-display); cursor:pointer; touch-action:manipulation;}
 #play button:focus-visible, #play a:focus-visible, #play input:focus-visible{outline:3px solid var(--sun); outline-offset:2px;}
