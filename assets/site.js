@@ -10,6 +10,38 @@ const $ = s => document.querySelector(s);
 const $$ = s => Array.from(document.querySelectorAll(s));
 const money = n => '$' + Number(n).toFixed(2);
 
+/* ================= GA4 custom events (D3, 2026-11-17) =================
+   Ported from dev-repo js/site.js + js/main.js. Every handler fires only
+   when window.gtag exists (the D1 tag block). No query text or personal
+   data is ever sent. Verified locally with a stubbed gtag; arrival in the
+   GA4 dashboard is NOT verifiable from this VM (dashboard access refused).
+   newsletter_signup is NOT ported: the live newsletter form is a design
+   preview that never submits (no backend), so there is no real signup to
+   count. */
+function gaEvent(name, params) {
+  if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
+}
+document.addEventListener('click', e => {
+  var b = e.target.closest ? e.target.closest('a[data-book]') : null;
+  if (b) gaEvent('buy_now_click', { book_slug: b.getAttribute('data-book'), location: b.getAttribute('data-location') || 'page' });
+});
+document.addEventListener('click', e => {
+  var d = e.target.closest ? e.target.closest('a[data-free-download]') : null;
+  if (d) gaEvent('free_sample_download', { resource_slug: d.getAttribute('data-free-download'), location: d.getAttribute('data-location') || 'page' });
+});
+document.addEventListener('click', e => {
+  var a = e.target.closest ? e.target.closest('a[data-affiliate]') : null;
+  if (a) gaEvent('affiliate_outbound_click', { item: a.getAttribute('data-affiliate'), location: a.getAttribute('data-location') || 'page' });
+});
+document.addEventListener('click', e => {
+  var g = e.target.closest ? e.target.closest('button[id^="jjb-"][id$="-start"]') : null;
+  if (g) {
+    var parts = window.location.pathname.split('/').filter(Boolean);
+    gaEvent('game_start', { game_slug: parts.length > 1 ? parts[1] : (parts[0] || 'unknown'), location: 'page' });
+  }
+});
+let searchCounted = false; // one search_use per page load, shared by all search inputs
+
 /* ---- synonym normalisation: colouring/coloring must match ---- */
 const SYN = { colour: 'color', colouring: 'coloring', colours: 'colors', coloured: 'colored', favourite: 'favorite', favourites: 'favorites', organise: 'organize', organised: 'organized', behaviour: 'behavior', centre: 'center', licence: 'license', jewellery: 'jewelry', cheque: 'check', mum: 'mom' };
 function normalize(s) {
@@ -35,10 +67,14 @@ function openModal(id) {
   $('#modalDesc').textContent = p.desc;
   $('#modalGet').innerHTML = '<li>' + p.pages + ' printable A4 pages</li><li>Ages ' + p.ages + '</li><li>A4 PDF — US buyers print on Letter</li><li>Personal &amp; family use</li>';
   $('#modalBuy').href = p.gum;
+  $('#modalBuy').setAttribute('data-book', id);
+  $('#modalBuy').setAttribute('data-location', 'modal');
   $('#modalPage').href = JB.root + p.page;
   $('#modalPageLink').href = JB.root + p.page;
   $('#mstickyPrice').innerHTML = money(p.sale) + ' <s>' + money(p.price) + '</s>';
   $('#mstickyBuy').href = p.gum;
+  $('#mstickyBuy').setAttribute('data-book', id);
+  $('#mstickyBuy').setAttribute('data-location', 'modal');
   $('#modalRelated').innerHTML = Object.keys(PRODUCTS).filter(k => k !== id).map(k =>
     '<button class="chip" data-related="' + k + '" aria-pressed="false">' + PRODUCTS[k].title + '</button>').join('');
   modalBack.classList.add('open');
@@ -53,9 +89,9 @@ function closeModal() {
 }
 document.addEventListener('click', e => {
   const d = e.target.closest('[data-detail]');
-  if (d) { e.preventDefault(); openModal(d.dataset.detail); return; }
+  if (d) { e.preventDefault(); openModal(d.dataset.detail); gaEvent('view_details', { book_slug: d.dataset.detail }); return; }
   const r = e.target.closest('[data-related]');
-  if (r) { openModal(r.dataset.related); return; }
+  if (r) { openModal(r.dataset.related); gaEvent('view_details', { book_slug: r.dataset.related }); return; }
 });
 if ($('#modalClose')) $('#modalClose').addEventListener('click', closeModal);
 if (modalBack) modalBack.addEventListener('click', e => { if (e.target === modalBack) closeModal(); });
@@ -112,6 +148,7 @@ function bindSearch(formId, inputId, suggestId) {
   if (!form || !input || !box) return null;
   const update = debounce(() => {
     const q = input.value;
+    if (q.trim() && !searchCounted) { searchCounted = true; gaEvent('search_use', { page: window.location.pathname }); }
     if (!q.trim()) { renderSuggestions(box, [], q); return; }
     loadSearch().then(ms => renderSuggestions(box, runSearch(ms, q), q));
   }, 150);
@@ -161,7 +198,7 @@ if ($('#tabSearch')) $('#tabSearch').addEventListener('click', e => { e.preventD
     if (kind === 'products') {
       const badge = it.badge ? '<span class="badge">' + it.badge + '</span>' : '';
       const price = it.salePrice ? '<div class="price-row"><span class="price">' + it.salePrice + '</span><s>' + it.price + '</s></div>' : '';
-      const buy = it.gumroadUrl ? '<div class="actions"><a class="btn btn-accent" href="' + it.gumroadUrl + '" target="_blank" rel="noopener">Buy ' + it.salePrice + '</a></div>' : '';
+      const buy = it.gumroadUrl ? '<div class="actions"><a class="btn btn-accent" href="' + it.gumroadUrl + '" target="_blank" rel="noopener" data-book="' + it.key + '" data-location="card">Buy ' + it.salePrice + '</a></div>' : '';
       return '<article class="card" data-id="' + it.key + '" data-cat="' + it.filterKey + '" data-age-min="' + (it.ageMin ?? '') + '" data-age-max="' + (it.ageMax ?? '') + '" data-price="' + (it.salePriceNum ?? '') + '" data-pages="' + (it.pages || '') + '">'
         + '<div class="cover">' + badge + '<a href="' + JB.root + it.url + '" data-detail="' + it.key + '" aria-label="View ' + it.title.replace(/"/g, '&quot;') + ' details"><img src="' + it.thumb + '" alt="' + (it.coverAlt || it.title).replace(/"/g, '&quot;') + '" width="600" height="849" loading="lazy"></a></div>'
         + '<div class="body"><h3><a href="' + JB.root + it.url + '" data-detail="' + it.key + '">' + it.title + '</a></h3>'
@@ -313,6 +350,7 @@ if (PAGE) {
       if (k === 'price') state.price = 'all';
       if (k === 'q') state.q = '';
       state.page = 1; viaLoadMore = false; syncUrl(); render();
+      gaEvent('filter_use', { filter_value: k + ':all', page: window.location.pathname });
     }));
   }
   function syncControls() {
@@ -328,11 +366,13 @@ if (PAGE) {
   if (chipsBox) chipsBox.addEventListener('click', e => {
     const b = e.target.closest('[data-filter]'); if (!b) return;
     state.filter = b.dataset.filter; state.page = 1; viaLoadMore = false; syncUrl(); render();
+    gaEvent('filter_use', { filter_value: state.filter, page: window.location.pathname });
   });
   const ageBox = $('#ageChips');
   if (ageBox) ageBox.addEventListener('click', e => {
     const b = e.target.closest('[data-age]'); if (!b) return;
     state.age = b.dataset.age; state.page = 1; viaLoadMore = false; syncUrl(); render();
+    gaEvent('filter_use', { filter_value: 'age-' + state.age, page: window.location.pathname });
   });
   const sortSel = $('#sortSelect');
   if (sortSel) sortSel.addEventListener('change', () => { state.sort = sortSel.value; state.page = 1; viaLoadMore = false; syncUrl(); render(); });
@@ -343,6 +383,7 @@ if (PAGE) {
       if (id === 'facetFormat') state.format = el.value;
       if (id === 'facetPrice') state.price = el.value;
       state.page = 1; viaLoadMore = false; syncUrl(); render();
+      gaEvent('filter_use', { filter_value: id.replace('facet', '').toLowerCase() + ':' + el.value, page: window.location.pathname });
     });
   });
   if (loadMoreBtn) loadMoreBtn.addEventListener('click', () => { state.page = renderedPages + 1; viaLoadMore = true; syncUrl(); render(); });
@@ -392,6 +433,7 @@ function bindHomeRail(dataId, gridId, chipsId, sortId, countId, opts) {
     filter = b.dataset.filter || b.dataset.rfilter;
     chipsBox.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', String(c === b)));
     render();
+    gaEvent('filter_use', { filter_value: filter, page: window.location.pathname });
   });
   const sortEl = sortId ? document.getElementById(sortId) : null;
   if (sortEl) sortEl.addEventListener('change', () => { sort = sortEl.value; render(); });
@@ -437,6 +479,7 @@ if (JB.page === 'search') {
   if (form) form.addEventListener('submit', e => {
     e.preventDefault();
     const v = input.value.trim();
+    if (v && !searchCounted) { searchCounted = true; gaEvent('search_use', { page: window.location.pathname }); }
     history.replaceState(null, '', v ? ('?q=' + encodeURIComponent(v)) : window.location.pathname);
     loadSearch().then(ms => renderSearchResults(ms, v));
   });
