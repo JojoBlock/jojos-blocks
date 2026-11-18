@@ -27,18 +27,22 @@ function openModal(id) {
   if (p.kofi) { window.location.href = JB.root + p.page; return; } // Ko-fi product: go to its detail page, never the book modal
   lastFocused = document.activeElement;
   $('#modalCover').innerHTML = '<img src="' + p.cover + '" alt="' + p.title.replace(/"/g, '&quot;') + ' cover" width="600" height="849">';
-  $('#modalFmt').textContent = 'PDF · ' + p.pages + ' pages · Ages ' + p.ages;
+  $('#modalFmt').textContent = 'PDF · ' + p.pages + ' pages' + (p.ages ? ' · Ages ' + p.ages : '');
   $('#modalTitle').textContent = p.title;
-  $('#modalPrice').innerHTML = money(p.sale) + ' <s>' + money(p.price) + '</s>';
+  const hasDiscount = p.sale < p.price;
+  $('#modalPrice').innerHTML = money(p.sale) + (hasDiscount ? ' <s>' + money(p.price) + '</s>' : '');
   $('#modalSave').textContent = (id === 'bundle')
     ? 'Save $5.97 vs the four books at regular prices ($18.96 vs $12.99).'
-    : 'Save $' + (p.price - p.sale).toFixed(2) + ' vs the regular price.';
+    : (hasDiscount ? 'Save $' + (p.price - p.sale).toFixed(2) + ' vs the regular price.' : '');
+  const disc = document.getElementById('modalDiscount');
+  if (disc) disc.style.display = hasDiscount ? '' : 'none';
   $('#modalDesc').textContent = p.desc;
-  $('#modalGet').innerHTML = '<li>' + p.pages + ' printable A4 pages</li><li>Ages ' + p.ages + '</li><li>A4 PDF — US buyers print on Letter</li><li>Personal &amp; family use</li>';
+  const getItems = p.get || [p.pages + ' printable A4 pages', 'Ages ' + p.ages, 'A4 PDF — US buyers print on Letter', 'Personal &amp; family use'];
+  $('#modalGet').innerHTML = getItems.map(g => '<li>' + g + '</li>').join('');
   $('#modalBuy').href = p.gum;
   $('#modalPage').href = JB.root + p.page;
   $('#modalPageLink').href = JB.root + p.page;
-  $('#mstickyPrice').innerHTML = money(p.sale) + ' <s>' + money(p.price) + '</s>';
+  $('#mstickyPrice').innerHTML = money(p.sale) + (hasDiscount ? ' <s>' + money(p.price) + '</s>' : '');
   $('#mstickyBuy').href = p.gum;
   $('#modalRelated').innerHTML = Object.keys(PRODUCTS).filter(k => k !== id && !PRODUCTS[k].kofi && !PRODUCTS[k].amazon).map(k =>
     '<button class="chip" data-related="' + k + '" aria-pressed="false">' + PRODUCTS[k].title + '</button>').join('');
@@ -185,7 +189,10 @@ if ($('#tabSearch')) $('#tabSearch').addEventListener('click', e => { e.preventD
           + '<div class="actions"><a class="btn btn-accent" href="' + it.amazonUrl + '" target="_blank" rel="noopener" data-amazon="' + it.key + '" data-location="card">Get the Paperback on Amazon</a></div></div></article>';
       }
       const badge = it.badge ? '<span class="badge">' + it.badge + '</span>' : '';
-      const price = it.salePrice ? '<div class="price-row"><span class="price">' + it.salePrice + '</span><s>' + it.price + '</s></div>' : '';
+      const wasNum = parseFloat(String(it.price || '').replace(/[^0-9.]/g, ''));
+      const nowNum = parseFloat(String(it.salePrice || '').replace(/[^0-9.]/g, ''));
+      const hasDiscount = !isNaN(wasNum) && !isNaN(nowNum) && nowNum < wasNum;
+      const price = it.salePrice ? '<div class="price-row"><span class="price">' + it.salePrice + '</span>' + (hasDiscount ? '<s>' + it.price + '</s>' : '') + '</div>' : '';
       // Paperback (Amazon) option, when the product has one: a secondary
       // button under the primary Buy button. Must mirror build.js productCard.
       const paperbackBtn = it.paperback ? '<a class="btn btn-ghost" href="' + it.paperback.amazonUrl + '" target="_blank" rel="noopener" data-amazon="' + it.key + '" data-location="card">Paperback on Amazon — ' + it.paperback.price + '</a>' : '';
@@ -195,7 +202,7 @@ if ($('#tabSearch')) $('#tabSearch').addEventListener('click', e => { e.preventD
       return '<article class="card" data-id="' + it.key + '" data-cat="' + it.filterKey + '" data-age-min="' + (it.ageMin ?? '') + '" data-age-max="' + (it.ageMax ?? '') + '" data-price="' + (it.salePriceNum ?? '') + '" data-pages="' + (it.pages || '') + '">'
         + '<div class="cover">' + badge + '<a href="' + JB.root + it.url + '" data-detail="' + it.key + '" aria-label="View ' + it.title.replace(/"/g, '&quot;') + ' details"><img src="' + it.thumb + '" alt="' + (it.coverAlt || it.title).replace(/"/g, '&quot;') + '" width="600" height="849" loading="lazy"></a></div>'
         + '<div class="body"><h3><a href="' + JB.root + it.url + '" data-detail="' + it.key + '">' + it.title + '</a></h3>'
-        + '<p class="meta">' + (it.pages || '') + ' pages · ' + (it.ageLabel || '') + '</p>' + price + buy + '</div></article>';
+        + '<p class="meta">' + (it.pages || '') + ' pages' + (it.ageLabel ? ' · ' + it.ageLabel : '') + '</p>' + price + buy + '</div></article>';
     }
     if (kind === 'resources') {
       const thumb = it.thumb ? '<div class="rthumb"><img src="' + it.thumb + '" alt="' + it.title.replace(/"/g, '&quot;') + ' preview" loading="lazy"></div>' : '';
