@@ -474,3 +474,9 @@ body.tab-hidden .tabbar{display:none}
   body{background:#fff}
   .detail{padding:0}
 }
+
+/* Article tables (AI Tools & Online Business articles use comparison/cost
+   tables; no earlier article used <table>). Scoped to .article-body only. */
+.article-body table{display:block;overflow-x:auto;width:100%;border-collapse:collapse;margin:0 0 14px;font-size:15px}
+.article-body th,.article-body td{padding:8px 10px;border:1px solid var(--line);text-align:left;vertical-align:top}
+.article-body th{background:var(--tile);font-family:'Archivo',sans-serif;font-weight:800}

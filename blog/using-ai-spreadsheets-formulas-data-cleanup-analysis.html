@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Using AI for Spreadsheets: Formulas, Data Cleanup and Simple Analysis | JoJo’s Blocks Blog</title>
+<meta name="description" content="Ask AI for the formula, not the final number. A beginner guide to Gemini, Copilot, ChatGPT and Claude in spreadsheets, with the checks that catch wrong totals.">
+<link rel="canonical" href="https://jojosblocks.online/blog/using-ai-spreadsheets-formulas-data-cleanup-analysis.html">
+<link rel="stylesheet" href="../assets/styles.css">
+
+<!-- Google tag (gtag.js) — Google Analytics 4, JoJo's Blocks (G-PYDBE3YS5S) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PYDBE3YS5S"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PYDBE3YS5S');
+</script>
+<!-- Google AdSense (pub-7967649628220448) — site verification + ad serving -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7967649628220448" crossorigin="anonymous"></script>
+<!-- Pinterest Tag (Tag ID 2614299974172) — page-visit tracking only;
+     purchases happen on Gumroad and are not tracked by this tag -->
+<script>
+!function(e){if(!window.pintrk){window.pintrk = function () {
+window.pintrk.queue.push(Array.prototype.slice.call(arguments))};var
+n=window.pintrk;n.queue=[],n.version="3.0";var
+t=document.createElement("script");t.async=!0,t.src=e;var
+r=document.getElementsByTagName("script")[0];
+r.parentNode.insertBefore(t,r)}}("https://s.pinimg.com/ct/core.js");
+pintrk('load', '2614299974172');
+pintrk('page');
+// PageVisit fix (15 Nov 2026): pintrk('page') sends 'init', not 'pagevisit', in the current tag library — this call records the PageVisit event.
+pintrk('track', 'pagevisit');
+</script>
+<noscript>
+<img height="1" width="1" style="display:none;" alt=""
+src="https://ct.pinterest.com/v3/?event=init&tid=2614299974172&noscript=1" />
+</noscript>
+<!-- end Pinterest Tag -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Using AI for Spreadsheets: Formulas, Data Cleanup and Simple Analysis","description":"Ask AI for the formula, not the final number. A beginner guide to Gemini, Copilot, ChatGPT and Claude in spreadsheets, with the checks that catch wrong totals.","image":"https://jojosblocks.online/assets/blog/using-ai-spreadsheets-formulas-data-cleanup-analysis.jpg","datePublished":"2026-11-18","dateModified":"2026-11-18","author":{"@type":"Organization","name":"JoJo's Blocks","url":"https://jojosblocks.online"},"publisher":{"@type":"Organization","name":"JoJo's Blocks","url":"https://jojosblocks.online"},"mainEntityOfPage":"https://jojosblocks.online/blog/using-ai-spreadsheets-formulas-data-cleanup-analysis.html"}</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<!-- header -->
+<header class="site">
+  <div class="hd">
+    <a class="logo" href="../"><img class="logo-mark" src="../assets/profile-logo.jpg" alt="JoJo's Blocks logo" width="1000" height="1000">JoJo's Blocks</a>
+    <form class="search" id="headSearch" role="search" aria-label="Search the store" action="../search/" method="get">
+      <input id="searchInput" name="q" type="search" placeholder="Search books, free printables, games…" aria-label="Search books, free resources, games and articles" autocomplete="off">
+      <button type="submit">Search</button>
+      <div class="suggest" id="headSuggest" role="listbox" aria-label="Search suggestions"></div>
+    </form>
+    <button class="search-icon-btn" id="searchIconBtn" aria-label="Open search" aria-expanded="false">⌕</button>
+  </div>
+</header>
+
+<!-- mobile search overlay -->
+<div class="search-overlay" id="searchOverlay" role="search" aria-label="Search the store">
+  <div class="so-row">
+    <form class="search" id="mobSearch" action="../search/" method="get" style="display:flex">
+      <input id="mobSearchInput" name="q" type="search" placeholder="Search books, free printables, games…" aria-label="Search books, free resources, games and articles" autocomplete="off">
+      <button type="submit">Search</button>
+    </form>
+    <button class="so-close" id="searchOverlayClose" aria-label="Close search">✕</button>
+  </div>
+  <div class="suggest" id="mobSuggest" role="listbox" aria-label="Search suggestions"></div>
+</div>
+
+<nav class="dept" aria-label="Departments"><div class="wrap" id="deptNav">
+  <a href="../shop/">Shop</a>
+  <a href="../recommended/">Affiliate Products</a>
+  <span class="has-fly"><a href="../free-resources/" aria-haspopup="true">Free resources</a><span class="flyout"><a href="../free-resources/category/coloring/">Coloring</a><a href="../free-resources/category/learn-to-draw/">Learn to draw</a><a href="../free-resources/category/worksheets/">Worksheets</a><a href="../free-resources/category/planners/">Planners</a><a href="../free-resources/category/printables/">Printables</a><a href="../free-resources/category/wallpapers/">Wallpapers</a><a href="../free-resources/category/ai/">AI</a><a href="../free-resources/category/stickers/">Stickers</a><a class="viewall" href="../free-resources/">View all →</a></span></span>
+  <span class="has-fly"><a href="../games/" aria-haspopup="true">Games & play</a><span class="flyout"><a href="../games/category/puzzle/">Puzzle</a><a href="../games/category/arcade/">Arcade</a><a href="../games/category/casual/">Casual</a><a href="../games/category/educational/">Educational</a><a class="viewall" href="../games/">View all →</a></span></span>
+  <span class="has-fly"><a href="../blog/" class="on" aria-haspopup="true">Blog</a><span class="flyout"><a href="../blog/category/guides/">Guides</a><a href="../blog/category/activities/">Activities</a><a href="../blog/category/fun-facts/">Fun facts</a><a href="../blog/category/ai-tools-business/">AI Tools &amp; Online Business</a><a class="viewall" href="../blog/">View all →</a></span></span>
+</div></nav>
+<main id="main">
+<section class="block"><div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><span>Home</span> <span class="sep">›</span><a href="../blog/">Blog</a> <span class="sep">›</span><a href="../blog/category/ai-tools-business/">AI Tools &amp; Online Business</a> <span class="sep">›</span><span>Using AI for Spreadsheets: Formulas, Data Cleanup and Simple Analysis</span></nav>
+  <div class="detail"><div class="article-body">
+    <p class="dmeta">AI Tools &amp; Online Business · 10 min read</p>
+    <h1>Using AI for Spreadsheets: Formulas, Data Cleanup and Simple Analysis</h1>
+    <p><img src="https://jojosblocks.online/assets/blog/using-ai-spreadsheets-formulas-data-cleanup-analysis.jpg" alt="Using AI for Spreadsheets: Formulas, Data Cleanup and Simple Analysis" width="1200" height="675"></p>
+    <article class="wrap section article">
+    
+    <span class="eyebrow">AI Tools &amp; Online Business</span>
+    
+    <p class="card-meta">By JoJo's Blocks · <time datetime="2026-11-18">2026-11-18</time> · 10 min read · spreadsheets, ai-tools</p>
+    
+    <p class="lead">Somewhere in your business there is a spreadsheet with a wrong total in it. A total that is $150 out, or a month's sales counted twice, or a product that quietly vanished from a sum because its name was spelled differently. Nobody noticed, because the number looked confident.</p>
+    <p>That is the whole problem with AI in spreadsheets, and the whole point of this guide. AI is genuinely good at the language-shaped jobs — writing a formula, tidying a messy column, turning a question into a chart. It is a bad fit for one thing: the final number. A language model predicts words, not numbers, and a wrong total that looks confident is worse than no total at all.</p>
+    <p>The rule for this guide is simple: ask the AI to build the calculator, then check the calculator.</p>
+    <h2>The four ways AI gets into your spreadsheet</h2>
+    <p>You do not need a new app — AI reaches spreadsheets through four routes, and you probably already have one.</p>
+    <p><strong>1. Built into Google Sheets — Gemini.</strong> On Workspace Business Standard ($14 per user a month, annual billing) or Business Plus ($22), Gemini is built into Sheets: a side panel that builds tables, writes formulas, makes charts and pivot tables, and answers questions about your data. A personal account needs Google AI Pro ($19.99 a month); Business Starter ($7) excludes Gemini in Sheets. Sheets also has the <code>=AI()</code> function, which runs a prompt inside a cell — categorize a row, summarize a note — one row at a time.</p>
+    <p><strong>2. Built into Excel — Copilot.</strong> Microsoft 365 Personal ($9.99 a month or $99.99 a year) and Family ($12.99 a month or $129.99 a year) include Copilot in Excel through AI credits, for the subscription owner only. Premium ($19.99 a month or $199.99 a year) gives extensive usage. Business plans add Copilot separately — check Microsoft's current business pricing before you budget on it. Copilot works as a side panel: it answers questions, writes formulas, builds charts, and in its editing modes changes cells directly. It needs AutoSave on, so the file must live in OneDrive.</p>
+    <p><strong>3. A chat assistant — ChatGPT or Claude.</strong> Both let you upload a spreadsheet and talk about it. ChatGPT takes XLSX, XLS, CSV, and TSV files of about 50 MB, with roughly 3 uploads a day on the free plan. Claude takes files up to 500 MB each and 20 per chat, though XLSX needs code execution switched on. Both write formulas to paste in, explain a formula you inherited, and build a fresh spreadsheet from a description. Both also have Excel add-ins: ChatGPT for Excel works from the free plan up (limited on Free and Go), Claude for Excel from Claude Pro ($20 a month, or $17 billed yearly).</p>
+    <p><strong>4. A newer option — Claude Sheets.</strong> Anthropic launched Claude Sheets in beta on 10 November 2026, on paid Claude plans only. The AI writes real formulas rather than guessing totals, with grids capped at 100,000 cells and 144 functions at launch — but no pivot tables yet, no macros, and no live data from your other apps. It is promising and unproven, not somewhere to move your accounts yet.</p>
+    <p>Start with the tool you already pay for. If you live in Google Sheets, that is Gemini; in Excel, Copilot or one of the add-ins. Paying for a second only makes sense once you can name a job the first keeps failing at.</p>
+    <h2>Worked example: the formula that pays for itself</h2>
+    <p>Say you run a small shop and have a sheet of orders: column A is the date, column B is the product, column C is the quantity, column D is the price. You want total revenue for each product in November. Instead of hunting for the right function, ask the AI in plain words:</p>
+    <blockquote><p>&quot;My sheet has dates in column A, products in column B, quantities in column C and prices in column D. Write a formula for total revenue for 'mug' in November 2026.&quot;</p></blockquote>
+    <p>A good answer is a formula with a sentence explaining each part — something like a <code>SUMIFS</code> that multiplies quantity by price only where the product is &quot;mug&quot; and the date falls in November. Paste it in, then check it like a colleague's work: change one value and watch the total move, compare it against a sample you counted by hand, and read it to see it references the right columns.</p>
+    <p>Three habits make this reliable. First, <strong>describe the layout exactly</strong>: column letters, what is in each one, and the exceptions (blank rows, a header row, dates stored as text). Second, <strong>ask for the formula, not the answer</strong> — it keeps the math inside the spreadsheet, where it can be re-checked. Third, <strong>ask it to explain a formula you do not understand</strong>: paste in one you inherited and ask it to walk through it.</p>
+    <p>What not to do: do not paste a formula in and trust it because the AI sounded sure. A <code>SUMIFS</code> that quietly excludes a whole category runs without an error message.</p>
+    <h2>Step 2: Clean up messy data before you analyze it</h2>
+    <p>Real data is messy: &quot;mug&quot; and &quot;Mug&quot; and &quot;MUG&quot; in one column, a date typed three different ways, an empty cell where a price should be. AI is good at this tidy-up because it is a language job, not a math job — but the same rule applies: check the result.</p>
+    <p><strong>Standardize text.</strong> Ask the AI for a formula that turns a column into consistent case. In Sheets, the <code>=AI()</code> function can categorize a column — &quot;label each customer reply as praise, complaint, or question&quot; — row by row.</p>
+    <p><strong>Fix dates and numbers.</strong> Ask the AI for a formula that converts &quot;Nov 5&quot; and &quot;05/11/2026&quot; into the same date, or flags rows where a price is stored as text. Then sort the column: errors cluster at the top and bottom.</p>
+    <p><strong>Find the duplicates and the gaps.</strong> Ask the AI to help you find duplicate orders or missing values, then decide yourself what to do with them — deleting a duplicate is a business decision, not a formula's job.</p>
+    <p>One caution: <strong>never paste sensitive data into a chat assistant without thinking about where it goes.</strong> Customer names, email addresses, bank details, and salary figures do not belong in a prompt. If the data is private, use the AI built into your own spreadsheet, where the file stays in your account. And work on a copy, so a mistake is undoable.</p>
+    <p>A note on the <code>=AI()</code> cell limit, because Google's own pages disagree — and the disagreement has a real explanation. The Help Center page for the AI function says only the first 350 selected cells generate per run. Google's Workspace update of 28 October 2026 says Fill with Gemini, the bulk-fill entry point that runs on the same function, supports up to 3,000 cells per request. In practice: try a small sample first, fill in batches, and do not plan a 2,000-row job around either number until you have seen it work on your account.</p>
+    <h2>Step 3: Ask questions about your data — and check every answer</h2>
+    <p>Once the data is clean, ask the AI questions in plain words: &quot;Which product earned the most in October?&quot;, &quot;How many orders came from each city?&quot;, &quot;Show me a chart of weekly sales.&quot; Gemini and Copilot both do this, building the chart or pivot table for you.</p>
+    <p>This is where the honesty matters most. Independent benchmarks are sobering, and they need reading carefully. On SpreadsheetBench, 912 real-world tasks taken from Excel forums, Gemini in Sheets scored 70.48% in March 2026 — the highest of the four major assistants, as self-reported by Google, though tuned agent systems have since posted higher scores on the same leaderboard. On the harder follow-up, SpreadsheetBench 2, built from 321 end-to-end business workflows, the best plain model completed only 34.89% of tasks (Claude Opus 4.6, June 2026), with tuned agent systems reaching about 55%. Different tests, different setups — do not average them.</p>
+    <p>So run every AI answer through three checks:</p>
+    <p><strong>1. The reference total.</strong> Before you ask, know one number by hand — total revenue for the month, the number of orders, the biggest single sale. If the AI's answer disagrees with a number you trust, the AI is wrong, not your records.</p>
+    <p><strong>2. The spot check.</strong> Pick three rows the answer depends on and verify them by hand. If it says the top product is mugs, check the mug rows yourself.</p>
+    <p><strong>3. The sanity check.</strong> Does the answer make sense? A chart saying December outsold November tenfold is a signal to stop and look, not to copy the number into an email.</p>
+    <p>If a number will go into a quote, an invoice, a tax return, or a money decision, check it twice — against the raw data and a formula you can see.</p>
+    <h2>What it costs, and what you actually need</h2>
+    <p>You can start for $0: Google Sheets and Excel on the web are free, and ChatGPT's free plan takes spreadsheet uploads and includes the Excel add-in with limited usage. Prices below were checked in November 2026.</p>
+    <table><thead><tr><th>Tool</th><th>Free way in</th><th>Paid, as checked</th></tr></thead><tbody>
+<tr><td>Gemini in Sheets</td><td>Not on a free account or Starter</td><td>Business Standard $14/user/month; Google AI Pro $19.99/month</td></tr>
+<tr><td>Copilot in Excel</td><td>Not on a free account</td><td>Personal $9.99/month (owner only); Premium $19.99/month; business add-on — check Microsoft's current business pricing</td></tr>
+<tr><td>ChatGPT for Excel</td><td>Free plan, limited</td><td>Go $8; Plus $20; Pro from $100/month</td></tr>
+<tr><td>Claude for Excel</td><td>No free plan</td><td>Pro $20/month ($17 yearly); Max from $100/month</td></tr>
+</tbody></table>
+    <p>Pay only when you can name the limit you keep hitting: uploads, AI credits, or needing the AI inside the workbook daily. One spreadsheet AI is enough to start.</p>
+    <h2>Mistakes to avoid</h2>
+    <ul><li><strong>Asking for the final number.</strong> Ask for the formula. A formula can be checked; a number in a chat reply cannot.</li><li><strong>Trusting a confident-sounding answer.</strong> AI tools do not express uncertainty when they are wrong. Your checks are the uncertainty.</li><li><strong>Letting the AI delete or overwrite data.</strong> Work on a copy, and keep the original.</li><li><strong>Pasting private data into a chat.</strong> Customer details, bank numbers, and salaries stay out of prompts.</li><li><strong>Analyzing before cleaning, or using an AI total for money decisions without a second check.</strong> A quote deserves a formula you can see and a total you can reproduce.</li></ul>
+    <h2>Conclusion</h2>
+    <p>AI in spreadsheets is at its best on the slow, language-shaped jobs: writing a formula you can paste in and test, tidying a messy column, turning a question into a chart. You still describe the layout, read the formula, and check the total against a number you trust.</p>
+    <p>Start with one job and one tool you already have: pick a formula you keep looking up, ask the AI to write it, test it on five rows, and check the total by hand.</p>
+    <div class="callout"><h2>JoJo's Blocks — a note, and how to reach us</h2><p>If you would like help learning to use AI tools, choosing the right AI software, or building a simple AI-assisted workflow for content creation and everyday business tasks, JoJo's Blocks offers personal AI learning and consulting.</p><p>And if you run a business, brand, or product and would like to reach a Pinterest audience, we also offer paid Pinterest promotion and partnership opportunities — with no promise of specific views, clicks, sales, or results.</p><div class="callout-actions">
+          <a class="btn btn-primary" href="mailto:jojobusiness0101@gmail.com">Email JoJo's Blocks</a>
+        </div></div>
+    <h2>Frequently asked questions</h2>
+    <div class="faq">
+        <details class="faq-item"><summary class="faq-q">Which AI should a beginner start with for spreadsheets?<span class="chev" aria-hidden="true">⌄</span></summary><div class="faq-a"><p>The one built into the spreadsheet you already use — Gemini in Sheets, Copilot or an add-in in Excel. Add a chat assistant only when the built-in tool cannot reach a file.</p></div></details>
+        <details class="faq-item"><summary class="faq-q">Can I trust AI to add up my numbers?<span class="chev" aria-hidden="true">⌄</span></summary><div class="faq-a"><p>Not blindly. Benchmarks show success rates well below 100%, and wrong totals are often only slightly wrong. Ask for the formula, put it in the sheet, and check the total against a number you know.</p></div></details>
+        <details class="faq-item"><summary class="faq-q">Do I need to pay for AI in spreadsheets?<span class="chev" aria-hidden="true">⌄</span></summary><div class="faq-a"><p>No. Google Sheets and Excel on the web are free, and ChatGPT's free plan handles spreadsheet uploads and the Excel add-in with limited usage. Pay when you hit a limit you can name — uploads, AI credits, or needing the AI inside the workbook daily. And keep private data out of chat prompts: built-in AI keeps the file inside your account, while a chat assistant sends a copy to the vendor.</p></div></details>
+    </div>
+  </article>
+  <section class="section section-alt" aria-label="Related articles">
+    <div class="wrap">
+      <h2>Related articles</h2>
+      <ul class="related-list">
+        <li><a href="chatgpt-beginners-everyday-productivity-workflow.html">ChatGPT for Beginners: An Everyday Productivity Workflow</a></li>
+        <li><a href="gemini-google-workspace-docs-sheets-gmail.html">Gemini in Google Workspace: Practical Uses in Docs, Sheets and Gmail</a></li>
+        <li><a href="ai-research-workflow-checks-sources.html">An AI Research Workflow That Checks Its Sources</a></li>
+      </ul>
+    </div>
+  </section>
+    
+    <h2>More articles</h2>
+    <div class="chips">
+      <a class="chip" href="benefits-of-coloring-for-preschoolers.html">Benefits of Coloring for Preschoolers</a>
+      <a class="chip" href="easy-alphabet-activities-for-toddlers-at-home.html">Easy Alphabet Activities for Toddlers at Home</a>
+      <a class="chip" href="fun-animal-facts-for-kids.html">Fun Animal Facts for Kids</a>
+      <a class="chip" href="homeschool-preschool-daily-routine-with-printables.html">Homeschool Preschool Daily Routine with Printables</a>
+    </div>
+  </div></div>
+</div></section>
+</main>
+<footer class="site"><div class="wrap">
+  <div class="fgrid">
+    <div>
+      <h3>JoJo's Blocks</h3>
+      <p>Digital products, free resources and games for creating, learning and play.</p>
+      <p style="margin-top:12px"><a class="pin-link" href="https://www.pinterest.com/JoJosBlocks/" target="_blank" rel="noopener"><svg class="pin-icon" viewBox="0 0 24 24" width="19" height="19" aria-hidden="true" fill="#E60023"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.39 18.592.026 11.985.026L12.017 0z"/></svg>Pinterest — @JoJosBlocks</a></p>
+    </div>
+    <div>
+      <h4>Shop</h4>
+      <a href="../shop/">Our Products</a>
+      <a href="../free-resources/">Free Resources</a>
+      <a href="../games/">Games &amp; Play</a>
+      <a href="../blog/">Blog</a>
+      <a href="../recommended/">Affiliate Products</a>
+    </div>
+    <div>
+      <h4>Help</h4>
+      <a href="mailto:jojobusiness0101@gmail.com">Contact us</a>
+      <a href="../#about">About</a>
+      <a href="../free-printables/">Free Taster Pack</a>
+    </div>
+    <div>
+      <h4>Legal</h4>
+      <a href="../privacy.html">Privacy Policy</a>
+      <a href="../terms.html">Terms &amp; Conditions</a>
+      <a href="../refund-policy.html">Refund Policy</a>
+    </div>
+  </div>
+  <div class="fine">
+    <span>© 2026 JoJo's Blocks. All rights reserved.</span>
+    <span>Sales are completed securely on Gumroad.</span>
+  </div>
+</div></footer>
+<!-- bottom tab bar (mobile only) -->
+<div class="tabbar"><nav aria-label="Quick navigation">
+  <a href="../shop/" data-tab="shop"><span class="ti">▦</span>Shop</a>
+  <a href="../free-resources/" data-tab="free"><span class="ti">✦</span>Free</a>
+  <a href="../games/" data-tab="games"><span class="ti">▶</span>Play</a>
+  <a href="../blog/" data-tab="blog" class="on"><span class="ti">✎</span>Blog</a>
+  <a href="#" data-tab="search" id="tabSearch"><span class="ti">⌕</span>Search</a>
+</nav></div>
+<div class="modal-back" id="modalBack" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal" id="modalBox">
+    <button class="x" id="modalClose" aria-label="Close product details">✕</button>
+    <div class="mgrid">
+      <div class="mcover" id="modalCover"></div>
+      <div class="mbody">
+        <p class="fmt" id="modalFmt"></p>
+        <h2 id="modalTitle"></h2>
+        <p class="mprice" id="modalPrice"></p>
+        <p class="msave" id="modalSave"></p>
+        <p id="modalDesc"></p>
+        <div class="macts">
+          <a class="btn btn-accent" id="modalBuy" href="#" target="_blank" rel="noopener">Buy on Gumroad</a>
+          <a class="btn btn-ghost btn-sm" id="modalPage" href="#" target="_blank" rel="noopener">View product page</a>
+        </div>
+        <p style="font-size:14px;color:var(--muted);margin-top:12px">Use code JOJOS10 at checkout for 10% off.</p>
+        <h3>What you get</h3>
+        <ul class="get" id="modalGet"></ul>
+        <h3>Good to know</h3>
+        <ul class="get">
+          <li>Instant PDF download</li>
+          <li>Print at home as often as you like</li>
+          <li>Personal &amp; family use</li>
+          <li>Secure checkout on Gumroad</li>
+          <li><a href="../refund-policy.html" target="_blank" rel="noopener">Refund policy</a></li>
+        </ul>
+        <h3>Sample pages</h3>
+        <p class="sample-note">Real sample pages from this book will appear here once supplied. Try the <a href="https://jojosblocks.online/assets/free-resources/jojos-blocks-free-taster-pack.pdf" target="_blank" rel="noopener" data-free-download="taster-pack" data-location="modal">Free Taster Pack</a> first — six sample pages, free.</p>
+      </div>
+    </div>
+    <div class="rel">
+      <h3>You may also like</h3>
+      <div class="chips" id="modalRelated"></div>
+      <a class="page-link" id="modalPageLink" href="#" target="_blank" rel="noopener">View product page →</a>
+    </div>
+    <div class="msticky">
+      <span class="msticky-price" id="mstickyPrice"></span>
+      <a class="btn btn-accent" id="mstickyBuy" href="#" target="_blank" rel="noopener">Buy on Gumroad</a>
+    </div>
+  </div>
+</div>
+<script>window.JB={root:"../",page:"detail",kind:"articles"};</script>
+<script type="application/json" id="product-data">{"bundle":{"title":"JoJo's Blocks Complete Coloring Book Bundle","price":12.99,"sale":11.69,"pages":154,"ages":"2–7","cover":"https://jojosblocks.online/assets/covers/bundle-cover.jpg","desc":"Four favorite adventures in one bundle — 154 pages of coloring, tracing, puzzles and learning for one low price. Includes My First ABC Book (28 pages, ages 2–4), My First Animal Explorer (30 pages), My Little Community Helpers (54 pages, 24 helpers) and My Little Space Adventure (42 pages, ages 3–5). Download the PDFs, print at home, and color!","gum":"https://jojosblocks.gumroad.com/l/jojos-blocks-coloring-bundle?wanted=true","kofi":"","amazon":"","page":"books/complete-coloring-book-bundle.html"},"abc":{"title":"My First ABC Book","price":3.99,"sale":3.59,"pages":28,"ages":"2–4","cover":"https://jojosblocks.online/assets/covers/book-01.jpg","desc":"Meet the alphabet one letter at a time. Each page pairs a big letter with a picture word — A is for Apple, B is for Ball, C is for Cat — with a color guide and tracing practice, so little ones learn, color and write their first letters.","gum":"https://jojosblocks.gumroad.com/l/my-first-abc-book?wanted=true","kofi":"","amazon":"","page":"books/my-first-abc-book.html"},"animal":{"title":"My First Animal Explorer","price":4.99,"sale":4.49,"pages":30,"ages":"3–6","cover":"https://jojosblocks.online/assets/covers/book-02.jpg","desc":"Hello, little explorer! Meet lions, elephants, giraffes, pandas, monkeys and more — learn each animal's name, trace the word, count, match and color. A certificate of achievement waits at the end for every super animal explorer.","gum":"https://jojosblocks.gumroad.com/l/my-first-animal-explorer?wanted=true","kofi":"","amazon":"","page":"books/my-first-animal-explorer.html"},"helpers":{"title":"My Little Community Helpers","price":4.99,"sale":4.49,"pages":54,"ages":"4–7","cover":"https://jojosblocks.online/assets/covers/book-03.jpg","desc":"Meet the people who help us every day! 24 community helpers — doctors, nurses, firefighters, police officers, teachers, veterinarians, electricians, mail carriers and more — with simple job descriptions, big coloring illustrations and a fun matching activity.","gum":"https://jojosblocks.gumroad.com/l/my-little-community-helpers?wanted=true","kofi":"","amazon":"","page":"books/my-little-community-helpers.html"},"space":{"title":"My Little Space Adventure","price":4.99,"sale":4.49,"pages":42,"ages":"3–5","cover":"https://jojosblocks.online/assets/covers/book-04.jpg","desc":"Join Nova, Zippy the alien and Rocket-7 on a mission to find the missing Cosmic Crystal. Color planets and alien worlds, solve mazes and puzzles, decode alien messages and take the Space Explorer Quiz — with a Junior Space Explorer certificate at the end.","gum":"https://jojosblocks.gumroad.com/l/my-little-space-adventure?wanted=true","kofi":"","amazon":"","page":"books/my-little-space-adventure.html"},"flower-stickers-40-png":{"title":"Flower Stickers – 40 PNG","price":3,"sale":3,"pages":null,"ages":"","cover":"https://storage.ko-fi.com/cdn/useruploads/post/049b8247-5271-41a1-a41b-388ebce5667b_chatgptimagefeb4202611_08_29am.png","desc":"A pack of 40 aesthetic flower PNG stickers for digital and print use. This pack includes 40 high-quality flower PNG stickers with transparent backgrounds and clean white outlines.","kofi":"https://ko-fi.com/s/25d8989b90","amazon":"","page":"shop/flower-stickers-40-png.html"},"abc-paperback":{"title":"My First ABC Book — Paperback","price":9.99,"sale":9.99,"pages":28,"ages":"2–4","cover":"https://jojosblocks.online/assets/covers/book-01.jpg","desc":"My First ABC Book as a printed paperback — Alphabet Tracing and Coloring Book for Kids. The same 28 pages, printed and bound: every letter pairs with a picture word — A is for Apple, B is for Ball, C is for Cat — with a color guide and tracing practice, so little ones learn, color and write their first letters. No printing needed.","kofi":"","amazon":"https://a.co/d/0f9lfDYk","page":"books/my-first-abc-book-paperback.html"}}</script>
+<script src="../assets/site.js" defer></script>
+</body>
+</html>

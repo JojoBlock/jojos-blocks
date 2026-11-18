@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Using Claude for Writing and Editing Long Documents | JoJo’s Blocks Blog</title>
+<meta name="description" content="Use Claude to write and edit long documents: plan the outline, draft one section at a time, edit in passes, and check every fact before you publish.">
+<link rel="canonical" href="https://jojosblocks.online/blog/using-claude-writing-editing-long-documents.html">
+<link rel="stylesheet" href="../assets/styles.css">
+
+<!-- Google tag (gtag.js) — Google Analytics 4, JoJo's Blocks (G-PYDBE3YS5S) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PYDBE3YS5S"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PYDBE3YS5S');
+</script>
+<!-- Google AdSense (pub-7967649628220448) — site verification + ad serving -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7967649628220448" crossorigin="anonymous"></script>
+<!-- Pinterest Tag (Tag ID 2614299974172) — page-visit tracking only;
+     purchases happen on Gumroad and are not tracked by this tag -->
+<script>
+!function(e){if(!window.pintrk){window.pintrk = function () {
+window.pintrk.queue.push(Array.prototype.slice.call(arguments))};var
+n=window.pintrk;n.queue=[],n.version="3.0";var
+t=document.createElement("script");t.async=!0,t.src=e;var
+r=document.getElementsByTagName("script")[0];
+r.parentNode.insertBefore(t,r)}}("https://s.pinimg.com/ct/core.js");
+pintrk('load', '2614299974172');
+pintrk('page');
+// PageVisit fix (15 Nov 2026): pintrk('page') sends 'init', not 'pagevisit', in the current tag library — this call records the PageVisit event.
+pintrk('track', 'pagevisit');
+</script>
+<noscript>
+<img height="1" width="1" style="display:none;" alt=""
+src="https://ct.pinterest.com/v3/?event=init&tid=2614299974172&noscript=1" />
+</noscript>
+<!-- end Pinterest Tag -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Using Claude for Writing and Editing Long Documents","description":"Use Claude to write and edit long documents: plan the outline, draft one section at a time, edit in passes, and check every fact before you publish.","image":"https://jojosblocks.online/assets/blog/using-claude-writing-editing-long-documents.jpg","datePublished":"2026-11-18","dateModified":"2026-11-18","author":{"@type":"Organization","name":"JoJo's Blocks","url":"https://jojosblocks.online"},"publisher":{"@type":"Organization","name":"JoJo's Blocks","url":"https://jojosblocks.online"},"mainEntityOfPage":"https://jojosblocks.online/blog/using-claude-writing-editing-long-documents.html"}</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<!-- header -->
+<header class="site">
+  <div class="hd">
+    <a class="logo" href="../"><img class="logo-mark" src="../assets/profile-logo.jpg" alt="JoJo's Blocks logo" width="1000" height="1000">JoJo's Blocks</a>
+    <form class="search" id="headSearch" role="search" aria-label="Search the store" action="../search/" method="get">
+      <input id="searchInput" name="q" type="search" placeholder="Search books, free printables, games…" aria-label="Search books, free resources, games and articles" autocomplete="off">
+      <button type="submit">Search</button>
+      <div class="suggest" id="headSuggest" role="listbox" aria-label="Search suggestions"></div>
+    </form>
+    <button class="search-icon-btn" id="searchIconBtn" aria-label="Open search" aria-expanded="false">⌕</button>
+  </div>
+</header>
+
+<!-- mobile search overlay -->
+<div class="search-overlay" id="searchOverlay" role="search" aria-label="Search the store">
+  <div class="so-row">
+    <form class="search" id="mobSearch" action="../search/" method="get" style="display:flex">
+      <input id="mobSearchInput" name="q" type="search" placeholder="Search books, free printables, games…" aria-label="Search books, free resources, games and articles" autocomplete="off">
+      <button type="submit">Search</button>
+    </form>
+    <button class="so-close" id="searchOverlayClose" aria-label="Close search">✕</button>
+  </div>
+  <div class="suggest" id="mobSuggest" role="listbox" aria-label="Search suggestions"></div>
+</div>
+
+<nav class="dept" aria-label="Departments"><div class="wrap" id="deptNav">
+  <a href="../shop/">Shop</a>
+  <a href="../recommended/">Affiliate Products</a>
+  <span class="has-fly"><a href="../free-resources/" aria-haspopup="true">Free resources</a><span class="flyout"><a href="../free-resources/category/coloring/">Coloring</a><a href="../free-resources/category/learn-to-draw/">Learn to draw</a><a href="../free-resources/category/worksheets/">Worksheets</a><a href="../free-resources/category/planners/">Planners</a><a href="../free-resources/category/printables/">Printables</a><a href="../free-resources/category/wallpapers/">Wallpapers</a><a href="../free-resources/category/ai/">AI</a><a href="../free-resources/category/stickers/">Stickers</a><a class="viewall" href="../free-resources/">View all →</a></span></span>
+  <span class="has-fly"><a href="../games/" aria-haspopup="true">Games & play</a><span class="flyout"><a href="../games/category/puzzle/">Puzzle</a><a href="../games/category/arcade/">Arcade</a><a href="../games/category/casual/">Casual</a><a href="../games/category/educational/">Educational</a><a class="viewall" href="../games/">View all →</a></span></span>
+  <span class="has-fly"><a href="../blog/" class="on" aria-haspopup="true">Blog</a><span class="flyout"><a href="../blog/category/guides/">Guides</a><a href="../blog/category/activities/">Activities</a><a href="../blog/category/fun-facts/">Fun facts</a><a href="../blog/category/ai-tools-business/">AI Tools &amp; Online Business</a><a class="viewall" href="../blog/">View all →</a></span></span>
+</div></nav>
+<main id="main">
+<section class="block"><div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><span>Home</span> <span class="sep">›</span><a href="../blog/">Blog</a> <span class="sep">›</span><a href="../blog/category/ai-tools-business/">AI Tools &amp; Online Business</a> <span class="sep">›</span><span>Using Claude for Writing and Editing Long Documents</span></nav>
+  <div class="detail"><div class="article-body">
+    <p class="dmeta">AI Tools &amp; Online Business · 10 min read</p>
+    <h1>Using Claude for Writing and Editing Long Documents</h1>
+    <p><img src="https://jojosblocks.online/assets/blog/using-claude-writing-editing-long-documents.jpg" alt="Using Claude for Writing and Editing Long Documents" width="1200" height="675"></p>
+    <article class="wrap section article">
+    
+    <span class="eyebrow">AI Tools &amp; Online Business</span>
+    
+    <p class="card-meta">By JoJo's Blocks · <time datetime="2026-11-18">2026-11-18</time> · 10 min read · claude, writing</p>
+    
+    <p class="lead">A short email is easy for an AI assistant. A 12,000-word guide is a different job. The assistant has to remember what you said on page two when it reaches page twenty, keep the tone steady, and not invent a fact in the middle — and most assistants quietly fail at one of those three things.</p>
+    <p>Claude fails less often than most: it reads long documents well, holds a large amount of text in one conversation, and follows careful instructions. But &quot;less often&quot; is not &quot;never,&quot; and on a long document a single invented quote can sit unnoticed for weeks.</p>
+    <p>This guide follows one document from blank page to finished draft — a 10,000-word guide to starting a small garden, written by a beginner with a balcony and a $50 budget — and shows the exact method at each stage: plan, draft, edit, check, save. Borrow the method, not the garden.</p>
+    <h2>Why long documents break AI assistants</h2>
+    <p>Three things go wrong. First, <strong>memory fades</strong>. A context window is how much text Claude can hold in mind at once. Current models offer up to 1 million tokens in a chat — roughly 750,000 words — while older models offer 200,000 to 500,000. That sounds enormous until you remember the window also has to hold your instructions, the conversation so far, and everything Claude has already written. On a very long document it fills up, and on paid plans Claude summarizes earlier messages to make room, which means details can be lost.</p>
+    <p>Second, <strong>tone drifts</strong>. Chapter eight sounds like a different person wrote it than chapter one.</p>
+    <p>Third, <strong>facts slip</strong>. A wrong date or price in your draft does not get challenged; it gets repeated, politely, in better sentences.</p>
+    <p>The method below fights all three: work in sections, keep the facts in one place, and check in passes instead of all at once.</p>
+    <h2>Before you write: the 20-minute setup</h2>
+    <p><strong>Turn off training on your chats.</strong> On the Free, Pro, Max, and Ultra plans, Anthropic may use your conversations to improve its models unless you switch this off. Go to Settings, then Privacy, and turn off &quot;Help Improve our AI models.&quot; Team and Enterprise accounts do not train on your content by default. For anything genuinely private, use an incognito chat, which is never used for training and does not appear in your history.</p>
+    <p><strong>Create a Project for the document.</strong> A Project is a workspace that holds related chats, reference files, and its own instructions, so each document keeps its own context. Put your style guide, your outline, and your source material in the Project's knowledge base, and write custom instructions: &quot;Plain, friendly English. Short sentences. Never invent a fact, a quote, or a reference. If something is missing, say so instead of guessing.&quot;</p>
+    <p><strong>Know the file limits before you upload.</strong> In an ordinary chat you can upload up to 20 files, each up to 500 MB, and a PDF of up to 1,000 pages — though Claude only reads the charts and images in a PDF of 100 pages or fewer; longer PDFs are text-only. Files added to a Project's knowledge base are capped at 30 MB each, with no fixed number of files. Word documents are read as text only, so charts or images inside them are ignored. On paid plans, when a Project's knowledge approaches the limit, Claude switches to retrieval mode and loads only the relevant passages.</p>
+    <h2>Stage 1: Test the outline, not the writing</h2>
+    <p>Do not open Claude and type &quot;write me a report.&quot; Start with an outline you wrote yourself: the sections, in the order a reader needs them, with one sentence for what each must do. Then ask Claude to test the outline:</p>
+    <blockquote><p>&quot;Here is my outline for a 10,000-word guide to starting a small garden. Read it and tell me: is anything in the wrong order? Is a step missing? Is any section doing the job of another section? Do not write any of it yet — just check the plan.&quot;</p></blockquote>
+    <p>This is the cheapest edit you will ever get. An hour on the outline saves days of rewriting later. In our garden example, this check caught a real problem: the outline explained watering before it explained which pots to buy. Fix the outline first. Only then start drafting.</p>
+    <h2>Stage 2: Draft one section at a time</h2>
+    <p>Long documents fail when written in one pass. Draft one section at a time, in its own chat inside your Project, so each chat stays focused.</p>
+    <p>For each section, give Claude three things: the section's purpose in one sentence, the facts it must use, and a length. Then ask for a draft:</p>
+    <blockquote><p>&quot;Draft section 3 of my garden guide: 'Choosing what to grow'. The reader is a beginner with a small balcony. The facts: the balcony gets morning sun only; the reader has grown nothing before; the budget is under $50. About 600 words, plain and friendly. Do not add any facts I did not give you.&quot;</p></blockquote>
+    <p>Then read the draft against your facts. Check every name, number, and claim. Claude may add a plausible-sounding plant name, a price, or a growing time you never gave it — cut those. Keep the sentences that sound like you, and rewrite the ones that sound like anyone. Draft one section, check it, and move on. Do not ask Claude to rewrite the whole document every time you change one paragraph — that is how the tone drifts and the facts slip. One section a day, checked the same day, turns a 10,000-word guide into about fifteen short sessions instead of one exhausting weekend.</p>
+    <h2>Stage 3: Edit in four passes, each with one job</h2>
+    <p>Editing a long document in one pass does not work, with or without AI. Do it in separate passes.</p>
+    <p><strong>Pass 1: structure.</strong> Upload the full draft and ask Claude to map it: &quot;List each section, what it claims to do, and whether it does it. Flag any section that repeats another.&quot; Fix the structure before touching a sentence.</p>
+    <p><strong>Pass 2: consistency.</strong> Ask Claude to check the small things that drift: &quot;Are all the terms used the same way? Are all the numbers consistent? Does the tone stay the same from the first section to the last? List every inconsistency, with the section it appears in.&quot; Then fix them yourself — do not let Claude rewrite the whole document to fix a list.</p>
+    <p><strong>Pass 3: clarity.</strong> Ask Claude to read as a first-time reader: &quot;Mark every sentence a beginner would not understand, and every place where a step is missing.&quot; This is the pass that catches the gaps you can no longer see.</p>
+    <p><strong>Pass 4: the final read.</strong> Read the whole document yourself, out loud, from start to finish.</p>
+    <h2>Stage 4: Check facts with Claude's help — but never through it</h2>
+    <p>Claude can help you check a document, but it is not a source. Use it to find the claims that need checking, not to verify them. Ask it to list every factual claim in a section — dates, prices, names, statistics — then check each one yourself against the original source. If a claim cannot be checked, cut it or say so plainly in the text.</p>
+    <p>Claude can also search the web, but do not trust a searched answer blindly: open the source yourself for anything that matters, such as a price you will quote to a reader. For a fuller method, see <a href="../blog/ai-research-workflow-checks-sources.html">An AI Research Workflow That Checks Its Sources</a>.</p>
+    <h2>Stage 5: Keep versions you can go back to</h2>
+    <p>Long documents get worse when every edit overwrites the last good version. Save a copy before each major edit, with the date in the filename: <code>garden-guide-2026-11-18.docx</code>, then <code>garden-guide-2026-11-19.docx</code>. Claude does not keep versions for you — if a rewrite is worse, the old version is gone unless you saved it. After each pass, save the file, then start a new chat for the next one.</p>
+    <h2>What it costs, and when paying is worth it</h2>
+    <p>You can follow this whole workflow for $0. The free plan includes chat, web search, file uploads, memory, and up to five Projects — enough for one long document. The limit is usage: Anthropic publishes no fixed message count, because how much you can do depends on conversation length, file size, the model, and the features you use. Usage resets on a rolling five-hour window, with a weekly cap on top.</p>
+    <p>US prices below were read directly from Anthropic's pricing page (claude.com/pricing) on 18 November 2026, before tax — check the page before you pay, because prices and limits change.</p>
+    <table><thead><tr><th>Plan</th><th>US price</th><th>What it adds for long documents</th></tr></thead><tbody>
+<tr><td>Free</td><td>$0</td><td>Chat, web search, file uploads, memory, up to 5 Projects. Limited usage every 5 hours and every week.</td></tr>
+<tr><td>Pro</td><td>$20/month, or $17/month billed yearly ($200/year)</td><td>At least 5x Free's usage per 5-hour session, plus a weekly limit. More models, Research, and Claude Code.</td></tr>
+<tr><td>Max</td><td>$100/month</td><td>5x Pro's usage every 5 hours and every week, priority access at peak times, $100/month in API credits.</td></tr>
+<tr><td>Ultra</td><td>$200/month</td><td>10x Pro's weekly usage; no 5-hour limit for verified accounts; $200/month in API credits.</td></tr>
+</tbody></table>
+    <p>Pay only when you can name the limit you keep hitting. &quot;I run out of usage halfway through an editing pass&quot; is a reason to pay. &quot;It might be useful one day&quot; is not. For most beginners, Pro at $20 a month is the usual next step; Max and Ultra are for people who work with Claude all day.</p>
+    <p>If you have not chosen an assistant yet, see <a href="../blog/choose-ai-assistant-business-tasks.html">Claude, ChatGPT, Gemini or Grok? How to Choose an AI Assistant for Everyday Business Tasks</a>. For a lighter daily routine with a different assistant, see <a href="../blog/chatgpt-beginners-everyday-productivity-workflow.html">ChatGPT for Beginners: An Everyday Productivity Workflow</a>.</p>
+    <h2>The checklist: before you call it finished</h2>
+    <ul><li>Every section does the job the outline promised, in the order a reader needs.</li><li>Every date, price, name, and statistic has been checked against its original source.</li><li>The tone in the last section matches the tone in the first.</li><li>No fact appears that you did not give Claude or verify yourself.</li><li>You have read the whole document out loud, start to finish.</li><li>A dated copy of the finished version is saved somewhere safe.</li></ul>
+    <p>A long document is finished when you can defend every claim on every page.</p>
+    <div class="callout"><h2>JoJo's Blocks — a note, and how to reach us</h2><p>If you would like help learning to use AI tools, choosing the right AI software, or building a simple AI-assisted workflow for content creation and everyday business tasks, JoJo's Blocks offers personal AI learning and consulting.</p><p>And if you run a business, brand, or product and would like to reach a Pinterest audience, we also offer paid Pinterest promotion and partnership opportunities — with no promise of specific views, clicks, sales, or results.</p><div class="callout-actions">
+          <a class="btn btn-primary" href="mailto:jojobusiness0101@gmail.com">Email JoJo's Blocks</a>
+        </div></div>
+    <h2>Frequently asked questions</h2>
+    <div class="faq">
+        <details class="faq-item"><summary class="faq-q">Can Claude really read a whole book-length document?<span class="chev" aria-hidden="true">⌄</span></summary><div class="faq-a"><p>It can read a long document, but the context window also has to hold your instructions, the conversation, and everything it has already written. Work in sections.</p></div></details>
+        <details class="faq-item"><summary class="faq-q">Do I need the paid version of Claude to edit long documents?<span class="chev" aria-hidden="true">⌄</span></summary><div class="faq-a"><p>No. The free plan covers chat, file uploads, and up to five Projects. Only pay when you keep hitting the usage limit mid-pass.</p></div></details>
+        <details class="faq-item"><summary class="faq-q">Which plan should I choose if I do pay?<span class="chev" aria-hidden="true">⌄</span></summary><div class="faq-a"><p>For most beginners, Pro at $20 a month is the usual next step. Max and Ultra are for heavy daily use.</p></div></details>
+        <details class="faq-item"><summary class="faq-q">Will Claude remember my document between chats?<span class="chev" aria-hidden="true">⌄</span></summary><div class="faq-a"><p>Within a Project, Claude can see the files in the Project's knowledge base and the instructions you wrote for it, but each chat is a fresh conversation. Keep the important facts in the Project, not in one chat.</p></div></details>
+        <details class="faq-item"><summary class="faq-q">Can I trust Claude to check my facts?<span class="chev" aria-hidden="true">⌄</span></summary><div class="faq-a"><p>No. Claude can list the claims that need checking, but it cannot verify them. Check every date, price, name, and statistic against the original source.</p></div></details>
+        <details class="faq-item"><summary class="faq-q">Is it safe to paste my document into Claude?<span class="chev" aria-hidden="true">⌄</span></summary><div class="faq-a"><p>On the Free, Pro, Max, and Ultra plans, Anthropic may use your conversations for training unless you turn off &quot;Help Improve our AI models&quot; in Settings, under Privacy. Never paste passwords, bank details, or a client's private information.</p></div></details>
+    </div>
+  </article>
+  <section class="section section-alt" aria-label="Related articles">
+    <div class="wrap">
+      <h2>Related articles</h2>
+      <ul class="related-list">
+        <li><a href="choose-ai-assistant-business-tasks.html">Claude, ChatGPT, Gemini or Grok? How to Choose an AI Assistant for Everyday Business Tasks</a></li>
+        <li><a href="chatgpt-beginners-everyday-productivity-workflow.html">ChatGPT for Beginners: An Everyday Productivity Workflow</a></li>
+        <li><a href="ai-research-workflow-checks-sources.html">An AI Research Workflow That Checks Its Sources</a></li>
+      </ul>
+    </div>
+  </section>
+    
+    <h2>More articles</h2>
+    <div class="chips">
+      <a class="chip" href="benefits-of-coloring-for-preschoolers.html">Benefits of Coloring for Preschoolers</a>
+      <a class="chip" href="easy-alphabet-activities-for-toddlers-at-home.html">Easy Alphabet Activities for Toddlers at Home</a>
+      <a class="chip" href="fun-animal-facts-for-kids.html">Fun Animal Facts for Kids</a>
+      <a class="chip" href="homeschool-preschool-daily-routine-with-printables.html">Homeschool Preschool Daily Routine with Printables</a>
+    </div>
+  </div></div>
+</div></section>
+</main>
+<footer class="site"><div class="wrap">
+  <div class="fgrid">
+    <div>
+      <h3>JoJo's Blocks</h3>
+      <p>Digital products, free resources and games for creating, learning and play.</p>
+      <p style="margin-top:12px"><a class="pin-link" href="https://www.pinterest.com/JoJosBlocks/" target="_blank" rel="noopener"><svg class="pin-icon" viewBox="0 0 24 24" width="19" height="19" aria-hidden="true" fill="#E60023"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.39 18.592.026 11.985.026L12.017 0z"/></svg>Pinterest — @JoJosBlocks</a></p>
+    </div>
+    <div>
+      <h4>Shop</h4>
+      <a href="../shop/">Our Products</a>
+      <a href="../free-resources/">Free Resources</a>
+      <a href="../games/">Games &amp; Play</a>
+      <a href="../blog/">Blog</a>
+      <a href="../recommended/">Affiliate Products</a>
+    </div>
+    <div>
+      <h4>Help</h4>
+      <a href="mailto:jojobusiness0101@gmail.com">Contact us</a>
+      <a href="../#about">About</a>
+      <a href="../free-printables/">Free Taster Pack</a>
+    </div>
+    <div>
+      <h4>Legal</h4>
+      <a href="../privacy.html">Privacy Policy</a>
+      <a href="../terms.html">Terms &amp; Conditions</a>
+      <a href="../refund-policy.html">Refund Policy</a>
+    </div>
+  </div>
+  <div class="fine">
+    <span>© 2026 JoJo's Blocks. All rights reserved.</span>
+    <span>Sales are completed securely on Gumroad.</span>
+  </div>
+</div></footer>
+<!-- bottom tab bar (mobile only) -->
+<div class="tabbar"><nav aria-label="Quick navigation">
+  <a href="../shop/" data-tab="shop"><span class="ti">▦</span>Shop</a>
+  <a href="../free-resources/" data-tab="free"><span class="ti">✦</span>Free</a>
+  <a href="../games/" data-tab="games"><span class="ti">▶</span>Play</a>
+  <a href="../blog/" data-tab="blog" class="on"><span class="ti">✎</span>Blog</a>
+  <a href="#" data-tab="search" id="tabSearch"><span class="ti">⌕</span>Search</a>
+</nav></div>
+<div class="modal-back" id="modalBack" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal" id="modalBox">
+    <button class="x" id="modalClose" aria-label="Close product details">✕</button>
+    <div class="mgrid">
+      <div class="mcover" id="modalCover"></div>
+      <div class="mbody">
+        <p class="fmt" id="modalFmt"></p>
+        <h2 id="modalTitle"></h2>
+        <p class="mprice" id="modalPrice"></p>
+        <p class="msave" id="modalSave"></p>
+        <p id="modalDesc"></p>
+        <div class="macts">
+          <a class="btn btn-accent" id="modalBuy" href="#" target="_blank" rel="noopener">Buy on Gumroad</a>
+          <a class="btn btn-ghost btn-sm" id="modalPage" href="#" target="_blank" rel="noopener">View product page</a>
+        </div>
+        <p style="font-size:14px;color:var(--muted);margin-top:12px">Use code JOJOS10 at checkout for 10% off.</p>
+        <h3>What you get</h3>
+        <ul class="get" id="modalGet"></ul>
+        <h3>Good to know</h3>
+        <ul class="get">
+          <li>Instant PDF download</li>
+          <li>Print at home as often as you like</li>
+          <li>Personal &amp; family use</li>
+          <li>Secure checkout on Gumroad</li>
+          <li><a href="../refund-policy.html" target="_blank" rel="noopener">Refund policy</a></li>
+        </ul>
+        <h3>Sample pages</h3>
+        <p class="sample-note">Real sample pages from this book will appear here once supplied. Try the <a href="https://jojosblocks.online/assets/free-resources/jojos-blocks-free-taster-pack.pdf" target="_blank" rel="noopener" data-free-download="taster-pack" data-location="modal">Free Taster Pack</a> first — six sample pages, free.</p>
+      </div>
+    </div>
+    <div class="rel">
+      <h3>You may also like</h3>
+      <div class="chips" id="modalRelated"></div>
+      <a class="page-link" id="modalPageLink" href="#" target="_blank" rel="noopener">View product page →</a>
+    </div>
+    <div class="msticky">
+      <span class="msticky-price" id="mstickyPrice"></span>
+      <a class="btn btn-accent" id="mstickyBuy" href="#" target="_blank" rel="noopener">Buy on Gumroad</a>
+    </div>
+  </div>
+</div>
+<script>window.JB={root:"../",page:"detail",kind:"articles"};</script>
+<script type="application/json" id="product-data">{"bundle":{"title":"JoJo's Blocks Complete Coloring Book Bundle","price":12.99,"sale":11.69,"pages":154,"ages":"2–7","cover":"https://jojosblocks.online/assets/covers/bundle-cover.jpg","desc":"Four favorite adventures in one bundle — 154 pages of coloring, tracing, puzzles and learning for one low price. Includes My First ABC Book (28 pages, ages 2–4), My First Animal Explorer (30 pages), My Little Community Helpers (54 pages, 24 helpers) and My Little Space Adventure (42 pages, ages 3–5). Download the PDFs, print at home, and color!","gum":"https://jojosblocks.gumroad.com/l/jojos-blocks-coloring-bundle?wanted=true","kofi":"","amazon":"","page":"books/complete-coloring-book-bundle.html"},"abc":{"title":"My First ABC Book","price":3.99,"sale":3.59,"pages":28,"ages":"2–4","cover":"https://jojosblocks.online/assets/covers/book-01.jpg","desc":"Meet the alphabet one letter at a time. Each page pairs a big letter with a picture word — A is for Apple, B is for Ball, C is for Cat — with a color guide and tracing practice, so little ones learn, color and write their first letters.","gum":"https://jojosblocks.gumroad.com/l/my-first-abc-book?wanted=true","kofi":"","amazon":"","page":"books/my-first-abc-book.html"},"animal":{"title":"My First Animal Explorer","price":4.99,"sale":4.49,"pages":30,"ages":"3–6","cover":"https://jojosblocks.online/assets/covers/book-02.jpg","desc":"Hello, little explorer! Meet lions, elephants, giraffes, pandas, monkeys and more — learn each animal's name, trace the word, count, match and color. A certificate of achievement waits at the end for every super animal explorer.","gum":"https://jojosblocks.gumroad.com/l/my-first-animal-explorer?wanted=true","kofi":"","amazon":"","page":"books/my-first-animal-explorer.html"},"helpers":{"title":"My Little Community Helpers","price":4.99,"sale":4.49,"pages":54,"ages":"4–7","cover":"https://jojosblocks.online/assets/covers/book-03.jpg","desc":"Meet the people who help us every day! 24 community helpers — doctors, nurses, firefighters, police officers, teachers, veterinarians, electricians, mail carriers and more — with simple job descriptions, big coloring illustrations and a fun matching activity.","gum":"https://jojosblocks.gumroad.com/l/my-little-community-helpers?wanted=true","kofi":"","amazon":"","page":"books/my-little-community-helpers.html"},"space":{"title":"My Little Space Adventure","price":4.99,"sale":4.49,"pages":42,"ages":"3–5","cover":"https://jojosblocks.online/assets/covers/book-04.jpg","desc":"Join Nova, Zippy the alien and Rocket-7 on a mission to find the missing Cosmic Crystal. Color planets and alien worlds, solve mazes and puzzles, decode alien messages and take the Space Explorer Quiz — with a Junior Space Explorer certificate at the end.","gum":"https://jojosblocks.gumroad.com/l/my-little-space-adventure?wanted=true","kofi":"","amazon":"","page":"books/my-little-space-adventure.html"},"flower-stickers-40-png":{"title":"Flower Stickers – 40 PNG","price":3,"sale":3,"pages":null,"ages":"","cover":"https://storage.ko-fi.com/cdn/useruploads/post/049b8247-5271-41a1-a41b-388ebce5667b_chatgptimagefeb4202611_08_29am.png","desc":"A pack of 40 aesthetic flower PNG stickers for digital and print use. This pack includes 40 high-quality flower PNG stickers with transparent backgrounds and clean white outlines.","kofi":"https://ko-fi.com/s/25d8989b90","amazon":"","page":"shop/flower-stickers-40-png.html"},"abc-paperback":{"title":"My First ABC Book — Paperback","price":9.99,"sale":9.99,"pages":28,"ages":"2–4","cover":"https://jojosblocks.online/assets/covers/book-01.jpg","desc":"My First ABC Book as a printed paperback — Alphabet Tracing and Coloring Book for Kids. The same 28 pages, printed and bound: every letter pairs with a picture word — A is for Apple, B is for Ball, C is for Cat — with a color guide and tracing practice, so little ones learn, color and write their first letters. No printing needed.","kofi":"","amazon":"https://a.co/d/0f9lfDYk","page":"books/my-first-abc-book-paperback.html"}}</script>
+<script src="../assets/site.js" defer></script>
+</body>
+</html>
