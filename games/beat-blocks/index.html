@@ -349,6 +349,11 @@
      by ~30px and cause horizontal scroll — let them wrap to two lines. */
   #play .song-card .lock-note{white-space:normal}
 }
+@media (max-width:380px){
+  /* Lock-note hints also overflow at 360px (by ~6px) even though the 340px
+     rule above does not apply there — let them wrap from 380px down. */
+  #play .song-card .lock-note{white-space:normal}
+}
 @media (max-height:500px){
   /* Short screens (landscape phones): shrink the stage so the beat line
      stays visible without scrolling. Bea hides to keep the lanes clear. */
