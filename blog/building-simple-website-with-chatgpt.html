@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Building a Simple Website with ChatGPT: What It Can Do, What It Can't, and a Beginner Workflow | JoJo’s Blocks Blog</title>
+<meta name="description" content="Can ChatGPT build a website? A beginner workflow for planning, drafting, and testing a simple site, plus honest hosting options and costs.">
+<link rel="canonical" href="https://jojosblocks.online/blog/building-simple-website-with-chatgpt.html">
+<link rel="stylesheet" href="../assets/styles.css">
+
+<!-- Google tag (gtag.js) — Google Analytics 4, JoJo's Blocks (G-PYDBE3YS5S) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PYDBE3YS5S"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PYDBE3YS5S');
+</script>
+<!-- Google AdSense (pub-7967649628220448) — site verification + ad serving -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7967649628220448" crossorigin="anonymous"></script>
+<!-- Pinterest Tag (Tag ID 2614299974172) — page-visit tracking only;
+     purchases happen on Gumroad and are not tracked by this tag -->
+<script>
+!function(e){if(!window.pintrk){window.pintrk = function () {
+window.pintrk.queue.push(Array.prototype.slice.call(arguments))};var
+n=window.pintrk;n.queue=[],n.version="3.0";var
+t=document.createElement("script");t.async=!0,t.src=e;var
+r=document.getElementsByTagName("script")[0];
+r.parentNode.insertBefore(t,r)}}("https://s.pinimg.com/ct/core.js");
+pintrk('load', '2614299974172');
+pintrk('page');
+// PageVisit fix (15 Nov 2026): pintrk('page') sends 'init', not 'pagevisit', in the current tag library — this call records the PageVisit event.
+pintrk('track', 'pagevisit');
+</script>
+<noscript>
+<img height="1" width="1" style="display:none;" alt=""
+src="https://ct.pinterest.com/v3/?event=init&tid=2614299974172&noscript=1" />
+</noscript>
+<!-- end Pinterest Tag -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Building a Simple Website with ChatGPT: What It Can Do, What It Can't, and a Beginner Workflow","description":"Can ChatGPT build a website? A beginner workflow for planning, drafting, and testing a simple site, plus honest hosting options and costs.","image":"https://jojosblocks.online/assets/blog/building-simple-website-with-chatgpt.jpg","datePublished":"2026-11-18","dateModified":"2026-11-18","author":{"@type":"Organization","name":"JoJo's Blocks","url":"https://jojosblocks.online"},"publisher":{"@type":"Organization","name":"JoJo's Blocks","url":"https://jojosblocks.online"},"mainEntityOfPage":"https://jojosblocks.online/blog/building-simple-website-with-chatgpt.html"}</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<!-- header -->
+<header class="site">
+  <div class="hd">
+    <a class="logo" href="../"><img class="logo-mark" src="../assets/profile-logo.jpg" alt="JoJo's Blocks logo" width="1000" height="1000">JoJo's Blocks</a>
+    <form class="search" id="headSearch" role="search" aria-label="Search the store" action="../search/" method="get">
+      <input id="searchInput" name="q" type="search" placeholder="Search books, free printables, games…" aria-label="Search books, free resources, games and articles" autocomplete="off">
+      <button type="submit">Search</button>
+      <div class="suggest" id="headSuggest" role="listbox" aria-label="Search suggestions"></div>
+    </form>
+    <button class="search-icon-btn" id="searchIconBtn" aria-label="Open search" aria-expanded="false">⌕</button>
+  </div>
+</header>
+
+<!-- mobile search overlay -->
+<div class="search-overlay" id="searchOverlay" role="search" aria-label="Search the store">
+  <div class="so-row">
+    <form class="search" id="mobSearch" action="../search/" method="get" style="display:flex">
+      <input id="mobSearchInput" name="q" type="search" placeholder="Search books, free printables, games…" aria-label="Search books, free resources, games and articles" autocomplete="off">
+      <button type="submit">Search</button>
+    </form>
+    <button class="so-close" id="searchOverlayClose" aria-label="Close search">✕</button>
+  </div>
+  <div class="suggest" id="mobSuggest" role="listbox" aria-label="Search suggestions"></div>
+</div>
+
+<nav class="dept" aria-label="Departments"><div class="wrap" id="deptNav">
+  <a href="../shop/">Shop</a>
+  <a href="../recommended/">Affiliate Products</a>
+  <span class="has-fly"><a href="../free-resources/" aria-haspopup="true">Free resources</a><span class="flyout"><a href="../free-resources/category/coloring/">Coloring</a><a href="../free-resources/category/learn-to-draw/">Learn to draw</a><a href="../free-resources/category/worksheets/">Worksheets</a><a href="../free-resources/category/planners/">Planners</a><a href="../free-resources/category/printables/">Printables</a><a href="../free-resources/category/wallpapers/">Wallpapers</a><a href="../free-resources/category/ai/">AI</a><a href="../free-resources/category/stickers/">Stickers</a><a class="viewall" href="../free-resources/">View all →</a></span></span>
+  <span class="has-fly"><a href="../games/" aria-haspopup="true">Games & play</a><span class="flyout"><a href="../games/category/puzzle/">Puzzle</a><a href="../games/category/arcade/">Arcade</a><a href="../games/category/casual/">Casual</a><a href="../games/category/educational/">Educational</a><a class="viewall" href="../games/">View all →</a></span></span>
+  <span class="has-fly"><a href="../blog/" class="on" aria-haspopup="true">Blog</a><span class="flyout"><a href="../blog/category/guides/">Guides</a><a href="../blog/category/activities/">Activities</a><a href="../blog/category/fun-facts/">Fun facts</a><a href="../blog/category/ai-tools-business/">AI Tools &amp; Online Business</a><a class="viewall" href="../blog/">View all →</a></span></span>
+</div></nav>
+<main id="main">
+<section class="block"><div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><span>Home</span> <span class="sep">›</span><a href="../blog/">Blog</a> <span class="sep">›</span><a href="../blog/category/ai-tools-business/">AI Tools &amp; Online Business</a> <span class="sep">›</span><span>Building a Simple Website with ChatGPT: What It Can Do, What It Can't, and a Beginner Workflow</span></nav>
+  <div class="detail"><div class="article-body">
+    <p class="dmeta">AI Tools &amp; Online Business · 10 min read</p>
+    <h1>Building a Simple Website with ChatGPT: What It Can Do, What It Can't, and a Beginner Workflow</h1>
+    <p><img src="https://jojosblocks.online/assets/blog/building-simple-website-with-chatgpt.jpg" alt="Building a Simple Website with ChatGPT: What It Can Do, What It Can't, and a Beginner Workflow" width="1200" height="675"></p>
+    <article class="wrap section article">
+    
+    <span class="eyebrow">AI Tools &amp; Online Business</span>
+    
+    <p class="card-meta">By JoJo's Blocks · <time datetime="2026-11-18">2026-11-18</time> · 10 min read · chatgpt, websites</p>
+    
+    <p class="lead">You want a website: a page that says what you do, shows a few examples, and gives people one way to reach you. ChatGPT can help you build it, but only in a specific sense: it can plan the pages, write the words, draft the HTML and CSS, and help you fix an error. What it cannot do, in an ordinary chat, is put that website on the internet — there is no &quot;publish&quot; button in a normal ChatGPT conversation. This guide follows one fictional build from start to finish: Ana, a pottery teacher who runs weekend classes and needs one page with the class, the dates, the price, three photos, and an email link to book. Replace her details with yours, and the same workflow builds your site.</p>
+    <h2>What ChatGPT can do — and what it cannot</h2>
+    <p>Separate the work into two parts: making the site, and putting it online. ChatGPT helps with the first, not the second.</p>
+    <p><strong>It can:</strong> plan a site's structure; write headlines, descriptions, and answers to common questions; draft HTML, CSS, and a little JavaScript; explain what each part does; and help you fix a problem when you paste in an error message.</p>
+    <p><strong>It cannot:</strong> host or publish a site from an ordinary chat — the code lives in your conversation until you save it as files and upload them to a host. It cannot register a domain, log in to your accounts, or install WordPress. It cannot guarantee working or secure code: it can write code that looks complete and still has a mistake, a broken link, or a form that goes nowhere. And it cannot process payments, store orders, or keep a live site updated.</p>
+    <h2>A note on ChatGPT Sites</h2>
+    <p>ChatGPT Sites is a separate feature that can build, host, and share a simple website or small web app from a prompt. It has been in public beta since July 2026, and it is not the same as an ordinary chat. As confirmed in OpenAI's own Sites documentation, checked November 2026: Sites is not available on the Free or Go plans; it needs Plus, Pro, Business, Enterprise, or Edu. Hosting is free through 31 December 2026, and from 1 January 2027 usage above each plan's monthly hosting allowance is billed — Plus includes 125 credits a month, Pro 375, Business 125 per seat. Building or editing a Site counts toward your plan's Codex usage, and a custom domain costs about 25 credits a month on top of what you pay the registrar. A new Site is private by default; where available, you can connect a domain you already own. Each Site's database is capped at 10 GB, and the documentation rules out payment-card data, protected health information, and financial transactions. The January 2027 rates are described by OpenAI as &quot;proposed.&quot; Sites can suit a prototype or an event page. For a main business website, the ordinary route in this article is usually safer, because you keep your own copy of the files.</p>
+    <h2>Step 1: Decide what the site is for</h2>
+    <p>Do not open ChatGPT yet. Write one sentence: &quot;This site helps [a specific person] to [do one thing] by [the main action].&quot; Ana's: &quot;This site helps parents nearby find a weekend pottery class and book a place.&quot; Then list the sections you need — usually Home, Services, Examples, Common questions, and Contact — and leave out any section that does not help a visitor decide or act.</p>
+    <h2>Step 2: Gather your real content first</h2>
+    <p>Before asking ChatGPT to write anything, collect your business name, one or two sentences about what you do, your services with real prices, two or three real photographs, and your contact details — only what you are happy to publish. This also protects you from ChatGPT's most common mistake: invented details. If you do not give it a price, it may invent one.</p>
+    <h2>Step 3: Plan the site, then draft the words</h2>
+    <p>Ask for a plan first, not a finished site. Give it your business type, your visitor, the one action you want, and your services with prices, then ask for the sections in order and three headline options — and tell it not to invent prices, places, or claims. Ana's prompt looks like this:</p>
+    <blockquote><p>&quot;I teach weekend pottery classes for beginners. Visitors are parents nearby deciding whether to book a Saturday class. The one action is to email me to book. Classes are Saturdays 10 am to 1 pm, $35 per person including materials. Please suggest the sections for a one-page website in order, and three headline options. Do not invent prices, dates, places, or claims I did not give you.&quot;</p></blockquote>
+    <p>Read the plan as a stranger would, then ask it to draft one section at a time, using your facts. Edit by hand: read it aloud, cut slogans, and check every price, date, and name. If a stranger cannot say what you sell and what to do next in ten seconds, the words are not ready.</p>
+    <h2>Step 4: Ask ChatGPT to write the code — and test it</h2>
+    <p>Ask for a single HTML file with the styling included, using the text you approved, the sections in the order you agreed, and a contact section with your email address. Save the result as <code>index.html</code>. If ChatGPT gives you separate CSS or JavaScript files, save those too, in the same folder, with the exact filenames it uses — renaming a file can break the link to it.</p>
+    <p>Then open <code>index.html</code> in your browser. You should see your site, running locally on your own computer. Nobody else can see it yet — that is normal, and it is the right time to find problems. Check the text, click every link, and make the browser window narrow to see how the page reads on a phone. One warning: a form in a plain HTML file does nothing on its own. It needs a form service or a backend. Do not publish a form that silently goes nowhere — for a first site, a plain email link is more honest than a broken form. If something is wrong, describe it in plain words and ask for a corrected version. Test again until the page works on a computer and a phone.</p>
+    <h2>Step 5: Choose how to publish it</h2>
+    <p>This is the step ChatGPT cannot do for you. You need hosting (somewhere the files live) and, if you want your own address, a domain name.</p>
+    <p><strong>GitHub Pages</strong> — free for public repositories, up to 1 GB per site with a soft bandwidth limit of 100 GB a month, custom domain and HTTPS included. One limit matters: GitHub says Pages is not intended or allowed as a free host for an online business, an e-commerce site, or a software service. Ana's class page fits; a shop would not.</p>
+    <p><strong>Netlify Free</strong> — $0, with 300 credits a month as a hard limit for accounts created since September 2025. A deploy costs 15 credits and bandwidth costs 20 credits per GB, so 300 credits covers roughly 20 deploys, or about 15 GB of bandwidth, or a mix. When credits run out, sites pause until the next cycle, with no top-up on Free. Personal is $9 a month for 1,000 credits; Pro starts at $20 a month for 3,000. Netlify includes a custom domain with free SSL, allows commercial projects, and lets you drag a folder onto its site — the easiest start.</p>
+    <p><strong>Carrd</strong> — a visual builder for one-page sites, with no code. Free is $0 for up to three sites on a <code>carrd.co</code> address, with &quot;Made with Carrd&quot; branding and no custom domain, forms, or analytics. Paid plans, billed yearly: Pro Lite $9, Pro Standard $19 (custom domain, forms, analytics), Pro Plus $49.</p>
+    <p><strong>WordPress.com</strong> — the flexible option if you want a blog and several pages. Free is $0, with 1 GB of storage, a <code>yoursite.wordpress.com</code> address, and ads shown to visitors; no custom domain or plugins. Paid plans, billed yearly: Personal $4 a month ($48), Premium $8 ($96), Business $25 ($300), Commerce $45 ($540). Monthly billing costs more, and renewal prices are higher. Since April 2026, plugins are allowed on every paid plan.</p>
+    <p><strong>The domain name</strong> is a separate purchase. For a standard <code>.com</code>, typical 2026 prices were roughly $10–$15 for the first year and $15–$22 a year to renew. A domain is rented by the year, not bought outright: if you do not renew it, you lose it.</p>
+    <h2>What it costs</h2>
+    <p>You can build and publish a first simple site for $0. Costs below are US list prices checked in November 2026, before tax — verify before you pay.</p>
+    <table><thead><tr><th>Item</th><th>Free option</th><th>Paid option (Nov 2026)</th></tr></thead><tbody>
+<tr><td>ChatGPT</td><td>$0, with usage limits</td><td>Go $8/month; Plus $20/month; Pro $100, $200, or $500/month</td></tr>
+<tr><td>Static hosting</td><td>GitHub Pages $0; Netlify Free $0 (300 credits/month)</td><td>Netlify Personal $9/month; Pro from $20/month</td></tr>
+<tr><td>One-page builder</td><td>Carrd Free $0 (3 sites, Carrd branding)</td><td>Carrd Pro Lite $9/year; Pro Standard $19/year; Pro Plus $49/year</td></tr>
+<tr><td>WordPress.com</td><td>Free $0 (1 GB, subdomain, ads)</td><td>Personal $4/month billed yearly; Premium $8/month; Business $25/month</td></tr>
+<tr><td>Domain</td><td>Subdomain only</td><td>A standard <code>.com</code>, typically about $10–$15 first year, $15–$22/year to renew</td></tr>
+</tbody></table>
+    <p>A realistic first-year budget is $0 for a test site on a free subdomain, or roughly $20–$70 for a small site with a custom domain — the domain plus Carrd Pro Standard ($19 a year) or WordPress.com Personal ($48 a year).</p>
+    <h2>Mistakes to avoid</h2>
+    <ul><li><strong>Publishing a form that goes nowhere.</strong> Use an email link, or a tested form service.</li><li><strong>Letting ChatGPT invent your details.</strong> Prices, dates, and qualifications must come from you.</li><li><strong>Choosing the fanciest option first.</strong> A shop or booking system is a separate project. Start simple.</li><li><strong>Forgetting the phone test.</strong> Most visitors will arrive on a phone.</li><li><strong>Not keeping a copy.</strong> Save your files somewhere you control — a chat conversation is not a backup.</li></ul>
+    <h2>Conclusion</h2>
+    <p>ChatGPT is a useful helper for building a simple website — as a planner, a writing assistant, and a coding assistant. It is not a website builder, a host, or a publisher. Decide what the site is for, gather your real content, plan the page with ChatGPT, draft and edit the words yourself, ask for the code, test it on a computer and a phone, then publish it through a hosting service you have chosen on purpose. A small site that is accurate, readable, and live is worth far more than a large site that exists only in a chat window.</p>
+    <div class="callout"><h2>JoJo's Blocks — a note, and how to reach us</h2><p>If you would like help learning to use AI tools, choosing the right AI software, or building a simple AI-assisted workflow for content creation and everyday business tasks, JoJo's Blocks offers personal AI learning and consulting.</p><p>And if you run a business, brand, or product and would like to reach a Pinterest audience, we also offer paid Pinterest promotion and partnership opportunities — with no promise of specific views, clicks, sales, or results.</p><div class="callout-actions">
+          <a class="btn btn-primary" href="mailto:jojobusiness0101@gmail.com">Email JoJo's Blocks</a>
+        </div></div>
+    <h2>Frequently asked questions</h2>
+    <div class="faq">
+        <details class="faq-item"><summary class="faq-q">Can ChatGPT build a website for free?<span class="chev" aria-hidden="true">⌄</span></summary><div class="faq-a"><p>Its free plan can draft the plan, the words, and the code. Going live is separate: you still need hosting, and a domain if you want your own address. A first site can be published for $0 on a free host.</p></div></details>
+        <details class="faq-item"><summary class="faq-q">Can ChatGPT publish my website?<span class="chev" aria-hidden="true">⌄</span></summary><div class="faq-a"><p>Not from an ordinary chat. ChatGPT Sites is a separate, paid-plan beta feature that can host a site, but it is not available on the Free or Go plans, and hosting above your plan's allowance is billed from 1 January 2027.</p></div></details>
+        <details class="faq-item"><summary class="faq-q">Which hosting option should a beginner choose?<span class="chev" aria-hidden="true">⌄</span></summary><div class="faq-a"><p>For a single HTML page, Netlify Free is usually the easiest start. For a one-page visual site with no code, Carrd is simpler. For a site that will grow into a blog, WordPress.com is more flexible.</p></div></details>
+        <details class="faq-item"><summary class="faq-q">What if ChatGPT gives me code that does not work?<span class="chev" aria-hidden="true">⌄</span></summary><div class="faq-a"><p>That is normal. Copy the error message, or describe what you see, and ask for a corrected version. If the same problem keeps coming back, simplify: publish the simple version first.</p></div></details>
+    </div>
+  </article>
+  <section class="section section-alt" aria-label="Related articles">
+    <div class="wrap">
+      <h2>Related articles</h2>
+      <ul class="related-list">
+        <li><a href="faceless-youtube-ai-beginners-guide.html">Faceless YouTube with AI: A Realistic Beginner's Guide to Planning, Scripting and Publishing Your First Videos</a></li>
+        <li><a href="chatgpt-beginners-everyday-productivity-workflow.html">ChatGPT for Beginners: An Everyday Productivity Workflow</a></li>
+        <li><a href="ai-research-workflow-checks-sources.html">An AI Research Workflow That Checks Its Sources</a></li>
+      </ul>
+    </div>
+  </section>
+    
+    <h2>More articles</h2>
+    <div class="chips">
+      <a class="chip" href="benefits-of-coloring-for-preschoolers.html">Benefits of Coloring for Preschoolers</a>
+      <a class="chip" href="easy-alphabet-activities-for-toddlers-at-home.html">Easy Alphabet Activities for Toddlers at Home</a>
+      <a class="chip" href="fun-animal-facts-for-kids.html">Fun Animal Facts for Kids</a>
+      <a class="chip" href="homeschool-preschool-daily-routine-with-printables.html">Homeschool Preschool Daily Routine with Printables</a>
+    </div>
+  </div></div>
+</div></section>
+</main>
+<footer class="site"><div class="wrap">
+  <div class="fgrid">
+    <div>
+      <h3>JoJo's Blocks</h3>
+      <p>Digital products, free resources and games for creating, learning and play.</p>
+      <p style="margin-top:12px"><a class="pin-link" href="https://www.pinterest.com/JoJosBlocks/" target="_blank" rel="noopener"><svg class="pin-icon" viewBox="0 0 24 24" width="19" height="19" aria-hidden="true" fill="#E60023"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.39 18.592.026 11.985.026L12.017 0z"/></svg>Pinterest — @JoJosBlocks</a></p>
+    </div>
+    <div>
+      <h4>Shop</h4>
+      <a href="../shop/">Our Products</a>
+      <a href="../free-resources/">Free Resources</a>
+      <a href="../games/">Games &amp; Play</a>
+      <a href="../blog/">Blog</a>
+      <a href="../recommended/">Affiliate Products</a>
+    </div>
+    <div>
+      <h4>Help</h4>
+      <a href="mailto:jojobusiness0101@gmail.com">Contact us</a>
+      <a href="../#about">About</a>
+      <a href="../free-printables/">Free Taster Pack</a>
+    </div>
+    <div>
+      <h4>Legal</h4>
+      <a href="../privacy.html">Privacy Policy</a>
+      <a href="../terms.html">Terms &amp; Conditions</a>
+      <a href="../refund-policy.html">Refund Policy</a>
+    </div>
+  </div>
+  <div class="fine">
+    <span>© 2026 JoJo's Blocks. All rights reserved.</span>
+    <span>Sales are completed securely on Gumroad.</span>
+  </div>
+</div></footer>
+<!-- bottom tab bar (mobile only) -->
+<div class="tabbar"><nav aria-label="Quick navigation">
+  <a href="../shop/" data-tab="shop"><span class="ti">▦</span>Shop</a>
+  <a href="../free-resources/" data-tab="free"><span class="ti">✦</span>Free</a>
+  <a href="../games/" data-tab="games"><span class="ti">▶</span>Play</a>
+  <a href="../blog/" data-tab="blog" class="on"><span class="ti">✎</span>Blog</a>
+  <a href="#" data-tab="search" id="tabSearch"><span class="ti">⌕</span>Search</a>
+</nav></div>
+<div class="modal-back" id="modalBack" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal" id="modalBox">
+    <button class="x" id="modalClose" aria-label="Close product details">✕</button>
+    <div class="mgrid">
+      <div class="mcover" id="modalCover"></div>
+      <div class="mbody">
+        <p class="fmt" id="modalFmt"></p>
+        <h2 id="modalTitle"></h2>
+        <p class="mprice" id="modalPrice"></p>
+        <p class="msave" id="modalSave"></p>
+        <p id="modalDesc"></p>
+        <div class="macts">
+          <a class="btn btn-accent" id="modalBuy" href="#" target="_blank" rel="noopener">Buy on Gumroad</a>
+          <a class="btn btn-ghost btn-sm" id="modalPage" href="#" target="_blank" rel="noopener">View product page</a>
+        </div>
+        <p style="font-size:14px;color:var(--muted);margin-top:12px">Use code JOJOS10 at checkout for 10% off.</p>
+        <h3>What you get</h3>
+        <ul class="get" id="modalGet"></ul>
+        <h3>Good to know</h3>
+        <ul class="get">
+          <li>Instant PDF download</li>
+          <li>Print at home as often as you like</li>
+          <li>Personal &amp; family use</li>
+          <li>Secure checkout on Gumroad</li>
+          <li><a href="../refund-policy.html" target="_blank" rel="noopener">Refund policy</a></li>
+        </ul>
+        <h3>Sample pages</h3>
+        <p class="sample-note">Real sample pages from this book will appear here once supplied. Try the <a href="https://jojosblocks.online/assets/free-resources/jojos-blocks-free-taster-pack.pdf" target="_blank" rel="noopener" data-free-download="taster-pack" data-location="modal">Free Taster Pack</a> first — six sample pages, free.</p>
+      </div>
+    </div>
+    <div class="rel">
+      <h3>You may also like</h3>
+      <div class="chips" id="modalRelated"></div>
+      <a class="page-link" id="modalPageLink" href="#" target="_blank" rel="noopener">View product page →</a>
+    </div>
+    <div class="msticky">
+      <span class="msticky-price" id="mstickyPrice"></span>
+      <a class="btn btn-accent" id="mstickyBuy" href="#" target="_blank" rel="noopener">Buy on Gumroad</a>
+    </div>
+  </div>
+</div>
+<script>window.JB={root:"../",page:"detail",kind:"articles"};</script>
+<script type="application/json" id="product-data">{"bundle":{"title":"JoJo's Blocks Complete Coloring Book Bundle","price":12.99,"sale":11.69,"pages":154,"ages":"2–7","cover":"https://jojosblocks.online/assets/covers/bundle-cover.jpg","desc":"Four favorite adventures in one bundle — 154 pages of coloring, tracing, puzzles and learning for one low price. Includes My First ABC Book (28 pages, ages 2–4), My First Animal Explorer (30 pages), My Little Community Helpers (54 pages, 24 helpers) and My Little Space Adventure (42 pages, ages 3–5). Download the PDFs, print at home, and color!","gum":"https://jojosblocks.gumroad.com/l/jojos-blocks-coloring-bundle?wanted=true","kofi":"","amazon":"","page":"books/complete-coloring-book-bundle.html"},"abc":{"title":"My First ABC Book","price":3.99,"sale":3.59,"pages":28,"ages":"2–4","cover":"https://jojosblocks.online/assets/covers/book-01.jpg","desc":"Meet the alphabet one letter at a time. Each page pairs a big letter with a picture word — A is for Apple, B is for Ball, C is for Cat — with a color guide and tracing practice, so little ones learn, color and write their first letters.","gum":"https://jojosblocks.gumroad.com/l/my-first-abc-book?wanted=true","kofi":"","amazon":"","page":"books/my-first-abc-book.html"},"animal":{"title":"My First Animal Explorer","price":4.99,"sale":4.49,"pages":30,"ages":"3–6","cover":"https://jojosblocks.online/assets/covers/book-02.jpg","desc":"Hello, little explorer! Meet lions, elephants, giraffes, pandas, monkeys and more — learn each animal's name, trace the word, count, match and color. A certificate of achievement waits at the end for every super animal explorer.","gum":"https://jojosblocks.gumroad.com/l/my-first-animal-explorer?wanted=true","kofi":"","amazon":"","page":"books/my-first-animal-explorer.html"},"helpers":{"title":"My Little Community Helpers","price":4.99,"sale":4.49,"pages":54,"ages":"4–7","cover":"https://jojosblocks.online/assets/covers/book-03.jpg","desc":"Meet the people who help us every day! 24 community helpers — doctors, nurses, firefighters, police officers, teachers, veterinarians, electricians, mail carriers and more — with simple job descriptions, big coloring illustrations and a fun matching activity.","gum":"https://jojosblocks.gumroad.com/l/my-little-community-helpers?wanted=true","kofi":"","amazon":"","page":"books/my-little-community-helpers.html"},"space":{"title":"My Little Space Adventure","price":4.99,"sale":4.49,"pages":42,"ages":"3–5","cover":"https://jojosblocks.online/assets/covers/book-04.jpg","desc":"Join Nova, Zippy the alien and Rocket-7 on a mission to find the missing Cosmic Crystal. Color planets and alien worlds, solve mazes and puzzles, decode alien messages and take the Space Explorer Quiz — with a Junior Space Explorer certificate at the end.","gum":"https://jojosblocks.gumroad.com/l/my-little-space-adventure?wanted=true","kofi":"","amazon":"","page":"books/my-little-space-adventure.html"},"flower-stickers-40-png":{"title":"Flower Stickers – 40 PNG","price":3,"sale":3,"pages":null,"ages":"","cover":"https://storage.ko-fi.com/cdn/useruploads/post/049b8247-5271-41a1-a41b-388ebce5667b_chatgptimagefeb4202611_08_29am.png","desc":"A pack of 40 aesthetic flower PNG stickers for digital and print use. This pack includes 40 high-quality flower PNG stickers with transparent backgrounds and clean white outlines.","kofi":"https://ko-fi.com/s/25d8989b90","amazon":"","page":"shop/flower-stickers-40-png.html"},"abc-paperback":{"title":"My First ABC Book — Paperback","price":9.99,"sale":9.99,"pages":28,"ages":"2–4","cover":"https://jojosblocks.online/assets/covers/book-01.jpg","desc":"My First ABC Book as a printed paperback — Alphabet Tracing and Coloring Book for Kids. The same 28 pages, printed and bound: every letter pairs with a picture word — A is for Apple, B is for Ball, C is for Cat — with a color guide and tracing practice, so little ones learn, color and write their first letters. No printing needed.","kofi":"","amazon":"https://a.co/d/0f9lfDYk","page":"books/my-first-abc-book-paperback.html"}}</script>
+<script src="../assets/site.js" defer></script>
+</body>
+</html>

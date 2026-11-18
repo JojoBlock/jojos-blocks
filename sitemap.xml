@@ -2,12 +2,8 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://jojosblocks.online/</loc><lastmod>2026-11-16</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
   <url><loc>https://jojosblocks.online/shop/</loc><lastmod>2026-11-16</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url>
-    <loc>https://jojosblocks.online/shop/flower-stickers-40-png.html</loc>
-    <lastmod>2026-11-17</lastmod>
-  </url>
   <url><loc>https://jojosblocks.online/shop/category/books-ebooks/</loc><lastmod>2026-11-16</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://jojosblocks.online/shop/category/real-books/</loc><lastmod>2026-11-18</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/shop/category/real-books/</loc><lastmod>2026-11-16</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://jojosblocks.online/products/</loc><lastmod>2026-11-15</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://jojosblocks.online/free-resources/</loc><lastmod>2026-11-16</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://jojosblocks.online/free-resources/category/coloring/</loc><lastmod>2026-11-16</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
@@ -41,15 +37,11 @@
   <url><loc>https://jojosblocks.online/games/click-the-box/</loc><lastmod>2026-11-16</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://jojosblocks.online/games/flappy-penguin/</loc><lastmod>2026-11-16</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://jojosblocks.online/games/block-drop/</loc><lastmod>2026-11-16</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://jojosblocks.online/games/perfect-timing-ring/</loc><lastmod>2026-11-16</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://jojosblocks.online/games/penguin-stack/</loc><lastmod>2026-11-16</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://jojosblocks.online/games/cloud-hop/</loc><lastmod>2026-11-16</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://jojosblocks.online/games/hex-garden/</loc><lastmod>2026-11-16</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://jojosblocks.online/games/beat-blocks/</loc><lastmod>2026-11-16</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://jojosblocks.online/blog/</loc><lastmod>2026-11-16</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://jojosblocks.online/blog/category/guides/</loc><lastmod>2026-11-16</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://jojosblocks.online/blog/category/activities/</loc><lastmod>2026-11-16</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://jojosblocks.online/blog/category/fun-facts/</loc><lastmod>2026-11-16</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/category/ai-tools-business/</loc><lastmod>2026-11-16</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://jojosblocks.online/blog/benefits-of-coloring-for-preschoolers.html</loc><lastmod>2026-11-15</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://jojosblocks.online/blog/easy-alphabet-activities-for-toddlers-at-home.html</loc><lastmod>2026-11-15</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://jojosblocks.online/blog/fun-animal-facts-for-kids.html</loc><lastmod>2026-11-15</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
@@ -58,13 +50,44 @@
   <url><loc>https://jojosblocks.online/blog/screen-free-activities-for-kids-on-rainy-days.html</loc><lastmod>2026-11-15</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://jojosblocks.online/blog/space-facts-for-preschoolers.html</loc><lastmod>2026-11-15</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://jojosblocks.online/blog/what-do-community-helpers-do.html</loc><lastmod>2026-11-15</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/faceless-youtube-ai-beginners-guide.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/chatgpt-design-simple-ads-small-business.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/choose-ai-assistant-business-tasks.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/building-simple-website-with-chatgpt.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/canva-ai-editing-tools-beginners.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/ai-assisted-freelance-services-beginners.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/selling-digital-products-with-ai-help.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/ai-short-form-video-side-hustle.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/print-on-demand-ai-design-help.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/ai-assisted-blogging-affiliate-income.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/ai-powered-social-media-help-small-businesses.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/creating-small-online-course-ai-assistance.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/ai-transcription-captioning-repurposing-service.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/starting-niche-newsletter-ai-research-help.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/ai-assisted-virtual-assistant-work.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/chatgpt-beginners-everyday-productivity-workflow.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/using-claude-writing-editing-long-documents.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/gemini-google-workspace-docs-sheets-gmail.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/canva-ai-social-media-pinterest-graphics.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/ai-image-generation-beginners-choosing-tool-prompts-licences.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/ai-video-tools-beginners-editing-captions-short-clips.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/ai-note-taking-meeting-summaries-beginners.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/using-ai-spreadsheets-formulas-data-cleanup-analysis.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/ai-research-workflow-checks-sources.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/building-personal-ai-workflow-3-4-tools.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/ai-agents-small-business-2026.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/ai-and-pinterest-discoverable-content.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/learning-new-skill-faster-ai-study-workflow.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/ai-privacy-safety-beginners.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jojosblocks.online/blog/2026-2027-ai-toolkit-one-person-online-business.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://jojosblocks.online/books/complete-coloring-book-bundle.html</loc><lastmod>2026-11-15</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://jojosblocks.online/books/my-first-abc-book.html</loc><lastmod>2026-11-15</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-<url><loc>https://jojosblocks.online/books/my-first-abc-book-paperback.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://jojosblocks.online/books/my-first-animal-explorer.html</loc><lastmod>2026-11-15</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://jojosblocks.online/books/my-little-community-helpers.html</loc><lastmod>2026-11-15</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://jojosblocks.online/books/my-little-space-adventure.html</loc><lastmod>2026-11-15</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://jojosblocks.online/recommended/</loc><lastmod>2026-11-16</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jojosblocks.online/shop/flower-stickers-40-png.html</loc><lastmod>2026-11-17</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jojosblocks.online/books/my-first-abc-book-paperback.html</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jojosblocks.online/recommended/</loc><lastmod>2026-11-16</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://jojosblocks.online/recommended/category/technology/</loc><lastmod>2026-11-16</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://jojosblocks.online/recommended/category/physical-products/</loc><lastmod>2026-11-16</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://jojosblocks.online/recommended/magsafe-mini-wireless-power-bank/</loc><lastmod>2026-11-16</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
