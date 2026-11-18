@@ -140,6 +140,8 @@ section.block{padding:64px 0;border-bottom:1px solid var(--line)}
 .card .price s{font-family:'Inter',sans-serif;font-size:14px;color:var(--muted);font-weight:400}
 .card .actions{margin-top:auto;padding-top:8px}
 .card .actions .btn{width:100%;min-height:44px}
+/* Second button in a card (e.g. the Paperback on Amazon option): gap it from the primary Buy button. */
+.card .actions .btn + .btn{margin-top:8px}
 .card.soon{border-style:dashed;background:transparent;box-shadow:none}
 .card.soon .cover{background:var(--paper)}
 .card.soon .cover .soon-init{font-family:'Archivo',sans-serif;font-size:32px;font-weight:800;color:var(--muted)}
@@ -158,6 +160,24 @@ section.block{padding:64px 0;border-bottom:1px solid var(--line)}
 .taster .art span:last-child{font-size:14px;color:var(--muted)}
 .taster h3{font-size:26px;margin-bottom:8px}
 .taster p{margin-bottom:16px}
+/* Real Books promo: the book cover is the point — let it stand taller than the free-taster thumb. */
+.taster.promo .art img{max-height:420px}
+/* Let the promo grid columns shrink below their content width — the tall
+   cover's min-content width would otherwise force the grid wider than the
+   page on narrow screens (scrollW 382 at 360px before this rule). */
+.taster.promo > *{min-width:0}
+/* Paperback detail page subtitle (below the h1). */
+.dsub{font-size:17px;color:var(--muted);margin:0 0 10px}
+/* Blog book-promo block: a compact recommendation card at the end of an
+   article. Mockup on the left, text on the right; stacks on mobile. */
+.book-promo{display:flex;gap:20px;align-items:center;background:var(--tile);border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px;margin:28px 0}
+.book-promo .bp-img{width:120px;height:auto;flex:none;border-radius:6px}
+.book-promo h3{margin:0 0 6px;font-size:19px}
+.book-promo p{margin:0 0 8px}
+.book-promo .bp-price{font-weight:700;color:var(--ink)}
+.book-promo .bp-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:10px}
+.book-promo .bp-link{font-weight:600}
+@media (max-width:640px){.book-promo{flex-direction:column;align-items:flex-start;padding:16px}.book-promo .bp-img{width:140px}}
 .res-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .res-item{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:0;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);position:relative}
 .res-item:hover{border-color:var(--ink)}

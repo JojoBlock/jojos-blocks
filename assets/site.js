@@ -40,7 +40,7 @@ function openModal(id) {
   $('#modalPageLink').href = JB.root + p.page;
   $('#mstickyPrice').innerHTML = money(p.sale) + ' <s>' + money(p.price) + '</s>';
   $('#mstickyBuy').href = p.gum;
-  $('#modalRelated').innerHTML = Object.keys(PRODUCTS).filter(k => k !== id && !PRODUCTS[k].kofi).map(k =>
+  $('#modalRelated').innerHTML = Object.keys(PRODUCTS).filter(k => k !== id && !PRODUCTS[k].kofi && !PRODUCTS[k].amazon).map(k =>
     '<button class="chip" data-related="' + k + '" aria-pressed="false">' + PRODUCTS[k].title + '</button>').join('');
   modalBack.classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -171,9 +171,27 @@ if ($('#tabSearch')) $('#tabSearch').addEventListener('click', e => { e.preventD
           + '<div class="price-row"><span class="price">' + it.salePrice + '</span></div>'
           + '<div class="actions"><a class="btn btn-accent" href="' + it.kofiUrl + '" target="_blank" rel="noopener">Buy on Ko-fi</a></div></div></article>';
       }
+      if (it.type === 'paperback') {
+        // Paperback (Amazon) product: its own card, separate from the digital
+        // book. No product modal (the shared modal is book/Gumroad-specific),
+        // so the cover and title link straight to the detail page, and the
+        // primary button goes to Amazon. Must mirror build.js productCard.
+        const badge = it.badge ? '<span class="badge">' + it.badge + '</span>' : '';
+        return '<article class="card" data-id="' + it.key + '" data-cat="' + it.filterKey + '" data-age-min="' + (it.ageMin ?? '') + '" data-age-max="' + (it.ageMax ?? '') + '" data-price="' + (it.salePriceNum ?? '') + '" data-pages="' + (it.pages || '') + '">'
+          + '<div class="cover">' + badge + '<a href="' + JB.root + it.url + '" aria-label="View ' + it.title.replace(/"/g, '&quot;') + ' details"><img src="' + it.thumb + '" alt="' + (it.coverAlt || it.title).replace(/"/g, '&quot;') + '" width="600" height="849" loading="lazy"></a></div>'
+          + '<div class="body"><h3><a href="' + JB.root + it.url + '">' + it.title + '</a></h3>'
+          + '<p class="meta">' + it.format + ' · ' + (it.ageLabel || '') + '</p>'
+          + '<div class="price-row"><span class="price">' + it.salePrice + '</span></div>'
+          + '<div class="actions"><a class="btn btn-accent" href="' + it.amazonUrl + '" target="_blank" rel="noopener" data-amazon="' + it.key + '" data-location="card">Get the Paperback on Amazon</a></div></div></article>';
+      }
       const badge = it.badge ? '<span class="badge">' + it.badge + '</span>' : '';
       const price = it.salePrice ? '<div class="price-row"><span class="price">' + it.salePrice + '</span><s>' + it.price + '</s></div>' : '';
-      const buy = it.gumroadUrl ? '<div class="actions"><a class="btn btn-accent" href="' + it.gumroadUrl + '" target="_blank" rel="noopener">Buy ' + it.salePrice + '</a></div>' : '';
+      // Paperback (Amazon) option, when the product has one: a secondary
+      // button under the primary Buy button. Must mirror build.js productCard.
+      const paperbackBtn = it.paperback ? '<a class="btn btn-ghost" href="' + it.paperback.amazonUrl + '" target="_blank" rel="noopener" data-amazon="' + it.key + '" data-location="card">Paperback on Amazon — ' + it.paperback.price + '</a>' : '';
+      const buy = it.gumroadUrl
+        ? '<div class="actions"><a class="btn btn-accent" href="' + it.gumroadUrl + '" target="_blank" rel="noopener">Buy ' + it.salePrice + '</a>' + paperbackBtn + '</div>'
+        : (paperbackBtn ? '<div class="actions">' + paperbackBtn + '</div>' : '');
       return '<article class="card" data-id="' + it.key + '" data-cat="' + it.filterKey + '" data-age-min="' + (it.ageMin ?? '') + '" data-age-max="' + (it.ageMax ?? '') + '" data-price="' + (it.salePriceNum ?? '') + '" data-pages="' + (it.pages || '') + '">'
         + '<div class="cover">' + badge + '<a href="' + JB.root + it.url + '" data-detail="' + it.key + '" aria-label="View ' + it.title.replace(/"/g, '&quot;') + ' details"><img src="' + it.thumb + '" alt="' + (it.coverAlt || it.title).replace(/"/g, '&quot;') + '" width="600" height="849" loading="lazy"></a></div>'
         + '<div class="body"><h3><a href="' + JB.root + it.url + '" data-detail="' + it.key + '">' + it.title + '</a></h3>'
@@ -229,6 +247,9 @@ if (PAGE) {
   function visibleItems() {
     const q = normalize(state.q);
     let items = PAGE.items.filter(it => {
+      // 'Real Books' is not a filterKey — it matches products carrying a
+      // paperback record (see build.js itemFor). A product can be both a
+      // digital book (filterKey 'books') and a real book.
       if (state.filter !== 'all' && !PAGE.lockFilter && it.filterKey !== state.filter) return false;
       if (state.topic !== 'all' && !(it.tags || []).includes(state.topic)) return false;
       if (state.format !== 'all' && it.formatKey !== state.format) return false;
@@ -383,6 +404,8 @@ function bindHomeRail(dataId, gridId, chipsId, sortId, countId, opts) {
   const defaultCountText = countEl ? countEl.textContent : '';
   const emptyEl = opts.emptyId ? document.getElementById(opts.emptyId) : null;
   function render() {
+    // 'Real Books' matches products carrying a paperback record, not a
+    // filterKey (a product can be both a digital book and a real book).
     let items = data.items.filter(it => filter === 'all' || it.filterKey === filter);
     if (sort === 'price-asc') items.sort((a, b) => (a.salePriceNum ?? 1e9) - (b.salePriceNum ?? 1e9));
     else if (sort === 'price-desc') items.sort((a, b) => (b.salePriceNum ?? -1) - (a.salePriceNum ?? -1));
