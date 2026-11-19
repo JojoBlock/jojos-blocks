@@ -239,7 +239,7 @@ if (PAGE) {
   const state = {
     filter: params.get('category') || params.get('filter') || 'all',
     age: params.get('age') || 'any',
-    sort: params.get('sort') || 'featured',
+    sort: params.get('sort') || (PAGE.kind === 'articles' ? 'newest' : 'featured'),
     q: params.get('q') || '',
     topic: params.get('topic') || 'all',
     format: params.get('format') || 'all',
@@ -281,7 +281,7 @@ if (PAGE) {
     else if (state.sort === 'price-desc') items.sort((a, b) => (b.salePriceNum ?? -1) - (a.salePriceNum ?? -1));
     else if (state.sort === 'pages') items.sort((a, b) => (b.pages || 0) - (a.pages || 0));
     else if (state.sort === 'az') items.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
-    else if (state.sort === 'newest') items.sort((a, b) => String(b.dateAdded || '').localeCompare(String(a.dateAdded || '')));
+    else if (state.sort === 'newest') items.sort((a, b) => String(b.dateAdded || '').localeCompare(String(a.dateAdded || '')) || (a.featuredRank || 99) - (b.featuredRank || 99));
     else items.sort((a, b) => (a.featuredRank || 99) - (b.featuredRank || 99));
     return items;
   }
