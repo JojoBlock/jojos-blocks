@@ -5,6 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Beat Blocks — Free Browser Game | JoJo's Blocks</title>
 <meta name="description" content="Beat Blocks: tap the falling blocks on the beat line across five original chiptune songs, three difficulties and unlockable tracks. Compose your own tune in Compose Mode.">
+<meta property="og:title" content="Beat Blocks — Free Browser Game | JoJo's Blocks">
+<meta property="og:description" content="Beat Blocks: tap the falling blocks on the beat line across five original chiptune songs, three difficulties and unlockable tracks. Compose your own tune in Compose Mode.">
+<meta property="og:image" content="https://jojosblocks.online/assets/profile-logo.jpg">
+<meta property="og:image:width" content="1000">
+<meta property="og:image:height" content="1000">
+<meta property="og:url" content="https://jojosblocks.online/games/beat-blocks/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="JoJo's Blocks">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://jojosblocks.online/games/beat-blocks/">
 <link rel="stylesheet" href="../../assets/styles.css">
 
@@ -347,6 +356,11 @@
   #play .chip .num{font-size:17px}
   /* Lock-note hints are nowrap by default; at 320px they overflow the card
      by ~30px and cause horizontal scroll — let them wrap to two lines. */
+  #play .song-card .lock-note{white-space:normal}
+}
+@media (max-width:380px){
+  /* Lock-note hints also overflow at 360px (by ~6px) even though the 340px
+     rule above does not apply there — let them wrap from 380px down. */
   #play .song-card .lock-note{white-space:normal}
 }
 @media (max-height:500px){
