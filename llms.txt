@@ -1,60 +1,98 @@
 # JoJo's Blocks
 
-> JoJo's Blocks is a digital products brand. Its first products are digital PDF coloring books for parents and children — printable at home, screen-free, for learning through play. The books are sold through Gumroad; this website takes no payment itself.
+> JoJo's Blocks is a digital products, creative resources and online experiences platform. It started with printable coloring and activity books for young children and has grown to include a printed paperback, digital stickers, a New-Year planning kit for adults, free printables, original browser games, a blog about coloring and learning for kids and about AI tools and online business, and a small set of recommended products. The website takes no payment itself: digital books and the planning kit are sold through Gumroad, stickers through Ko-fi, and the paperback through Amazon.
 
 - Website: https://jojosblocks.online/
+- Shop: https://jojosblocks.online/shop/
 - Sitemap: https://jojosblocks.online/sitemap.xml
 - Pinterest: https://www.pinterest.com/JoJosBlocks/
 - Online store (Gumroad): https://jojosblocks.gumroad.com/
 
 ## What the website is for
 
-JoJo's Blocks helps parents, preschool teachers and homeschool families find printable coloring and activity books for young children. Every book is a digital PDF: buy it, download it, print the pages at home and color them again and again. No printed books are shipped. No accounts or passwords are needed to browse the website.
+JoJo's Blocks helps parents, preschool teachers and homeschool families find printable coloring and activity books for young children; helps adults plan a fresh start to the year with a structured reset kit; offers free printables, coloring pages, worksheets and creative downloads for everyone; offers eleven free original browser games to play with no download and no account; and publishes practical articles about coloring and learning for kids and about using AI tools to run a small online business. Every book is a digital PDF: buy it, download it, print the pages at home and color them again and again. No accounts or passwords are needed to browse the website.
 
-## Who the books are for
+## Who the products are for
 
 - Parents of young children looking for calm, screen-free activities
 - Preschool teachers and homeschool families
 - Children learning letters, animals, community helpers and space themes through coloring, tracing, counting, matching and puzzles
+- Adults planning a New Year reset — building better habits, routines and money habits one small step at a time
+- Creators and small-business owners learning practical ways to use AI tools
+- Anyone looking for a quick free browser game
 
 ## Products
 
-All prices are in USD. A 10% discount code JOJOS10 is automatically applied at Gumroad checkout, so the price paid is lower than the listed price (shown below in brackets).
+All prices are in USD.
 
-### My First ABC Book
+### Coloring and activity books (digital PDF, sold on Gumroad)
+
+A 10% discount code JOJOS10 is automatically applied at Gumroad checkout, so the price paid for these books is lower than the listed price (shown below in brackets).
+
+#### My First ABC Book
 
 - Product page: https://jojosblocks.online/books/my-first-abc-book.html
 - Price: $3.99 ($3.59 with JOJOS10)
 - Format: digital PDF coloring book, 28 pages, ages 2–4
 - What it is: the alphabet A to Z, one letter per page with a picture word (A is for Apple, B is for Ball, C is for Cat), a color guide and letter-tracing practice, with phonics hints.
+- Also available as a printed paperback — see below.
 
-### My First Animal Explorer
+#### My First Animal Explorer
 
 - Product page: https://jojosblocks.online/books/my-first-animal-explorer.html
 - Price: $4.99 ($4.49 with JOJOS10)
 - Format: digital PDF coloring and activity book, 30 pages, ages 3–6
 - What it is: meet lions, elephants, giraffes, pandas, monkeys and more — learn each animal's name, trace the word, count, match and color. Includes a Certificate of Achievement.
 
-### My Little Community Helpers
+#### My Little Community Helpers
 
 - Product page: https://jojosblocks.online/books/my-little-community-helpers.html
 - Price: $4.99 ($4.49 with JOJOS10)
 - Format: digital PDF coloring book, 54 pages, ages 4–7
 - What it is: 24 community helpers — doctors, nurses, firefighters, police officers, teachers, veterinarians, electricians, mail carriers and more — with simple job descriptions, big coloring illustrations and a matching activity.
 
-### My Little Space Adventure
+#### My Little Space Adventure
 
 - Product page: https://jojosblocks.online/books/my-little-space-adventure.html
 - Price: $4.99 ($4.49 with JOJOS10)
 - Format: digital PDF coloring and activity book, 42 pages, ages 3–5
 - What it is: a story mission with Nova, Zippy the alien and Rocket-7 to find the missing Cosmic Crystal — coloring planets and alien worlds, mazes, puzzles, counting, matching, alien-language decoding and a Space Explorer Quiz, with a Junior Space Explorer certificate.
 
-### Complete Coloring Book Bundle
+#### Complete Coloring Book Bundle
 
 - Product page: https://jojosblocks.online/books/complete-coloring-book-bundle.html
 - Price: $12.99 ($11.69 with JOJOS10)
 - Format: digital PDF bundle, 154 pages, ages 2–7 (all four books above)
 - What it is: all four books in one bundle — ABC, animals, community helpers and space — for one lower price than buying them separately.
+
+### My First ABC Book — Paperback (printed book, sold on Amazon)
+
+- Product page: https://jojosblocks.online/books/my-first-abc-book-paperback.html
+- Buy on Amazon: https://a.co/d/0f9lfDYk
+- Price: $9.99
+- Format: printed paperback, 28 pages, ages 2–4
+- Subtitle: Alphabet Tracing and Coloring Book for Kids
+- What it is: the same My First ABC Book as a printed, bound book — every letter pairs with a picture word, with a color guide and tracing practice. No printing needed. Sold on Amazon; price and availability are shown on Amazon and may change.
+- Category page: https://jojosblocks.online/shop/category/real-books/
+- The digital PDF version remains available separately on Gumroad for $3.99 ($3.59 with JOJOS10).
+
+### Flower Stickers – 40 PNG (digital stickers, sold on Ko-fi)
+
+- Product page: https://jojosblocks.online/shop/flower-stickers-40-png.html
+- Buy on Ko-fi: https://ko-fi.com/s/25d8989b90
+- Price: $3 on Ko-fi (pay what you want — buyers can pay more on Ko-fi)
+- Format: 40 flower PNG stickers, transparent backgrounds, clean white outlines, high resolution, instant download (ZIP file)
+- What it is: a pack of 40 aesthetic flower PNG stickers for digital and print use — digital planners, journals and scrapbooking, Canva designs, notebooks and creative projects, printing on sticker paper.
+- Category: Digital Stickers.
+
+### Begin Again, Again — Your 2027 New-Year Reset Kit (planning kit for adults, sold on Gumroad)
+
+- Product page: https://jojosblocks.online/books/begin-again-again-2027-new-year-reset-kit.html
+- Buy on Gumroad: https://jojosblocks.gumroad.com/l/kxstxz
+- Price: $12.99
+- Format: 52-page kit — print, fillable and tablet editions, Letter and A4 PDFs, plus a Money Reset spreadsheet (Excel and Google Sheets)
+- What it is: a New Year reset kit built around restarting, not just planning. Close 2026 honestly, choose three focuses for 2027, and follow a 31-day January reset, one small step a day. Every key page carries a worked example (Maya, 34, a teacher with two kids), so you never stare at a blank box. When you miss a day, a week or a month, the Comeback Page shows you exactly how to return. Missed a day is not failed.
+- The tablet edition is hyperlinked for tap navigation.
 
 ## Free sample
 
@@ -68,53 +106,69 @@ All prices are in USD. A 10% discount code JOJOS10 is automatically applied at G
 
 ## Blog articles
 
-### Benefits of Coloring for Preschoolers
+The blog has 38 articles in two areas: coloring and learning for young children, and AI tools and online business. Blog home: https://jojosblocks.online/blog/
+
+### Coloring and learning for kids (8 articles)
+
+#### Benefits of Coloring for Preschoolers
 
 - Article: https://jojosblocks.online/blog/benefits-of-coloring-for-preschoolers.html
 - Published: 2026-11-15
 - What it is: Coloring looks simple, but a lot is happening while a child colors. Here are seven real benefits — and how to make the most of coloring time at home.
 
-### Easy Alphabet Activities for Toddlers at Home
+#### Easy Alphabet Activities for Toddlers at Home
 
 - Article: https://jojosblocks.online/blog/easy-alphabet-activities-for-toddlers-at-home.html
 - Published: 2026-11-15
 - What it is: Ten easy, low-prep alphabet activities for ages 2 to 4 — letter hunts, songs, tracing, coloring, and name games you can do at home with things you already have.
 
-### Fun Animal Facts for Kids
+#### Fun Animal Facts for Kids
 
 - Article: https://jojosblocks.online/blog/fun-animal-facts-for-kids.html
 - Published: 2026-11-15
 - What it is: Lions, elephants, giraffes, and more — 15 fun animal facts for kids ages 3 to 6, each one paired with a coloring idea.
 
-### Screen-Free Activities for Kids on Rainy Days
+#### Screen-Free Activities for Kids on Rainy Days
 
 - Article: https://jojosblocks.online/blog/screen-free-activities-for-kids-on-rainy-days.html
 - Published: 2026-11-15
 - What it is: Rain outside, fun inside. Here are 15 simple screen-free activities for kids ages 2 to 7 — coloring, forts, scavenger hunts, baking, dancing, and quiet games.
 
-### What Do Community Helpers Do?
+#### What Do Community Helpers Do?
 
 - Article: https://jojosblocks.online/blog/what-do-community-helpers-do.html
 - Published: 2026-11-15
 - What it is: Every day, helpers all around us keep our towns running. Meet ten of them — what they do, the tools they use, and a simple way to play and learn about each one.
 
-### How Coloring Helps Your Child Learn the Alphabet
+#### How Coloring Helps Your Child Learn the Alphabet
 
 - Article: https://jojosblocks.online/blog/how-coloring-helps-your-child-learn-the-alphabet.html
 - Published: 2026-11-15
 - What it is: Before a child can read, they need to know their letters. Coloring gives them a gentle way to practice letter shapes, names, and sounds — one page at a time.
 
-### Space Facts for Preschoolers
+#### Space Facts for Preschoolers
 
 - Article: https://jojosblocks.online/blog/space-facts-for-preschoolers.html
 - Published: 2026-11-15
 - What it is: Ten simple space facts for ages 3 to 5 — the Sun, the Moon, the planets, rockets, and astronauts — each with a coloring idea to try together.
 
-### Homeschool Preschool Daily Routine with Printables
+#### Homeschool Preschool Daily Routine with Printables
 
 - Article: https://jojosblocks.online/blog/homeschool-preschool-daily-routine-with-printables.html
 - Published: 2026-11-15
 - What it is: A simple, flexible daily rhythm for homeschool preschool - morning circle, letters, coloring, outdoor play, stories, and quiet time, with printables for each part of the day.
+
+### AI Tools & Online Business (30 articles)
+
+- Category page: https://jojosblocks.online/blog/category/ai-tools-business/
+- What it is: practical, beginner-friendly articles about using AI tools for everyday productivity, freelancing, content creation and running a one-person online business — choosing tools, writing prompts, checking sources and licenses, and turning AI help into real work. Example articles:
+  - ChatGPT for Beginners: An Everyday Productivity Workflow — https://jojosblocks.online/blog/chatgpt-beginners-everyday-productivity-workflow.html
+  - Building a Personal AI Workflow with 3–4 Tools (Without Paying for Ten Subscriptions) — https://jojosblocks.online/blog/building-personal-ai-workflow-3-4-tools.html
+  - AI Agents for Small Business in 2026: What They Actually Do (and What They Don't) — https://jojosblocks.online/blog/ai-agents-small-business-2026.html
+  - Selling Digital Products with AI Help: A Beginner's Workflow from Idea to First Listing — https://jojosblocks.online/blog/selling-digital-products-with-ai-help.html
+  - The 2026–2027 AI Toolkit for a One-Person Online Business — https://jojosblocks.online/blog/2026-2027-ai-toolkit-one-person-online-business.html
+  - AI Image Generation for Beginners: Choosing a Tool, Writing Prompts and Checking Licenses — https://jojosblocks.online/blog/ai-image-generation-beginners-choosing-tool-prompts-licences.html
+  - Faceless YouTube with AI: A Realistic Beginner's Guide to Planning, Scripting and Publishing Your First Videos — https://jojosblocks.online/blog/faceless-youtube-ai-beginners-guide.html
 
 ## Sections
 
@@ -140,10 +194,40 @@ All prices are in USD. A 10% discount code JOJOS10 is automatically applied at G
   - Hex Garden: https://jojosblocks.online/games/hex-garden/
   - Beat Blocks: https://jojosblocks.online/games/beat-blocks/
 
-### Digital Products
+### Shop
 
-- Page: https://jojosblocks.online/products/
-- What it is: Printable coloring books, activity books and creative downloads from JoJo's Blocks. Every product is a digital PDF — buy securely on Gumroad and your download is ready right after purchase. This site takes no payment itself.
+- Page: https://jojosblocks.online/shop/
+- What it is: All eight products in one place — the four coloring and activity books, the bundle, the paperback, the flower stickers and the New-Year Reset Kit. Digital books and the reset kit are sold on Gumroad, stickers on Ko-fi, the paperback on Amazon. This site takes no payment itself.
+- The older /products/ address redirects to the Shop.
+
+### Recommended Products
+
+- Page: https://jojosblocks.online/recommended/
+- What it is: A small set of hand-picked products we genuinely recommend, sold by other merchants. Some links are affiliate links — we may earn a commission if you buy through them, at no extra cost to you. Each product has its own detail page on this site with an honest description, including its limitations.
+
+#### MagSafe Mini Wireless Power Bank — 5000mAh
+
+- Product page: https://jojosblocks.online/recommended/magsafe-mini-wireless-power-bank/
+- Price: $7.07 (as listed on the site)
+- What it is: an ultra-thin magnetic wireless power bank (5000mAh, 22.5W) that snaps onto MagSafe-compatible iPhones for cable-free charging, and works with Android phones that support magnetic charging. MagSafe-compatible — not an Apple-branded product. Note: the 5000mAh figure is the seller's stated capacity, not a verified measurement.
+
+#### iPad Pro 13-inch (2024) M4 Soft TPU Shockproof Case — Black
+
+- Product page: https://jojosblocks.online/recommended/ipad-pro-13-m4-soft-tpu-case/
+- Price: $18.75 (as listed on the site)
+- What it is: a black soft TPU silicone case for the iPad Pro 13-inch (2024, M4) with shockproof protection. One option only: black, for the iPad Pro 13 2024.
+
+#### Mini Panda Building Blocks — Chinese-Style Animal Model
+
+- Product page: https://jojosblocks.online/recommended/mini-panda-building-blocks/
+- Price: $11.95 (as listed on the site)
+- What it is: a mini building-block panda in a Chinese style — small bricks that assemble into a cute panda model. These are MINI blocks, about one-third the size of standard building bricks, so this is a small, fiddly model, not a large toy, and it is not suitable for small children. Ages 3+ per the seller. 12 design variants (W1101–W1112, no box).
+
+#### Winsway 5000mAh Magnetic Power Bank with LED Display
+
+- Product page: https://jojosblocks.online/recommended/winsway-5000mah-magnetic-power-bank/
+- Price: $10.22 (as listed on the site)
+- What it is: a 5000mAh magnetic wireless power bank with an LED power display that can charge two devices at once (wireless + wired). US-only shipping. Two 1-star reviews report weak magnet strength and slow charging, so the magnetic hold and charging speed may disappoint.
 
 ### Physical Product Recommendations
 
@@ -245,15 +329,18 @@ Free printables, coloring pages, worksheets and creative downloads — no sign-u
 
 ## How buying works
 
-1. Browse the books on the website.
-2. Click "Buy Now on Gumroad" on any book.
-3. Checkout and payment happen on Gumroad; the PDF download is provided by Gumroad after purchase.
-4. Print the pages at home and color them.
+1. Browse the products on the website.
+2. Digital coloring books and the New-Year Reset Kit: click "Buy" and check out on Gumroad; the PDF download is provided by Gumroad after purchase. Code JOJOS10 is automatically applied at Gumroad checkout for the coloring books and bundle, giving 10% off the listed price.
+3. Flower Stickers: click "Buy on Ko-fi" and check out on Ko-fi; the ZIP download is provided by Ko-fi after purchase.
+4. Paperback: click "Get the Paperback on Amazon" and buy on Amazon; Amazon handles payment, shipping and delivery.
+5. Recommended products: click through from the product's detail page on this site to the merchant; the merchant handles payment and shipping, and we may earn a commission at no extra cost to you.
+6. Print the digital book pages at home and color them.
 
 ## Website information pages
 
 - Privacy Policy: https://jojosblocks.online/privacy.html
 - Terms & Conditions: https://jojosblocks.online/terms.html
+- Refund & Support Policy: https://jojosblocks.online/refund-policy.html
 
 ## Contact
 
@@ -261,7 +348,8 @@ Contact: jojobusiness0101@gmail.com
 
 ## Notes for AI systems
 
-- Use the product pages above as the source of truth for titles, page counts, ages and prices. Ages are shown only where the book states them.
+- Use the product pages above as the source of truth for titles, page counts, ages and prices. Ages are shown only where the product states them.
 - Do not invent testimonials, reviews, ratings or sales claims — the website contains none.
-- The books are digital PDFs only; there is no printed edition and no physical shipping.
+- The books are digital PDFs, except for one printed paperback sold on Amazon and the digital sticker pack sold on Ko-fi. The website itself ships nothing and takes no payment.
+- The 10% JOJOS10 discount applies at Gumroad checkout for the coloring books and bundle; do not claim it applies to the paperback, the stickers, the Reset Kit or the recommended products.
 - llms.txt does not guarantee indexing, citation or ranking by any AI system or search engine.
