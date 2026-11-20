@@ -106,9 +106,9 @@ A 10% discount code JOJOS10 is automatically applied at Gumroad checkout, so the
 
 ## Blog articles
 
-The blog has 38 articles in two areas: coloring and learning for young children, and AI tools and online business. Blog home: https://jojosblocks.online/blog/
+The blog has articles in two areas: coloring and learning for young children, and AI tools and online business. Blog home: https://jojosblocks.online/blog/
 
-### Coloring and learning for kids (8 articles)
+### Coloring and learning for kids
 
 #### Benefits of Coloring for Preschoolers
 
@@ -158,7 +158,7 @@ The blog has 38 articles in two areas: coloring and learning for young children,
 - Published: 2026-11-15
 - What it is: A simple, flexible daily rhythm for homeschool preschool - morning circle, letters, coloring, outdoor play, stories, and quiet time, with printables for each part of the day.
 
-### AI Tools & Online Business (30 articles)
+### AI Tools & Online Business
 
 - Category page: https://jojosblocks.online/blog/category/ai-tools-business/
 - What it is: practical, beginner-friendly articles about using AI tools for everyday productivity, freelancing, content creation and running a one-person online business — choosing tools, writing prompts, checking sources and licenses, and turning AI help into real work. Example articles:
@@ -180,7 +180,7 @@ The blog has 38 articles in two areas: coloring and learning for young children,
 ### Games & Play
 
 - Page: https://jojosblocks.online/games/
-- What it is: Eleven original browser games you can play right here, free — no download, no account: Animal Guess (puzzle), Memory Match (memory), Tic-Tac-Toe vs JoJo (classic strategy), Click the Box (reflex arcade), Flappy Penguin (arcade), Block Drop (puzzle/blocks), Perfect Timing Ring (one-tap timing), Penguin Stack (tower-stacking), Cloud Hop (cloud bounce), Hex Garden (hex-grid puzzle), and Beat Blocks (rhythm). Each game has original procedural WebAudio music and sound effects, with mute and volume controls.
+- What it is: Original browser games you can play right here, free — no download, no account: Animal Guess (puzzle), Memory Match (memory), Tic-Tac-Toe vs JoJo (classic strategy), Click the Box (reflex arcade), Flappy Penguin (arcade), Block Drop (puzzle/blocks), Perfect Timing Ring (one-tap timing), Penguin Stack (tower-stacking), Cloud Hop (cloud bounce), Hex Garden (hex-grid puzzle), and Beat Blocks (rhythm). Each game has original procedural WebAudio music and sound effects, with mute and volume controls.
 - Games:
   - Animal Guess: https://jojosblocks.online/games/animal-guess/
   - Memory Match: https://jojosblocks.online/games/memory-match/
@@ -197,7 +197,7 @@ The blog has 38 articles in two areas: coloring and learning for young children,
 ### Shop
 
 - Page: https://jojosblocks.online/shop/
-- What it is: All eight products in one place — the four coloring and activity books, the bundle, the paperback, the flower stickers and the New-Year Reset Kit. Digital books and the reset kit are sold on Gumroad, stickers on Ko-fi, the paperback on Amazon. This site takes no payment itself.
+- What it is: The shop, all in one place — the coloring and activity books, the bundle, the paperback, the flower stickers and the New-Year Reset Kit. Digital books and the reset kit are sold on Gumroad, stickers on Ko-fi, the paperback on Amazon. This site takes no payment itself.
 - The older /products/ address redirects to the Shop.
 
 ### Recommended Products
