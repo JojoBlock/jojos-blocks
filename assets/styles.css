@@ -28,15 +28,19 @@ section.block{scroll-margin-top:80px}
 img{display:block;max-width:100%}
 .skip-link{position:absolute;left:-9999px;top:0;background:var(--ink);color:#fff;padding:10px 16px;z-index:200;border-radius:0 0 8px 0}
 .skip-link:focus{left:0;color:#fff}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:12px 20px;border-radius:9px;font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;border:1px solid transparent;text-decoration:none;text-align:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:12px 20px;border-radius:9px;font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;border:1px solid transparent;text-decoration:none;text-align:center;transition:background .18s ease,border-color .18s ease,transform .12s ease,box-shadow .18s ease}
 .btn:hover{text-decoration:none}
-.btn-accent{background:var(--ink);color:#fff;transition:background .18s ease,transform .12s ease}
-.btn-accent:hover{background:#000}
-.btn-accent:active{transform:scale(.97)}
+.btn-accent{background:var(--ink);color:#fff}
 .btn-ink{background:var(--ink);color:#fff}
-.btn-ink:hover{background:#000}
 .btn-ghost{background:#fff;border:1px solid var(--line);color:var(--ink)}
-.btn-ghost:hover{border-color:var(--ink)}
+/* Buttons — tactile hover/active (2026-11-20): a small lift + soft shadow on
+   hover, a pressed state on tap/click. Hover is gated to (hover:hover) so
+   touch devices never get a stuck hover state; :active gives the press. */
+@media (hover:hover){
+  .btn-accent:hover,.btn-ink:hover{background:#000;transform:translateY(-2px);box-shadow:0 8px 18px rgba(17,18,20,.20)}
+  .btn-ghost:hover{border-color:var(--ink);transform:translateY(-2px);box-shadow:0 6px 14px rgba(17,18,20,.10)}
+}
+.btn-accent:active,.btn-ink:active,.btn-ghost:active{transform:translateY(0) scale(.98)}
 .btn-sm{min-height:44px;padding:10px 16px;font-size:14px}
 /* ---------- header ---------- */
 header.site{position:sticky;top:0;z-index:70;background:rgba(250,249,246,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
@@ -124,10 +128,19 @@ section.block{padding:64px 0;border-bottom:1px solid var(--line)}
 
 /* ---------- product grid + cards (static HTML first) ---------- */
 .pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
-.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow)}
-.card:hover{border-color:var(--ink)}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;cursor:pointer}
+/* Cards — hover lift + soft shadow + faint Warm Sunrise glow (2026-11-20).
+   Hover is gated to (hover:hover) so touch devices never get a stuck hover
+   state; :active gives a small press instead. .soon cards are not clickable,
+   so they keep their flat look. */
+@media (hover:hover){
+  .card:not(.soon):hover{transform:translateY(-4px);border-color:var(--ink);box-shadow:0 12px 28px rgba(17,18,20,.14),0 0 0 1px rgba(228,87,46,.18)}
+  .card:not(.soon):hover .cover img{transform:scale(1.03)}
+}
+.card:not(.soon):active{transform:translateY(-1px)}
+.card.soon{cursor:default}
 .card .cover{aspect-ratio:1/1;background:var(--tile);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-.card .cover img{width:100%;height:100%;object-fit:contain}
+.card .cover img{width:100%;height:100%;object-fit:contain;transition:transform .3s ease}
 /* The cover image sits inside an <a>: the anchor must fill the tile or the
    image's 100% height resolves against an auto-sized box and clips. */
 .card .cover a{display:block;width:100%;height:100%}

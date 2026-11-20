@@ -92,11 +92,32 @@ function closeModal() {
   document.body.style.overflow = '';
   if (lastFocused && lastFocused.focus) lastFocused.focus();
 }
+/* Product cards navigate to their dedicated page (2026-11-20): a card click
+   (cover, title, or any part of the card) takes the visitor to that
+   product's own /books/ page — the same rich landing page Pinterest
+   visitors land on — instead of the quick-view modal. view_details still
+   fires once per card click, before navigation, using the same
+   fire-and-navigate pattern as buy_now_click (verified live 20 Nov 2026:
+   the GA4 event survives the immediate navigation). The dedicated page
+   view itself also registers as a page_view. The modal stays in the code
+   (opened only by its own related chips), but no card opens it any more. */
 document.addEventListener('click', e => {
   const d = e.target.closest('[data-detail]');
-  if (d) { e.preventDefault(); openModal(d.dataset.detail); gaEvent('view_details', { book_slug: d.dataset.detail }); return; }
+  if (d) { gaEvent('view_details', { book_slug: d.dataset.detail }); return; } // default navigation follows the anchor to the dedicated page
   const r = e.target.closest('[data-related]');
   if (r) { openModal(r.dataset.related); gaEvent('view_details', { book_slug: r.dataset.related }); return; }
+});
+document.addEventListener('click', e => {
+  // Whole-card click: the card body (meta, price, whitespace) has no link of
+  // its own, so navigate it to the same dedicated page the cover/title use.
+  // Buy/Amazon buttons are links themselves and keep their own destinations.
+  if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  const card = e.target.closest ? e.target.closest('article.card') : null;
+  if (!card || e.target.closest('a,button')) return;
+  const link = card.querySelector('a[data-detail]') || card.querySelector('.cover a[href]');
+  if (!link) return;
+  if (link.dataset.detail) gaEvent('view_details', { book_slug: link.dataset.detail });
+  window.location.href = link.href;
 });
 if ($('#modalClose')) $('#modalClose').addEventListener('click', closeModal);
 if (modalBack) modalBack.addEventListener('click', e => { if (e.target === modalBack) closeModal(); });
@@ -221,7 +242,7 @@ if ($('#tabSearch')) $('#tabSearch').addEventListener('click', e => { e.preventD
         return '<article class="card" data-id="' + it.key + '" data-cat="' + it.filterKey + '" data-age-min="' + (it.ageMin ?? '') + '" data-age-max="' + (it.ageMax ?? '') + '" data-price="' + (it.salePriceNum ?? '') + '" data-pages="' + (it.pages || '') + '">'
           + '<div class="cover">' + badge + '<a href="' + JB.root + it.url + '" aria-label="View ' + it.title.replace(/"/g, '&quot;') + ' details"><img src="' + it.thumb + '" alt="' + (it.coverAlt || it.title).replace(/"/g, '&quot;') + '" width="600" height="849" loading="lazy"></a></div>'
           + '<div class="body"><h3><a href="' + JB.root + it.url + '">' + it.title + '</a></h3>'
-          + '<p class="meta">' + it.format + ' · ' + (it.ageLabel || '') + '</p>'
+          + '<p class="meta">' + it.format + (it.ageLabel ? ' · ' + it.ageLabel : '') + '</p>'
           + '<div class="price-row"><span class="price">' + it.salePrice + '</span></div>'
           + '<div class="actions"><a class="btn btn-accent" href="' + it.amazonUrl + '" target="_blank" rel="noopener" data-amazon="' + it.key + '" data-location="card">Get the Paperback on Amazon</a></div></div></article>';
       }
