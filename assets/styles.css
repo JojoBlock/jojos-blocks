@@ -424,6 +424,10 @@ body.tab-hidden .tabbar{display:none}
 .detail .dsave{color:var(--muted);font-size:15px}
 .detail .dbuy{margin:18px 0 6px;display:flex;flex-wrap:wrap;gap:10px}
 .detail .dnote{font-size:14px;color:var(--muted);margin-top:10px}
+/* Buyer-promise tile — kit page + About page. Wording mirrors the refund
+   policy exactly: defective/corrupt files and accidental duplicates are
+   covered; digital downloads are otherwise non-refundable. */
+.guarantee{background:var(--tile);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;font-size:14px;color:var(--ink);margin:14px 0 0}
 .detail h2{font-family:'Archivo',sans-serif;font-weight:800;font-size:22px;margin:26px 0 10px}
 .detail ul.tight{margin:0 0 8px 20px}
 .detail ul.tight li{margin-bottom:6px}
