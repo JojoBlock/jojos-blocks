@@ -96,6 +96,8 @@ header.site{position:sticky;top:0;z-index:70;background:rgba(250,249,246,.97);ba
 .spot .sprice s{font-family:'Inter',sans-serif;font-size:14px;color:var(--muted);font-weight:400;margin-left:8px}
 .spot .ssave{font-size:13px;color:var(--muted);margin:4px 0 12px}
 .spot .btn{width:100%}
+.spot .btn + .btn{margin-top:8px}
+.spot .bp-link{display:inline-block;margin-top:12px;font-weight:600}
 /* ---------- sections ---------- */
 section.block{padding:64px 0;border-bottom:1px solid var(--line)}
 .sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:8px}
@@ -447,6 +449,15 @@ body.tab-hidden .tabbar{display:none}
 @media (max-width:820px){
   .detail .dgrid{grid-template-columns:1fr;gap:20px}
   .detail .dcover{max-width:420px}
+  /* Kit page only: a smaller cover on phones/tablets so the cover, price
+     and buy buttons all fit in the first viewport (bounce fix, Nov 2026).
+     The section padding, detail padding and breadcrumb are also trimmed on
+     this page only, so the sample button lands inside the fold. */
+  .detail.kit-hero .dcover{max-width:140px;margin:0 auto}
+  .detail.kit-hero{padding-top:8px}
+  .detail.kit-hero .dbuy{margin-top:12px}
+  .block.kit-top{padding-top:20px}
+  .block.kit-top .crumbs{display:none}
   .page-head h1{font-size:30px}
 }
 @media (max-width:640px){
