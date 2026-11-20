@@ -32,15 +32,39 @@ img{display:block;max-width:100%}
 .btn:hover{text-decoration:none}
 .btn-accent{background:var(--ink);color:#fff}
 .btn-ink{background:var(--ink);color:#fff}
-.btn-ghost{background:#fff;border:1px solid var(--line);color:var(--ink)}
+/* Ink buttons that are NOT affiliate Buy buttons (Download, Play, View,
+   Subscribe, Apply filters) carry a subtle 3D bottom edge + crisp shadow,
+   like the Amazon gold buttons. The DHgate "Buy on DHgate" buttons also
+   use .btn-ink but carry data-affiliate, so they keep the old flat look
+   exactly — Buy buttons are never restyled. */
+.btn-ink:not([data-affiliate]){box-shadow:0 2px 0 #000,0 4px 10px rgba(17,18,20,.20)}
+.btn-ghost{background:#fff;border:1px solid var(--line);color:var(--ink);box-shadow:0 1px 0 rgba(17,18,20,.10),0 2px 6px rgba(17,18,20,.06)}
+/* Primary / outline action buttons (2026-11-20): .btn-primary and
+   .btn-outline are used by Download / View / Print / Email buttons on
+   resource detail pages, book pages and articles, but had no definition
+   in this stylesheet — they rendered as bare bold text. Coral primary
+   matches the games' own coral action buttons; outline matches the
+   ghost family. Same tactile treatment as the Amazon gold buttons:
+   3D bottom edge, lift + glow on hover, press-in on click. */
+.btn-primary{background:#FF6B6B;color:var(--ink);border:1px solid #E85A5A;box-shadow:0 2px 0 #D94F4F,0 4px 10px rgba(255,107,107,.28)}
+.btn-outline{background:#fff;border:1px solid var(--ink);color:var(--ink);box-shadow:0 1px 0 rgba(17,18,20,.10),0 2px 6px rgba(17,18,20,.06)}
 /* Buttons — tactile hover/active (2026-11-20): a small lift + soft shadow on
    hover, a pressed state on tap/click. Hover is gated to (hover:hover) so
-   touch devices never get a stuck hover state; :active gives the press. */
+   touch devices never get a stuck hover state; :active gives the press.
+   .btn-accent (Gumroad/Ko-fi Buy) and .btn-ink[data-affiliate] (DHgate Buy)
+   keep their original hover/active exactly — Buy buttons are never restyled. */
 @media (hover:hover){
-  .btn-accent:hover,.btn-ink:hover{background:#000;transform:translateY(-2px);box-shadow:0 8px 18px rgba(17,18,20,.20)}
-  .btn-ghost:hover{border-color:var(--ink);transform:translateY(-2px);box-shadow:0 6px 14px rgba(17,18,20,.10)}
+  .btn-accent:hover{background:#000;transform:translateY(-2px);box-shadow:0 8px 18px rgba(17,18,20,.20)}
+  .btn-ink[data-affiliate]:hover{background:#000;transform:translateY(-2px);box-shadow:0 8px 18px rgba(17,18,20,.20)}
+  .btn-ink:not([data-affiliate]):hover{background:#000;transform:translateY(-2px);box-shadow:0 4px 0 #000,0 10px 22px rgba(17,18,20,.22),0 0 0 1px rgba(228,87,46,.18)}
+  .btn-ghost:hover{border-color:var(--ink);transform:translateY(-2px);box-shadow:0 2px 0 rgba(17,18,20,.12),0 8px 18px rgba(17,18,20,.14),0 0 0 1px rgba(228,87,46,.18)}
+  .btn-primary:hover{background:#FF7D7D;transform:translateY(-2px);box-shadow:0 4px 0 #D94F4F,0 10px 22px rgba(255,107,107,.32),0 0 0 1px rgba(255,107,107,.45)}
+  .btn-outline:hover{transform:translateY(-2px);box-shadow:0 2px 0 rgba(17,18,20,.12),0 8px 18px rgba(17,18,20,.14),0 0 0 1px rgba(228,87,46,.18)}
 }
-.btn-accent:active,.btn-ink:active,.btn-ghost:active{transform:translateY(0) scale(.98)}
+.btn-accent:active,.btn-ink[data-affiliate]:active{transform:translateY(0) scale(.98)}
+.btn-ghost:active,.btn-outline:active{transform:translateY(1px);box-shadow:0 1px 0 rgba(17,18,20,.08),0 1px 4px rgba(17,18,20,.06)}
+.btn-ink:not([data-affiliate]):active{transform:translateY(1px);box-shadow:0 1px 0 #000,0 2px 6px rgba(17,18,20,.14)}
+.btn-primary:active{transform:translateY(1px);box-shadow:0 1px 0 #D94F4F,0 2px 6px rgba(255,107,107,.22)}
 /* Amazon buttons — bold Amazon-inspired gold (2026-11-20): a warm amber
    gradient with a dark 3D bottom edge and crisp shadow, so the paperback
    option reads as a real buy button instead of a plain white ghost. Applies
@@ -83,12 +107,18 @@ header.site{position:sticky;top:0;z-index:70;background:rgba(250,249,246,.97);ba
 .dept{background:var(--bar)}
 .dept .wrap{display:flex;gap:2px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;padding:0 26px}
 .dept .wrap::-webkit-scrollbar{display:none}
-.dept a{color:#fff;font-family:'Archivo',sans-serif;font-size:15px;font-weight:700;white-space:nowrap;padding:10px 14px;min-height:44px;margin:4px 0;display:inline-flex;align-items:center;scroll-snap-align:start;border-radius:999px;transition:background .18s ease,color .18s ease}
-/* White hover is for top-level dept-bar links only (dark bar). Flyout links
+.dept a{color:#fff;font-family:'Archivo',sans-serif;font-size:15px;font-weight:700;white-space:nowrap;padding:10px 14px;min-height:44px;margin:4px 0;display:inline-flex;align-items:center;scroll-snap-align:start;border-radius:999px;transition:background .18s ease,color .18s ease,transform .12s ease,box-shadow .18s ease}
+ /* White hover is for top-level dept-bar links only (dark bar). Flyout links
    live on a light background — their own rule below keeps them dark. */
 .dept .wrap > a:hover,.dept .wrap > .has-fly > a:hover{background:rgba(255,255,255,.12);color:#fff;text-decoration:none}
-.dept .wrap > a.on,.dept .wrap > .has-fly > a.on{background:rgba(255,255,255,.18);color:#fff}
-.dept .wrap > a:active,.dept .wrap > .has-fly > a:active{background:rgba(255,255,255,.24);color:#fff}
+.dept .wrap > a.on,.dept .wrap > .has-fly > a.on{background:rgba(255,255,255,.20);color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.28)}
+.dept .wrap > a:active,.dept .wrap > .has-fly > a:active{background:rgba(255,255,255,.24);color:#fff;transform:translateY(0)}
+/* Dept-bar hover lift (2026-11-20): the highlight brightens and the link
+   lifts 1px on hover-capable devices; touch keeps the plain highlight. */
+@media (hover:hover){
+  .dept .wrap > a:hover,.dept .wrap > .has-fly > a:hover{background:rgba(255,255,255,.16);transform:translateY(-1px)}
+  .dept .wrap > a.on:hover,.dept .wrap > .has-fly > a.on:hover{background:rgba(255,255,255,.24)}
+}
 .dept a:focus-visible{outline-color:#fff}
 /* ---------- hero ---------- */
 .hero{padding:44px 0 52px;border-bottom:1px solid var(--line)}
@@ -121,11 +151,18 @@ section.block{padding:64px 0;border-bottom:1px solid var(--line)}
 /* filter rail */
 .rail{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:14px}
 .chips{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.chip{border:1.5px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:10px 16px;font-family:'Archivo',sans-serif;font-size:14px;font-weight:700;min-height:44px;transition:background .18s ease,color .18s ease,border-color .18s ease,transform .12s ease}
-.chip[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip{border:1.5px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:10px 16px;font-family:'Archivo',sans-serif;font-size:14px;font-weight:700;min-height:44px;box-shadow:0 1px 0 rgba(17,18,20,.08),0 2px 6px rgba(17,18,20,.05);transition:background .18s ease,color .18s ease,border-color .18s ease,transform .12s ease,box-shadow .18s ease}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink);box-shadow:0 2px 0 #000,0 4px 10px rgba(17,18,20,.18)}
 .chip:hover{border-color:var(--ink);background:var(--paper)}
 .chip[aria-pressed="true"]:hover{background:#000;border-color:#000}
-.chip:active{transform:scale(.96)}
+.chip:active{transform:translateY(1px);box-shadow:0 1px 0 rgba(17,18,20,.06),0 1px 4px rgba(17,18,20,.05)}
+.chip[aria-pressed="true"]:active{box-shadow:0 1px 0 #000,0 2px 6px rgba(17,18,20,.14)}
+/* Filter-chip hover lift (2026-11-20): the chip lifts 2px with a soft glow
+   on hover-capable devices; touch keeps the plain highlight. */
+@media (hover:hover){
+  .chip:hover{transform:translateY(-2px);box-shadow:0 2px 0 rgba(17,18,20,.10),0 8px 16px rgba(17,18,20,.12),0 0 0 1px rgba(228,87,46,.16)}
+  .chip[aria-pressed="true"]:hover{transform:translateY(-2px);box-shadow:0 2px 0 #000,0 10px 20px rgba(17,18,20,.22),0 0 0 1px rgba(228,87,46,.18)}
+}
 .chip:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
 .chip[aria-pressed="true"]:focus-visible{outline-offset:3px}
 .age-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:20px}
@@ -243,7 +280,7 @@ section.block{padding:64px 0;border-bottom:1px solid var(--line)}
 .res-item .tag{font-family:'Archivo',sans-serif;font-size:13px;font-weight:700;color:var(--ink)}
 .res-item h3{font-size:17px;line-height:1.3}
 .res-item p{font-size:14px;color:var(--muted)}
-.res-item .rbody .go{margin-top:auto;font-size:14px;font-weight:700;font-family:'Archivo',sans-serif}
+.res-item .rbody .go{margin-top:auto;align-self:flex-start;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink);font-size:14px;font-weight:700;font-family:'Archivo',sans-serif;text-decoration:none;box-shadow:0 1px 0 rgba(17,18,20,.10),0 2px 6px rgba(17,18,20,.06);transition:transform .12s ease,box-shadow .18s ease,border-color .18s ease}
 .res-item[hidden]{display:none}
 html.js .res-item.extra{display:none}
 html.js .res-grid.expanded .res-item.extra{display:flex}
@@ -256,7 +293,7 @@ html.js #seeAllBtn{display:inline-flex}
 .gcard .gthumb{aspect-ratio:16/9;background:var(--tile);border-radius:8px;overflow:hidden}
 .gcard .gthumb img{width:100%;height:100%;object-fit:contain;transition:transform .3s ease}
 .gcard h3{font-size:16px}
-.gcard a{font-size:14px;font-weight:700;font-family:'Archivo',sans-serif}
+.gcard a{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink);font-size:14px;font-weight:700;font-family:'Archivo',sans-serif;text-decoration:none;box-shadow:0 1px 0 rgba(17,18,20,.10),0 2px 6px rgba(17,18,20,.06);transition:transform .12s ease,box-shadow .18s ease,border-color .18s ease}
 /* ---------- blog ---------- */
 .bgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .bcard{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);position:relative;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;cursor:pointer}
@@ -270,12 +307,22 @@ html.js #seeAllBtn{display:inline-flex}
   .res-item:hover .rthumb img,.gcard:hover .gthumb img,.bcard:hover .bcover img{transform:scale(1.03)}
 }
 .res-item:active,.gcard:active,.bcard:active{transform:translateY(-1px)}
+/* Card action pills — Read / Play / View & download (2026-11-20): the card
+   action text is now a compact tactile button with the same 3D edge, lift
+   + glow and press-in as the ghost buttons. The pill lifts with the card
+   on hover (the stretched .card-link sits above the text on blog/resource
+   cards, so the lift is tied to the card hover); on game cards the pill
+   is the link itself, so it lifts on its own hover and presses on click. */
+@media (hover:hover){
+  .bcard:hover .read,.res-item:hover .rbody .go,.gcard a:hover{transform:translateY(-2px);border-color:var(--ink);text-decoration:none;box-shadow:0 2px 0 rgba(17,18,20,.12),0 8px 18px rgba(17,18,20,.14),0 0 0 1px rgba(228,87,46,.18)}
+}
+.gcard a:active{transform:translateY(1px);box-shadow:0 1px 0 rgba(17,18,20,.08),0 1px 4px rgba(17,18,20,.06)}
 .bcard .body{padding:16px;display:flex;flex-direction:column;gap:6px;flex:1}
 .bcard .tag{font-family:'Archivo',sans-serif;font-size:13px;font-weight:700;color:var(--muted)}
 .bcard h3{font-size:17px;line-height:1.3}
 .bcard h3 a{color:var(--ink)}
 .bcard p{font-size:14px;color:var(--muted)}
-.bcard .read{margin-top:auto;font-size:14px;font-weight:700;font-family:'Archivo',sans-serif;padding-top:8px}
+.bcard .read{margin-top:auto;align-self:flex-start;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink);font-size:14px;font-weight:700;font-family:'Archivo',sans-serif;text-decoration:none;box-shadow:0 1px 0 rgba(17,18,20,.10),0 2px 6px rgba(17,18,20,.06);transition:transform .12s ease,box-shadow .18s ease,border-color .18s ease}
 /* ---------- about / faq / newsletter ---------- */
 .about p{max-width:70ch;margin-bottom:12px}
 .about ul{list-style:none;display:grid;gap:6px;margin:16px 0;max-width:70ch}
@@ -432,10 +479,14 @@ body.tab-hidden .tabbar{display:none}
 /* Desktop department flyout (only when a department has 2+ live categories) */
 .dept .has-fly{position:relative}
 .flyout{display:none;position:absolute;top:100%;left:0;z-index:75;background:var(--surface);border:1px solid var(--line);border-radius:0 0 10px 10px;box-shadow:var(--shadow-lg);padding:10px 0;min-width:230px}
-.flyout a{display:flex;color:var(--ink);font-size:15px;font-weight:700;padding:11px 18px;min-height:44px;align-items:center;white-space:nowrap}
+.flyout a{display:flex;color:var(--ink);font-size:15px;font-weight:700;padding:11px 18px;min-height:44px;align-items:center;white-space:nowrap;transition:background .16s ease,transform .16s ease}
 .flyout a:hover{background:var(--paper);color:var(--ink);text-decoration:none}
+@media (hover:hover){
+  .flyout a:hover{transform:translateX(3px)}
+}
 .flyout a.viewall{color:var(--muted);border-top:1px solid var(--line)}
-.dept .has-fly:hover .flyout,.dept .has-fly:focus-within .flyout{display:block}
+.dept .has-fly:hover .flyout,.dept .has-fly:focus-within .flyout{display:block;animation:fly-in .16s ease}
+@keyframes fly-in{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
 /* Facet bar + active filters */
 .facet-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:6px 0 16px}
 .facet-bar label{font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;color:var(--muted);display:inline-flex;align-items:center;gap:8px}
