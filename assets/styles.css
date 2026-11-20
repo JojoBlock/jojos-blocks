@@ -41,6 +41,16 @@ img{display:block;max-width:100%}
   .btn-ghost:hover{border-color:var(--ink);transform:translateY(-2px);box-shadow:0 6px 14px rgba(17,18,20,.10)}
 }
 .btn-accent:active,.btn-ink:active,.btn-ghost:active{transform:translateY(0) scale(.98)}
+/* Amazon buttons — bold Amazon-inspired gold (2026-11-20): a warm amber
+   gradient with a dark 3D bottom edge and crisp shadow, so the paperback
+   option reads as a real buy button instead of a plain white ghost. Applies
+   to every a[data-amazon] — the kit page button and all card Amazon buttons.
+   Destination and buy_now_click behaviour are unchanged. */
+a[data-amazon]{background:linear-gradient(180deg,#FFD07A,#F5A623);color:var(--ink);border-color:#D18A00;box-shadow:0 2px 0 #B97A00,0 4px 10px rgba(17,18,20,.14)}
+@media (hover:hover){
+  a[data-amazon]:hover{background:linear-gradient(180deg,#FFD98F,#F7B733);transform:translateY(-2px);box-shadow:0 4px 0 #B97A00,0 10px 22px rgba(17,18,20,.20),0 0 0 1px rgba(245,166,35,.45)}
+}
+a[data-amazon]:active{transform:translateY(1px);box-shadow:0 1px 0 #B97A00,0 2px 6px rgba(17,18,20,.14)}
 .btn-sm{min-height:44px;padding:10px 16px;font-size:14px}
 /* ---------- header ---------- */
 header.site{position:sticky;top:0;z-index:70;background:rgba(250,249,246,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
@@ -224,12 +234,11 @@ section.block{padding:64px 0;border-bottom:1px solid var(--line)}
 .quote-card cite{display:block;margin-top:10px;font-size:14px;color:var(--muted);font-style:normal}
 @media (max-width:640px){.email-capture{padding:16px}}
 .res-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.res-item{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:0;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);position:relative}
-.res-item:hover{border-color:var(--ink)}
+.res-item{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:0;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);position:relative;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;cursor:pointer}
 /* Whole-card link (stretched over the card; the visible "View & download" text is a span, not a nested link) */
 .card-link{position:absolute;inset:0;z-index:1}
 .res-item .rthumb{aspect-ratio:4/3;background:var(--tile);overflow:hidden;flex:none}
-.res-item .rthumb img{width:100%;height:100%;object-fit:contain;display:block}
+.res-item .rthumb img{width:100%;height:100%;object-fit:contain;display:block;transition:transform .3s ease}
 .res-item .rbody{padding:18px;display:flex;flex-direction:column;gap:6px;flex:1}
 .res-item .tag{font-family:'Archivo',sans-serif;font-size:13px;font-weight:700;color:var(--ink)}
 .res-item h3{font-size:17px;line-height:1.3}
@@ -243,18 +252,24 @@ html.js .res-grid.expanded .res-item.extra{display:flex}
 html.js #seeAllBtn{display:inline-flex}
 /* ---------- games ---------- */
 .ggrid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
-.gcard{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)}
-.gcard:hover{border-color:var(--ink)}
+.gcard{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow);transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
 .gcard .gthumb{aspect-ratio:16/9;background:var(--tile);border-radius:8px;overflow:hidden}
-.gcard .gthumb img{width:100%;height:100%;object-fit:contain}
+.gcard .gthumb img{width:100%;height:100%;object-fit:contain;transition:transform .3s ease}
 .gcard h3{font-size:16px}
 .gcard a{font-size:14px;font-weight:700;font-family:'Archivo',sans-serif}
 /* ---------- blog ---------- */
 .bgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.bcard{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);position:relative}
-.bcard:hover{border-color:var(--ink)}
+.bcard{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);position:relative;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;cursor:pointer}
 .bcard .bcover{aspect-ratio:16/9;overflow:hidden;background:var(--tile)}
-.bcard .bcover img{width:100%;height:100%;object-fit:cover}
+.bcard .bcover img{width:100%;height:100%;object-fit:cover;transition:transform .3s ease}
+/* Blog, game & free-resource cards — the same hover lift as product cards
+   (2026-11-20): translateY(-4px), soft shadow, faint Warm Sunrise glow,
+   image zoom. Gated to (hover:hover) so touch never gets a stuck hover. */
+@media (hover:hover){
+  .res-item:hover,.gcard:hover,.bcard:hover{transform:translateY(-4px);border-color:var(--ink);box-shadow:0 12px 28px rgba(17,18,20,.14),0 0 0 1px rgba(228,87,46,.18)}
+  .res-item:hover .rthumb img,.gcard:hover .gthumb img,.bcard:hover .bcover img{transform:scale(1.03)}
+}
+.res-item:active,.gcard:active,.bcard:active{transform:translateY(-1px)}
 .bcard .body{padding:16px;display:flex;flex-direction:column;gap:6px;flex:1}
 .bcard .tag{font-family:'Archivo',sans-serif;font-size:13px;font-weight:700;color:var(--muted)}
 .bcard h3{font-size:17px;line-height:1.3}
