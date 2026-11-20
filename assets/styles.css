@@ -187,6 +187,29 @@ section.block{padding:64px 0;border-bottom:1px solid var(--line)}
 .faq-item h3{margin:0 0 6px;font-size:18px;line-height:1.3}
 .faq-item p{margin:0}
 @media (max-width:640px){.faq-item{padding:16px}}
+/* Phase 2 — kit page: flip-through preview, email capture, reader quotes */
+.flip-preview{max-width:600px;margin:20px auto 8px}
+.flip-preview video{width:100%;height:auto;display:block;border-radius:var(--radius-lg);border:1px solid var(--line);background:var(--tile)}
+.flip-cap{font-size:14px;color:var(--muted);margin:8px 0 0;text-align:center}
+.email-capture{background:var(--tile);border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px;margin:18px 0 0}
+.email-capture h3{margin:0 0 6px;font-size:18px;line-height:1.3}
+.email-capture p{margin:0 0 12px;font-size:14px;color:var(--muted)}
+.email-capture form{display:flex;flex-wrap:wrap;gap:10px}
+.email-capture input[type="email"]{flex:1 1 220px;min-height:44px;padding:12px 14px;border:1px solid var(--line);border-radius:9px;font:inherit;background:var(--surface);color:var(--ink)}
+.email-capture .fine{margin:12px 0 0;font-size:13px}
+/* Gumroad subscribe embed: its own <style> sets the black button + white input;
+   the button text colour and padding come from its (unresolved) utility classes,
+   so set them here to keep it readable on this site. */
+.email-capture #gumroad-follow-form-embed{flex-wrap:wrap}
+.email-capture #gumroad-follow-form-embed-button{color:#fff;padding:12px 20px;font:inherit;font-weight:700;min-height:44px}
+.email-capture #gumroad-follow-form-embed-input{padding:12px 14px;min-height:44px;font:inherit;color:var(--ink)}
+.quotes{margin:18px 0 0}
+.quotes h3{margin:0 0 6px;font-size:18px;line-height:1.3}
+.quotes .quotes-empty{font-size:14px;color:var(--muted);margin:0}
+.quote-card{background:var(--tile);border:1px solid var(--line);border-radius:var(--radius-lg);padding:18px 20px;margin:0 0 14px}
+.quote-card blockquote{margin:0;font-size:16px;line-height:1.5}
+.quote-card cite{display:block;margin-top:10px;font-size:14px;color:var(--muted);font-style:normal}
+@media (max-width:640px){.email-capture{padding:16px}}
 .res-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .res-item{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:0;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);position:relative}
 .res-item:hover{border-color:var(--ink)}
