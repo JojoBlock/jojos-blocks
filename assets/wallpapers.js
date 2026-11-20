@@ -48,9 +48,10 @@
     if (wps.length) {
       html += '<div class="wp-grid wp-grid-wallpapers">' + wps.map(function (w) {
         var thumb = w.file ? root + w.file : root + 'assets/wallpapers/wallpaper-placeholder.svg';
-        var meta = esc(w.boardName) + (w.sectionName ? ' · ' + esc(w.sectionName) : '') + ' · 9:16 · JPG';
+        var ext = w.file ? w.file.split('.').pop().toUpperCase() : 'WEBP';
+        var meta = esc(w.boardName) + (w.sectionName ? ' · ' + esc(w.sectionName) : '') + ' · 9:16 · ' + ext;
         var dl = w.file
-          ? '<a class="btn btn-accent wp-download" href="' + root + w.file + '" download="' + w.slug + '.jpg" data-free-download="' + w.slug + '" data-location="wallpapers">Download</a>'
+          ? '<a class="btn btn-accent wp-download" href="' + root + w.file + '" download="' + w.slug + '.' + ext.toLowerCase() + '" data-free-download="' + w.slug + '" data-location="wallpapers">Download</a>'
           : '<button class="btn btn-accent wp-download" type="button" disabled>Download</button>';
         var badge = w.file ? '' : ' <span class="wp-coming">Coming soon</span>';
         return '<article class="wp-item" data-wallpaper="' + w.slug + '">'
@@ -121,11 +122,12 @@
     img.alt = item.title + ' — full-resolution preview';
     overlay.querySelector('h3').textContent = item.title;
     var acts = overlay.querySelector('.wp-lb-actions');
+    var ext = item.full.split('.').pop().toUpperCase();
     acts.innerHTML = item.available
-      ? '<a class="btn btn-accent" href="' + item.full + '" download="' + item.slug + '.jpg" data-free-download="' + item.slug + '" data-location="wallpapers">Download</a>'
+      ? '<a class="btn btn-accent" href="' + item.full + '" download="' + item.slug + '.' + ext.toLowerCase() + '" data-free-download="' + item.slug + '" data-location="wallpapers">Download</a>'
       : '<button class="btn btn-accent" type="button" disabled>Download</button>';
     overlay.querySelector('.wp-lb-note').textContent = item.available
-      ? 'Full resolution · 9:16 · JPG — free download, no sign-up.'
+      ? 'Full resolution · 9:16 · ' + ext + ' — free download, no sign-up.'
       : 'This wallpaper is being generated — check back soon.';
     var nav = current.length > 1;
     overlay.querySelector('.wp-lb-prev').style.display = nav ? '' : 'none';
