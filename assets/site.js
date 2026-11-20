@@ -608,3 +608,65 @@ document.addEventListener('keydown', e => {
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   }
 });
+
+/* ================= hero carousel (2026-11-20, preview) ================= */
+/* Auto-sliding + swipeable showcase in the hero. Auto-advances every ~3.5s,
+   pauses on hover/focus/touch and when the tab is hidden, and never runs when
+   the user prefers reduced motion. Dots, swipe (touch/pen, 50px) and arrow
+   keys all jump slides and restart the timer. */
+(function () {
+  var car = document.querySelector('[data-carousel]');
+  if (!car) return;
+  var slides = Array.prototype.slice.call(car.querySelectorAll('[data-slide]'));
+  var dots = Array.prototype.slice.call(car.querySelectorAll('[data-dot]'));
+  if (slides.length < 2) return;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var DELAY = 3500, SWIPE = 50, cur = 0, timer = null, paused = false, sx = null, resumeT = null;
+  function show(n, user) {
+    cur = (n + slides.length) % slides.length;
+    slides.forEach(function (s, i) {
+      s.classList.toggle('is-active', i === cur);
+      s.setAttribute('aria-hidden', String(i !== cur));
+    });
+    dots.forEach(function (d, i) {
+      d.classList.toggle('is-active', i === cur);
+      if (i === cur) d.setAttribute('aria-current', 'true');
+      else d.removeAttribute('aria-current');
+    });
+    if (user) restart();
+  }
+  function start() {
+    if (reduce || paused) return;
+    stop();
+    timer = window.setInterval(function () { show(cur + 1); }, DELAY);
+  }
+  function stop() { if (timer) { window.clearInterval(timer); timer = null; } }
+  function restart() { stop(); start(); }
+  dots.forEach(function (d, i) { d.addEventListener('click', function () { show(i, true); }); });
+  car.addEventListener('mouseenter', function () { paused = true; stop(); });
+  car.addEventListener('mouseleave', function () { paused = false; start(); });
+  car.addEventListener('focusin', function () { paused = true; stop(); });
+  car.addEventListener('focusout', function () { paused = false; start(); });
+  car.addEventListener('touchstart', function (e) {
+    paused = true; stop();
+    if (resumeT) { window.clearTimeout(resumeT); resumeT = null; }
+    sx = e.changedTouches[0].clientX;
+  }, { passive: true });
+  car.addEventListener('touchend', function (e) {
+    var swiped = false;
+    if (sx !== null) {
+      var dx = e.changedTouches[0].clientX - sx;
+      sx = null;
+      if (Math.abs(dx) > SWIPE) { show(cur + (dx < 0 ? 1 : -1), true); swiped = true; }
+    }
+    if (!swiped) resumeT = window.setTimeout(function () { paused = false; start(); }, 1000);
+  }, { passive: true });
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) stop(); else start();
+  });
+  car.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft') show(cur - 1, true);
+    else if (e.key === 'ArrowRight') show(cur + 1, true);
+  });
+  start();
+})();
