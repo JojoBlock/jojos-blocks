@@ -1197,3 +1197,72 @@ body.fr-phase2 .fr-section-head .fr-crumb-ic svg{width:100%;height:100%}
   /* Tab bar labels: tighter so fewer wrap to two lines */
   .tabbar a{font-size:11px}
 }
+
+/* ================= MOBILE FIXES 2026-11-21 (owner review of preview) =================
+   Mobile-only. Every rule below lives inside a max-width media query and is
+   appended last so it wins on small screens. Desktop is untouched. */
+
+/* FIX 2a — homepage hero: headline first on mobile. The original ≤820px rule
+   (.hero-carousel{order:-1}) put the rotating kit card above the H1;
+   neutralise it so DOM order (copy first) wins on small screens. */
+@media (max-width:820px){
+  .hero-carousel{order:0}
+}
+
+@media (max-width:640px){
+  /* FIX 1 — vertical product cards in 2-col mobile grids. The design-system
+     horizontal card (60px cover + 111px body) crushed titles into 4 lines
+     and left big empty gaps. Stack: cover on top (full width, square,
+     cover-fit), then 2-line title, price, full-width CTA below. The grid no
+     longer stretches cards to equal height, so no whitespace inside cards. */
+  .pgrid{align-items:start}
+  .pgrid .card,#listingGrid .card{flex-direction:column}
+  .pgrid .card .cover,#listingGrid .card .cover{flex:none;width:100%;aspect-ratio:1/1}
+  .pgrid .card .cover img,#listingGrid .card .cover img{object-fit:cover}
+  .pgrid .card .body,#listingGrid .card .body{padding:12px 12px 6px;gap:5px;width:100%}
+  .pgrid .card h3,#listingGrid .card h3{font-size:13px;-webkit-line-clamp:2}
+  .pgrid .card .meta,#listingGrid .card .meta{font-size:12px}
+  .pgrid .card .price,#listingGrid .card .price{font-size:17px}
+  .pgrid .card .actions,#listingGrid .card .actions{margin-top:0}
+  .pgrid .card .actions .btn,#listingGrid .card .actions .btn{min-height:40px;padding:10px 12px;font-size:13px;width:100%}
+  .pgrid .card .badge,#listingGrid .card .badge{top:8px;left:8px;font-size:11px;padding:3px 8px}
+  /* Affiliate titles had their 2-line clamp removed (display:block); restore
+     it on mobile so long titles (Watercolor…) don't run to 4+ lines. */
+  .pgrid .card.af-card h3{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+  /* FIX 2b — hero carousel slides go vertical on mobile. A 182px-wide body
+     made the slide ~500px tall with the buttons stranded at the bottom.
+     Cover centred on top (portrait book cover, fully visible), body full
+     width below so text wraps far less and the card hugs its content. */
+  .spot{flex-direction:column;gap:12px;padding:16px 16px 6px}
+  .spot .cover{width:100%;max-width:200px;margin:0 auto;aspect-ratio:600/849}
+  .spot h2{font-size:19px}
+  .spot .sbody{width:100%}
+  /* Kids Books showcase: tighten the body padding so the card hugs its
+     content (the 14px bottom padding read as wasted space). */
+  .kb-body{padding:14px 14px 6px}
+
+  /* FIX 3 — Free Resources hero + thumbnails, mobile hardening. The hero
+     already renders at 390px (verified by probe: display:flex, 201px tall);
+     give it an explicit floor so it can never collapse, and pin the
+     thumbnail ratio/fit on mobile. */
+  body.fr-phase2 .fr-hero{min-height:150px}
+  body.fr-phase2 .res-item .rthumb{aspect-ratio:4/3}
+  body.fr-phase2 .res-item .rthumb img{object-fit:cover}
+
+  /* FIX 4 — filter chip rows: one single horizontally scrollable row on
+     mobile, never wrapping. Covers the shop/own-products chips, the homepage
+     Our Products filter chips + sort pills, and every other .chips row.
+     (FR category tiles stay a 5x2 grid: body.fr-phase2 #listingChips is
+     display:grid at higher specificity, so it is unaffected.) */
+  .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;min-width:0}
+  .chips::-webkit-scrollbar{display:none}
+  .chips .chip{flex:none}
+  /* A .chips row inside a .rail is a flex item: without an explicit flex
+     basis it keeps its content width (484px) and overflows the rail instead
+     of scrolling. Force it to fill the rail line and scroll internally. */
+  .rail .chips,.rail .sort-pills{flex:1 1 0;min-width:0;max-width:100%}
+  .sort-pills{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;min-width:0}
+  .sort-pills::-webkit-scrollbar{display:none}
+  .sort-pills .chip{flex:none}
+}
