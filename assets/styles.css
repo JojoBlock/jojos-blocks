@@ -794,3 +794,6 @@ body.tab-hidden .tabbar{display:none}
   .btn-ghost:active,.btn-ink:not([data-affiliate]):active,.btn-primary:active,.btn-outline:active,.chip:active{transform:translateY(1px) scale(.98)}
   .logo:active{transform:translateY(0) scale(.98)}
 }
+
+/* InVideo AI logo is white-on-transparent — dark cover so it stays visible. */
+article[data-id="invideo-ai"] .cover{background:#101828}
