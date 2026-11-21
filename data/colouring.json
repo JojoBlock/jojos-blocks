@@ -1,0 +1,799 @@
+{
+ "_notes": "Colouring Pages section — Free Resources (owner order 21 Nov 2026 ~09:57 IST). 50 original colouring pages across 4 skill tiers. Topics: Marketing research 21 Nov 2026, full list at workspace/jojos-blocks/restructure/growth/marketing-drafts-2026-11-17/colouring-pages-topic-list-2026-11-21.md — all original, no copyrighted characters. Generation: Marketing, built-in generator only (NO Flow — watermarks); crisp B&W line art, 8.5x11, watermark-free; each page as High-Res PNG + Print-Ready PDF. Source folders: colouring-pages/kids-easy/, juniors-teens/, adults-relaxation/, expert-genius/ with native names cp-<prefix>-<nn>-<slug>.png/.pdf (prefixes: kids, teens, adults, expert). Website ingest keeps native filenames under assets/colouring/<tier-slug>/. The 2 existing colouring pages (Forest Friends, Under the Sea) keep their flat URLs and are listed in the Kids tier via existingUrl (no new detail page generated for them). Tier cover reuses the tier's FIRST page PNG, cropped square by CSS (same rule as the Wallpapers Hub — no separate thumbnail generations). A new page is 'available' only when BOTH its PDF and PNG exist on disk; otherwise the generator omits its card (no placeholders, no 'Coming soon'). Counts: Kids 15 new + 2 existing = 17 listed; Juniors & Teens 13; Adults & Relaxation 12; Expert & Genius 10. Total new pages 50.",
+ "tiers": [
+  {
+   "ages": "Ages 3-6",
+   "description": "Bold, easy colouring pages for little hands — big thick outlines, cute animals, vehicles, dinosaurs, holidays and space. Print at home and colour again and again.",
+   "filePrefix": "kids",
+   "keywords": [
+    "coloring pages for kids",
+    "easy coloring pages",
+    "preschool coloring pages",
+    "toddler coloring pages",
+    "printable coloring pages",
+    "cute animal coloring pages",
+    "dinosaur coloring pages",
+    "free coloring pages"
+   ],
+   "level": "Easy",
+   "name": "Kids",
+   "pages": [
+    {
+     "existingPdf": "assets/free-resources/forest-friends-coloring.pdf",
+     "existingPreview": "assets/free-resources/forest-friends-coloring-preview.jpg",
+     "existingUrl": "free-resources/forest-friends-coloring/",
+     "keywords": [
+      "forest animals coloring page",
+      "fox coloring page",
+      "cute forest friends coloring"
+     ],
+     "slug": "forest-friends",
+     "title": "Forest Friends Coloring Page"
+    },
+    {
+     "existingPdf": "assets/free-resources/under-the-sea-coloring.pdf",
+     "existingPreview": "assets/free-resources/under-the-sea-coloring-preview.jpg",
+     "existingUrl": "free-resources/under-the-sea-coloring/",
+     "keywords": [
+      "under the sea coloring page",
+      "dolphin coloring page",
+      "ocean animals coloring page"
+     ],
+     "slug": "under-the-sea",
+     "title": "Under the Sea Coloring Page"
+    },
+    {
+     "code": "01",
+     "keywords": [
+      "lion coloring page",
+      "smiling lion coloring page",
+      "easy lion coloring page for kids",
+      "cute animals",
+      "safari",
+      "zoo",
+      "preschool"
+     ],
+     "slug": "smiling-lion",
+     "title": "Smiling Lion with a Big Mane"
+    },
+    {
+     "code": "02",
+     "keywords": [
+      "elephant coloring page",
+      "friendly elephant coloring page",
+      "easy elephant coloring page",
+      "cute animals",
+      "kids",
+      "safari",
+      "zoo",
+      "preschool"
+     ],
+     "slug": "friendly-elephant",
+     "title": "Friendly Elephant with Big Ears"
+    },
+    {
+     "code": "03",
+     "keywords": [
+      "panda coloring page",
+      "panda eating bamboo coloring page",
+      "cute panda coloring page",
+      "cute animals",
+      "kids",
+      "easy",
+      "zoo",
+      "preschool"
+     ],
+     "slug": "panda-bamboo",
+     "title": "Panda Eating Bamboo"
+    },
+    {
+     "code": "04",
+     "keywords": [
+      "kitten coloring page",
+      "cat coloring page for kids",
+      "kitten with yarn coloring page",
+      "cute animals",
+      "easy",
+      "pets"
+     ],
+     "slug": "kitten-yarn",
+     "title": "Kitten with a Ball of Yarn"
+    },
+    {
+     "code": "05",
+     "keywords": [
+      "dinosaur coloring page",
+      "t-rex coloring page",
+      "friendly dinosaur coloring page for kids",
+      "easy",
+      "prehistoric",
+      "preschool"
+     ],
+     "slug": "friendly-trex",
+     "title": "Friendly T-Rex Dinosaur"
+    },
+    {
+     "code": "06",
+     "keywords": [
+      "triceratops coloring page",
+      "dinosaur coloring page for kids",
+      "easy",
+      "prehistoric",
+      "meadow"
+     ],
+     "slug": "triceratops-meadow",
+     "title": "Triceratops in a Meadow"
+    },
+    {
+     "code": "07",
+     "keywords": [
+      "fire truck coloring page",
+      "fire engine coloring page for kids",
+      "firefighter",
+      "vehicles",
+      "easy",
+      "emergency"
+     ],
+     "slug": "fire-truck",
+     "title": "Fire Truck with a Ladder"
+    },
+    {
+     "code": "08",
+     "keywords": [
+      "race car coloring page",
+      "car coloring page for kids",
+      "vehicles",
+      "easy",
+      "cars",
+      "racing"
+     ],
+     "slug": "race-car",
+     "title": "Race Car with Bold Stripes"
+    },
+    {
+     "code": "09",
+     "keywords": [
+      "rocket ship coloring page",
+      "space rocket coloring page for kids",
+      "astronaut",
+      "easy",
+      "rockets"
+     ],
+     "slug": "rocket-ship",
+     "title": "Rocket Ship Blasting Off"
+    },
+    {
+     "code": "10",
+     "keywords": [
+      "unicorn coloring page",
+      "unicorn rainbow coloring page",
+      "cute unicorn coloring page",
+      "fantasy",
+      "kids",
+      "easy",
+      "magical"
+     ],
+     "slug": "unicorn-rainbow",
+     "title": "Friendly Unicorn with a Rainbow"
+    },
+    {
+     "code": "11",
+     "keywords": [
+      "butterfly coloring page",
+      "butterfly garden coloring page",
+      "flowers",
+      "kids",
+      "easy",
+      "nature",
+      "insects"
+     ],
+     "slug": "butterfly-garden",
+     "title": "Butterfly in a Flower Garden"
+    },
+    {
+     "code": "12",
+     "keywords": [
+      "dolphin coloring page",
+      "dolphin jumping coloring page",
+      "ocean",
+      "waves",
+      "kids",
+      "easy",
+      "sea animals"
+     ],
+     "slug": "dolphin-waves",
+     "title": "Dolphin Jumping Over Waves"
+    },
+    {
+     "code": "13",
+     "keywords": [
+      "santa claus coloring page",
+      "christmas coloring page",
+      "santa with gifts coloring page",
+      "holiday",
+      "kids",
+      "easy",
+      "winter"
+     ],
+     "slug": "santa-gifts",
+     "title": "Santa Claus with Gifts"
+    },
+    {
+     "code": "14",
+     "keywords": [
+      "hot air balloon coloring page",
+      "balloon coloring page for kids",
+      "sky",
+      "hills",
+      "easy",
+      "adventure"
+     ],
+     "slug": "hot-air-balloon",
+     "title": "Hot Air Balloon Over Hills"
+    },
+    {
+     "code": "15",
+     "keywords": [
+      "turtle coloring page",
+      "turtle lily pad coloring page",
+      "pond",
+      "kids",
+      "easy",
+      "animals",
+      "nature"
+     ],
+     "slug": "turtle-lily-pad",
+     "title": "Turtle on a Lily Pad"
+    }
+   ],
+   "seoDescription": "Free easy coloring pages for kids ages 3-6 — bold outlines, cute animals, dinosaurs, vehicles and holidays. Printable PDF + high-res PNG, no sign-up.",
+   "seoTitle": "Easy Coloring Pages for Kids Ages 3-6 | Free Printables | JoJo's Blocks",
+   "slug": "kids",
+   "sourceDir": "kids-easy",
+   "target": 15
+  },
+  {
+   "ages": "Ages 7-12",
+   "description": "Fun medium colouring pages for juniors and teens — anime and kawaii, cozy scenes, mythical creatures, sports and adventure. More detail, still relaxing.",
+   "filePrefix": "teens",
+   "keywords": [
+    "coloring pages for kids 7-12",
+    "anime coloring pages",
+    "kawaii coloring pages",
+    "mythical creatures coloring pages",
+    "cool coloring pages for teens",
+    "printable coloring pages"
+   ],
+   "level": "Medium",
+   "name": "Juniors & Teens",
+   "pages": [
+    {
+     "code": "01",
+     "keywords": [
+      "anime girl coloring page",
+      "boba tea coloring page",
+      "anime coloring page",
+      "kawaii",
+      "teens",
+      "manga",
+      "cute"
+     ],
+     "slug": "anime-boba-tea",
+     "title": "Anime Girl with Boba Tea"
+    },
+    {
+     "code": "02",
+     "keywords": [
+      "chibi cat coloring page",
+      "kawaii cat coloring page",
+      "cute cat coloring page",
+      "cute animals",
+      "teens",
+      "manga",
+      "kitten"
+     ],
+     "slug": "chibi-cat",
+     "title": "Chibi Cat with Big Eyes"
+    },
+    {
+     "code": "03",
+     "keywords": [
+      "anime ninja coloring page",
+      "ninja coloring page",
+      "action",
+      "teens",
+      "manga",
+      "warrior",
+      "martial arts"
+     ],
+     "slug": "anime-ninja",
+     "title": "Anime Ninja in Action Pose"
+    },
+    {
+     "code": "04",
+     "keywords": [
+      "kawaii frog coloring page",
+      "cute frog coloring page",
+      "teens",
+      "happy"
+     ],
+     "slug": "kawaii-frog",
+     "title": "Kawaii Frog with a Big Grin"
+    },
+    {
+     "code": "05",
+     "keywords": [
+      "anime samurai coloring page",
+      "samurai coloring page",
+      "katana coloring page",
+      "teens",
+      "manga",
+      "warrior",
+      "japan"
+     ],
+     "slug": "anime-samurai",
+     "title": "Anime Samurai with Katana"
+    },
+    {
+     "code": "06",
+     "keywords": [
+      "anime mermaid coloring page",
+      "mermaid coloring page",
+      "teens"
+     ],
+     "slug": "anime-mermaid",
+     "title": "Anime Mermaid on a Rock"
+    },
+    {
+     "code": "07",
+     "keywords": [
+      "dragon coloring page",
+      "friendly dragon coloring page",
+      "cute dragon coloring page",
+      "fantasy",
+      "flames",
+      "teens",
+      "mythical",
+      "adventure"
+     ],
+     "slug": "friendly-dragon",
+     "title": "Friendly Dragon with Small Flames"
+    },
+    {
+     "code": "08",
+     "keywords": [
+      "kawaii donut coloring page",
+      "cute donut coloring page",
+      "donut coloring page",
+      "cute food",
+      "teens",
+      "sweets",
+      "happy"
+     ],
+     "slug": "kawaii-donut",
+     "title": "Kawaii Donut with a Happy Face"
+    },
+    {
+     "code": "09",
+     "keywords": [
+      "anime gamer coloring page",
+      "gamer boy coloring page",
+      "gaming coloring page",
+      "headset",
+      "teens",
+      "manga",
+      "video games"
+     ],
+     "slug": "anime-gamer",
+     "title": "Anime Gamer Boy with Headset"
+    },
+    {
+     "code": "10",
+     "keywords": [
+      "cozy reading nook coloring page",
+      "girl reading coloring page",
+      "cozy coloring page",
+      "book",
+      "tea",
+      "teens",
+      "relaxing",
+      "hygge",
+      "quiet"
+     ],
+     "slug": "cozy-reading-nook",
+     "title": "Cozy Reading Nook — Girl Reading with Tea"
+    },
+    {
+     "code": "11",
+     "keywords": [
+      "cute ghost coloring page",
+      "spooky ghost coloring page",
+      "halloween ghost coloring page",
+      "pumpkin",
+      "cute spooky",
+      "teens",
+      "fall"
+     ],
+     "slug": "spooky-ghost-pumpkin",
+     "title": "Cute-Spooky Ghost with a Pumpkin"
+    },
+    {
+     "code": "12",
+     "keywords": [
+      "basketball coloring page",
+      "basketball player coloring page",
+      "sports coloring page",
+      "dunk",
+      "teens",
+      "athlete",
+      "action"
+     ],
+     "slug": "basketball-dunk",
+     "title": "Basketball Player Mid-Dunk"
+    },
+    {
+     "code": "13",
+     "keywords": [
+      "knight coloring page",
+      "knight armor coloring page",
+      "medieval knight coloring page",
+      "shield",
+      "teens",
+      "adventure",
+      "castle"
+     ],
+     "slug": "knight-armor",
+     "title": "Knight in Armor with Shield"
+    }
+   ],
+   "seoDescription": "Free coloring pages for juniors and teens ages 7-12 — anime, kawaii, mythical creatures, sports and adventure. Printable PDF + high-res PNG, no sign-up.",
+   "seoTitle": "Coloring Pages for Juniors & Teens Ages 7-12 | Free Printables | JoJo's Blocks",
+   "slug": "juniors-teens",
+   "sourceDir": "juniors-teens",
+   "target": 13
+  },
+  {
+   "ages": "Adults",
+   "description": "Detailed colouring pages for grown-ups — florals, cozy cottages, stress-relief patterns, nature scenes and coffee-shop aesthetics. Slow down and unwind.",
+   "filePrefix": "adults",
+   "keywords": [
+    "coloring pages for adults",
+    "relaxing coloring pages",
+    "floral coloring pages",
+    "mandala coloring pages",
+    "stress relief coloring pages",
+    "detailed coloring pages",
+    "mindful coloring pages",
+    "free adult coloring pages"
+   ],
+   "level": "Detailed",
+   "name": "Adults & Relaxation",
+   "pages": [
+    {
+     "code": "01",
+     "keywords": [
+      "floral mandala coloring page",
+      "rose garden mandala coloring page",
+      "flower mandala coloring page",
+      "adults",
+      "relaxation",
+      "stress relief"
+     ],
+     "slug": "floral-mandala-rose",
+     "title": "Floral Mandala — Rose Garden"
+    },
+    {
+     "code": "02",
+     "keywords": [
+      "lotus mandala coloring page",
+      "lotus flower coloring page",
+      "adults",
+      "relaxation",
+      "mindfulness",
+      "zen"
+     ],
+     "slug": "lotus-mandala",
+     "title": "Lotus Flower Mandala"
+    },
+    {
+     "code": "03",
+     "keywords": [
+      "cozy cottage coloring page",
+      "cottage garden coloring page",
+      "flowers",
+      "adults",
+      "relaxation",
+      "home"
+     ],
+     "slug": "cozy-cottage",
+     "title": "Cozy Cottage in a Flower Garden"
+    },
+    {
+     "code": "04",
+     "keywords": [
+      "coffee cup coloring page",
+      "coffee floral coloring page",
+      "aesthetic coffee coloring page",
+      "adults",
+      "relaxation",
+      "cafe",
+      "morning"
+     ],
+     "slug": "coffee-floral",
+     "title": "Coffee Cup with Floral Steam"
+    },
+    {
+     "code": "05",
+     "keywords": [
+      "butterfly mandala coloring page",
+      "butterfly coloring page for adults",
+      "insects",
+      "relaxation",
+      "detailed"
+     ],
+     "slug": "butterfly-mandala",
+     "title": "Butterfly Mandala"
+    },
+    {
+     "code": "06",
+     "keywords": [
+      "owl coloring page",
+      "owl floral coloring page",
+      "owl forest coloring page",
+      "adults",
+      "relaxation",
+      "nature",
+      "birds"
+     ],
+     "slug": "owl-floral-forest",
+     "title": "Owl in a Floral Forest"
+    },
+    {
+     "code": "07",
+     "keywords": [
+      "sunflower coloring page",
+      "sunflower field coloring page",
+      "sunset",
+      "adults",
+      "relaxation",
+      "nature",
+      "summer"
+     ],
+     "slug": "sunflower-field",
+     "title": "Sunflower Field at Sunset"
+    },
+    {
+     "code": "08",
+     "keywords": [
+      "teacup coloring page",
+      "teacup bouquet coloring page",
+      "tea cup coloring page",
+      "flowers",
+      "adults",
+      "relaxation",
+      "cozy"
+     ],
+     "slug": "teacup-bouquet",
+     "title": "Teacup with a Flower Bouquet"
+    },
+    {
+     "code": "09",
+     "keywords": [
+      "deer coloring page",
+      "deer antler floral coloring page",
+      "forest deer coloring page",
+      "antlers",
+      "florals",
+      "adults",
+      "relaxation",
+      "wildlife"
+     ],
+     "slug": "deer-antler-florals",
+     "title": "Forest Deer with Antler Florals"
+    },
+    {
+     "code": "10",
+     "keywords": [
+      "peacock coloring page",
+      "peacock feathers coloring page",
+      "adults",
+      "relaxation",
+      "detailed",
+      "elegant"
+     ],
+     "slug": "peacock-feathers",
+     "title": "Peacock with Flowing Feathers"
+    },
+    {
+     "code": "11",
+     "keywords": [
+      "lighthouse coloring page",
+      "seaside lighthouse coloring page",
+      "waves",
+      "ocean",
+      "adults",
+      "relaxation",
+      "coastal"
+     ],
+     "slug": "lighthouse-waves",
+     "title": "Seaside Lighthouse with Waves"
+    },
+    {
+     "code": "12",
+     "keywords": [
+      "autumn wreath coloring page",
+      "autumn leaves coloring page",
+      "fall wreath coloring page",
+      "acorn",
+      "adults",
+      "relaxation",
+      "seasonal"
+     ],
+     "slug": "autumn-wreath",
+     "title": "Autumn Leaves & Acorn Wreath"
+    }
+   ],
+   "seoDescription": "Free detailed coloring pages for adults — florals, cozy cottages, stress-relief patterns and nature. Printable PDF + high-res PNG, no sign-up.",
+   "seoTitle": "Relaxing Coloring Pages for Adults | Free Printables | JoJo's Blocks",
+   "slug": "adults-relaxation",
+   "sourceDir": "adults-relaxation",
+   "target": 12
+  },
+  {
+   "ages": "All ages",
+   "description": "Intricate master-level colouring pages — mandalas, architectural cityscapes, hyper-detailed wildlife, geometric illusions and fantasy worlds. For patient colourists.",
+   "filePrefix": "expert",
+   "keywords": [
+    "intricate coloring pages",
+    "mandala coloring pages",
+    "detailed mandala coloring",
+    "architectural coloring pages",
+    "complex coloring pages for adults",
+    "advanced coloring pages",
+    "hyper detailed coloring pages"
+   ],
+   "level": "Intricate",
+   "name": "Expert & Genius",
+   "pages": [
+    {
+     "code": "01",
+     "keywords": [
+      "grand mandala coloring page",
+      "sacred geometry coloring page",
+      "complex mandala coloring page",
+      "intricate",
+      "adults",
+      "expert",
+      "mindfulness"
+     ],
+     "slug": "grand-mandala",
+     "title": "Grand Mandala — Sacred Geometry"
+    },
+    {
+     "code": "02",
+     "keywords": [
+      "cityscape coloring page",
+      "futuristic skyline coloring page",
+      "architectural coloring page",
+      "architecture",
+      "intricate",
+      "expert"
+     ],
+     "slug": "futuristic-skyline",
+     "title": "Architectural Cityscape — Futuristic Skyline at Dusk"
+    },
+    {
+     "code": "03",
+     "keywords": [
+      "wolf mandala coloring page",
+      "wolf coloring page",
+      "detailed wolf coloring page",
+      "wildlife",
+      "intricate",
+      "expert",
+      "animal"
+     ],
+     "slug": "wolf-mandala",
+     "title": "Hyper-Detailed Wolf"
+    },
+    {
+     "code": "04",
+     "keywords": [
+      "elephant mandala coloring page",
+      "intricate elephant coloring page",
+      "ornate elephant coloring page",
+      "elephant ornate",
+      "expert",
+      "detailed",
+      "animal",
+      "patterns"
+     ],
+     "slug": "elephant-ornate",
+     "title": "Intricate Elephant with Ornate Patterns"
+    },
+    {
+     "code": "05",
+     "keywords": [
+      "geometric illusion coloring page",
+      "impossible staircase coloring page",
+      "optical illusion coloring page",
+      "expert",
+      "intricate"
+     ],
+     "slug": "impossible-staircase",
+     "title": "Geometric Illusion — Impossible Staircase"
+    },
+    {
+     "code": "06",
+     "keywords": [
+      "fantasy castle coloring page",
+      "castle in the clouds coloring page",
+      "intricate",
+      "expert",
+      "fairytale"
+     ],
+     "slug": "fantasy-castle-clouds",
+     "title": "Fantasy Castle in the Clouds"
+    },
+    {
+     "code": "07",
+     "keywords": [
+      "owl mandala coloring page",
+      "detailed owl coloring page",
+      "owl feather coloring page",
+      "owl feather patterns",
+      "intricate",
+      "expert",
+      "birds",
+      "wildlife"
+     ],
+     "slug": "owl-feather-patterns",
+     "title": "Hyper-Detailed Owl with Feather Patterns"
+    },
+    {
+     "code": "08",
+     "keywords": [
+      "underwater coloring page",
+      "coral kingdom coloring page",
+      "ocean coloring page for adults",
+      "intricate",
+      "expert",
+      "sea life"
+     ],
+     "slug": "coral-kingdom",
+     "title": "Underwater Coral Kingdom"
+    },
+    {
+     "code": "09",
+     "keywords": [
+      "art deco peacock coloring page",
+      "intricate peacock coloring page",
+      "expert",
+      "elegant",
+      "detailed"
+     ],
+     "slug": "art-deco-peacock",
+     "title": "Art Deco Peacock"
+    },
+    {
+     "code": "10",
+     "keywords": [
+      "mountain temple coloring page",
+      "temple terraces coloring page",
+      "intricate",
+      "expert",
+      "asian",
+      "architecture"
+     ],
+     "slug": "mountain-temple",
+     "title": "Mountain Temple with Layered Terraces"
+    }
+   ],
+   "seoDescription": "Free intricate master-level coloring pages — mandalas, cityscapes, hyper-detailed wildlife and geometric illusions. Printable PDF + high-res PNG, no sign-up.",
+   "seoTitle": "Intricate Mandala & Expert Coloring Pages | Free Printables | JoJo's Blocks",
+   "slug": "expert-genius",
+   "sourceDir": "expert-genius",
+   "target": 10
+  }
+ ]
+}
