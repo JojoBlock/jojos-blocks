@@ -324,11 +324,9 @@ if (PAGE) {
     topic: params.get('topic') || 'all',
     format: params.get('format') || 'all',
     price: params.get('price') || 'all',
-    page: Math.max(1, parseInt(params.get('page') || '1', 10) || 1)
+    page: Math.max(1, parseInt(params.get('page') || '1', 10) || 1),
+    sub: params.get('sub') || ''
   };
-  if (JB.page === 'listing' && PAGE.kind === 'resources' && state.filter === 'wallpapers') {
-    window.location.replace(JB.root + 'free-resources/category/wallpapers/');
-  }
   const grid = $('#listingGrid');
   const countEl = $('#pageCount');
   const emptyEl = $('#listingEmpty');
@@ -341,6 +339,7 @@ if (PAGE) {
       // paperback record (see build.js itemFor). A product can be both a
       // digital book (filterKey 'books') and a real book.
       if (state.filter !== 'all' && !PAGE.lockFilter && it.filterKey !== state.filter) return false;
+      if (state.sub && it.sub !== state.sub) return false;
       if (state.topic !== 'all' && !(it.tags || []).includes(state.topic)) return false;
       if (state.format !== 'all' && it.formatKey !== state.format) return false;
       if (state.price !== 'all') {
@@ -376,7 +375,7 @@ if (PAGE) {
     const pages = Math.max(1, Math.ceil(total / PAGE.pageSize));
     const page = Math.min(state.page, pages);
     const isFrIndex = JB.page === 'listing' && PAGE.kind === 'resources';
-    const filtered = state.filter !== 'all' || !!state.q || state.topic !== 'all' || state.format !== 'all' || state.price !== 'all' || state.age !== 'any';
+    const filtered = state.filter !== 'all' || !!state.q || state.topic !== 'all' || state.format !== 'all' || state.price !== 'all' || state.age !== 'any' || !!state.sub;
     const showAll = isFrIndex && filtered;
     const shown = showAll ? items : (viaLoadMore ? items.slice(0, page * PAGE.pageSize) : items.slice((page - 1) * PAGE.pageSize, page * PAGE.pageSize));
     renderedPages = page;
@@ -387,7 +386,7 @@ if (PAGE) {
         emptyEl.classList.add('show');
       } else emptyEl.classList.remove('show');
     }
-    const active = state.filter !== 'all' || state.age !== 'any' || !!state.q || state.topic !== 'all' || state.format !== 'all' || state.price !== 'all' || state.page > 1;
+    const active = state.filter !== 'all' || state.age !== 'any' || !!state.q || state.topic !== 'all' || state.format !== 'all' || state.price !== 'all' || state.page > 1 || !!state.sub;
     if (countEl) {
       countEl.hidden = !active;
       if (active) countEl.textContent = 'Showing ' + total + ' ' + PAGE.countNoun + (total === 1 ? '' : 's') + '.';
@@ -413,6 +412,7 @@ if (PAGE) {
   function syncUrl() {
     const u = new URLSearchParams();
     if (state.filter !== 'all' && !PAGE.lockFilter) u.set(PAGE.filterParam || 'category', state.filter);
+    if (state.sub) u.set('sub', state.sub);
     if (state.age !== 'any') u.set('age', state.age);
     if (state.sort !== 'featured') u.set('sort', state.sort);
     if (state.q) u.set('q', state.q);
@@ -427,6 +427,10 @@ if (PAGE) {
     const box = $('#activeFilters'); if (!box) return;
     const chips = [];
     if (state.filter !== 'all') chips.push({ k: 'filter', label: (PAGE.filterLabel && PAGE.filterLabel[state.filter]) || state.filter });
+    if (state.sub) {
+      const subBtn = document.querySelector('#subCatRow [data-sub="' + state.sub + '"]');
+      chips.push({ k: 'sub', label: subBtn ? subBtn.textContent.trim() : state.sub });
+    }
     if (state.age !== 'any') chips.push({ k: 'age', label: 'Age ' + state.age });
     if (state.topic !== 'all') chips.push({ k: 'topic', label: state.topic });
     if (state.format !== 'all') chips.push({ k: 'format', label: state.format });
@@ -435,7 +439,8 @@ if (PAGE) {
     box.innerHTML = chips.map(c => '<span class="af-chip">' + c.label.replace(/</g, '&lt;') + '<button type="button" data-clear="' + c.k + '" aria-label="Remove filter ' + c.label.replace(/"/g, '') + '">✕</button></span>').join('');
     box.querySelectorAll('[data-clear]').forEach(b => b.addEventListener('click', () => {
       const k = b.dataset.clear;
-      if (k === 'filter') state.filter = 'all';
+      if (k === 'filter') { state.filter = 'all'; state.sub = ''; }
+      if (k === 'sub') state.sub = '';
       if (k === 'age') state.age = 'any';
       if (k === 'topic') state.topic = 'all';
       if (k === 'format') state.format = 'all';
@@ -447,6 +452,22 @@ if (PAGE) {
   }
   function syncControls() {
     $$('#listingChips .chip[data-filter]').forEach(c => c.setAttribute('aria-pressed', String(c.dataset.filter === state.filter)));
+    // Contextual sub-categories (Free Resources index only): when a main
+    // category tab is tapped, show that category's sub-categories right
+    // under the filter chips; tapping a sub-category opens its page.
+    const subRow = $('#subCatRow');
+    if (subRow && window.FR_SUBCATS) {
+      const subs = window.FR_SUBCATS[state.filter];
+      if (subs && subs.length) {
+        const active = document.querySelector('#listingChips .chip[data-filter="' + state.filter + '"]');
+        const label = active ? active.textContent.trim() : state.filter;
+        subRow.innerHTML = '<span class="sub-cat-label">' + label + ':</span>' + subs.map(function(s){ return '<button type="button" class="chip" data-sub="' + s.sub + '" aria-pressed="' + String(state.sub === s.sub) + '">' + s.label + '</button>'; }).join('');
+        subRow.hidden = false;
+      } else {
+        subRow.innerHTML = '';
+        subRow.hidden = true;
+      }
+    }
     const ageRow = $('#ageChips');
     if (ageRow) $$('#ageChips .chip').forEach(c => c.setAttribute('aria-pressed', String(c.dataset.age === state.age)));
     const sort = $('#sortSelect'); if (sort) sort.value = state.sort;
@@ -457,8 +478,15 @@ if (PAGE) {
   const chipsBox = $('#listingChips');
   if (chipsBox) chipsBox.addEventListener('click', e => {
     const b = e.target.closest('[data-filter]'); if (!b) return;
-    state.filter = b.dataset.filter; state.page = 1; viaLoadMore = false; syncUrl(); render();
+    state.filter = b.dataset.filter; state.sub = ''; state.page = 1; viaLoadMore = false; syncUrl(); render();
     gaEvent('filter_use', { filter_value: state.filter, page: window.location.pathname });
+  });
+  const subRowBox = $('#subCatRow');
+  if (subRowBox) subRowBox.addEventListener('click', e => {
+    const b = e.target.closest('[data-sub]'); if (!b) return;
+    state.sub = (state.sub === b.dataset.sub) ? '' : b.dataset.sub;
+    state.page = 1; viaLoadMore = false; syncUrl(); render();
+    gaEvent('filter_use', { filter_value: 'sub:' + (state.sub || 'all'), page: window.location.pathname });
   });
   const ageBox = $('#ageChips');
   if (ageBox) ageBox.addEventListener('click', e => {
@@ -588,7 +616,7 @@ $$('.tabbar a[data-tab]').forEach(a => {
   a.addEventListener('click', () => setActiveTab(a.dataset.tab));
 });
 if (JB.page === 'home' && 'IntersectionObserver' in window) {
-  const tabMap = { shop: 'shop', free: 'free', games: 'games', blog: 'blog' };
+  const tabMap = { shop: 'products', free: 'free', games: 'games', blog: 'blog' };
   const obs = new IntersectionObserver(entries => {
     entries.forEach(en => { if (en.isIntersecting && tabMap[en.target.id]) setActiveTab(tabMap[en.target.id]); });
   }, { rootMargin: '-40% 0px -55% 0px' });
