@@ -422,8 +422,8 @@ footer.site p{font-size:14px}
 footer.site .fine{border-top:1px solid #26282C;padding-top:20px;font-size:13px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 /* ---------- bottom tab bar (mobile only) ---------- */
 .tabbar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:70;background:#fff;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
-.tabbar nav{display:grid;grid-template-columns:repeat(5,1fr)}
-.tabbar a{display:flex;flex-direction:column;align-items:center;gap:2px;font-family:'Archivo',sans-serif;font-size:13px;font-weight:700;color:var(--muted);padding:8px 0 6px;min-height:56px;position:relative}
+.tabbar nav{display:grid;grid-template-columns:repeat(7,1fr)}
+.tabbar a{display:flex;flex-direction:column;align-items:center;gap:2px;font-family:'Archivo',sans-serif;font-size:12px;line-height:1.15;text-align:center;font-weight:700;color:var(--muted);padding:8px 0 6px;min-height:56px;position:relative}
 .tabbar a .ti{font-size:24px;line-height:1}
 .tabbar a.on{color:var(--ink)}
 .tabbar a.on::before{content:"";position:absolute;top:0;left:22%;right:22%;height:3px;background:var(--ink)}
@@ -797,3 +797,15 @@ body.tab-hidden .tabbar{display:none}
 
 /* InVideo AI logo is white-on-transparent — dark cover so it stays visible. */
 article[data-id="invideo-ai"] .cover{background:#101828}
+
+.af-hero-thumbs{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:4px}
+.af-hero-thumb{display:block;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#fff}
+.af-hero-thumb img{display:block;width:100%;height:110px;object-fit:cover}
+.af-hero-thumb:hover img{transform:scale(1.03)}
+.af-hero-thumb img{transition:transform .25s ease}
+@media (max-width:640px){.af-hero-thumbs{grid-template-columns:repeat(2,1fr);gap:10px}.af-hero-thumb img{height:96px}}
+
+.sub-browse .sub-group{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 10px}
+.sub-browse .sub-cat{font-family:'Archivo',sans-serif;font-weight:800;font-size:14px;min-width:110px;color:var(--ink)}
+.sub-browse .chip{text-decoration:none}
+@media (max-width:640px){.sub-browse .sub-cat{min-width:100%;margin-bottom:2px}}

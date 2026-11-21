@@ -588,7 +588,7 @@ $$('.tabbar a[data-tab]').forEach(a => {
   a.addEventListener('click', () => setActiveTab(a.dataset.tab));
 });
 if (JB.page === 'home' && 'IntersectionObserver' in window) {
-  const tabMap = { shop: 'shop', free: 'free', games: 'games', blog: 'blog' };
+  const tabMap = { shop: 'products', free: 'free', games: 'games', blog: 'blog' };
   const obs = new IntersectionObserver(entries => {
     entries.forEach(en => { if (en.isIntersecting && tabMap[en.target.id]) setActiveTab(tabMap[en.target.id]); });
   }, { rootMargin: '-40% 0px -55% 0px' });
