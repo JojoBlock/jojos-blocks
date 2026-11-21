@@ -733,6 +733,13 @@ body.tab-hidden .tabbar{display:none}
    so cards and the primary Buy button carry a subtle resting elevation, and
    taps get a crisp press/scale. Desktop hover-gated rules are untouched;
    DHgate Buy buttons ([data-affiliate]) are excluded, as before. */
+
+/* Book detail sample pages (Helpers 3-5 + Christmas, 21 Nov 2026) */
+.detail .samples{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}
+.detail .samples img{width:100%;height:auto;display:block;border-radius:var(--radius);border:1px solid var(--line)}
+@media (max-width:640px){.detail .samples{grid-template-columns:repeat(2,1fr)}}
+.btn[disabled]{opacity:.6;cursor:not-allowed}
+
 @media (hover:none){
   .card:not(.soon),.res-item,.gcard,.bcard,.spot,.wp-card,.wp-item{box-shadow:0 6px 16px rgba(17,18,20,.10),0 0 0 1px rgba(228,87,46,.10)}
   .btn-accent{box-shadow:0 2px 0 #000,0 4px 10px rgba(17,18,20,.18)}
