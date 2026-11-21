@@ -1198,6 +1198,11 @@ body.fr-phase2 .fr-section-head .fr-crumb-ic svg{width:100%;height:100%}
   .tabbar a{font-size:11px}
 }
 
+/* FIX #2 (2026-11-21): mobile-only utility. Elements with .mob-only are
+   hidden on desktop and shown only inside the ≤640px media query below
+   (the show rules live in the MOBILE FIXES block, appended last). */
+.mob-only{display:none}
+
 /* ================= MOBILE FIXES 2026-11-21 (owner review of preview) =================
    Mobile-only. Every rule below lives inside a max-width media query and is
    appended last so it wins on small screens. Desktop is untouched. */
@@ -1267,4 +1272,35 @@ body.fr-phase2 .fr-section-head .fr-crumb-ic svg{width:100%;height:100%}
   .sort-pills{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;min-width:0}
   .sort-pills::-webkit-scrollbar{display:none}
   .sort-pills .chip{flex:none}
+
+  /* FIX #2 (2026-11-21) — homepage carousel slides 2 & 3 + Real books, mobile.
+     All rules here are ≤640px only; desktop is untouched. */
+  /* Mobile-only content: hidden on desktop by the .mob-only base rule above. */
+  .mob-only{display:block}
+  a.mob-only{display:inline-flex}
+  /* Carousel: the slide body fills the slide height (the grid stretches all
+     slides to the tallest one) and the first button pins itself to the bottom
+     with margin-top:auto — the same pattern as Fix #1's grid cards. On the
+     tallest slide the auto margin resolves to zero, so Slide 1 is unchanged.
+     NOTE: space-between on the whole slide was deliberately NOT used — it
+     would detach the text block from the cover and spread the text apart;
+     margin-top:auto keeps the text block coherent and pins only the buttons. */
+  .hero-carousel .spot .sbody{display:flex;flex-direction:column}
+  .hero-carousel .spot .sbody > a.btn:first-of-type{margin-top:auto}
+  /* Slide 2 & 3 highlight details (mobile-only): verified facts only. */
+  .hero-carousel .spot-hl{list-style:none;margin:2px 0 12px;padding:0;display:flex;flex-direction:column;gap:3px}
+  .hero-carousel .spot-hl li{font-size:13px;line-height:1.35;color:var(--ink)}
+  .hero-carousel .spot-hl li::before{content:"✓";color:var(--purple);font-weight:800;margin-right:6px}
+  /* Real books: hide the tall desktop showcase on mobile and show the
+     compact summary card instead. */
+  #real-books .taster.promo{display:none}
+  #real-books .rb-compact{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);padding:14px;box-shadow:var(--shadow)}
+  #real-books .rb-compact .rb-cover{flex:none;width:110px;aspect-ratio:600/849;border-radius:8px;overflow:hidden;background:var(--tile)}
+  #real-books .rb-compact .rb-cover img{width:100%;height:100%;object-fit:cover;display:block}
+  #real-books .rb-compact .rb-body{flex:1;min-width:0}
+  #real-books .rb-compact h3{font-size:17px;line-height:1.25;margin-bottom:4px}
+  #real-books .rb-compact p{font-size:13px;line-height:1.45;color:var(--muted);margin-bottom:8px}
+  #real-books .rb-compact .rb-badge{font-size:12px;font-weight:700;color:var(--ink);margin-bottom:10px}
+  #real-books .rb-compact .btn{width:100%;min-height:44px;padding:10px 12px;font-size:13px}
+  #real-books .rb-compact .btn + .btn{margin-top:8px}
 }
