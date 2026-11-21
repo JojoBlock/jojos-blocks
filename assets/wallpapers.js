@@ -86,8 +86,12 @@
     resultsBox.hidden = false;
     if (listing) listing.hidden = true;
   }
-  input.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(runSearch, 150); });
-  form.addEventListener('submit', function (e) { e.preventDefault(); clearTimeout(timer); runSearch(); });
+  /* Unified search (free-resources-search.js) owns the search binding when it
+     loads first (it sets window.FREE_SEARCH); this file then runs lightbox-only. */
+  if (!window.FREE_SEARCH) {
+    input.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(runSearch, 150); });
+    form.addEventListener('submit', function (e) { e.preventDefault(); clearTimeout(timer); runSearch(); });
+  }
 
   /* ---- View lightbox ---- */
   var overlay = null, current = [], currentIdx = 0;
@@ -138,7 +142,7 @@
     if (!overlay) buildOverlay();
     var card = btn.closest('[data-wallpaper]');
     var scope = card ? card.parentElement : document;
-    current = Array.prototype.slice.call(scope.querySelectorAll('[data-view]')).map(function (b) {
+    current = Array.prototype.slice.call(scope.querySelectorAll('.wp-view')).map(function (b) {
       return { slug: b.getAttribute('data-view'), full: b.getAttribute('data-full'),
                title: b.getAttribute('data-title'), available: b.getAttribute('data-available') === '1' };
     });
@@ -153,7 +157,7 @@
     document.body.style.overflow = '';
   }
   document.addEventListener('click', function (e) {
-    var v = e.target.closest ? e.target.closest('[data-view]') : null;
+    var v = e.target.closest ? e.target.closest('.wp-view') : null;
     if (v) { e.preventDefault(); openLightbox(v); }
   });
 })();
