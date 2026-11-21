@@ -812,6 +812,6 @@ article[data-id="invideo-ai"] .cover{background:#101828}
 
 /* Contextual sub-category row on the Free Resources index: appears under
    the main category chips only when a category is tapped. */
-.sub-cat-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:14px 0 2px}
+.sub-cat-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:14px 0 2px;flex-basis:100%}
 .sub-cat-row[hidden]{display:none}
 .sub-cat-row .sub-cat-label{font-size:13px;font-weight:700;color:var(--muted);margin-right:2px}
