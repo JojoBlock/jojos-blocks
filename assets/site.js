@@ -334,11 +334,23 @@ if (PAGE) {
   const loadMoreBtn = $('#loadMoreBtn');
   function visibleItems() {
     const q = normalize(state.q);
+    // Shop filter pills (own-products + homepage data) use semantic values
+    // — Books / Real Books / Digital Stickers / Planners — while the
+    // #page-data filterKeys are grouped (books-printables, planners-stickers).
+    // Without this mapping every chip except All matched 0 items (live bug).
+    // Scoped to kind 'products' so FR / games / blog filters (filterKey
+    // equality) are untouched.
+    function filterMatch(it, f) {
+      if (PAGE.kind === 'products') {
+        if (f === 'books') return it.type === 'book';
+        if (f === 'real-books') return it.type === 'paperback';
+        if (f === 'stickers') return it.type === 'stickers';
+        if (f === 'planners') return it.type === 'kit';
+      }
+      return it.filterKey === f;
+    }
     let items = PAGE.items.filter(it => {
-      // 'Real Books' is not a filterKey — it matches products carrying a
-      // paperback record (see build.js itemFor). A product can be both a
-      // digital book (filterKey 'books') and a real book.
-      if (state.filter !== 'all' && !PAGE.lockFilter && it.filterKey !== state.filter) return false;
+      if (state.filter !== 'all' && !PAGE.lockFilter && !filterMatch(it, state.filter)) return false;
       if (state.sub && it.sub !== state.sub) return false;
       if (state.topic !== 'all' && !(it.tags || []).includes(state.topic)) return false;
       if (state.format !== 'all' && it.formatKey !== state.format) return false;
@@ -367,18 +379,114 @@ if (PAGE) {
     else items.sort((a, b) => (a.featuredRank || 99) - (b.featuredRank || 99));
     return items;
   }
+  /* ---- Phase 2: sub-category icon cards (Free Resources index) ----
+     Inline SVGs (24 viewBox, currentColor) + per-sub icon colour. The map is
+     keyed by sub slug; anything unmapped falls back to a keyword match on
+     the slug/label, then a generic image icon. */
+  const FR_SVG = {
+    book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+    pencil: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>',
+    paw: '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="6.8" cy="9.5" r="1.9"/><circle cx="10.6" cy="7" r="1.9"/><circle cx="14.8" cy="7" r="1.9"/><circle cx="18.4" cy="9.8" r="1.9"/><ellipse cx="12.4" cy="15.5" rx="4.6" ry="3.9"/></svg>',
+    sparkle: '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z"/><path d="M18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2z"/></svg>',
+    car: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>',
+    chip: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><rect x="10" y="10" width="4" height="4"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></svg>',
+    leaf: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>',
+    dice: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.5" cy="8.5" r="1.4" fill="currentColor" stroke="none"/><circle cx="15.5" cy="15.5" r="1.4" fill="currentColor" stroke="none"/><circle cx="15.5" cy="8.5" r="1.4" fill="currentColor" stroke="none"/><circle cx="8.5" cy="15.5" r="1.4" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/></svg>',
+    image: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg>',
+    star: '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>',
+    calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>',
+    heart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>',
+    clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>',
+    target: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+    coin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M15 9.5c0-1.2-1.3-2-3-2s-3 .8-3 2 1 1.8 3 2 3 .8 3 2-1.3 2-3 2-3-.8-3-2"/></svg>',
+    gift: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M5 12v9h14v-9"/><path d="M12 8s-1.5-5-4.5-5C5 3 4 5 5.5 6.5 7 8 12 8 12 8zm0 0s1.5-5 4.5-5C19 3 20 5 18.5 6.5 17 8 12 8 12 8z"/></svg>',
+    tag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r="1.3"/></svg>',
+    bookmark: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>',
+    film: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 3v18M17 3v18M3 8h4M3 16h4M17 8h4M17 16h4"/></svg>',
+    rocket: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>',
+    building: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01M16 6h.01M12 6h.01M12 10h.01M12 14h.01M16 10h.01M16 14h.01M8 10h.01M8 14h.01"/></svg>',
+    mountain: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>',
+    camera: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>',
+    briefcase: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>',
+    chat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>',
+    flower: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1"/></svg>',
+    butterfly: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16"/><path d="M5 5c-2 1-3 4-2 6s4 2 6 0c1-1 1-3 0-4-2-1-3-2-4-2z"/><path d="M19 5c2 1 3 4 2 6s-4 2-6 0c-1-1-1-3 0-4 2-1 3-2 4-2z"/><path d="M6 15c-1.5 2-1 5 1 6 2-1 2.5-3 1.5-5M18 15c1.5 2 1 5-1 6-2-1-2.5-3-1.5-5"/></svg>',
+    gem: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg>',
+    smiley: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01M15 9h.01"/></svg>',
+    palette: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a10 10 0 1 1 10-10c0 4.42-2.87 8-6.5 8-1.5 0-3.5-.5-4.5-2S9 15 9.5 13.5 11 12 12.5 12H16a4 4 0 0 0 4-4c0-2.21-1.79-4-4-4H8"/><circle cx="13.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/><circle cx="17.5" cy="10.5" r="1.1" fill="currentColor" stroke="none"/><circle cx="8.5" cy="7.5" r="1.1" fill="currentColor" stroke="none"/><circle cx="6.5" cy="12.5" r="1.1" fill="currentColor" stroke="none"/></svg>',
+    gamepad: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="11" rx="5.5"/><path d="M7.5 11v3.5M5.8 12.7h3.5"/><circle cx="16" cy="11.5" r="1" fill="currentColor" stroke="none"/><circle cx="18.2" cy="14" r="1" fill="currentColor" stroke="none"/></svg>',
+    cup: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><path d="M6 2v2M10 2v2M14 2v2"/></svg>',
+    shirt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>',
+    trophy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>',
+    music: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>'
+  };
+  const FR_SUB_ICON = {
+    books: ['book', '#2563EB'], 'sketch-drawing': ['pencil', '#F97316'],
+    animals: ['paw', '#16A34A'], anime: ['sparkle', '#2563EB'],
+    vehicles: ['car', '#DC2626'], arts: ['palette', '#7C3AED'],
+    'coding-and-ai': ['chip', '#2563EB'], plants: ['leaf', '#16A34A'],
+    'dungeons-and-dragons': ['dice', '#DC2626'], 'marvel-dc': ['star', '#DC2626'],
+    outfit: ['shirt', '#DB2777'], 'crypto-world': ['coin', '#B45309'],
+    'movie-series': ['film', '#7C3AED'], 'human-life': ['smiley', '#0E7490'],
+    icon: ['star', '#B45309'], profession: ['briefcase', '#475569'],
+    'architecture-design': ['building', '#64748B'], universe: ['rocket', '#4F46E5'],
+    cinematic: ['camera', '#111214'], wallpapers: ['image', '#7C3AED'],
+    landscape: ['mountain', '#16A34A'], 'health-and-fitness': ['heart', '#DC2626'],
+    'space-mission': ['rocket', '#4F46E5'], dreamy: ['sparkle', '#7C3AED'],
+    'anime-world': ['sparkle', '#2563EB'], 'another-world': ['gem', '#7C3AED'],
+    'neon-arts': ['palette', '#EC4899'], fashion: ['shirt', '#DB2777'],
+    'genius-people': ['trophy', '#B45309'], movies: ['film', '#7C3AED'],
+    weird: ['smiley', '#D97706'], kids: ['smiley', '#F97316'],
+    'juniors-teens': ['star', '#EC4899'], 'adults-relaxation': ['flower', '#7C3AED'],
+    'expert-genius': ['gem', '#4F46E5'], bookmarks: ['bookmark', '#2563EB'],
+    'wall-art': ['image', '#0E7490'], 'gift-tags-cards': ['gift', '#DC2626'],
+    'labels-party': ['tag', '#DB2777'], 'daily-weekly': ['calendar', '#F97316'],
+    'habits-mood': ['heart', '#16A34A'], routines: ['clock', '#2563EB'],
+    'money-goals': ['target', '#B45309'], letters: ['book', '#2563EB'],
+    numbers: ['target', '#4F46E5'], 'shapes-tracing': ['star', '#16A34A'],
+    pets: ['paw', '#F97316'], 'wild-animals': ['paw', '#92400E'],
+    butterflies: ['butterfly', '#EC4899'], 'flowers-space': ['flower', '#7C3AED'],
+    'image-art': ['image', '#2563EB'], 'chatgpt-writing': ['chat', '#0E7490'],
+    'work-study-video': ['briefcase', '#475569'], 'food-drinks': ['cup', '#EC4899'],
+    'school-weather-space': ['rocket', '#4F46E5']
+  };
+  const FR_CAT_COLOR = { all: '#7C3AED', coloring: '#EC4899', 'learn-to-draw': '#0E9F7A', worksheets: '#2563EB', planners: '#F97316', printables: '#4D7C0F', wallpapers: '#7C3AED', ai: '#0E7490', stickers: '#B45309', games: '#6D28D9' };
+  function subIconFor(sub, label) {
+    let hit = FR_SUB_ICON[sub];
+    if (!hit) {
+      const hay = ((sub || '') + ' ' + (label || '')).toLowerCase();
+      if (/animal|pet|paw|dog|cat|wild/.test(hay)) hit = ['paw', '#16A34A'];
+      else if (/anime|spark|magic|dream/.test(hay)) hit = ['sparkle', '#2563EB'];
+      else if (/car|vehicle|rocket|space|mission/.test(hay)) hit = ['rocket', '#4F46E5'];
+      else if (/book|read|letter/.test(hay)) hit = ['book', '#2563EB'];
+      else if (/art|draw|paint|color|neon/.test(hay)) hit = ['palette', '#7C3AED'];
+      else if (/video|movie|film|cinema/.test(hay)) hit = ['film', '#7C3AED'];
+      else if (/music|song/.test(hay)) hit = ['music', '#7C3AED'];
+      else if (/food|drink|eat|snack/.test(hay)) hit = ['cup', '#EC4899'];
+      else if (/flower|plant|leaf|nature|garden/.test(hay)) hit = ['leaf', '#16A34A'];
+      else if (/heart|health|mood|habit/.test(hay)) hit = ['heart', '#DC2626'];
+      else if (/money|coin|goal|target/.test(hay)) hit = ['target', '#B45309'];
+      else if (/school|study|learn/.test(hay)) hit = ['book', '#2563EB'];
+      else hit = ['image', '#7C3AED'];
+    }
+    return { svg: FR_SVG[hit[0]] || FR_SVG.image, color: hit[1] };
+  }
   let renderedPages = 1;
   let viaLoadMore = false; // true after a Load-more click: render cumulatively
   function syncCrumbs() {
     const crumbs = $('#frCrumbs'); if (!crumbs) return;
-    if (state.filter === 'all') { crumbs.hidden = true; crumbs.textContent = ''; return; }
+    if (state.filter === 'all') { crumbs.hidden = true; crumbs.innerHTML = ''; return; }
     const catLabel = (PAGE.filterLabel && PAGE.filterLabel[state.filter]) || state.filter;
+    const esc = s => String(s).replace(/</g, '&lt;');
+    const catTile = document.querySelector('#listingChips [data-filter="' + state.filter + '"] .cat-ic');
+    const catColor = FR_CAT_COLOR[state.filter] || '#7C3AED';
     if (state.sub) {
       const subBtn = document.querySelector('#subCatRow [data-sub="' + state.sub + '"]');
       const subLabel = subBtn ? subBtn.textContent.trim() : state.sub;
-      crumbs.textContent = catLabel + ' \u203a ' + subLabel;
+      const ic = subIconFor(state.sub, subLabel);
+      crumbs.innerHTML = '<span class="fr-crumb-ic" style="color:' + ic.color + '">' + ic.svg + '</span>' + esc(catLabel) + ' \u203a ' + esc(subLabel);
     } else {
-      crumbs.textContent = catLabel;
+      crumbs.innerHTML = '<span class="fr-crumb-ic" style="color:' + catColor + '">' + (catTile ? catTile.innerHTML : '') + '</span>' + esc(catLabel);
     }
     crumbs.hidden = false;
   }
@@ -475,7 +583,7 @@ if (PAGE) {
       const subs = window.FR_SUBCATS[state.filter];
       if (subHead) subHead.hidden = !(subs && subs.length);
       if (subs && subs.length) {
-        subRow.innerHTML = subs.map(function(s){ return '<button type="button" class="chip" data-sub="' + s.sub + '" aria-pressed="' + String(state.sub === s.sub) + '">' + s.label + '</button>'; }).join('');
+        subRow.innerHTML = subs.map(function(s){ var ic = subIconFor(s.sub, s.label); return '<button type="button" class="chip sub-chip" data-sub="' + s.sub + '" aria-pressed="' + String(state.sub === s.sub) + '" style="--sub-ic:' + ic.color + '"><span class="sub-ic">' + ic.svg + '</span><span class="sub-label">' + s.label + '</span></button>'; }).join('');
         subRow.hidden = false;
       } else {
         subRow.innerHTML = '';
@@ -488,11 +596,18 @@ if (PAGE) {
     const topic = $('#facetTopic'); if (topic) topic.value = state.topic;
     const format = $('#facetFormat'); if (format) format.value = state.format;
     const price = $('#facetPrice'); if (price) price.value = state.price;
+    // Phase 2: keep the FR pill search box in sync with state.q (e.g. after
+    // a search chip is cleared) — never while the user is typing in it.
+    const frIn = $('#frSearchInput');
+    if (frIn && document.activeElement !== frIn) frIn.value = state.q;
   }
   const chipsBox = $('#listingChips');
   if (chipsBox) chipsBox.addEventListener('click', e => {
     const b = e.target.closest('[data-filter]'); if (!b) return;
     state.filter = b.dataset.filter; state.sub = ''; state.page = 1; viaLoadMore = false; syncUrl(); render();
+    // Phase 2: a category change resets the sub-row "View All" expansion.
+    const subRowEl = $('#subCatRow'); if (subRowEl) subRowEl.classList.remove('expanded');
+    const sv = $('#subViewAll'); if (sv) sv.textContent = 'View All \u2192';
     gaEvent('filter_use', { filter_value: state.filter, page: window.location.pathname });
   });
   const subRowBox = $('#subCatRow');
@@ -528,6 +643,40 @@ if (PAGE) {
     const apply = $('#sheetApply');
     if (apply) apply.addEventListener('click', () => facets.classList.remove('open'));
   }
+  /* ---- Phase 2: FR pill search — filters the listing in place via state.q ----
+     Debounced live filtering while typing; Enter (form submit) applies it
+     immediately. The header search is untouched. */
+  const frSearchForm = $('#frSearch');
+  const frSearchInput = $('#frSearchInput');
+  if (frSearchForm && frSearchInput) {
+    let frSearchTimer = null;
+    const applyFrSearch = () => {
+      state.q = frSearchInput.value.trim();
+      state.page = 1; viaLoadMore = false; syncUrl(); render();
+    };
+    frSearchInput.addEventListener('input', () => {
+      clearTimeout(frSearchTimer);
+      frSearchTimer = setTimeout(applyFrSearch, 200);
+    });
+    frSearchForm.addEventListener('submit', e => {
+      e.preventDefault();
+      clearTimeout(frSearchTimer);
+      applyFrSearch();
+      frSearchInput.blur();
+    });
+  }
+  /* ---- Phase 2: "View All" toggles ---- */
+  const catViewAll = $('#catViewAll');
+  if (catViewAll) catViewAll.addEventListener('click', () => {
+    const all = document.querySelector('#listingChips [data-filter="all"]');
+    if (all) all.click();
+  });
+  const subViewAll = $('#subViewAll');
+  if (subViewAll) subViewAll.addEventListener('click', () => {
+    const row = $('#subCatRow'); if (!row) return;
+    const expanded = row.classList.toggle('expanded');
+    subViewAll.textContent = expanded ? 'Show Less \u2191' : 'View All \u2192';
+  });
   render(); // always: also populates pager + Load more on a default-state load
 }
 
@@ -573,6 +722,16 @@ function bindHomeRail(dataId, gridId, chipsId, sortId, countId, opts) {
   });
   const sortEl = sortId ? document.getElementById(sortId) : null;
   if (sortEl) sortEl.addEventListener('change', () => { sort = sortEl.value; render(); });
+  // Design System 2026-11-21: sort pills (homepage Our Products) — same
+  // values as the old <select>, wired the same way. Only one of the two
+  // controls exists on a given page.
+  const sortPills = document.getElementById('sortPills');
+  if (sortPills) sortPills.addEventListener('click', e => {
+    const b = e.target.closest('[data-sort]'); if (!b) return;
+    sort = b.dataset.sort;
+    sortPills.querySelectorAll('[data-sort]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    render();
+  });
 }
 if (JB.page === 'home') {
   bindHomeRail('home-shop-data', 'prodGrid', 'prodChips', 'sortSelect', 'prodCount', { countMode: 'filtered', emptyId: 'prodEmpty' });
@@ -683,14 +842,18 @@ document.addEventListener('keydown', e => {
 /* Auto-sliding + swipeable showcase in the hero. Auto-advances every ~3.5s,
    pauses on hover/focus/touch and when the tab is hidden, and never runs when
    the user prefers reduced motion. Dots, swipe (touch/pen, 50px) and arrow
-   keys all jump slides and restart the timer. */
+   keys all jump slides and restart the timer. Design System 2026-11-21:
+   every [data-carousel] on the page gets its own instance (the homepage
+   Kids Books showcase reuses it); data-noauto disables auto-advance. */
 (function () {
-  var car = document.querySelector('[data-carousel]');
-  if (!car) return;
+  var cars = document.querySelectorAll('[data-carousel]');
+  if (!cars.length) return;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  Array.prototype.forEach.call(cars, function (car) {
   var slides = Array.prototype.slice.call(car.querySelectorAll('[data-slide]'));
   var dots = Array.prototype.slice.call(car.querySelectorAll('[data-dot]'));
   if (slides.length < 2) return;
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var noauto = car.hasAttribute('data-noauto');
   var DELAY = 3500, SWIPE = 50, cur = 0, timer = null, paused = false, sx = null, resumeT = null;
   function show(n, user) {
     cur = (n + slides.length) % slides.length;
@@ -706,7 +869,7 @@ document.addEventListener('keydown', e => {
     if (user) restart();
   }
   function start() {
-    if (reduce || paused) return;
+    if (reduce || paused || noauto) return;
     stop();
     timer = window.setInterval(function () { show(cur + 1); }, DELAY);
   }
@@ -739,4 +902,5 @@ document.addEventListener('keydown', e => {
     else if (e.key === 'ArrowRight') show(cur + 1, true);
   });
   start();
+  });
 })();

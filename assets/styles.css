@@ -5,11 +5,13 @@
 @font-face{font-family:'Archivo';font-style:normal;font-weight:100 900;font-display:swap;src:url(fonts/archivo-var.woff2) format('woff2')}
 @font-face{font-family:'Inter';font-style:normal;font-weight:100 900;font-display:swap;src:url(fonts/inter-var.woff2) format('woff2')}
 :root{
-  --paper:#FCFAF6; --surface:#FFFFFF; --ink:#111214; --muted:#3A3D42;
-  --line:#E4E2DC; --tile:#ECEAE4; --bar:#111214;
+  --paper:#FCFAF6; --surface:#FFFFFF; --ink:#111827; --muted:#3A3D42;
+  --line:#E4E2DC; --tile:#ECEAE4; --bar:#111827;
   --accent:#E4572E; --accent-hov:#EC6B45; --accent-text:#111214;
+  --yellow:#FACC15; --yellow-dark:#EAB308; --purple:#7C3AED; --purple-dark:#6D28D9;
+  --gold:#FFF3D6; --gold-deep:#FFE9B8;
   --foot:#C9CBCF;
-  --radius:10px; --radius-lg:14px;
+  --radius:10px; --radius-lg:16px; --radius-card:16px;
   --shadow:0 1px 2px rgba(17,18,20,.06);
   --shadow-lg:0 16px 48px rgba(17,18,20,.22);
 }
@@ -903,4 +905,295 @@ body.fr-redesign .active-filters{margin-top:6px;margin-bottom:2px}
   body.fr-redesign .res-item h3{font-size:17px}
   body.fr-redesign .fr-cat-head{font-size:19px}
   body.fr-redesign .page-head h1{font-size:30px}
+}
+
+/* ============ FR Phase 2 — Free Resources redesign (owner reference image) ============
+   Scoped to body.fr-phase2 (the /free-resources/ index ONLY) — no other page changes.
+   Appended AFTER the fr-redesign section so equal-specificity rules win. */
+body.fr-phase2{background:#FCFAF6}
+/* --- Hero banner --- */
+body.fr-phase2 .fr-hero{display:flex;align-items:stretch;gap:12px;margin:14px 0 14px;padding:18px 0 18px 18px;border-radius:20px;background:linear-gradient(115deg,#2A0E5C 0%,#4B1E8E 48%,#6D28D9 100%);color:#fff;overflow:hidden;position:relative}
+body.fr-phase2 .fr-hero-copy{flex:1 1 auto;min-width:0;position:relative;z-index:2;align-self:center}
+body.fr-phase2 .fr-hero h1{font-size:26px;line-height:1.08;margin:0 0 8px;color:#fff;font-weight:800;letter-spacing:-.01em}
+body.fr-phase2 .fr-hero-y{color:#FFD60A;position:relative;display:inline-block;white-space:nowrap}
+body.fr-phase2 .fr-hero-swoosh{position:absolute;left:-2px;bottom:-5px;width:calc(100% + 4px);height:9px}
+body.fr-phase2 .fr-hero p{color:rgba(255,255,255,.93);font-size:13px;line-height:1.55;margin:0}
+body.fr-phase2 .fr-hero p strong{color:#FFD60A;font-weight:700}
+body.fr-phase2 .fr-hero-art{flex:0 0 150px;width:150px;aspect-ratio:3/2;position:relative;align-self:center}
+body.fr-phase2 .fr-hero-art img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;-webkit-mask-image:linear-gradient(to right,transparent 0,#000 26%);mask-image:linear-gradient(to right,transparent 0,#000 26%)}
+body.fr-phase2 .fr-hero-dl{position:absolute;right:10px;bottom:8px;width:42px;height:42px;border-radius:50%;background:#7C3AED;border:3px solid rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.35);z-index:3}
+/* --- Pill search --- */
+body.fr-phase2 .fr-search{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #E4E2DC;border-radius:999px;padding:6px 6px 6px 16px;margin:0 0 8px;box-shadow:0 2px 10px rgba(17,18,20,.06)}
+body.fr-phase2 .fr-search-ic{flex:0 0 auto;display:flex;color:#111214}
+body.fr-phase2 .fr-search input{flex:1 1 auto;min-width:0;border:0;outline:0;background:transparent;font:inherit;font-size:15px;color:#111214}
+body.fr-phase2 .fr-search input::placeholder{color:#8A8D93}
+body.fr-phase2 .fr-search button{flex:0 0 auto;border:0;border-radius:999px;background:#7C3AED;color:#fff;font-family:inherit;font-weight:700;font-size:15px;padding:11px 18px;cursor:pointer}
+body.fr-phase2 .fr-search button:hover{background:#6D28D9}
+/* --- Section headings + View All --- */
+body.fr-phase2 .fr-sec-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:24px 0 14px}
+body.fr-phase2 .fr-cat-head{margin:0;font-size:20px}
+body.fr-phase2 .fr-cat-head:first-child{margin-top:0}
+body.fr-phase2 .fr-cat-head .fr-h-ic{display:inline-flex;flex:0 0 auto}
+body.fr-phase2 .fr-view-all{border:0;background:none;color:#7C3AED;font-family:inherit;font-weight:700;font-size:14px;cursor:pointer;padding:4px 0;white-space:nowrap}
+body.fr-phase2 .fr-view-all:hover{text-decoration:underline}
+/* --- Browse Categories: pastel icon tiles (5x2 mobile, single row desktop) --- */
+body.fr-phase2 #listingChips{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;overflow:visible;padding-bottom:0}
+body.fr-phase2 #listingChips .chip{flex:none;padding:0}
+body.fr-phase2 #listingChips .cat-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:14px 4px 12px;border-radius:16px;border:1.5px solid transparent;background:var(--tile-bg,#EDE9FE);box-shadow:0 1px 3px rgba(17,18,20,.05);cursor:pointer;min-height:92px}
+body.fr-phase2 #listingChips .cat-tile[data-filter="all"]{--tile-bg:#EDE9FE}
+body.fr-phase2 #listingChips .cat-tile[data-filter="coloring"]{--tile-bg:#FCE7F3}
+body.fr-phase2 #listingChips .cat-tile[data-filter="learn-to-draw"]{--tile-bg:#D1FAE5}
+body.fr-phase2 #listingChips .cat-tile[data-filter="worksheets"]{--tile-bg:#DBEAFE}
+body.fr-phase2 #listingChips .cat-tile[data-filter="planners"]{--tile-bg:#FFEDD5}
+body.fr-phase2 #listingChips .cat-tile[data-filter="printables"]{--tile-bg:#ECFCCB}
+body.fr-phase2 #listingChips .cat-tile[data-filter="wallpapers"]{--tile-bg:#E0E7FF}
+body.fr-phase2 #listingChips .cat-tile[data-filter="ai"]{--tile-bg:#CFFAFE}
+body.fr-phase2 #listingChips .cat-tile[data-filter="stickers"]{--tile-bg:#FEF3C7}
+body.fr-phase2 #listingChips .cat-tile[data-filter="games"]{--tile-bg:#F3E8FF}
+body.fr-phase2 #listingChips .cat-tile .cat-ic{position:relative;width:26px;height:26px;display:flex;flex:0 0 auto}
+body.fr-phase2 #listingChips .cat-tile .cat-ic svg{width:100%;height:100%}
+body.fr-phase2 #listingChips .cat-tile[data-filter="all"] .cat-ic{color:#7C3AED}
+body.fr-phase2 #listingChips .cat-tile[data-filter="coloring"] .cat-ic{color:#EC4899}
+body.fr-phase2 #listingChips .cat-tile[data-filter="learn-to-draw"] .cat-ic{color:#0E9F7A}
+body.fr-phase2 #listingChips .cat-tile[data-filter="worksheets"] .cat-ic{color:#2563EB}
+body.fr-phase2 #listingChips .cat-tile[data-filter="planners"] .cat-ic{color:#F97316}
+body.fr-phase2 #listingChips .cat-tile[data-filter="printables"] .cat-ic{color:#4D7C0F}
+body.fr-phase2 #listingChips .cat-tile[data-filter="wallpapers"] .cat-ic{color:#4F46E5}
+body.fr-phase2 #listingChips .cat-tile[data-filter="ai"] .cat-ic{color:#0E7490}
+body.fr-phase2 #listingChips .cat-tile[data-filter="stickers"] .cat-ic{color:#B45309}
+body.fr-phase2 #listingChips .cat-tile[data-filter="games"] .cat-ic{color:#6D28D9}
+body.fr-phase2 #listingChips .cat-tile .cat-label{display:block;font-size:12px;font-weight:700;line-height:1.2;text-align:center;color:#111214}
+body.fr-phase2 #listingChips .chip[aria-pressed="true"]{background:var(--tile-bg,#EDE9FE);border-color:#111214;color:#111214;box-shadow:0 0 0 2px #fff,0 0 0 4px #7C3AED}
+body.fr-phase2 #listingChips .cat-tile[aria-pressed="true"] .cat-ic::after{content:"\2713";position:absolute;top:-9px;right:-9px;width:17px;height:17px;border-radius:50%;background:#7C3AED;color:#fff;font-size:11px;font-weight:800;line-height:17px;text-align:center;border:2px solid #fff}
+/* --- Sub-Categories: icon cards in a horizontal scroll row --- */
+body.fr-phase2 .sub-cat-row{gap:10px}
+body.fr-phase2 .sub-cat-row .sub-chip{flex:0 0 auto;width:88px;min-height:98px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:12px 6px;background:#fff;border:1px solid #E7E3DA;border-radius:16px;box-shadow:0 1px 3px rgba(17,18,20,.05);cursor:pointer}
+body.fr-phase2 .sub-cat-row .sub-chip .sub-ic{width:26px;height:26px;display:flex;color:var(--sub-ic,#7C3AED)}
+body.fr-phase2 .sub-cat-row .sub-chip .sub-ic svg{width:100%;height:100%}
+body.fr-phase2 .sub-cat-row .sub-chip .sub-label{font-size:12px;font-weight:700;line-height:1.2;text-align:center;color:#111214}
+body.fr-phase2 .sub-cat-row .chip[aria-pressed="true"]{background:#fff;border-color:#7C3AED;color:#111214;box-shadow:0 0 0 1px #7C3AED}
+body.fr-phase2 .sub-cat-row.expanded{flex-wrap:wrap;overflow-x:visible}
+/* --- Filter bar: 3 pill dropdowns in one row --- */
+body.fr-phase2 .fr-sort-row{display:flex;align-items:stretch;gap:10px;flex-wrap:nowrap;margin:20px 0 4px}
+body.fr-phase2 .pill-select{flex:1 1 0;min-width:0;display:flex;align-items:center;gap:7px;background:#fff;border:1px solid #E7E3DA;border-radius:16px;padding:8px 11px;cursor:pointer;box-shadow:0 1px 3px rgba(17,18,20,.04)}
+body.fr-phase2 .pill-select .ps-ic{flex:0 0 auto;display:flex;color:#111214}
+body.fr-phase2 .pill-select .ps-text{flex:1 1 auto;min-width:0;display:flex;flex-direction:column}
+body.fr-phase2 .pill-select .ps-label{font-size:11px;color:#8A8D93;font-weight:600;line-height:1.25}
+body.fr-phase2 .pill-select select{appearance:none;-webkit-appearance:none;border:0;background:transparent;font:inherit;font-size:13px;font-weight:700;color:#111214;padding:0;margin:0;outline:0;width:100%;cursor:pointer;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
+body.fr-phase2 .pill-select .ps-chev{flex:0 0 auto;display:flex;color:#111214}
+/* --- Section header (breadcrumb) + grid --- */
+body.fr-phase2 .fr-section-head{font-family:'Archivo',sans-serif;font-size:20px;font-weight:800;line-height:1.25;color:#111214;display:flex;align-items:center;gap:9px;max-width:1200px;margin:24px auto 4px;padding-left:32px;padding-right:32px}
+body.fr-phase2 .fr-section-head .fr-crumb-ic{display:inline-flex;width:26px;height:26px;flex:0 0 auto}
+body.fr-phase2 .fr-section-head .fr-crumb-ic svg{width:100%;height:100%}
+@media (min-width:1025px){
+  body.fr-phase2 #listingChips{grid-template-columns:repeat(10,1fr)}
+  body.fr-phase2 .res-grid{grid-template-columns:repeat(4,1fr)}
+  body.fr-phase2 .fr-hero{padding:24px 0 24px 28px;gap:20px;margin-top:18px}
+  body.fr-phase2 .fr-hero h1{font-size:40px}
+  body.fr-phase2 .fr-hero p{font-size:16px;max-width:52ch}
+  body.fr-phase2 .fr-hero-art{flex-basis:300px;width:300px}
+  body.fr-phase2 .fr-hero-dl{width:52px;height:52px;right:16px;bottom:14px}
+  body.fr-phase2 .fr-search input{font-size:16px}
+  body.fr-phase2 .fr-cat-head{font-size:22px}
+  body.fr-phase2 .pill-select select{font-size:14px}
+}
+@media (max-width:1024px){
+  body.fr-phase2 .fr-section-head{padding-left:24px;padding-right:24px}
+}
+@media (max-width:640px){
+  body.fr-phase2 .fr-section-head{padding-left:16px;padding-right:16px;font-size:18px}
+  body.fr-phase2 .fr-hero{margin-top:10px}
+  body.fr-phase2 .fr-cat-head{font-size:19px}
+  body.fr-phase2 .pill-select .ps-ic{display:none}
+  body.fr-phase2 .pill-select{padding:8px 9px;gap:5px}
+  body.fr-phase2 .pill-select select{font-size:12px}
+  body.fr-phase2 .fr-sort-row{gap:8px}
+  body.fr-phase2 #listingChips{gap:8px}
+  body.fr-phase2 #listingChips .cat-tile{min-height:86px;padding:12px 3px 10px}
+}
+
+/* ================= DESIGN SYSTEM 2026-11-21 (site-wide overhaul) =================
+   Unified tokens: cream #FCFAF6, white 16px cards, #111827 ink, yellow #FACC15
+   primary CTAs / active pills, purple #7C3AED prices / badges, pastel icons.
+   Appended last so these rules win at equal specificity. The Free Resources
+   Phase 2 rules (body.fr-phase2) are more specific and keep their own look. */
+
+/* --- Primary buttons: yellow (mockups). Buy buttons, hero CTAs, modal Buy. --- */
+.btn-accent{background:var(--yellow);color:var(--ink)}
+.btn-primary{background:var(--yellow);color:var(--ink);border:1px solid var(--yellow-dark);box-shadow:0 2px 0 var(--yellow-dark),0 4px 10px rgba(250,204,21,.28)}
+@media (hover:hover){
+  .btn-accent:hover{background:var(--yellow-dark);transform:translateY(-2px);box-shadow:0 8px 18px rgba(17,24,39,.20)}
+  .btn-primary:hover{background:#FDE047;transform:translateY(-2px);box-shadow:0 4px 0 var(--yellow-dark),0 10px 22px rgba(250,204,21,.32)}
+}
+.btn-accent:active{transform:translateY(0) scale(.98)}
+.btn-primary:active{transform:translateY(1px);box-shadow:0 1px 0 var(--yellow-dark),0 2px 6px rgba(250,204,21,.22)}
+
+/* --- Active filter chips: yellow pill, dark text --- */
+.chip[aria-pressed="true"]{background:var(--yellow);color:var(--ink);border-color:var(--yellow);box-shadow:0 2px 0 var(--yellow-dark),0 4px 10px rgba(250,204,21,.22)}
+.chip[aria-pressed="true"]:hover{background:var(--yellow-dark);border-color:var(--yellow-dark)}
+.chip svg{width:18px;height:18px;flex:none}
+.chip{display:inline-flex;align-items:center;gap:7px}
+@media (hover:hover){
+  .chip[aria-pressed="true"]:hover{transform:translateY(-2px);box-shadow:0 2px 0 var(--yellow-dark),0 10px 20px rgba(250,204,21,.28)}
+}
+
+/* --- Prices + badges: purple --- */
+.card .price{color:var(--purple)}
+.card .badge{background:var(--purple);color:#fff}
+.spot .sprice{color:var(--purple)}
+.modal .mprice{color:var(--purple)}
+.sec-head .more{color:var(--purple)}
+.sec-ic{display:inline-flex;width:28px;height:28px;vertical-align:-6px;margin-right:8px;color:var(--purple)}
+.sec-ic svg{width:100%;height:100%}
+
+/* --- Department bar: dark pill with icon tabs, yellow active tab --- */
+.dept{background:transparent}
+.dept .wrap{background:var(--bar);border-radius:18px;margin:10px auto;padding:6px 10px;max-width:1200px}
+.dept a{gap:7px}
+.dept a svg{width:18px;height:18px;flex:none}
+.dept .wrap > a.on,.dept .wrap > .has-fly > a.on{background:var(--yellow);color:var(--ink);box-shadow:none}
+.dept .wrap > a.on svg,.dept .wrap > .has-fly > a.on svg{color:var(--ink)}
+@media (hover:hover){
+  .dept .wrap > a.on:hover,.dept .wrap > .has-fly > a.on:hover{background:var(--yellow-dark);color:var(--ink)}
+}
+@media (max-width:640px){
+  .dept .wrap{margin:8px 12px;padding:5px 8px;border-radius:16px}
+  .dept a{font-size:14px;padding:9px 12px}
+  .dept a svg{width:17px;height:17px}
+}
+
+/* --- Bottom tab bar: 6 items, yellow underline on the active tab --- */
+.tabbar nav{grid-template-columns:repeat(6,1fr)}
+.tabbar a .ti svg{width:24px;height:24px}
+.tabbar a.on{color:var(--ink)}
+.tabbar a.on::before{top:auto;bottom:0;left:22%;right:22%;height:3px;background:var(--yellow);border-radius:3px 3px 0 0}
+
+/* --- Homepage hero: warm golden-cream, orange accent on "free resources" --- */
+.hero{background:linear-gradient(180deg,#FFF7E0 0%,#FDEECB 100%)}
+.hero h1 .hl{color:var(--accent)}
+.hero .trust span{display:inline-flex;align-items:center;gap:8px}
+.hero .trust svg{width:18px;height:18px;flex:none;color:var(--ink)}
+
+/* --- Product grids: 2 columns, horizontal cards (cover left, details right) --- */
+.pgrid{grid-template-columns:repeat(2,1fr);gap:16px}
+.pgrid .card,#listingGrid .card{flex-direction:row;border-radius:var(--radius-card);overflow:hidden}
+.pgrid .card .cover,#listingGrid .card .cover{flex:0 0 96px;aspect-ratio:auto;background:var(--tile)}
+.pgrid .card .cover img,#listingGrid .card .cover img{object-fit:contain}
+.pgrid .card .body,#listingGrid .card .body{padding:12px;gap:5px}
+.pgrid .card h3,#listingGrid .card h3{font-size:15px}
+.pgrid .card .meta,#listingGrid .card .meta{font-size:12px}
+.pgrid .card .price,#listingGrid .card .price{font-size:18px}
+.pgrid .card .actions .btn,#listingGrid .card .actions .btn{min-height:40px;padding:10px 12px;font-size:13px}
+.pgrid .card .badge,#listingGrid .card .badge{top:8px;left:8px;font-size:11px;padding:3px 8px}
+/* Card secondary Amazon pill: white (mockup), not gold — primary Buy stays yellow */
+.pgrid .card .actions a[data-amazon].btn-ghost,#listingGrid .card .actions a[data-amazon].btn-ghost{background:#fff;border:1.5px solid var(--line);color:var(--ink);box-shadow:none}
+@media (hover:hover){
+  .pgrid .card .actions a[data-amazon].btn-ghost:hover,#listingGrid .card .actions a[data-amazon].btn-ghost:hover{border-color:var(--ink);transform:translateY(-2px);box-shadow:0 2px 0 rgba(17,24,39,.10),0 8px 16px rgba(17,24,39,.12)}
+}
+@media (min-width:768px){
+  .pgrid{gap:20px}
+  .pgrid .card .cover,#listingGrid .card .cover{flex-basis:150px}
+  .pgrid .card h3,#listingGrid .card h3{font-size:17px}
+  .pgrid .card .meta,#listingGrid .card .meta{font-size:14px}
+  .pgrid .card .price,#listingGrid .card .price{font-size:20px}
+  .pgrid .card .body,#listingGrid .card .body{padding:16px}
+}
+
+/* --- Sort pills (homepage Our Products) --- */
+.sort-pills{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.sort-pills .sort-label{font-size:14px;font-weight:700;color:var(--muted);margin-right:2px;display:inline-flex;align-items:center;gap:6px}
+.sort-pills .sort-label svg{width:16px;height:16px}
+#shop .rail{flex-direction:column;align-items:flex-start;gap:10px}
+
+/* --- Kids Books showcase (homepage) --- */
+.kb-show{margin-top:6px}
+.kb-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius-card);overflow:hidden;display:flex;box-shadow:var(--shadow)}
+.kb-cover{flex:0 0 40%;background:var(--tile);position:relative;overflow:hidden;min-height:260px}
+.kb-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.kb-body{flex:1;min-width:0;padding:18px;display:flex;flex-direction:column;gap:6px}
+.kb-body h3{font-size:20px;line-height:1.25}
+.kb-list{font-size:14px;color:var(--ink)}
+.kb-price{font-family:'Archivo',sans-serif;font-size:20px;font-weight:800;color:var(--purple)}
+.kb-note{font-size:13px;color:var(--muted)}
+.kb-body .btn{align-self:flex-start;margin-top:6px}
+@media (max-width:640px){
+  .kb-body{padding:14px}
+  .kb-body h3{font-size:17px}
+  .kb-list{font-size:13px}
+  .kb-price{font-size:18px}
+  .kb-body .btn{min-height:40px;padding:10px 14px;font-size:13px}
+}
+
+/* --- Generic listing page-head: rounded warm banner --- */
+.page-head{background:linear-gradient(135deg,#FFF6E0,#FFEFC2);border:1px solid #F3E3B3;border-radius:var(--radius-card);padding:28px;margin-top:18px}
+.page-head h1{font-size:34px}
+.page-head .lede{margin-top:10px;max-width:68ch}
+@media (max-width:640px){
+  .page-head{padding:20px 16px;margin-top:12px}
+  .page-head h1{font-size:28px}
+}
+
+/* --- Shop hero (own-products): illustrated golden banner --- */
+.ds-shop-hero{position:relative;background:linear-gradient(135deg,#FFF6E0,#FFE9B8);border:1px solid #F3E3B3;border-radius:var(--radius-card);padding:28px 150px 28px 140px;margin-top:18px;overflow:hidden;min-height:132px;display:flex;align-items:center}
+.ds-shop-hero h1{font-size:36px}
+.ds-shop-hero .lede{margin-top:8px;max-width:56ch}
+.ds-shop-bag{position:absolute;left:8px;bottom:0;width:128px;height:128px;object-fit:cover;object-position:center 62%;border-radius:12px}
+.ds-shop-cat{position:absolute;right:8px;bottom:0;width:136px;height:136px;object-fit:cover;object-position:center 22%;border-radius:12px}
+@media (max-width:640px){
+  .ds-shop-hero{padding:20px 104px 20px 96px;margin-top:12px;min-height:118px}
+  .ds-shop-hero h1{font-size:28px}
+  .ds-shop-bag{width:88px;height:88px;left:4px}
+  .ds-shop-cat{width:96px;height:96px;right:4px}
+}
+
+/* --- Pill dropdown row (Sort / Format / Topic) — same pattern as FR Phase 2 --- */
+.pill-select{flex:1 1 0;min-width:0;display:flex;align-items:center;gap:7px;background:#fff;border:1px solid #E7E3DA;border-radius:16px;padding:8px 11px;cursor:pointer;box-shadow:0 1px 3px rgba(17,24,39,.04)}
+.pill-select .ps-ic{flex:0 0 auto;display:flex;color:var(--ink)}
+.pill-select .ps-ic svg{width:18px;height:18px}
+.pill-select .ps-text{flex:1 1 auto;min-width:0;display:flex;flex-direction:column}
+.pill-select .ps-label{font-size:11px;color:#8A8D93;font-weight:600;line-height:1.25}
+.pill-select select{appearance:none;-webkit-appearance:none;border:0;background:transparent;font:inherit;font-size:13px;font-weight:700;color:var(--ink);padding:0;margin:0;outline:0;width:100%;cursor:pointer;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
+.pill-select .ps-chev{flex:0 0 auto;display:flex;color:var(--ink)}
+.pill-select .ps-chev svg{width:14px;height:14px}
+.ds-filter-row{display:flex;align-items:stretch;gap:10px;flex-wrap:nowrap;margin:16px 0 4px}
+@media (max-width:640px){
+  .pill-select{padding:8px 9px;gap:5px}
+  .pill-select .ps-ic{display:none}
+  .pill-select select{font-size:12px}
+  .ds-filter-row{gap:8px}
+}
+@media (min-width:1025px){
+  .pill-select select{font-size:14px}
+}
+
+/* --- Games + Blog cards join the system --- */
+.gcard,.bcard{border-radius:var(--radius-card)}
+.gcard h3{font-size:17px}
+.gcard a{color:var(--purple);font-weight:700}
+.bcard .read{color:var(--purple)}
+.bcard .tag{color:var(--purple)}
+.res-item{border-radius:var(--radius-card)}
+.taster{border-radius:var(--radius-card)}
+.spot{border-radius:var(--radius-card)}
+
+/* --- Mobile density fixes (from screenshot review, 21 Nov) --- */
+@media (max-width:640px){
+  /* Product cards: narrower cover so the body has room; smaller type so
+     titles fit; 4-line clamp so long titles show in full. */
+  .pgrid{gap:12px}
+  .pgrid .card .cover,#listingGrid .card .cover{flex-basis:60px}
+  .pgrid .card .body,#listingGrid .card .body{padding:10px;gap:4px}
+  .pgrid .card h3,#listingGrid .card h3{font-size:12px;-webkit-line-clamp:4}
+  .pgrid .card .meta,#listingGrid .card .meta{font-size:11px}
+  .pgrid .card .price,#listingGrid .card .price{font-size:16px}
+  .pgrid .card .actions .btn,#listingGrid .card .actions .btn{min-height:36px;padding:8px 10px;font-size:12px}
+  .pgrid .card .badge,#listingGrid .card .badge{font-size:10px;padding:2px 7px;top:6px;left:6px}
+  /* Shop hero: smaller illustrations, vertically centred, wider text column */
+  .ds-shop-hero{padding:18px 92px 18px 84px;min-height:124px}
+  .ds-shop-hero h1{font-size:28px}
+  .ds-shop-hero .lede{font-size:14px}
+  .ds-shop-bag{width:74px;height:74px;left:4px;top:50%;bottom:auto;transform:translateY(-50%)}
+  .ds-shop-cat{width:84px;height:84px;right:4px;top:50%;bottom:auto;transform:translateY(-50%)}
+  /* Tab bar labels: tighter so fewer wrap to two lines */
+  .tabbar a{font-size:11px}
 }
