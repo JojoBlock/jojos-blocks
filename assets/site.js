@@ -234,8 +234,9 @@ if ($('#tabSearch')) $('#tabSearch').addEventListener('click', e => { e.preventD
         const price = it.salePrice
           ? '<div class="price-row"><span class="price">' + it.salePrice + '</span></div>' + (it.priceNote ? '<p class="af-price-note">' + it.priceNote + '</p>' : '')
           : '';
+        const coverStyle = it.coverStyle ? ' style="' + it.coverStyle + '"' : '';
         return '<article class="card af-card" data-id="' + it.key + '" data-cat="' + it.filterKey + '" data-price="' + (it.salePriceNum ?? '') + '">'
-          + '<div class="cover">' + badge + cover + '</div>'
+          + '<div class="cover"' + coverStyle + '>' + badge + cover + '</div>'
           + '<div class="body"><span class="tag">' + it.categoryName + ' · ' + it.merchant + '</span>'
           + '<h3><a href="' + it.affiliateUrl + '" target="_blank" rel="noopener sponsored" data-affiliate="' + it.key + '">' + it.title + '</a></h3>'
           + '<p class="meta">' + (it.type || '') + '</p>' + price
