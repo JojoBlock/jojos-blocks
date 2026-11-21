@@ -238,8 +238,8 @@ if ($('#tabSearch')) $('#tabSearch').addEventListener('click', e => { e.preventD
           : '';
         const coverStyle = it.coverStyle ? ' style="' + it.coverStyle + '"' : '';
         return '<article class="card af-card" data-id="' + it.key + '" data-cat="' + it.filterKey + '" data-price="' + (it.salePriceNum ?? '') + '">'
-          + '<div class="cover"' + coverStyle + '>' + badge + cover + '</div>'
-          + '<div class="body"><span class="tag">' + it.categoryName + ' · ' + it.merchant + '</span>'
+          + '<div class="cover"' + coverStyle + '>' + cover + '</div>'
+          + '<div class="body">' + badge + '<span class="tag">' + it.categoryName + ' · ' + it.merchant + '</span>'
           + '<h3><a href="' + detailUrl + '">' + it.title + '</a></h3>'
           + '<p class="meta">' + (it.type || '') + '</p>' + price
           + '<div class="actions"><a class="btn btn-ink" href="' + detailUrl + '">View details →</a></div></div></article>';
@@ -249,8 +249,8 @@ if ($('#tabSearch')) $('#tabSearch').addEventListener('click', e => { e.preventD
         // so the cover and title link straight to the detail page, and Buy goes to Ko-fi.
         const badge = it.badge ? '<span class="badge">' + it.badge + '</span>' : '';
         return '<article class="card" data-id="' + it.key + '" data-cat="' + it.filterKey + '" data-price="' + (it.salePriceNum ?? '') + '">'
-          + '<div class="cover">' + badge + '<a href="' + JB.root + it.url + '" aria-label="View ' + it.title.replace(/"/g, '&quot;') + ' details"><img src="' + it.thumb + '" alt="' + (it.coverAlt || it.title).replace(/"/g, '&quot;') + '" width="480" height="480" loading="lazy"></a></div>'
-          + '<div class="body"><h3><a href="' + JB.root + it.url + '">' + it.title + '</a></h3>'
+          + '<div class="cover"><a href="' + JB.root + it.url + '" aria-label="View ' + it.title.replace(/"/g, '&quot;') + ' details"><img src="' + it.thumb + '" alt="' + (it.coverAlt || it.title).replace(/"/g, '&quot;') + '" width="480" height="480" loading="lazy"></a></div>'
+          + '<div class="body">' + badge + '<h3><a href="' + JB.root + it.url + '">' + it.title + '</a></h3>'
           + '<p class="meta">' + it.format + ' · Instant download</p>'
           + '<div class="price-row"><span class="price">' + it.salePrice + '</span></div>'
           + '<div class="actions"><a class="btn btn-accent" href="' + it.kofiUrl + '" target="_blank" rel="noopener">Buy on Ko-fi</a></div></div></article>';
@@ -262,8 +262,8 @@ if ($('#tabSearch')) $('#tabSearch').addEventListener('click', e => { e.preventD
         // primary button goes to Amazon. Must mirror build.js productCard.
         const badge = it.badge ? '<span class="badge">' + it.badge + '</span>' : '';
         return '<article class="card" data-id="' + it.key + '" data-cat="' + it.filterKey + '" data-age-min="' + (it.ageMin ?? '') + '" data-age-max="' + (it.ageMax ?? '') + '" data-price="' + (it.salePriceNum ?? '') + '" data-pages="' + (it.pages || '') + '">'
-          + '<div class="cover">' + badge + '<a href="' + JB.root + it.url + '" aria-label="View ' + it.title.replace(/"/g, '&quot;') + ' details"><img src="' + it.thumb + '" alt="' + (it.coverAlt || it.title).replace(/"/g, '&quot;') + '" width="600" height="849" loading="lazy"></a></div>'
-          + '<div class="body"><h3><a href="' + JB.root + it.url + '">' + it.title + '</a></h3>'
+          + '<div class="cover"><a href="' + JB.root + it.url + '" aria-label="View ' + it.title.replace(/"/g, '&quot;') + ' details"><img src="' + it.thumb + '" alt="' + (it.coverAlt || it.title).replace(/"/g, '&quot;') + '" width="600" height="849" loading="lazy"></a></div>'
+          + '<div class="body">' + badge + '<h3><a href="' + JB.root + it.url + '">' + it.title + '</a></h3>'
           + '<p class="meta">' + it.format + (it.ageLabel ? ' · ' + it.ageLabel : '') + '</p>'
           + '<div class="price-row"><span class="price">' + it.salePrice + '</span></div>'
           + '<div class="actions"><a class="btn btn-accent" href="' + it.amazonUrl + '" target="_blank" rel="noopener" data-amazon="' + it.key + '" data-location="card">Get the Paperback on Amazon</a></div></div></article>';
@@ -281,8 +281,8 @@ if ($('#tabSearch')) $('#tabSearch').addEventListener('click', e => { e.preventD
         ? '<div class="actions"><a class="btn btn-accent" href="' + it.gumroadUrl + '" target="_blank" rel="noopener" data-book="' + it.key + '" data-location="card">Buy ' + it.salePrice + '</a></div>'
         : '';
       return '<article class="card" data-id="' + it.key + '" data-cat="' + it.filterKey + '" data-age-min="' + (it.ageMin ?? '') + '" data-age-max="' + (it.ageMax ?? '') + '" data-price="' + (it.salePriceNum ?? '') + '" data-pages="' + (it.pages || '') + '">'
-        + '<div class="cover">' + badge + '<a href="' + JB.root + it.url + '" data-detail="' + it.key + '" aria-label="View ' + it.title.replace(/"/g, '&quot;') + ' details"><img src="' + it.thumb + '" alt="' + (it.coverAlt || it.title).replace(/"/g, '&quot;') + '" width="600" height="849" loading="lazy"></a></div>'
-        + '<div class="body"><h3><a href="' + JB.root + it.url + '" data-detail="' + it.key + '">' + it.title + '</a></h3>'
+        + '<div class="cover"><a href="' + JB.root + it.url + '" data-detail="' + it.key + '" aria-label="View ' + it.title.replace(/"/g, '&quot;') + ' details"><img src="' + it.thumb + '" alt="' + (it.coverAlt || it.title).replace(/"/g, '&quot;') + '" width="600" height="849" loading="lazy"></a></div>'
+        + '<div class="body">' + badge + '<h3><a href="' + JB.root + it.url + '" data-detail="' + it.key + '">' + it.title + '</a></h3>'
         + '<p class="meta">' + (it.pages || '') + ' pages' + (it.ageLabel ? ' · ' + it.ageLabel : '') + '</p>' + price + buy + '</div></article>';
     }
     if (kind === 'resources') {

@@ -256,6 +256,12 @@ a.chip{text-decoration:none}
    image's 100% height resolves against an auto-sized box and clips. */
 .card .cover a{display:block;width:100%;height:100%}
 .card .badge{position:absolute;top:10px;left:10px;background:var(--ink);color:var(--paper);font-family:'Archivo',sans-serif;font-size:13px;font-weight:700;padding:4px 10px;border-radius:999px;z-index:2}
+/* FIX #3b (2026-11-22): badges moved OUT of the cover image into the card
+   body (above the title). The absolute badge sat on top of the cover art and
+   hid the titles on the Christmas ("Col-") and Reset Kit ("Begin") covers —
+   the paperback badge (158px) covered "Begin" almost entirely. In the body
+   the badge is a static pill that can never cover any art. */
+.card .body .badge{position:static;align-self:flex-start;flex:none}
 .card .body{padding:14px;display:flex;flex-direction:column;gap:6px;flex:1}
 .card h3{font-size:18px;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .af-card h3{display:block;overflow:visible}
