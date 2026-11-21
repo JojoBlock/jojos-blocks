@@ -304,6 +304,9 @@ if (PAGE) {
     price: params.get('price') || 'all',
     page: Math.max(1, parseInt(params.get('page') || '1', 10) || 1)
   };
+  if (JB.page === 'listing' && PAGE.kind === 'resources' && state.filter === 'wallpapers') {
+    window.location.replace(JB.root + 'free-resources/category/wallpapers/');
+  }
   const grid = $('#listingGrid');
   const countEl = $('#pageCount');
   const emptyEl = $('#listingEmpty');
@@ -350,7 +353,10 @@ if (PAGE) {
     const total = items.length;
     const pages = Math.max(1, Math.ceil(total / PAGE.pageSize));
     const page = Math.min(state.page, pages);
-    const shown = viaLoadMore ? items.slice(0, page * PAGE.pageSize) : items.slice((page - 1) * PAGE.pageSize, page * PAGE.pageSize);
+    const isFrIndex = JB.page === 'listing' && PAGE.kind === 'resources';
+    const filtered = state.filter !== 'all' || !!state.q || state.topic !== 'all' || state.format !== 'all' || state.price !== 'all' || state.age !== 'any';
+    const showAll = isFrIndex && filtered;
+    const shown = showAll ? items : (viaLoadMore ? items.slice(0, page * PAGE.pageSize) : items.slice((page - 1) * PAGE.pageSize, page * PAGE.pageSize));
     renderedPages = page;
     if (grid) grid.innerHTML = shown.map(it => cardHtml(PAGE.kind, it)).join('');
     if (emptyEl) {
@@ -365,14 +371,14 @@ if (PAGE) {
       if (active) countEl.textContent = 'Showing ' + total + ' ' + PAGE.countNoun + (total === 1 ? '' : 's') + '.';
     }
     if (pagerEl) {
-      if (pages <= 1) { pagerEl.innerHTML = ''; }
+      if (pages <= 1 || showAll) { pagerEl.innerHTML = ''; }
       else {
         let h = '';
         for (let p = 1; p <= pages; p++) h += (p === page) ? '<span class="cur" aria-current="page">' + p + '</span>' : '<a href="' + pageUrl(p) + '">' + p + '</a>';
         pagerEl.innerHTML = h;
       }
     }
-    if (loadMoreBtn) loadMoreBtn.hidden = !(page < pages);
+    if (loadMoreBtn) loadMoreBtn.hidden = showAll || !(page < pages);
     renderActiveChips();
     syncControls();
   }

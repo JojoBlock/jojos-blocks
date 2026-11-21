@@ -15,6 +15,9 @@ window.FREE_SEARCH = true;
   var input = form.querySelector('input[type="search"]');
   var resultsBox = document.getElementById('wpResults');
   var listing = document.getElementById('wpListing') || document.getElementById('listingGrid');
+  var pagerEl = document.getElementById('pager');
+  var countEl = document.getElementById('pageCount');
+  var savedPagerHidden = null, savedCountHidden = null;
   var root = (window.JB && window.JB.root) || '';
   var W = window.WALLPAPERS || { boards: [], sections: [], wallpapers: [] };
   var C = window.COLOURING || { tiers: [], pages: [] };
@@ -33,7 +36,10 @@ window.FREE_SEARCH = true;
   var timer = null;
   function runSearch() {
     var q = norm(input.value);
-    if (!q) { resultsBox.hidden = true; resultsBox.innerHTML = ''; if (listing) listing.hidden = false; return; }
+    if (!q) { resultsBox.hidden = true; resultsBox.innerHTML = ''; if (listing) listing.hidden = false; if (pagerEl && savedPagerHidden !== null) pagerEl.hidden = savedPagerHidden; if (countEl && savedCountHidden !== null) countEl.hidden = savedCountHidden; savedPagerHidden = null; savedCountHidden = null; return; }
+    if (savedPagerHidden === null) { savedPagerHidden = pagerEl ? pagerEl.hidden : null; savedCountHidden = countEl ? countEl.hidden : null; }
+    if (pagerEl) pagerEl.hidden = true;
+    if (countEl) countEl.hidden = true;
     var words = q.split(' ');
     var cls = C.pages.filter(function (pg) {
       return matches(haystack([pg.title, pg.tierName, pg.ages, pg.level, (pg.keywords || []).join(' ')]), words);
@@ -51,6 +57,7 @@ window.FREE_SEARCH = true;
       return matches(haystack([b.name, (b.keywords || []).join(' ')]), words);
     }).slice(0, 8);
     var res = resources.filter(function (r) {
+      if (r.filterKey === 'coloring') return false; // already covered by the Colouring pages section above (Sunset Mountains stays: it is not in the wallpapers data, so it only appears here)
       return matches(haystack([r.title, r.desc, r.categoryName, (r.tags || []).join(' ')]), words);
     }).slice(0, 8);
     var html = '<h2>Results for &ldquo;' + esc(input.value.trim()) + '&rdquo;</h2>';
