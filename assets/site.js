@@ -369,8 +369,22 @@ if (PAGE) {
   }
   let renderedPages = 1;
   let viaLoadMore = false; // true after a Load-more click: render cumulatively
+  function syncCrumbs() {
+    const crumbs = $('#frCrumbs'); if (!crumbs) return;
+    if (state.filter === 'all') { crumbs.hidden = true; crumbs.textContent = ''; return; }
+    const catLabel = (PAGE.filterLabel && PAGE.filterLabel[state.filter]) || state.filter;
+    if (state.sub) {
+      const subBtn = document.querySelector('#subCatRow [data-sub="' + state.sub + '"]');
+      const subLabel = subBtn ? subBtn.textContent.trim() : state.sub;
+      crumbs.textContent = catLabel + ' \u203a ' + subLabel;
+    } else {
+      crumbs.textContent = catLabel;
+    }
+    crumbs.hidden = false;
+  }
   function render() {
     const items = visibleItems();
+    syncCrumbs();
     const total = items.length;
     const pages = Math.max(1, Math.ceil(total / PAGE.pageSize));
     const page = Math.min(state.page, pages);
@@ -456,12 +470,12 @@ if (PAGE) {
     // category tab is tapped, show that category's sub-categories right
     // under the filter chips; tapping a sub-category opens its page.
     const subRow = $('#subCatRow');
+    const subHead = $('#subCatHead');
     if (subRow && window.FR_SUBCATS) {
       const subs = window.FR_SUBCATS[state.filter];
+      if (subHead) subHead.hidden = !(subs && subs.length);
       if (subs && subs.length) {
-        const active = document.querySelector('#listingChips .chip[data-filter="' + state.filter + '"]');
-        const label = active ? active.textContent.trim() : state.filter;
-        subRow.innerHTML = '<span class="sub-cat-label">' + label + ':</span>' + subs.map(function(s){ return '<button type="button" class="chip" data-sub="' + s.sub + '" aria-pressed="' + String(state.sub === s.sub) + '">' + s.label + '</button>'; }).join('');
+        subRow.innerHTML = subs.map(function(s){ return '<button type="button" class="chip" data-sub="' + s.sub + '" aria-pressed="' + String(state.sub === s.sub) + '">' + s.label + '</button>'; }).join('');
         subRow.hidden = false;
       } else {
         subRow.innerHTML = '';

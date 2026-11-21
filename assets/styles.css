@@ -815,3 +815,88 @@ article[data-id="invideo-ai"] .cover{background:#101828}
 .sub-cat-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:14px 0 2px;flex-basis:100%}
 .sub-cat-row[hidden]{display:none}
 .sub-cat-row .sub-cat-label{font-size:13px;font-weight:700;color:var(--muted);margin-right:2px}
+
+/* ================= Free Resources redesign (owner screenshot, 21 Nov 2026) =================
+   Scoped to body.fr-redesign (the /free-resources/ index ONLY) — no other page changes.
+   Premium Etsy-grade mobile aesthetic: cream background, single-row scrollable
+   category bars, full-bleed 2-column grid, no letterboxing. */
+body.fr-redesign{background:#FCFAF6}
+body.fr-redesign .page-head{padding:38px 0 10px}
+body.fr-redesign .page-head h1{color:#111214}
+body.fr-redesign .lede{color:#111214;line-height:1.6;margin-bottom:26px}
+/* The listing rows sit outside .wrap in this page's markup, so give them the
+   same centred 1200px column as the heading (otherwise the filter area sits
+   flush to the viewport edge while the heading is centred). Padding matches
+   .wrap at each breakpoint. */
+body.fr-redesign .rail,
+body.fr-redesign .facet-bar,
+body.fr-redesign .active-filters,
+body.fr-redesign .count,
+body.fr-redesign .res-grid,
+body.fr-redesign .empty,
+body.fr-redesign .pager,
+body.fr-redesign .want-more{max-width:1200px;margin-left:auto;margin-right:auto;padding-left:32px;padding-right:32px}
+@media (max-width:1024px){
+  body.fr-redesign .rail,
+  body.fr-redesign .facet-bar,
+  body.fr-redesign .active-filters,
+  body.fr-redesign .count,
+  body.fr-redesign .res-grid,
+  body.fr-redesign .empty,
+  body.fr-redesign .pager,
+  body.fr-redesign .want-more{padding-left:24px;padding-right:24px}
+}
+@media (max-width:640px){
+  body.fr-redesign .rail,
+  body.fr-redesign .facet-bar,
+  body.fr-redesign .active-filters,
+  body.fr-redesign .count,
+  body.fr-redesign .res-grid,
+  body.fr-redesign .empty,
+  body.fr-redesign .pager,
+  body.fr-redesign .want-more{padding-left:16px;padding-right:16px}
+}
+/* Listing grid: 2 columns on every viewport (matches the reference image) */
+body.fr-redesign .res-grid{grid-template-columns:repeat(2,1fr)}
+/* The rail stacks full-width (no flex wrap) so each row is its own line */
+body.fr-redesign .rail{display:block;margin-bottom:20px}
+body.fr-redesign .fr-cat-head{font-family:'Archivo',sans-serif;font-weight:800;font-size:21px;line-height:1.2;letter-spacing:-.01em;color:#111214;margin:26px 0 12px}
+body.fr-redesign .fr-cat-head:first-child{margin-top:6px}
+body.fr-redesign .fr-sub-head{margin-top:22px}
+/* Category row: ONE single horizontally scrollable line, never wraps */
+body.fr-redesign #listingChips{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:10px;align-items:center;padding-bottom:8px;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
+body.fr-redesign #listingChips::-webkit-scrollbar{display:none}
+body.fr-redesign #listingChips .chip{flex:none;scroll-snap-align:start;padding:11px 18px;font-size:15px}
+body.fr-redesign #listingChips .chip[aria-pressed="true"]{background:#111214;color:#fff;border-color:#111214}
+/* Sub-category row: same single-line scroll treatment */
+body.fr-redesign .sub-cat-row{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:10px;align-items:center;padding-bottom:8px;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;margin:0}
+body.fr-redesign .sub-cat-row::-webkit-scrollbar{display:none}
+body.fr-redesign .sub-cat-row[hidden]{display:none}
+body.fr-redesign .sub-cat-row .chip{flex:none;scroll-snap-align:start;padding:11px 18px;font-size:15px}
+body.fr-redesign .sub-cat-row .chip[aria-pressed="true"]{background:#111214;color:#fff;border-color:#111214}
+/* Controls row: contextual breadcrumb on its own line, Sort + Filters together below */
+body.fr-redesign .fr-controls{display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin:18px 0 4px}
+body.fr-redesign .fr-crumbs{font-family:'Archivo',sans-serif;font-size:16px;font-weight:700;color:#111214}
+body.fr-redesign .fr-crumbs[hidden]{display:none}
+body.fr-redesign .fr-sort-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+body.fr-redesign .fr-controls .sort{font-family:'Archivo',sans-serif;font-size:15px;font-weight:700;color:#111214}
+body.fr-redesign .fr-controls .filters-btn{margin-left:0;margin-bottom:0}
+/* Listing grid: generous breathing room; 2 cols on mobile (existing), 4 on desktop */
+body.fr-redesign .res-grid{gap:20px;margin-top:18px}
+body.fr-redesign .res-item{background:#fff;border:1px solid #E7E3DA;border-radius:16px;box-shadow:0 2px 10px rgba(17,18,20,.07)}
+body.fr-redesign .res-item .rthumb{aspect-ratio:4/3;background:#fff}
+body.fr-redesign .res-item .rthumb img{object-fit:cover}
+body.fr-redesign .res-item .rbody{padding:18px 18px 20px;gap:8px}
+body.fr-redesign .res-item .tag{font-size:13px;font-weight:700;color:#111214}
+body.fr-redesign .res-item h3{font-size:19px;line-height:1.25;font-weight:800;color:#111214}
+body.fr-redesign .res-item .rbody .go{background:#F6F1E7;border-color:#E7E3DA;color:#111214;font-size:14px;font-weight:700;padding:9px 15px;border-radius:999px;box-shadow:0 1px 2px rgba(17,18,20,.06)}
+body.fr-redesign .res-item .rbody .go:hover{border-color:#111214}
+body.fr-redesign .count{color:#111214}
+body.fr-redesign .active-filters{margin-top:6px;margin-bottom:2px}
+@media (max-width:640px){
+  body.fr-redesign .res-grid{gap:14px}
+  body.fr-redesign .res-item .rbody{padding:14px 14px 16px}
+  body.fr-redesign .res-item h3{font-size:17px}
+  body.fr-redesign .fr-cat-head{font-size:19px}
+  body.fr-redesign .page-head h1{font-size:30px}
+}
