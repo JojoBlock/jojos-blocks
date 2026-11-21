@@ -57,7 +57,7 @@ window.FREE_SEARCH = true;
       return matches(haystack([b.name, (b.keywords || []).join(' ')]), words);
     }).slice(0, 8);
     var res = resources.filter(function (r) {
-      if (r.filterKey === 'coloring' || r.filterKey === 'wallpapers') return false; // already covered by the Colouring pages / Wallpapers sections above
+      if (r.filterKey === 'coloring') return false; // already covered by the Colouring pages section above (Sunset Mountains stays: it is not in the wallpapers data, so it only appears here)
       return matches(haystack([r.title, r.desc, r.categoryName, (r.tags || []).join(' ')]), words);
     }).slice(0, 8);
     var html = '<h2>Results for &ldquo;' + esc(input.value.trim()) + '&rdquo;</h2>';
