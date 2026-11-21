@@ -326,7 +326,7 @@ var musicTimer=null,musicStep=0;
 var W=400,H=600,GROUND=560;
 var bird={x:100,y:H/2,w:36,h:28,vel:0,grav:0.55,jump:-9.2,rot:0};
 var pipes=[],particles=[],score=0,best=parseInt(localStorage.getItem(BEST_KEY)||'0',10)||0;
-var active=false,paused=false,started=false,frame=0,speed=2,gap=180,cloudOff=0,rafId=null,actx=null;
+var active=false,paused=false,started=false,flapped=false,frame=0,speed=2,gap=180,cloudOff=0,rafId=null,actx=null;
 $('jjb-fp-best').textContent=best;
 
 function tone(freq,dur,type,vol,delay){
@@ -520,6 +520,11 @@ function createPipe(){
 }
 function update(){
   frame++;
+  /* Playability fix (2026-11-21): the bird hovers at its spawn point until
+     the player's FIRST flap — no gravity, no pipes, no collisions. Before
+     this, the bird fell at full gravity the instant Start was pressed and
+     splashed in ~0.5s, before a player could react. */
+  if(!flapped){bird.y=H/2+Math.sin(frame*0.08)*8;bird.rot=0;return;}
   bird.vel+=bird.grav;bird.y+=bird.vel;
   bird.rot=Math.min(Math.PI/4,Math.max(-Math.PI/4,bird.vel*0.09));
   if(frame%120===0)createPipe();
@@ -549,6 +554,7 @@ function loop(){
 }
 function flap(){
   if(!active||paused)return;
+  flapped=true;
   bird.vel=bird.jump;snd('flap');
   for(var i=0;i<3;i++)particles.push(makeParticle(bird.x,bird.y+bird.h,'#ffffff'));
 }
@@ -556,7 +562,7 @@ function startGame(){
   snd('click');
   var d=DIFF[$('jjb-fp-difficulty').value];
   gap=d.gap;speed=d.speed;
-  pipes=[];particles=[];score=0;frame=0;
+  pipes=[];particles=[];score=0;frame=0;flapped=false;
   bird.y=H/2;bird.vel=0;bird.rot=0;
   active=true;paused=false;started=true;
   updateStats();
