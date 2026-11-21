@@ -111,9 +111,9 @@ window.FREE_SEARCH = true;
     if (res.length) {
       html += '<h2 class="wp-section-title">Free resources</h2><div class="res-grid">' + res.map(function (r) {
         return '<article class="res-item" data-cat="' + esc(r.filterKey || r.category) + '">'
-          + '<a class="card-link" href="' + root + r.url + '" aria-label="' + esc(r.title) + ' — View &amp; download"></a>'
+          + '<a class="card-link" href="' + root + r.url + '" aria-label="' + esc(r.title) + ' — ' + esc(r.goLabel || 'View & download') + '"></a>'
           + '<div class="rthumb"><img src="' + esc(r.thumb) + '" alt="' + esc(r.title) + ' preview" loading="lazy"></div>'
-          + '<div class="rbody"><span class="tag">' + esc(r.tag) + '</span><h3>' + esc(r.title) + '</h3><span class="go">View &amp; download →</span></div></article>';
+          + '<div class="rbody"><span class="tag">' + esc(r.tag) + '</span><h3>' + esc(r.title) + '</h3><span class="go">' + esc(r.go || 'View & download →') + '</span></div></article>';
       }).join('') + '</div>';
     }
     resultsBox.innerHTML = html;
