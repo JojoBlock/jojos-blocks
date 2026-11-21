@@ -824,6 +824,40 @@ body.fr-redesign{background:#FCFAF6}
 body.fr-redesign .page-head{padding:38px 0 10px}
 body.fr-redesign .page-head h1{color:#111214}
 body.fr-redesign .lede{color:#111214;line-height:1.6;margin-bottom:26px}
+/* The listing rows sit outside .wrap in this page's markup, so give them the
+   same centred 1200px column as the heading (otherwise the filter area sits
+   flush to the viewport edge while the heading is centred). Padding matches
+   .wrap at each breakpoint. */
+body.fr-redesign .rail,
+body.fr-redesign .facet-bar,
+body.fr-redesign .active-filters,
+body.fr-redesign .count,
+body.fr-redesign .res-grid,
+body.fr-redesign .empty,
+body.fr-redesign .pager,
+body.fr-redesign .want-more{max-width:1200px;margin-left:auto;margin-right:auto;padding-left:32px;padding-right:32px}
+@media (max-width:1024px){
+  body.fr-redesign .rail,
+  body.fr-redesign .facet-bar,
+  body.fr-redesign .active-filters,
+  body.fr-redesign .count,
+  body.fr-redesign .res-grid,
+  body.fr-redesign .empty,
+  body.fr-redesign .pager,
+  body.fr-redesign .want-more{padding-left:24px;padding-right:24px}
+}
+@media (max-width:640px){
+  body.fr-redesign .rail,
+  body.fr-redesign .facet-bar,
+  body.fr-redesign .active-filters,
+  body.fr-redesign .count,
+  body.fr-redesign .res-grid,
+  body.fr-redesign .empty,
+  body.fr-redesign .pager,
+  body.fr-redesign .want-more{padding-left:16px;padding-right:16px}
+}
+/* Listing grid: 2 columns on every viewport (matches the reference image) */
+body.fr-redesign .res-grid{grid-template-columns:repeat(2,1fr)}
 /* The rail stacks full-width (no flex wrap) so each row is its own line */
 body.fr-redesign .rail{display:block;margin-bottom:20px}
 body.fr-redesign .fr-cat-head{font-family:'Archivo',sans-serif;font-weight:800;font-size:21px;line-height:1.2;letter-spacing:-.01em;color:#111214;margin:26px 0 12px}
