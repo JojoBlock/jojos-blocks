@@ -1213,9 +1213,11 @@ body.fr-phase2 .fr-section-head .fr-crumb-ic svg{width:100%;height:100%}
   /* FIX 1 — vertical product cards in 2-col mobile grids. The design-system
      horizontal card (60px cover + 111px body) crushed titles into 4 lines
      and left big empty gaps. Stack: cover on top (full width, square,
-     cover-fit), then 2-line title, price, full-width CTA below. The grid no
-     longer stretches cards to equal height, so no whitespace inside cards. */
-  .pgrid{align-items:start}
+     cover-fit), then 2-line title, price, full-width CTA below.
+     FIX #1 (2026-11-21): the grid STRETCHES cards to equal height per row
+     (default align-items) and the CTA is pushed to the bottom with
+     margin-top:auto, so every card in a row ends at the same line with its
+     single button aligned — no empty gap below a shorter card. */
   .pgrid .card,#listingGrid .card{flex-direction:column}
   .pgrid .card .cover,#listingGrid .card .cover{flex:none;width:100%;aspect-ratio:1/1}
   .pgrid .card .cover img,#listingGrid .card .cover img{object-fit:cover}
@@ -1223,7 +1225,7 @@ body.fr-phase2 .fr-section-head .fr-crumb-ic svg{width:100%;height:100%}
   .pgrid .card h3,#listingGrid .card h3{font-size:13px;-webkit-line-clamp:2}
   .pgrid .card .meta,#listingGrid .card .meta{font-size:12px}
   .pgrid .card .price,#listingGrid .card .price{font-size:17px}
-  .pgrid .card .actions,#listingGrid .card .actions{margin-top:0}
+  .pgrid .card .actions,#listingGrid .card .actions{margin-top:auto}
   .pgrid .card .actions .btn,#listingGrid .card .actions .btn{min-height:40px;padding:10px 12px;font-size:13px;width:100%}
   .pgrid .card .badge,#listingGrid .card .badge{top:8px;left:8px;font-size:11px;padding:3px 8px}
   /* Affiliate titles had their 2-line clamp removed (display:block); restore
