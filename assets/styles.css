@@ -800,10 +800,10 @@ article[data-id="invideo-ai"] .cover{background:#101828}
 
 .af-hero-thumbs{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:4px}
 .af-hero-thumb{display:block;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#fff}
-.af-hero-thumb img{display:block;width:100%;height:110px;object-fit:cover}
+.af-hero-thumb img{display:block;width:100%;height:140px;object-fit:contain;background:#fff}
 .af-hero-thumb:hover img{transform:scale(1.03)}
 .af-hero-thumb img{transition:transform .25s ease}
-@media (max-width:640px){.af-hero-thumbs{grid-template-columns:repeat(2,1fr);gap:10px}.af-hero-thumb img{height:96px}}
+@media (max-width:640px){.af-hero-thumbs{grid-template-columns:repeat(2,1fr);gap:10px}.af-hero-thumb img{height:110px}}
 
 .sub-browse .sub-group{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 10px}
 .sub-browse .sub-cat{font-family:'Archivo',sans-serif;font-weight:800;font-size:14px;min-width:110px;color:var(--ink)}
