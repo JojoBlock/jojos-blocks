@@ -265,9 +265,9 @@ if ($('#tabSearch')) $('#tabSearch').addEventListener('click', e => { e.preventD
     if (kind === 'resources') {
       const thumb = it.thumb ? '<div class="rthumb"><img src="' + it.thumb + '" alt="' + it.title.replace(/"/g, '&quot;') + ' preview" loading="lazy"></div>' : '';
       return '<article class="res-item" data-cat="' + it.filterKey + '">'
-        + '<a class="card-link" href="' + JB.root + it.url + '" aria-label="' + it.title.replace(/"/g, '&quot;') + ' — View &amp; download"></a>' + thumb
+        + '<a class="card-link" href="' + JB.root + it.url + '" aria-label="' + it.title.replace(/"/g, '&quot;') + ' — ' + (it.goLabel || 'View &amp; download') + '"></a>' + thumb
         + '<div class="rbody"><span class="tag">' + it.tag + '</span><h3>' + it.title + '</h3>'
-        + '<span class="go">View &amp; download →</span></div></article>';
+        + '<span class="go">' + (it.go || 'View &amp; download →') + '</span></div></article>';
     }
     if (kind === 'games') {
       return '<article class="gcard"><div class="gthumb"><img src="' + it.thumb + '" alt="' + it.title.replace(/"/g, '&quot;') + ' game" width="640" height="360" loading="lazy"></div>'
