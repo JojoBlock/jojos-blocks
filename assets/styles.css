@@ -5,7 +5,7 @@
 @font-face{font-family:'Archivo';font-style:normal;font-weight:100 900;font-display:swap;src:url(fonts/archivo-var.woff2) format('woff2')}
 @font-face{font-family:'Inter';font-style:normal;font-weight:100 900;font-display:swap;src:url(fonts/inter-var.woff2) format('woff2')}
 :root{
-  --paper:#FAF9F6; --surface:#FFFFFF; --ink:#111214; --muted:#5D6066;
+  --paper:#FCFAF6; --surface:#FFFFFF; --ink:#111214; --muted:#3A3D42;
   --line:#E4E2DC; --tile:#ECEAE4; --bar:#111214;
   --accent:#E4572E; --accent-hov:#EC6B45; --accent-text:#111214;
   --foot:#C9CBCF;
@@ -77,7 +77,7 @@ a[data-amazon]{background:linear-gradient(180deg,#FFD07A,#F5A623);color:var(--in
 a[data-amazon]:active{transform:translateY(1px);box-shadow:0 1px 0 #B97A00,0 2px 6px rgba(17,18,20,.14)}
 .btn-sm{min-height:44px;padding:10px 16px;font-size:14px}
 /* ---------- header ---------- */
-header.site{position:sticky;top:0;z-index:70;background:rgba(250,249,246,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header.site{position:sticky;top:0;z-index:70;background:rgba(252,250,246,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 .hd{max-width:1200px;margin:0 auto;padding:0 32px;height:72px;display:flex;align-items:center;gap:16px}
 .logo{display:inline-flex;align-items:center;gap:10px;font-family:'Archivo',sans-serif;font-size:24px;font-weight:800;color:var(--ink);white-space:nowrap;flex:none;line-height:1.1;transition:transform .12s ease,filter .18s ease}
 .logo:hover{text-decoration:none}
@@ -121,7 +121,10 @@ header.site{position:sticky;top:0;z-index:70;background:rgba(250,249,246,.97);ba
 .search-overlay .so-close{background:#fff;border:1.5px solid var(--line);border-radius:9px;width:44px;height:44px;font-size:18px;color:var(--ink);flex:none}
 .search-overlay .suggest{position:static;box-shadow:none;border:0;border-top:1px solid var(--line);border-radius:0;max-height:60vh;margin-top:10px}
 /* ---------- department bar ---------- */
-.dept{background:var(--bar)}
+/* Phase 1 (2026-11-21): the dept bar is sticky directly under the header
+   (header is 72px desktop / 56px mobile), so Home / Shop / Our Products /
+   Free resources / Games & Play / Blog never scroll away or disappear. */
+.dept{position:sticky;top:72px;z-index:65;background:var(--bar)}
 .dept .wrap{display:flex;gap:2px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;padding:0 26px}
 .dept .wrap::-webkit-scrollbar{display:none}
 .dept a{color:#fff;font-family:'Archivo',sans-serif;font-size:15px;font-weight:700;white-space:nowrap;padding:10px 14px;min-height:44px;margin:4px 0;display:inline-flex;align-items:center;scroll-snap-align:start;border-radius:999px;transition:background .18s ease,color .18s ease,transform .12s ease,box-shadow .18s ease}
@@ -494,6 +497,7 @@ body.tab-hidden .tabbar{display:none}
   .logo-mark{height:34px}
   .search{display:none}
   .search-icon-btn{display:inline-flex}
+  .dept{top:56px}
   .dept .wrap{padding:0 10px}
   .hero h1{font-size:26px;margin-bottom:6px}
   .hero{padding:8px 0 16px}
