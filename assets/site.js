@@ -222,6 +222,28 @@ if ($('#tabSearch')) $('#tabSearch').addEventListener('click', e => { e.preventD
 
   function cardHtml(kind, it) {
     if (kind === 'products') {
+      if (it.affiliateUrl) {
+        // Affiliate showcase item (Creative Fabrica / Impact, 2026-11-21):
+        // the card opens the item's own detail page (shop/<slug>.html) —
+        // it never links straight to the merchant. The detail page carries
+        // the affiliate CTA. (Owner order 21 Nov ~17:23 IST.)
+        const badge = it.badge ? '<span class="badge">' + it.badge + '</span>' : '';
+        const detailUrl = JB.root + (it.url || ('shop/' + it.key + '.html'));
+        const imgStyle = it.imgStyle ? ' style="' + it.imgStyle + '"' : '';
+        const cover = it.thumb
+          ? '<a href="' + detailUrl + '" aria-label="View ' + it.title.replace(/"/g, '&quot;') + ' details"><img src="' + it.thumb + '" alt="' + it.title.replace(/"/g, '&quot;') + '" loading="lazy"' + imgStyle + '></a>'
+          : '<div class="af-brand">' + it.merchant + '<small>' + (it.type || '') + '</small></div>';
+        const price = it.salePrice
+          ? '<div class="price-row"><span class="price">' + it.salePrice + '</span></div>' + (it.priceNote ? '<p class="af-price-note">' + it.priceNote + '</p>' : '')
+          : '';
+        const coverStyle = it.coverStyle ? ' style="' + it.coverStyle + '"' : '';
+        return '<article class="card af-card" data-id="' + it.key + '" data-cat="' + it.filterKey + '" data-price="' + (it.salePriceNum ?? '') + '">'
+          + '<div class="cover"' + coverStyle + '>' + badge + cover + '</div>'
+          + '<div class="body"><span class="tag">' + it.categoryName + ' · ' + it.merchant + '</span>'
+          + '<h3><a href="' + detailUrl + '">' + it.title + '</a></h3>'
+          + '<p class="meta">' + (it.type || '') + '</p>' + price
+          + '<div class="actions"><a class="btn btn-ink" href="' + detailUrl + '">View details →</a></div></div></article>';
+      }
       if (it.kofiUrl) {
         // Ko-fi showcase product: no product modal (the shared modal is book/Gumroad-specific),
         // so the cover and title link straight to the detail page, and Buy goes to Ko-fi.
