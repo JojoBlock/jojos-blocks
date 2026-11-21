@@ -273,12 +273,13 @@ if ($('#tabSearch')) $('#tabSearch').addEventListener('click', e => { e.preventD
       const nowNum = parseFloat(String(it.salePrice || '').replace(/[^0-9.]/g, ''));
       const hasDiscount = !isNaN(wasNum) && !isNaN(nowNum) && nowNum < wasNum;
       const price = it.salePrice ? '<div class="price-row"><span class="price">' + it.salePrice + '</span>' + (hasDiscount ? '<s>' + it.price + '</s>' : '') + '</div>' : '';
-      // Paperback (Amazon) option, when the product has one: a secondary
-      // button under the primary Buy button. Must mirror build.js productCard.
-      const paperbackBtn = it.paperback ? '<a class="btn btn-ghost" href="' + it.paperback.amazonUrl + '" target="_blank" rel="noopener" data-amazon="' + it.key + '" data-location="card">Paperback on Amazon — ' + it.paperback.price + '</a>' : '';
+      // Fix #1 (2026-11-21): grid cards show ONE button only — the primary
+      // Buy. The paperback is a separate standalone card, and both options
+      // stay on the product detail page. Do NOT re-add a secondary
+      // Amazon button here.
       const buy = it.gumroadUrl
-        ? '<div class="actions"><a class="btn btn-accent" href="' + it.gumroadUrl + '" target="_blank" rel="noopener" data-book="' + it.key + '" data-location="card">Buy ' + it.salePrice + '</a>' + paperbackBtn + '</div>'
-        : (paperbackBtn ? '<div class="actions">' + paperbackBtn + '</div>' : '');
+        ? '<div class="actions"><a class="btn btn-accent" href="' + it.gumroadUrl + '" target="_blank" rel="noopener" data-book="' + it.key + '" data-location="card">Buy ' + it.salePrice + '</a></div>'
+        : '';
       return '<article class="card" data-id="' + it.key + '" data-cat="' + it.filterKey + '" data-age-min="' + (it.ageMin ?? '') + '" data-age-max="' + (it.ageMax ?? '') + '" data-price="' + (it.salePriceNum ?? '') + '" data-pages="' + (it.pages || '') + '">'
         + '<div class="cover">' + badge + '<a href="' + JB.root + it.url + '" data-detail="' + it.key + '" aria-label="View ' + it.title.replace(/"/g, '&quot;') + ' details"><img src="' + it.thumb + '" alt="' + (it.coverAlt || it.title).replace(/"/g, '&quot;') + '" width="600" height="849" loading="lazy"></a></div>'
         + '<div class="body"><h3><a href="' + JB.root + it.url + '" data-detail="' + it.key + '">' + it.title + '</a></h3>'
