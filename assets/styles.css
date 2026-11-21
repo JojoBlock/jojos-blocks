@@ -198,6 +198,8 @@ section.block{padding:64px 0;border-bottom:1px solid var(--line)}
 }
 .chip:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
 .chip[aria-pressed="true"]:focus-visible{outline-offset:3px}
+a.chip{text-decoration:none}
+.want-more{text-align:center}
 .age-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:20px}
 .age-row .age-label{font-size:14px;font-weight:600;color:var(--muted);margin-right:2px}
 .sort{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--muted)}
