@@ -447,6 +447,22 @@ if (PAGE) {
   }
   function syncControls() {
     $$('#listingChips .chip[data-filter]').forEach(c => c.setAttribute('aria-pressed', String(c.dataset.filter === state.filter)));
+    // Contextual sub-categories (Free Resources index only): when a main
+    // category tab is tapped, show that category's sub-categories right
+    // under the filter chips; tapping a sub-category opens its page.
+    const subRow = $('#subCatRow');
+    if (subRow && window.FR_SUBCATS) {
+      const subs = window.FR_SUBCATS[state.filter];
+      if (subs && subs.length) {
+        const active = document.querySelector('#listingChips .chip[data-filter="' + state.filter + '"]');
+        const label = active ? active.textContent.trim() : state.filter;
+        subRow.innerHTML = '<span class="sub-cat-label">' + label + ':</span>' + subs.map(function(s){ return '<a class="chip" href="' + s.url + '">' + s.label + '</a>'; }).join('');
+        subRow.hidden = false;
+      } else {
+        subRow.innerHTML = '';
+        subRow.hidden = true;
+      }
+    }
     const ageRow = $('#ageChips');
     if (ageRow) $$('#ageChips .chip').forEach(c => c.setAttribute('aria-pressed', String(c.dataset.age === state.age)));
     const sort = $('#sortSelect'); if (sort) sort.value = state.sort;

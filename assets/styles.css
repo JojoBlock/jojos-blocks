@@ -809,3 +809,9 @@ article[data-id="invideo-ai"] .cover{background:#101828}
 .sub-browse .sub-cat{font-family:'Archivo',sans-serif;font-weight:800;font-size:14px;min-width:110px;color:var(--ink)}
 .sub-browse .chip{text-decoration:none}
 @media (max-width:640px){.sub-browse .sub-cat{min-width:100%;margin-bottom:2px}}
+
+/* Contextual sub-category row on the Free Resources index: appears under
+   the main category chips only when a category is tapped. */
+.sub-cat-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:14px 0 2px}
+.sub-cat-row[hidden]{display:none}
+.sub-cat-row .sub-cat-label{font-size:13px;font-weight:700;color:var(--muted);margin-right:2px}
