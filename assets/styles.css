@@ -34,7 +34,7 @@ img{display:block;max-width:100%}
 .btn-ink{background:var(--ink);color:#fff}
 /* Ink buttons that are NOT affiliate Buy buttons (Download, Play, View,
    Subscribe, Apply filters) carry a subtle 3D bottom edge + crisp shadow,
-   like the Amazon gold buttons. The DHgate "Buy on DHgate" buttons also
+   like the Amazon gold buttons. The affiliate "Buy" buttons also
    use .btn-ink but carry data-affiliate, so they keep the old flat look
    exactly — Buy buttons are never restyled. */
 .btn-ink:not([data-affiliate]){box-shadow:0 2px 0 #000,0 4px 10px rgba(17,18,20,.20)}
@@ -51,7 +51,7 @@ img{display:block;max-width:100%}
 /* Buttons — tactile hover/active (2026-11-20): a small lift + soft shadow on
    hover, a pressed state on tap/click. Hover is gated to (hover:hover) so
    touch devices never get a stuck hover state; :active gives the press.
-   .btn-accent (Gumroad/Ko-fi Buy) and .btn-ink[data-affiliate] (DHgate Buy)
+   .btn-accent (Gumroad/Ko-fi Buy) and .btn-ink[data-affiliate] (affiliate Buy)
    keep their original hover/active exactly — Buy buttons are never restyled. */
 @media (hover:hover){
   .btn-accent:hover{background:#000;transform:translateY(-2px);box-shadow:0 8px 18px rgba(17,18,20,.20)}
@@ -256,6 +256,32 @@ a.chip{text-decoration:none}
 .af-card .tag{font-family:'Archivo',sans-serif;font-size:13px;font-weight:700;color:var(--ink)}
 .af-note{font-size:13px;color:var(--muted);margin-top:8px}
 .af-label{font-weight:700;color:var(--ink)}
+/* ---------- affiliate showcase (2026-11-21) — Creative Fabrica + Impact ----------
+   Mobile-first: the trial banner stacks on small screens, cards use the
+   site's responsive .pgrid (2 cols on mobile). Buttons are min 44px tall. */
+.af-hero{display:grid;grid-template-columns:1.4fr 1fr;gap:24px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:28px;margin-bottom:32px;box-shadow:var(--shadow)}
+.af-hero .af-hero-copy h2{font-size:26px;line-height:1.2;margin:0 0 8px}
+.af-hero .af-hero-copy p{margin:0 0 12px;color:var(--muted);font-size:15px;line-height:1.55}
+.af-hero .af-hero-price{font-family:'Archivo',sans-serif;font-size:32px;font-weight:800;line-height:1;color:var(--ink)}
+.af-hero .af-hero-price small{font-size:15px;font-weight:700;color:var(--muted)}
+.af-hero .af-hero-cta{display:flex;flex-direction:column;gap:10px;align-items:stretch}
+.af-hero .af-hero-cta .btn{width:100%}
+.af-section{margin-bottom:36px}
+.af-section>h2{font-size:22px;margin:0 0 6px}
+.af-section>.af-section-intro{color:var(--muted);font-size:15px;line-height:1.55;margin:0 0 16px;max-width:640px}
+.af-card .af-price-note{font-size:13px;color:var(--muted);margin-top:4px}
+.af-card .af-desc{font-size:14px;color:var(--muted);line-height:1.5;margin:8px 0 0}
+/* Brand tile for Impact cards (no product photo — the brand name is the cover) */
+.af-card .cover .af-brand{font-family:'Archivo',sans-serif;font-size:26px;font-weight:800;line-height:1.15;color:var(--ink);text-align:center;padding:20px}
+.af-card .cover .af-brand small{display:block;font-size:14px;font-weight:700;color:var(--muted);margin-top:6px}
+.af-disclosure{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;font-size:14px;line-height:1.6;color:var(--muted);margin-top:8px}
+.af-disclosure strong{color:var(--ink)}
+.btn[aria-disabled="true"]{opacity:.65;cursor:not-allowed}
+@media (max-width:640px){
+  .af-hero{grid-template-columns:1fr;gap:16px;padding:20px}
+  .af-hero .af-hero-copy h2{font-size:22px}
+  .af-hero .af-hero-price{font-size:28px}
+}
 /* ---------- free resources ---------- */
 .taster{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:28px;margin-bottom:24px;box-shadow:var(--shadow)}
 .taster .art{min-height:200px;border-radius:var(--radius);background:var(--tile);color:var(--ink);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;padding:24px;text-align:center}
@@ -753,7 +779,7 @@ body.tab-hidden .tabbar{display:none}
 /* Mobile 3D depth (2026-11-20, preview) — on touchscreens there is no :hover,
    so cards and the primary Buy button carry a subtle resting elevation, and
    taps get a crisp press/scale. Desktop hover-gated rules are untouched;
-   DHgate Buy buttons ([data-affiliate]) are excluded, as before. */
+   Affiliate Buy buttons ([data-affiliate]) are excluded, as before. */
 
 /* Book detail sample pages (Helpers 3-5 + Christmas, 21 Nov 2026) */
 .detail .samples{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}
