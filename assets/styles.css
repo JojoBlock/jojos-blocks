@@ -927,15 +927,19 @@ html,body{max-width:100%;overflow-x:clip}
    Affiliate Buy buttons ([data-affiliate]) are excluded, as before. */
 
 /* Book detail sample pages (Helpers 3-5 + Christmas, 21 Nov 2026) */
-.detail .samples{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}
-.detail .samples img{width:100%;height:auto;display:block;border-radius:var(--radius);border:1px solid var(--line)}
+/* Phase 2 fix (22 Nov): the Reset Kit samples sit OUTSIDE its .detail hero
+   container, so the old `.detail .samples` selector never matched them and
+   they stacked 1-column. Unscoped to plain `.samples` — used on 3 book
+   pages only, all of which want this grid. */
+.samples{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}
+.samples img{width:100%;height:auto;display:block;border-radius:var(--radius);border:1px solid var(--line)}
 /* Phase 2 (audit G-03): the Reset Kit "Look inside" samples used page-inline
    CSS and rendered 1-column on mobile; they now use this shared grid, so
    every book's samples are 3-col desktop / 2-col mobile. Figures keep
    their captions via these shared rules. */
-.detail .samples figure{margin:0}
-.detail .samples figcaption{font-size:14px;color:var(--muted);margin-top:8px;text-align:center}
-@media (max-width:640px){.detail .samples{grid-template-columns:repeat(2,1fr)}}
+.samples figure{margin:0}
+.samples figcaption{font-size:14px;color:var(--muted);margin-top:8px;text-align:center}
+@media (max-width:640px){.samples{grid-template-columns:repeat(2,1fr)}}
 .btn[disabled]{opacity:.6;cursor:not-allowed}
 
 @media (hover:none){
