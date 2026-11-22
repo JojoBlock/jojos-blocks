@@ -386,6 +386,7 @@ a.chip{text-decoration:none}
 .book-promo h3{margin:0 0 6px;font-size:19px}
 .book-promo p{margin:0 0 8px}
 .book-promo .bp-price{font-weight:700;color:var(--ink)}
+.book-promo .bp-price s{font-family:'Inter',sans-serif;font-size:14px;color:var(--muted);font-weight:400;margin-left:4px}
 .book-promo .bp-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:10px}
 .book-promo .bp-link{font-weight:600}
 @media (max-width:640px){.book-promo{flex-direction:column;align-items:flex-start;padding:16px}.book-promo .bp-img{width:140px}}
