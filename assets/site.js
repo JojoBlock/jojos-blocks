@@ -277,19 +277,28 @@ if ($('#tabSearch')) $('#tabSearch').addEventListener('click', e => { e.preventD
         // book. No product modal (the shared modal is book/Gumroad-specific),
         // so the cover and title link straight to the detail page, and the
         // primary button goes to Amazon. Must mirror build.js productCard.
+        // PRICING 10% OFF (2026-11-22): the paperback's `price` is the anchor
+        // ("was") price (actual / 0.90) and `salePrice` is the real Amazon
+        // price — the anchor is display-only, the Amazon price never changes.
         const badge = it.badge ? '<span class="badge">' + it.badge + '</span>' : '';
+        const pbWasNum = parseFloat(String(it.price || '').replace(/[^0-9.]/g, ''));
+        const pbNowNum = parseFloat(String(it.salePrice || '').replace(/[^0-9.]/g, ''));
+        const pbHasDiscount = !isNaN(pbWasNum) && !isNaN(pbNowNum) && pbNowNum < pbWasNum;
+        const pbPrice = it.salePrice ? '<div class="price-row"><span class="price">' + it.salePrice + '</span>' + (pbHasDiscount ? '<s>' + it.price + '</s><span class="off-pill">10% off</span>' : '') + '</div>' : '';
         return '<article class="card" data-id="' + it.key + '" data-cat="' + it.filterKey + '" data-age-min="' + (it.ageMin ?? '') + '" data-age-max="' + (it.ageMax ?? '') + '" data-price="' + (it.salePriceNum ?? '') + '" data-pages="' + (it.pages || '') + '">'
           + '<div class="cover"><a href="' + JB.root + it.url + '" aria-label="View ' + it.title.replace(/"/g, '&quot;') + ' details"><img src="' + it.thumb + '" alt="' + (it.coverAlt || it.title).replace(/"/g, '&quot;') + '" width="600" height="849" loading="lazy"></a></div>'
           + '<div class="body">' + badge + '<h3><a href="' + JB.root + it.url + '">' + it.title + '</a></h3>'
           + '<p class="meta">' + it.format + (it.ageLabel ? ' · ' + it.ageLabel : '') + '</p>'
-          + '<div class="price-row"><span class="price">' + it.salePrice + '</span></div>'
+          + pbPrice
           + '<div class="actions"><a class="btn btn-accent" href="' + it.amazonUrl + '" target="_blank" rel="noopener" data-amazon="' + it.key + '" data-location="card">' + LOGO_AMAZON + 'Buy on Amazon</a></div></div></article>';
       }
       const badge = it.badge ? '<span class="badge">' + it.badge + '</span>' : '';
       const wasNum = parseFloat(String(it.price || '').replace(/[^0-9.]/g, ''));
       const nowNum = parseFloat(String(it.salePrice || '').replace(/[^0-9.]/g, ''));
       const hasDiscount = !isNaN(wasNum) && !isNaN(nowNum) && nowNum < wasNum;
-      const price = it.salePrice ? '<div class="price-row"><span class="price">' + it.salePrice + '</span>' + (hasDiscount ? '<s>' + it.price + '</s>' : '') + '</div>' : '';
+      // PRICING 10% OFF (2026-11-22): a discounted product shows the sale
+      // price, the struck-through regular price, and a "10% off" pill.
+      const price = it.salePrice ? '<div class="price-row"><span class="price">' + it.salePrice + '</span>' + (hasDiscount ? '<s>' + it.price + '</s><span class="off-pill">10% off</span>' : '') + '</div>' : '';
       // Fix #1 (2026-11-21): grid cards show ONE button only — the primary
       // Buy. The paperback is a separate standalone card, and both options
       // stay on the product detail page. Do NOT re-add a secondary

@@ -313,6 +313,10 @@ a.chip{text-decoration:none}
 .card .price-row{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
 .card .price{font-family:'Archivo',sans-serif;font-size:20px;font-weight:800;color:var(--ink)}
 .card .price s{font-family:'Inter',sans-serif;font-size:14px;color:var(--muted);font-weight:400}
+/* 10% OFF PILL (2026-11-22): shown next to a discounted price on cards and
+   detail pages. Yellow (brand CTA) with dark ink text, so it reads as a
+   promotion and stays distinct from the purple card badge. */
+.off-pill{display:inline-flex;align-items:center;background:var(--yellow);color:var(--ink);font-family:'Archivo',sans-serif;font-size:12px;font-weight:800;padding:2px 8px;border-radius:999px;white-space:nowrap;line-height:1.5;vertical-align:middle}
 .card .actions{margin-top:auto;padding-top:8px}
 .card .actions .btn{width:100%;min-height:var(--btn-h)}
 /* Second button in a card (e.g. the Paperback on Amazon option): gap it from the primary Buy button. */
