@@ -2,10 +2,16 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#FFF9F0" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#2B2D42" media="(prefers-color-scheme: dark)">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name='impact-site-verification' value='d4447718-ae75-495d-b71d-3f2598cd2f9d'>
 <title>Page Not Found — JoJo’s Blocks</title>
+<link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<link rel="preconnect" href="https://pagead2.googlesyndication.com">
+<link rel="preconnect" href="https://s.pinimg.com">
 <meta name="description" content="The page you were looking for isn't here — the link may be old or mistyped. Return to the JoJo's Blocks homepage or browse the coloring book collection.">
 <meta name="author" content="JoJo’s Blocks">
 <meta name="robots" content="noindex, follow">
@@ -24,17 +30,8 @@
 <meta name="twitter:description" content="The page you were looking for isn't here — the link may be old or mistyped. Return to the JoJo's Blocks homepage or browse the coloring book collection.">
 <meta name="twitter:image" content="https://jojosblocks.online/assets/og-home.jpg">
 <meta name="twitter:image:alt" content="JoJo's Blocks — creative digital products and free resources. Covers of the four books: My First ABC Book, My First Animal Explorer, My Little Community Helpers and My Little Space Adventure.">
-<link rel="icon" type="image/png" sizes="48x48" href="assets/favicon-48x48.png">
-<link rel="icon" type="image/png" sizes="96x96" href="assets/favicon-96x96.png">
-<link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192x192.png">
-<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
-<link rel="preconnect" href="https://www.googletagmanager.com">
-<link rel="preconnect" href="https://pagead2.googlesyndication.com">
-<link rel="preconnect" href="https://s.pinimg.com">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/styles.css?v=11">
+<link rel="stylesheet" href="/assets/styles.css">
+
 <!-- Google tag (gtag.js) — Google Analytics 4, JoJo's Blocks (G-PYDBE3YS5S) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYDBE3YS5S"></script>
 <script>
@@ -67,80 +64,111 @@ src="https://ct.pinterest.com/v3/?event=init&tid=2614299974172&noscript=1" />
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
-
-<header id="site-header">
-  <div class="wrap nav">
-    <a class="logo" href="/" aria-label="JoJo’s Blocks — home"><img class="logo-mark" src="/assets/profile-logo.jpg" alt="JoJo's Blocks logo" width="42" height="42"> JoJo’s Blocks</a>
-    <button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">☰</button>
-    <nav aria-label="Main navigation">
-      <ul class="nav-menu" id="nav-menu">
-        <li><a href="/">Home</a></li>
-        <li><a href="/free-resources/">Free Resources</a></li>
-        <li><a href="/games/">Games &amp; Play</a></li>
-        <li class="has-dropdown">
-          <button class="dropdown-toggle" id="explore-toggle" aria-expanded="false" aria-haspopup="true" aria-controls="explore-menu">Products <span class="chev" aria-hidden="true">⌄</span></button>
-          <ul class="dropdown-menu" id="explore-menu">
-        <li><a href="/products/"><strong>Digital Products</strong><small>Coloring books, activity books and creative downloads</small></a></li>
-        <li><a href="/physical-products/"><strong>Physical Recommendations</strong><small>Art supplies, books, toys and tools we recommend</small></a></li>
-        <li><a href="/digital-tools/"><strong>Digital Tools</strong><small>AI tools, design software and learning platforms</small></a></li>
-          </ul>
-        </li>
-        <li><a href="/blog/">Blog</a></li>
-        <li><a href="/#about">About</a></li>
-        <li><a class="btn btn-primary btn-sm" href="mailto:jojobusiness0101@gmail.com">Contact</a></li>
-      </ul>
-    </nav>
+<!-- header -->
+<header class="site">
+  <div class="hd">
+    <a class="logo" href="/"><img class="logo-mark" src="/assets/profile-logo.jpg" alt="JoJo's Blocks logo" width="1000" height="1000">JoJo's Blocks</a>
+    <form class="search" id="headSearch" role="search" aria-label="Search the store" action="/search/" method="get">
+      <input id="searchInput" name="q" type="search" placeholder="Search books, free printables, games…" aria-label="Search books, free resources, games and articles" autocomplete="off">
+      <button type="submit">Search</button>
+      <div class="suggest" id="headSuggest" role="listbox" aria-label="Search suggestions"></div>
+    </form>
+    <button class="search-icon-btn" id="searchIconBtn" aria-label="Open search" aria-expanded="false">⌕</button>
   </div>
 </header>
 
+<!-- mobile search overlay -->
+<div class="search-overlay" id="searchOverlay" role="search" aria-label="Search the store">
+  <div class="so-row">
+    <form class="search" id="mobSearch" action="/search/" method="get" style="display:flex">
+      <input id="mobSearchInput" name="q" type="search" placeholder="Search books, free printables, games…" aria-label="Search books, free resources, games and articles" autocomplete="off">
+      <button type="submit">Search</button>
+    </form>
+    <button class="so-close" id="searchOverlayClose" aria-label="Close search">✕</button>
+  </div>
+  <div class="suggest" id="mobSuggest" role="listbox" aria-label="Search suggestions"></div>
+</div>
 
+<nav class="dept" aria-label="Departments"><div class="wrap" id="deptNav">
+  <a href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>Home</a>
+  <a href="/shop/own-products/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>Shop</a>
+  <a href="/shop/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>Our Products</a>
+  <span class="has-fly"><a href="/free-resources/" aria-haspopup="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M5 12v9h14v-9"/><path d="M12 8s-1.5-5-4.5-5C5 3 4 5 5.5 6.5 7 8 12 8 12 8zm0 0s1.5-5 4.5-5C19 3 20 5 18.5 6.5 17 8 12 8 12 8z"/></svg>Free resources</a><span class="flyout"><a href="/free-resources/category/coloring/">Coloring</a><a href="/free-resources/category/learn-to-draw/">Learn to draw</a><a href="/free-resources/category/worksheets/">Worksheets</a><a href="/free-resources/category/planners/">Planners</a><a href="/free-resources/category/printables/">Printables</a><a href="/free-resources/category/wallpapers/">Wallpapers</a><a href="/free-resources/category/ai/">AI</a><a href="/free-resources/category/stickers/">Stickers</a><a class="viewall" href="/free-resources/">View all →</a></span></span>
+  <span class="has-fly"><a href="/games/" aria-haspopup="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="11" rx="5.5"/><path d="M7.5 11v3.5M5.8 12.7h3.5"/><circle cx="16" cy="11.5" r="1" fill="currentColor" stroke="none"/><circle cx="18.2" cy="14" r="1" fill="currentColor" stroke="none"/></svg>Games & play</a><span class="flyout"><a href="/games/category/puzzle/">Puzzle</a><a href="/games/category/arcade/">Arcade</a><a href="/games/category/casual/">Casual</a><a href="/games/category/educational/">Educational</a><a class="viewall" href="/games/">View all →</a></span></span>
+  <span class="has-fly"><a href="/blog/" aria-haspopup="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>Blog</a><span class="flyout"><a href="/blog/category/guides/">Guides</a><a href="/blog/category/activities/">Activities</a><a href="/blog/category/fun-facts/">Fun facts</a><a class="viewall" href="/blog/">View all →</a></span></span>
+</div></nav>
 <main id="main">
-  <section class="section">
-    <div class="wrap center">
-      <span class="eyebrow">404 — Page not found</span>
-      <h1 style="margin-top:10px">This page isn&rsquo;t here.</h1>
-      <p class="lead">The link you followed may be broken, or the page may have moved. The good news: the books are all still here.</p>
-      <div class="card-actions" style="justify-content:center;margin-top:20px">
-        <a class="btn btn-primary" href="/">Back to the homepage</a>
-        <a class="btn btn-outline" href="/#books">Browse the collection</a>
-      </div>
-      <p style="margin-top:28px">Looking for a book?</p>
-      <p>
-        <a href="/books/my-first-abc-book.html">My First ABC Book</a> ·
-        <a href="/books/my-first-animal-explorer.html">My First Animal Explorer</a> ·
-        <a href="/books/my-little-community-helpers.html">My Little Community Helpers</a> ·
-        <a href="/books/my-little-space-adventure.html">My Little Space Adventure</a> ·
-        <a href="/books/complete-coloring-book-bundle.html">Complete Coloring Book Bundle</a>
-      </p>
-      <p class="modal-note">Still stuck? Email us at <a href="mailto:jojobusiness0101@gmail.com">jojobusiness0101@gmail.com</a> and tell us which page you were looking for.</p>
+  <section class="block"><div class="wrap" style="text-align:center;padding-top:56px;padding-bottom:56px">
+    <p style="font-size:14px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0 0 12px">404 — Page not found</p>
+    <h1 style="margin-top:10px">This page isn&rsquo;t here.</h1>
+    <p style="max-width:62ch;margin:14px auto 0;font-size:17px;line-height:1.6">The link you followed may be broken, or the page may have moved. The good news: the books are all still here.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px">
+      <a class="btn btn-primary" href="/">Back to the homepage</a>
+      <a class="btn btn-outline" href="/shop/own-products/">Browse the collection</a>
     </div>
-  </section>
+    <p style="margin-top:32px">Looking for a book?</p>
+    <p>
+      <a href="/books/my-first-abc-book.html">My First ABC Book</a> ·
+      <a href="/books/my-first-animal-explorer.html">My First Animal Explorer</a> ·
+      <a href="/books/my-little-community-helpers.html">My Little Community Helpers</a> ·
+      <a href="/books/my-little-space-adventure.html">My Little Space Adventure</a> ·
+      <a href="/books/complete-coloring-book-bundle.html">Complete Coloring Book Bundle</a>
+    </p>
+    <p style="color:var(--muted);font-size:15px;margin-top:24px">Still stuck? Email us at <a href="mailto:jojobusiness0101@gmail.com">jojobusiness0101@gmail.com</a> and tell us which page you were looking for.</p>
+  </div></section>
 </main>
-
-<footer id="contact">
-  <div class="wrap">
-    <div class="footer-simple">
-      <div class="footer-brand">
-        <a class="footer-logo" href="/"><img class="logo-mark" src="/assets/profile-logo.jpg" alt="" width="42" height="42"> JoJo’s Blocks</a>
-        <p>Digital products for creative learning — printable coloring books, workbooks, games, templates and resources for families, teachers and creators.</p>
-        <p>Contact: <a href="mailto:jojobusiness0101@gmail.com">jojobusiness0101@gmail.com</a></p>
-      </div>
-      <nav aria-label="Footer" class="footer-links">
-        <a href="/#about">About</a>
-        <a href="mailto:jojobusiness0101@gmail.com">Contact</a>
-        <a href="/privacy.html">Privacy Policy</a>
-        <a href="/terms.html">Terms &amp; Conditions</a>
-        <a class="social-link" href="https://www.pinterest.com/JoJosBlocks/" target="_blank" rel="noopener" aria-label="JoJo’s Blocks on Pinterest"><svg class="social-icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.39 18.592.026 11.985.026L12.017 0z"/></svg><span>Pinterest</span></a>
-      </nav>
+<footer class="site"><div class="wrap">
+  <div class="fgrid">
+    <div>
+      <h3>JoJo's Blocks</h3>
+      <p>Digital products, free resources and games for creating, learning and play.</p>
+      <p style="margin-top:12px"><a class="pin-link" href="https://www.pinterest.com/JoJosBlocks/" target="_blank" rel="noopener"><svg class="pin-icon" viewBox="0 0 24 24" width="19" height="19" aria-hidden="true" fill="#E60023"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.39 18.592.026 11.985.026L12.017 0z"/></svg>Pinterest — @JoJosBlocks</a></p>
     </div>
-    <div class="footer-bottom">
-      <span>© <span id="year">2026</span> JoJo’s Blocks. All rights reserved.</span>
-      <span>Prices shown in USD.</span>
+    <div>
+      <h4>Shop</h4>
+      <a href="/shop/">Our Products</a>
+      <a href="/free-resources/">Free Resources</a>
+      <a href="/games/">Games &amp; Play</a>
+      <a href="/blog/">Blog</a>
+    </div>
+    <div>
+      <h4>Help</h4>
+      <a href="mailto:jojobusiness0101@gmail.com">Contact us</a>
+      <a href="/#about">About</a>
+      <a href="/free-printables/">Free Taster Pack</a>
+    </div>
+    <div>
+      <h4>Legal</h4>
+      <a href="/privacy.html">Privacy Policy</a>
+      <a href="/terms.html">Terms &amp; Conditions</a>
+      <a href="/refund-policy.html">Refund Policy</a>
     </div>
   </div>
-</footer>
-
-
-<script src="/js/site.js?v=6"></script>
+    <!-- TrustBox script -->
+    <script type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
+    <!-- End TrustBox script -->
+    <!-- TrustBox widget - Review Collector -->
+    <div class="trustpilot-widget" data-locale="en-US" data-template-id="56278e9abfbbba0bdcd568bc" data-businessunit-id="6affd53b9898c9d06ed53e53" data-style-height="52px" data-style-width="100%">
+      <a href="https://www.trustpilot.com/review/jojosblocks.online" target="_blank" rel="noopener">Trustpilot</a>
+    </div>
+    <!-- End TrustBox widget -->
+    <!-- Fazier badge - Launched on Fazier -->
+    <a href="https://fazier.com/launches/jojosblocks.online" target="_blank"><img src="https://fazier.com/api/v1//public/badges/launch_badges.svg?badge_type=launched&theme=light" width=120 alt="Fazier badge" /></a>
+  <div class="fine">
+    <span>© 2026 JoJo's Blocks. All rights reserved.</span>
+    <span>Sales are completed securely on Gumroad.</span>
+  </div>
+</div></footer>
+<!-- bottom tab bar (mobile only) -->
+<div class="tabbar"><nav aria-label="Quick navigation">
+  <a href="/" data-tab="home"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg></span>Home</a>
+  <a href="/shop/own-products/" data-tab="shop"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg></span>Shop</a>
+  <a href="/shop/" data-tab="products"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg></span>Products</a>
+  <a href="/free-resources/" data-tab="free"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M5 12v9h14v-9"/><path d="M12 8s-1.5-5-4.5-5C5 3 4 5 5.5 6.5 7 8 12 8 12 8zm0 0s1.5-5 4.5-5C19 3 20 5 18.5 6.5 17 8 12 8 12 8z"/></svg></span>Resources</a>
+  <a href="/games/" data-tab="games"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="11" rx="5.5"/><path d="M7.5 11v3.5M5.8 12.7h3.5"/><circle cx="16" cy="11.5" r="1" fill="currentColor" stroke="none"/><circle cx="18.2" cy="14" r="1" fill="currentColor" stroke="none"/></svg></span>Games</a>
+  <a href="#" data-tab="search" id="tabSearch"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>Search</a>
+</nav></div>
+<script>window.JB={root:"",page:"404",kind:""};</script>
+<script src="/assets/site.js" defer></script>
 </body>
 </html>
