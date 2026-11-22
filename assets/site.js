@@ -10,6 +10,21 @@ const $ = s => document.querySelector(s);
 const $$ = s => Array.from(document.querySelectorAll(s));
 const money = n => '$' + Number(n).toFixed(2);
 
+/* ================= Phase 2 brand logos (audit E-01–E-03, 2026-11-22) ================
+   Crisp inline SVG marks for purchase buttons — one shared definition, used
+   by cardHtml below and by openModal. No logo files exist in the repo, so
+   the marks are drawn here (tasteful, recognisable, not random icons):
+   - Amazon: the smile arrow. Drawn in ink (#111827), NOT brand orange
+     (#FF9900): every Amazon button sits on the yellow #FACC15 CTA, where
+     orange-on-yellow is unreadable; the smile SHAPE is the Amazon mark,
+     and the adjacent "Buy on Amazon" label carries the name.
+   - Ko-fi: the red cup with a white heart (brand red #FF5E5B).
+   - Gumroad: black rounded square with a white bold "G" (brand black).
+   Each mark is 18px (var --icon-btn) via .btn .btn-logo in styles.css. */
+const LOGO_AMAZON = '<span class="btn-logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M3 13.8Q12 20.5 21 13.8" stroke="#111827" stroke-width="2.2" stroke-linecap="round"/><path d="M22.2 13.2 18.8 11.6 19.4 15.4Z" fill="#111827"/></svg></span>';
+const LOGO_KOFI = '<span class="btn-logo" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4.5 8h12v5.5a4.5 4.5 0 0 1-4.5 4.5H9A4.5 4.5 0 0 1 4.5 13.5V8Z" fill="#FF5E5B"/><path d="M16.5 9.5h1.6a2.6 2.6 0 0 1 0 5.2h-1.6" fill="none" stroke="#FF5E5B" stroke-width="2"/><path d="M9 11.5c.3-.8 1.2-.8 1.5 0 .3-.8 1.2-.8 1.5 0 .4.9-.2 1.7-1.5 2.5-1.3-.8-1.9-1.6-1.5-2.5Z" fill="#fff"/></svg></span>';
+const LOGO_GUMROAD = '<span class="btn-logo" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5.5" fill="#111827"/><text x="12" y="17.2" text-anchor="middle" font-family="Archivo,Arial,sans-serif" font-size="14.5" font-weight="900" fill="#fff">G</text></svg></span>';
+
 /* ================= GA4 custom events (D3, 2026-11-17) =================
    Ported from dev-repo js/site.js + js/main.js. Every handler fires only
    when window.gtag exists (the D1 tag block). No query text or personal
@@ -72,12 +87,14 @@ function openModal(id) {
   const getItems = p.get || [p.pages + ' printable A4 pages', 'Ages ' + p.ages, 'A4 PDF — US buyers print on Letter', 'Personal &amp; family use'];
   $('#modalGet').innerHTML = getItems.map(g => '<li>' + g + '</li>').join('');
   $('#modalBuy').href = p.gum;
+  $('#modalBuy').innerHTML = LOGO_GUMROAD + 'Buy ' + money(p.sale);
   $('#modalBuy').setAttribute('data-book', id);
   $('#modalBuy').setAttribute('data-location', 'modal');
   $('#modalPage').href = JB.root + p.page;
   $('#modalPageLink').href = JB.root + p.page;
   $('#mstickyPrice').innerHTML = money(p.sale) + (hasDiscount ? ' <s>' + money(p.price) + '</s>' : '');
   $('#mstickyBuy').href = p.gum;
+  $('#mstickyBuy').innerHTML = LOGO_GUMROAD + 'Buy ' + money(p.sale);
   $('#mstickyBuy').setAttribute('data-book', id);
   $('#mstickyBuy').setAttribute('data-location', 'modal');
   $('#modalRelated').innerHTML = Object.keys(PRODUCTS).filter(k => k !== id && !PRODUCTS[k].kofi && !PRODUCTS[k].amazon).map(k =>
@@ -253,7 +270,7 @@ if ($('#tabSearch')) $('#tabSearch').addEventListener('click', e => { e.preventD
           + '<div class="body">' + badge + '<h3><a href="' + JB.root + it.url + '">' + it.title + '</a></h3>'
           + '<p class="meta">' + it.format + ' · Instant download</p>'
           + '<div class="price-row"><span class="price">' + it.salePrice + '</span></div>'
-          + '<div class="actions"><a class="btn btn-accent" href="' + it.kofiUrl + '" target="_blank" rel="noopener">Buy on Ko-fi</a></div></div></article>';
+          + '<div class="actions"><a class="btn btn-accent" href="' + it.kofiUrl + '" target="_blank" rel="noopener">' + LOGO_KOFI + 'Buy on Ko-fi</a></div></div></article>';
       }
       if (it.type === 'paperback') {
         // Paperback (Amazon) product: its own card, separate from the digital
@@ -266,7 +283,7 @@ if ($('#tabSearch')) $('#tabSearch').addEventListener('click', e => { e.preventD
           + '<div class="body">' + badge + '<h3><a href="' + JB.root + it.url + '">' + it.title + '</a></h3>'
           + '<p class="meta">' + it.format + (it.ageLabel ? ' · ' + it.ageLabel : '') + '</p>'
           + '<div class="price-row"><span class="price">' + it.salePrice + '</span></div>'
-          + '<div class="actions"><a class="btn btn-accent" href="' + it.amazonUrl + '" target="_blank" rel="noopener" data-amazon="' + it.key + '" data-location="card">Get the Paperback on Amazon</a></div></div></article>';
+          + '<div class="actions"><a class="btn btn-accent" href="' + it.amazonUrl + '" target="_blank" rel="noopener" data-amazon="' + it.key + '" data-location="card">' + LOGO_AMAZON + 'Buy on Amazon</a></div></div></article>';
       }
       const badge = it.badge ? '<span class="badge">' + it.badge + '</span>' : '';
       const wasNum = parseFloat(String(it.price || '').replace(/[^0-9.]/g, ''));
@@ -278,7 +295,7 @@ if ($('#tabSearch')) $('#tabSearch').addEventListener('click', e => { e.preventD
       // stay on the product detail page. Do NOT re-add a secondary
       // Amazon button here.
       const buy = it.gumroadUrl
-        ? '<div class="actions"><a class="btn btn-accent" href="' + it.gumroadUrl + '" target="_blank" rel="noopener" data-book="' + it.key + '" data-location="card">Buy ' + it.salePrice + '</a></div>'
+        ? '<div class="actions"><a class="btn btn-accent" href="' + it.gumroadUrl + '" target="_blank" rel="noopener" data-book="' + it.key + '" data-location="card">' + LOGO_GUMROAD + 'Buy ' + it.salePrice + '</a></div>'
         : '';
       return '<article class="card" data-id="' + it.key + '" data-cat="' + it.filterKey + '" data-age-min="' + (it.ageMin ?? '') + '" data-age-max="' + (it.ageMax ?? '') + '" data-price="' + (it.salePriceNum ?? '') + '" data-pages="' + (it.pages || '') + '">'
         + '<div class="cover"><a href="' + JB.root + it.url + '" data-detail="' + it.key + '" aria-label="View ' + it.title.replace(/"/g, '&quot;') + ' details"><img src="' + it.thumb + '" alt="' + (it.coverAlt || it.title).replace(/"/g, '&quot;') + '" width="600" height="849" loading="lazy"></a></div>'
@@ -782,6 +799,18 @@ if (JB.page === 'search') {
 }
 
 /* ================= bottom tab bar ================= */
+/* Phase 2 (audit F-03): the dept bar is a horizontal scroll strip below
+   1024px — scroll the active tab into view on load so the current section
+   is never the one cut mid-label. Only the strip scrolls (scrollLeft on
+   the .wrap); the page itself never moves. The CSS fade (styles.css) hints
+   that more tabs exist. */
+(function () {
+  var wrap = document.querySelector('.dept .wrap');
+  var on = wrap && wrap.querySelector(':scope > a.on, :scope > .has-fly > a.on');
+  if (!wrap || !on) return;
+  var wr = wrap.getBoundingClientRect(), lr = on.getBoundingClientRect();
+  if (lr.right > wr.right || lr.left < wr.left) wrap.scrollLeft += lr.left - wr.left - 12;
+})();
 function setActiveTab(name) {
   $$('.tabbar a[data-tab]').forEach(a => a.classList.toggle('on', a.dataset.tab === name));
 }

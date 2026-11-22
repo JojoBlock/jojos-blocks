@@ -14,6 +14,42 @@
   --radius:10px; --radius-lg:16px; --radius-card:16px;
   --shadow:0 1px 2px rgba(17,18,20,.06);
   --shadow-lg:0 16px 48px rgba(17,18,20,.22);
+  /* ---- Phase 2 design-system tokens (2026-11-22) — one scale per
+     component family, measured from the Phase 1 audit (21 inconsistencies).
+     Breakpoints are documented here but CANNOT be used inside @media
+     (CSS custom properties do not work in media queries); the queries
+     below still use the literal values. ---- */
+  /* Typography */
+  --font-display:'Archivo',sans-serif; --font-body:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --text-xs:12px; --text-sm:13px; --text-base:15px; --text-lg:17px; --text-xl:20px; --text-2xl:26px; --text-3xl:34px;
+  --weight-bold:700; --weight-xbold:800; --weight-black:900;
+  /* Spacing */
+  --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px; --space-5:20px; --space-6:24px; --space-8:32px;
+  /* Radius + shadow */
+  --radius-sm:8px; --radius-pill:999px;
+  --shadow-md:0 6px 16px rgba(17,18,20,.10);
+  /* Layout */
+  --container-max:1200px;
+  /* Icons — box vs optical glyph size (audit A-03): the 26px tile box is
+     shared; sparse glyphs get a larger rendered size so all icons read
+     the same visual weight. */
+  --icon-box:26px; --icon-glyph:22px;
+  --icon-btn:18px; --icon-nav:18px; --icon-tab:24px;
+  /* Buttons — ONE height for every purchase button (audit E-04) */
+  --btn-h:44px;
+  /* Cover-size scale — ONE scale, growing with the viewport (audit B-02/C-01):
+     grid covers, hero covers, detail covers, FR tier covers. */
+  --cover-grid-w-sm:150px; /* horizontal grid cards, 641–767px */
+  --cover-grid-w:180px; /* horizontal grid cards ≥768px (was 150px — smaller than mobile) */
+  --cover-grid-w-lg:200px; /* horizontal grid cards ≥1024px */
+  --cover-hero-w:200px; /* hero slide cover (was fixed 140px at every width) */
+  --cover-hero-w-lg:220px;
+  --cover-detail-w:260px; /* detail cover card, mobile + tablet */
+  /* Aspect ratios */
+  --ar-cover:3/4; --ar-hero:600/849; --ar-fan:4/3; --ar-thumb-43:4/3; --ar-thumb-169:16/9; --ar-square:1/1; --ar-mockup:4/5;
+  --cover-tier-ar:3/4; /* FR tier covers (portrait variant) */
+  /* Breakpoints (documentation only — see note above) */
+  --bp-mobile:640px; --bp-tablet:768px; --bp-desktop:1024px; --bp-wide:1280px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -30,7 +66,13 @@ section.block{scroll-margin-top:80px}
 img{display:block;max-width:100%}
 .skip-link{position:absolute;left:-9999px;top:0;background:var(--ink);color:#fff;padding:10px 16px;z-index:200;border-radius:0 0 8px 0}
 .skip-link:focus{left:0;color:#fff}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:12px 20px;border-radius:9px;font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;border:1px solid transparent;text-decoration:none;text-align:center;transition:background .18s ease,border-color .18s ease,transform .12s ease,box-shadow .18s ease}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:var(--btn-h);padding:12px 20px;border-radius:9px;font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;line-height:1.2;border:1px solid transparent;text-decoration:none;text-align:center;white-space:nowrap;transition:background .18s ease,border-color .18s ease,transform .12s ease,box-shadow .18s ease}
+/* Phase 2 brand logos (audit E-01–E-03): crisp inline SVG marks on purchase
+   buttons — Amazon smile, Ko-fi cup, Gumroad G — one 18px mark, vertically
+   centred by the button's flex gap. The logo span is aria-hidden; the
+   button text stays the accessible label. */
+.btn .btn-logo{width:var(--icon-btn);height:var(--icon-btn);flex:none;display:inline-flex}
+.btn .btn-logo svg{width:100%;height:100%;display:block}
 .btn:hover{text-decoration:none}
 .btn-accent{background:var(--ink);color:#fff}
 .btn-ink{background:var(--ink);color:#fff}
@@ -77,7 +119,7 @@ a[data-amazon]{background:linear-gradient(180deg,#FFD07A,#F5A623);color:var(--in
   a[data-amazon]:hover{background:linear-gradient(180deg,#FFD98F,#F7B733);transform:translateY(-2px);box-shadow:0 4px 0 #B97A00,0 10px 22px rgba(17,18,20,.20),0 0 0 1px rgba(245,166,35,.45)}
 }
 a[data-amazon]:active{transform:translateY(1px);box-shadow:0 1px 0 #B97A00,0 2px 6px rgba(17,18,20,.14)}
-.btn-sm{min-height:44px;padding:10px 16px;font-size:14px}
+.btn-sm{min-height:var(--btn-h);padding:10px 16px;font-size:14px}
 /* ---------- header ---------- */
 header.site{position:sticky;top:0;z-index:70;background:rgba(252,250,246,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 .hd{max-width:1200px;margin:0 auto;padding:0 32px;height:72px;display:flex;align-items:center;gap:16px}
@@ -152,7 +194,8 @@ header.site{position:sticky;top:0;z-index:70;background:rgba(252,250,246,.97);ba
 .hero .trust b{color:var(--ink);font-weight:600}
 /* bundle spotlight */
 .spot{background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow);display:flex;gap:20px;align-items:flex-start}
-.spot .cover{flex:none;width:140px;aspect-ratio:600/849;background:var(--tile);border-radius:10px;overflow:hidden}
+.spot .cover{flex:none;width:var(--cover-hero-w);aspect-ratio:var(--ar-hero);background:var(--tile);border-radius:10px;overflow:hidden}
+@media (min-width:1280px){.spot .cover{width:var(--cover-hero-w-lg)}}
 .spot .cover img{width:100%;height:100%;object-fit:contain}
 /* FIX #3 (2026-11-22) — Slide 3 fan collage. The single 9:16 colouring page
    sat alone in a wide white frame (its art is a centred column with baked-in
@@ -161,7 +204,7 @@ header.site{position:sticky;top:0;z-index:70;background:rgba(252,250,246,.97);ba
    + planner + worksheet); no image file was created, cropped or re-exported.
    Each sheet keeps its natural portrait ratio with object-fit:contain, so
    nothing is cropped or stretched. */
-.hero-carousel .spot .cover.spot-fan-cover{width:220px;aspect-ratio:4/3;background:#F8F5EE}
+.hero-carousel .spot .cover.spot-fan-cover{width:260px;aspect-ratio:var(--ar-fan);background:#F8F5EE}
 .spot-fan{position:relative;width:100%;height:100%}
 .spot-fan .fan-sheet{position:absolute;width:40%;aspect-ratio:600/849;background:#fff;border-radius:3px;box-shadow:0 3px 10px rgba(17,24,39,.20);overflow:hidden}
 .spot-fan .fan-sheet img{width:100%;height:100%;object-fit:contain;display:block}
@@ -271,7 +314,7 @@ a.chip{text-decoration:none}
 .card .price{font-family:'Archivo',sans-serif;font-size:20px;font-weight:800;color:var(--ink)}
 .card .price s{font-family:'Inter',sans-serif;font-size:14px;color:var(--muted);font-weight:400}
 .card .actions{margin-top:auto;padding-top:8px}
-.card .actions .btn{width:100%;min-height:44px}
+.card .actions .btn{width:100%;min-height:var(--btn-h)}
 /* Second button in a card (e.g. the Paperback on Amazon option): gap it from the primary Buy button. */
 .card .actions .btn + .btn{margin-top:8px}
 .card.soon{border-style:dashed;background:transparent;box-shadow:none}
@@ -320,6 +363,12 @@ a.chip{text-decoration:none}
 .taster p{margin-bottom:16px}
 /* Real Books promo: the book cover is the point — let it stand taller than the free-taster thumb. */
 .taster.promo .art img{max-height:420px}
+/* Phase 2 (audit B-03): the mockup SVG is a 600×750 (4:5) render. The old
+   width:100% + max-height let the img box stretch to 614×420 @768 vs
+   475×420 @1280 — same height, different widths, letterboxed whitespace.
+   A fixed 4:5 box at 420px tall renders the mockup identically (336×420)
+   at every width. */
+.taster.promo .art img{width:auto;height:420px;max-height:420px;aspect-ratio:var(--ar-mockup);max-width:100%;margin:0 auto}
 /* Let the promo grid columns shrink below their content width — the tall
    cover's min-content width would otherwise force the grid wider than the
    page on narrow screens (scrollW 382 at 360px before this rule). */
@@ -450,8 +499,15 @@ footer.site p{font-size:14px}
 footer.site .fine{border-top:1px solid #26282C;padding-top:20px;font-size:13px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 /* ---------- bottom tab bar (mobile only) ---------- */
 .tabbar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:70;background:#fff;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
-.tabbar nav{display:grid;grid-template-columns:repeat(7,1fr)}
-.tabbar a{display:flex;flex-direction:column;align-items:center;gap:2px;font-family:'Archivo',sans-serif;font-size:12px;line-height:1.15;text-align:center;font-weight:700;color:var(--muted);padding:8px 0 6px;min-height:56px;position:relative}
+/* Phase 2 (audit F-02): the bar was 70px @390 vs 59px @768 because the
+   two-line labels ("Our Products", "Free resources") stretched it on the
+   phone. The labels are shortened in the markup (Products / Resources)
+   and the bar now has ONE fixed height at every width, with the links
+   vertically centred — 64px + safe-area, matching the body's
+   padding-bottom so no content hides under it. */
+.tabbar{height:calc(64px + env(safe-area-inset-bottom))}
+.tabbar nav{display:grid;grid-template-columns:repeat(6,1fr);height:100%}
+.tabbar a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:'Archivo',sans-serif;font-size:12px;line-height:1.15;text-align:center;font-weight:700;color:var(--muted);padding:6px 0;min-height:0;height:100%;position:relative}
 .tabbar a .ti{font-size:24px;line-height:1}
 .tabbar a.on{color:var(--ink)}
 .tabbar a.on::before{content:"";position:absolute;top:0;left:22%;right:22%;height:3px;background:var(--ink)}
@@ -531,9 +587,11 @@ body.tab-hidden .tabbar{display:none}
   .hero .cta-row .btn{flex:1 1 0;padding:10px 12px;font-size:14px;white-space:nowrap}
   .spot{padding:10px 12px;gap:10px}
   .spot .cover{width:96px}
-  /* Carousel covers stay larger on mobile (2026-11-20, preview): the showcase
-     visual is 140px, not the 96px of the old static spot. */
-  .hero-carousel .spot .cover{width:140px}
+  /* Carousel covers on mobile (Phase 2, 2026-11-22): the showcase visual
+     follows the FIX 2b vertical rule below (full width, max 200px) — the
+     old fixed 140px made the cover smaller on mobile than the slide it
+     sits in and froze it at one size on every width (audit C-01). */
+  .hero-carousel .spot .cover{width:100%;max-width:var(--cover-hero-w)}
   .spot .tag{margin-bottom:2px}
   .spot .smeta{margin-bottom:6px}
   .spot .ssave{margin:2px 0 4px}
@@ -633,6 +691,40 @@ body.tab-hidden .tabbar{display:none}
 /* Detail pages (book / resource / article / game / legal) */
 .detail{padding:30px 0 10px}
 .detail .dgrid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:36px;align-items:start}
+/* FIX #4 (2026-11-22) — detail-page horizontal overflow / zoom-out on mobile.
+   ROOT CAUSE (measured at 390px): the "You may also like" / "More in …"
+   .chips row inside the second .dgrid column is forced to flex-wrap:nowrap
+   with flex:none chips at ≤640px, so its min-content width is the full
+   unwrapped row (up to ~3100px). The ≤820px rule used grid-template-columns:1fr
+   (auto minimum = min-content), so the single track expanded to the chips'
+   min-content — 735px on the Reset Kit page, 970px on ABC, up to 1105px on
+   free-resource details — and the phone zoomed out to fit, leaving the
+   content on the left half with a white gap on the right. Hiding the .chips
+   row alone restores 390px; minmax(0,1fr) alone restores 390px. Both are
+   applied here, plus min-width:0 on the grid items and max-width:100% on
+   the .chips row so it scrolls internally instead of expanding its parent.
+   Sweep of all 139 detail pages: 86 overflowed before this fix (all 9 books,
+   all 8 shop details, 69 free-resource details); blog (39) and games (11)
+   were clean. The html/body overflow-x rule below is a safety net only,
+   never a substitute for the grid fix above. PHASE 2 (2026-11-22): the
+   safety net was overflow-x:hidden, which broke the sticky header on ALL
+   pages at ALL widths (header top −800px after scrolling 800px — hidden
+   makes html/body a scroll container, and position:sticky stops working).
+   Reworked to overflow-x:clip — clip prevents horizontal overflow WITHOUT
+   creating a scroll container, so sticky keeps working (probe-verified:
+   header top = 0 after scrolling 800px on home / Reset Kit / Shop at 390
+   and 1280, scrollWidth still == viewport). If clip ever misbehaves, the
+   grid fix alone holds 390px — the net can be dropped outright. */
+.detail .dgrid>*{min-width:0}
+.detail .chips{max-width:100%}
+html,body{max-width:100%;overflow-x:clip}
+@media (max-width:640px){
+  /* Detail CTAs stack full-width on mobile: easy to tap, never wider than
+     the screen. The Gumroad button is already vibrant yellow #FACC15 on
+     mobile (existing .btn-accent override); no colour change here. */
+  .detail .dbuy{flex-direction:column;align-items:stretch}
+  .detail .dbuy .btn{width:100%}
+}
 .detail .dcover img{width:100%;height:auto;display:block;border-radius:var(--radius-lg);border:1px solid var(--line)}
 .detail h1{font-family:'Archivo',sans-serif;font-weight:900;font-size:30px;line-height:1.1;letter-spacing:-.02em}
 .detail .dmeta{color:var(--muted);margin-top:8px}
@@ -675,13 +767,24 @@ body.tab-hidden .tabbar{display:none}
 /* Footer tagline */
 .fine .tagline{display:block;margin-top:6px}
 @media (max-width:820px){
-  .detail .dgrid{grid-template-columns:1fr;gap:20px}
-  .detail .dcover{max-width:420px}
-  /* Kit page only: a smaller cover on phones/tablets so the cover, price
-     and buy buttons all fit in the first viewport (bounce fix, Nov 2026).
-     The section padding, detail padding and breadcrumb are also trimmed on
-     this page only, so the sample button lands inside the fold. */
-  .detail.kit-hero .dcover{max-width:140px;margin:0 auto}
+  .detail .dgrid{grid-template-columns:minmax(0,1fr);gap:20px}
+  /* FIX #4 — cover card: a clean, centred, well-proportioned card, 260px on
+     phones/tablets, rounded corners (base rule) + soft shadow, instead of a
+     tiny shrunken thumbnail. Applies to every detail template (book, shop,
+     free-resource): the cover is a card, never full-bleed, never wider than
+     the screen. Phase 2 (audit G-01): width:100% makes the width explicit,
+     so the card holds 260px even if its image fails to load (margin:0 auto
+     alone let the card collapse to its content). */
+  .detail .dcover{width:100%;max-width:var(--cover-detail-w);margin:0 auto}
+  .detail .dcover img{box-shadow:0 10px 28px rgba(17,18,20,.16)}
+  /* Kit page only: the cover is 260px like every other detail cover (FIX #4,
+     owner brief 22 Nov 2026), replacing the 140px thumbnail from the Nov 2026
+     bounce fix. Trade-off, stated plainly: the taller cover pushes the buy
+     buttons below the first viewport on the kit page; the owner explicitly
+     asked for the larger, well-proportioned cover instead of the tiny
+     thumbnail. The section padding, detail padding and breadcrumb are still
+     trimmed on this page only. */
+  .detail.kit-hero .dcover{width:100%;max-width:var(--cover-detail-w);margin:0 auto}
   .detail.kit-hero{padding-top:8px}
   .detail.kit-hero .dbuy{margin-top:12px}
   .block.kit-top{padding-top:20px}
@@ -699,6 +802,13 @@ body.tab-hidden .tabbar{display:none}
 }
 /* Dept flyout needs visible overflow on desktop (bar only scrolls on small screens) */
 @media (min-width:1024px){.dept .wrap{overflow:visible}}
+/* Phase 2 (audit F-03): the dept bar is a horizontal scroll strip below
+   1024px — the 4th tab was cut mid-label ("Fr…") with no hint that more
+   tabs exist. A right-edge fade shows there is more to scroll; site.js
+   also scrolls the active tab into view on load. */
+@media (max-width:1023px){
+  .dept .wrap{-webkit-mask-image:linear-gradient(to right,#000 88%,transparent 100%);mask-image:linear-gradient(to right,#000 88%,transparent 100%)}
+}
 /* Mobile: dropdowns are disabled where the dept bar scrolls (below 1024px).
    Tapping a parent link navigates directly instead of opening its flyout:
    an open flyout extends the bar's scrollable area and shifts the bar, so
@@ -730,8 +840,14 @@ body.tab-hidden .tabbar{display:none}
 /* Board / sub-category grid + cards (1:1 square covers — browse by image). */
 .wp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:20px}
 .wp-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);position:relative;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;cursor:pointer}
-.wp-cover{aspect-ratio:1/1;background:var(--tile);overflow:hidden;flex:none}
+.wp-cover{aspect-ratio:var(--ar-square);background:var(--tile);overflow:hidden;flex:none}
 .wp-cover img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s ease}
+/* Phase 2 portrait variant (audit B-01): tier covers whose artwork is a
+   portrait page (colouring tiers, 2550×3300) get a 3/4 frame with contain
+   on the cream stage — 100% visible instead of ~23% cropped by the
+   square cover frame. Wallpaper board covers keep the square frame. */
+.wp-cover--portrait{aspect-ratio:var(--cover-tier-ar);background:#F8F5EE}
+.wp-cover--portrait img{object-fit:contain}
 .wp-body{padding:16px;display:flex;flex-direction:column;gap:4px;flex:1}
 .wp-body h3{font-size:17px;line-height:1.3}
 .wp-count{font-size:14px;color:var(--muted)}
@@ -811,9 +927,19 @@ body.tab-hidden .tabbar{display:none}
    Affiliate Buy buttons ([data-affiliate]) are excluded, as before. */
 
 /* Book detail sample pages (Helpers 3-5 + Christmas, 21 Nov 2026) */
-.detail .samples{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}
-.detail .samples img{width:100%;height:auto;display:block;border-radius:var(--radius);border:1px solid var(--line)}
-@media (max-width:640px){.detail .samples{grid-template-columns:repeat(2,1fr)}}
+/* Phase 2 fix (22 Nov): the Reset Kit samples sit OUTSIDE its .detail hero
+   container, so the old `.detail .samples` selector never matched them and
+   they stacked 1-column. Unscoped to plain `.samples` — used on 3 book
+   pages only, all of which want this grid. */
+.samples{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}
+.samples img{width:100%;height:auto;display:block;border-radius:var(--radius);border:1px solid var(--line)}
+/* Phase 2 (audit G-03): the Reset Kit "Look inside" samples used page-inline
+   CSS and rendered 1-column on mobile; they now use this shared grid, so
+   every book's samples are 3-col desktop / 2-col mobile. Figures keep
+   their captions via these shared rules. */
+.samples figure{margin:0}
+.samples figcaption{font-size:14px;color:var(--muted);margin-top:8px;text-align:center}
+@media (max-width:640px){.samples{grid-template-columns:repeat(2,1fr)}}
 .btn[disabled]{opacity:.6;cursor:not-allowed}
 
 @media (hover:none){
@@ -960,9 +1086,9 @@ body.fr-phase2 .fr-cat-head .fr-h-ic{display:inline-flex;flex:0 0 auto}
 body.fr-phase2 .fr-view-all{border:0;background:none;color:#7C3AED;font-family:inherit;font-weight:700;font-size:14px;cursor:pointer;padding:4px 0;white-space:nowrap}
 body.fr-phase2 .fr-view-all:hover{text-decoration:underline}
 /* --- Browse Categories: pastel icon tiles (5x2 mobile, single row desktop) --- */
-body.fr-phase2 #listingChips{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;overflow:visible;padding-bottom:0}
+body.fr-phase2 #listingChips{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;overflow:visible;padding-bottom:0}
 body.fr-phase2 #listingChips .chip{flex:none;padding:0}
-body.fr-phase2 #listingChips .cat-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:14px 4px 12px;border-radius:16px;border:1.5px solid transparent;background:var(--tile-bg,#EDE9FE);box-shadow:0 1px 3px rgba(17,18,20,.05);cursor:pointer;min-height:92px}
+body.fr-phase2 #listingChips .cat-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:14px 4px 12px;border-radius:16px;border:1.5px solid transparent;background:var(--tile-bg,#EDE9FE);box-shadow:0 1px 3px rgba(17,18,20,.05);cursor:pointer;min-height:92px;min-width:0}
 body.fr-phase2 #listingChips .cat-tile[data-filter="all"]{--tile-bg:#EDE9FE}
 body.fr-phase2 #listingChips .cat-tile[data-filter="coloring"]{--tile-bg:#FCE7F3}
 body.fr-phase2 #listingChips .cat-tile[data-filter="learn-to-draw"]{--tile-bg:#D1FAE5}
@@ -985,7 +1111,19 @@ body.fr-phase2 #listingChips .cat-tile[data-filter="wallpapers"] .cat-ic{color:#
 body.fr-phase2 #listingChips .cat-tile[data-filter="ai"] .cat-ic{color:#0E7490}
 body.fr-phase2 #listingChips .cat-tile[data-filter="stickers"] .cat-ic{color:#B45309}
 body.fr-phase2 #listingChips .cat-tile[data-filter="games"] .cat-ic{color:#6D28D9}
-body.fr-phase2 #listingChips .cat-tile .cat-label{display:block;font-size:12px;font-weight:700;line-height:1.2;text-align:center;color:#111214}
+body.fr-phase2 #listingChips .cat-tile .cat-label{display:block;font-size:12px;font-weight:700;line-height:1.2;text-align:center;color:#111214;overflow-wrap:break-word;max-width:100%}
+/* Phase 2 optical icon sizing (audit A-03): the 26px .cat-ic box is shared,
+   but the glyphs fill their 24×24 viewBox unevenly — the gamepad is a flat
+   wide shape (21.7×11.9px), the document narrow (17.3px), the pencil and
+   chip sparse diagonals. Each sparse glyph renders larger so all ten icons
+   read the same visual weight; the box stays 26×26, so tile layout is
+   untouched. Measured after the change in test-phase2.py. */
+body.fr-phase2 #listingChips .cat-tile[data-filter="games"] .cat-ic svg{width:32px;height:32px}
+body.fr-phase2 #listingChips .cat-tile[data-filter="worksheets"] .cat-ic svg{width:29px;height:29px}
+body.fr-phase2 #listingChips .cat-tile[data-filter="wallpapers"] .cat-ic svg{width:29px;height:29px}
+body.fr-phase2 #listingChips .cat-tile[data-filter="planners"] .cat-ic svg{width:29px;height:29px}
+body.fr-phase2 #listingChips .cat-tile[data-filter="learn-to-draw"] .cat-ic svg{width:30px;height:30px}
+body.fr-phase2 #listingChips .cat-tile[data-filter="ai"] .cat-ic svg{width:30px;height:30px}
 body.fr-phase2 #listingChips .chip[aria-pressed="true"]{background:var(--tile-bg,#EDE9FE);border-color:#111214;color:#111214;box-shadow:0 0 0 2px #fff,0 0 0 4px #7C3AED}
 body.fr-phase2 #listingChips .cat-tile[aria-pressed="true"] .cat-ic::after{content:"\2713";position:absolute;top:-9px;right:-9px;width:17px;height:17px;border-radius:50%;background:#7C3AED;color:#fff;font-size:11px;font-weight:800;line-height:17px;text-align:center;border:2px solid #fff}
 /* --- Sub-Categories: icon cards in a horizontal scroll row --- */
@@ -1009,7 +1147,7 @@ body.fr-phase2 .fr-section-head{font-family:'Archivo',sans-serif;font-size:20px;
 body.fr-phase2 .fr-section-head .fr-crumb-ic{display:inline-flex;width:26px;height:26px;flex:0 0 auto}
 body.fr-phase2 .fr-section-head .fr-crumb-ic svg{width:100%;height:100%}
 @media (min-width:1025px){
-  body.fr-phase2 #listingChips{grid-template-columns:repeat(10,1fr)}
+  body.fr-phase2 #listingChips{grid-template-columns:repeat(10,minmax(0,1fr))}
   body.fr-phase2 .res-grid{grid-template-columns:repeat(4,1fr)}
   body.fr-phase2 .fr-hero{padding:24px 0 24px 28px;gap:20px;margin-top:18px}
   body.fr-phase2 .fr-hero h1{font-size:40px}
@@ -1033,6 +1171,20 @@ body.fr-phase2 .fr-section-head .fr-crumb-ic svg{width:100%;height:100%}
   body.fr-phase2 .fr-sort-row{gap:8px}
   body.fr-phase2 #listingChips{gap:8px}
   body.fr-phase2 #listingChips .cat-tile{min-height:86px;padding:12px 3px 10px}
+  /* Phase 2 (audit A-01/A-02): with equal minmax(0,1fr) tracks the longest
+     single-word labels ("Worksheets", "Printables", ~70px at 12px) would
+     overflow their ~59px tile at 360px. 11px labels fit the equal tracks
+     without mid-word breaks at every mobile width. */
+  body.fr-phase2 #listingChips .cat-tile .cat-label{font-size:11px}
+}
+/* Phase 2 (audit A-01/A-02, label-break fix 2026-11-22): below 450px five
+   equal columns are too narrow for the longest single-word labels —
+   "Worksheets" (62px at 11px) broke mid-word ("Worksheet / s") in a 57px
+   label box. Four columns give ~77px tiles at 390px, so every label fits
+   at the readable 11px (no tiny 9px text) and every tile stays the same
+   86px height — "Learn to draw" still wraps, but cleanly between words. */
+@media (max-width:449px){
+  body.fr-phase2 #listingChips{grid-template-columns:repeat(4,minmax(0,1fr))}
 }
 
 /* ================= DESIGN SYSTEM 2026-11-21 (site-wide overhaul) =================
@@ -1100,13 +1252,13 @@ body.fr-phase2 .fr-section-head .fr-crumb-ic svg{width:100%;height:100%}
 /* --- Product grids: 2 columns, horizontal cards (cover left, details right) --- */
 .pgrid{grid-template-columns:repeat(2,1fr);gap:16px}
 .pgrid .card,#listingGrid .card{flex-direction:row;border-radius:var(--radius-card);overflow:hidden}
-.pgrid .card .cover,#listingGrid .card .cover{flex:0 0 96px;aspect-ratio:3/4;align-self:center;background:#F8F5EE}
+.pgrid .card .cover,#listingGrid .card .cover{flex:0 0 var(--cover-grid-w-sm);aspect-ratio:var(--ar-cover);align-self:center;background:#F8F5EE}
 .pgrid .card .cover img,#listingGrid .card .cover img{object-fit:contain}
 .pgrid .card .body,#listingGrid .card .body{padding:12px;gap:5px}
 .pgrid .card h3,#listingGrid .card h3{font-size:15px}
 .pgrid .card .meta,#listingGrid .card .meta{font-size:12px}
 .pgrid .card .price,#listingGrid .card .price{font-size:18px}
-.pgrid .card .actions .btn,#listingGrid .card .actions .btn{min-height:40px;padding:10px 12px;font-size:13px}
+.pgrid .card .actions .btn,#listingGrid .card .actions .btn{min-height:var(--btn-h);padding:10px 12px;font-size:13px}
 .pgrid .card .badge,#listingGrid .card .badge{top:8px;left:8px;font-size:11px;padding:3px 8px}
 /* Card secondary Amazon pill: white (mockup), not gold — primary Buy stays yellow */
 .pgrid .card .actions a[data-amazon].btn-ghost,#listingGrid .card .actions a[data-amazon].btn-ghost{background:#fff;border:1.5px solid var(--line);color:var(--ink);box-shadow:none}
@@ -1115,11 +1267,17 @@ body.fr-phase2 .fr-section-head .fr-crumb-ic svg{width:100%;height:100%}
 }
 @media (min-width:768px){
   .pgrid{gap:20px}
-  .pgrid .card .cover,#listingGrid .card .cover{flex-basis:150px}
+  .pgrid .card .cover,#listingGrid .card .cover{flex-basis:var(--cover-grid-w)}
   .pgrid .card h3,#listingGrid .card h3{font-size:17px}
   .pgrid .card .meta,#listingGrid .card .meta{font-size:14px}
   .pgrid .card .price,#listingGrid .card .price{font-size:20px}
   .pgrid .card .body,#listingGrid .card .body{padding:16px}
+}
+/* Phase 2 cover scale (audit B-02): grid covers keep growing with the
+   viewport — 180px at tablet, 200px at desktop — so they are never
+   smaller than the mobile cover again. */
+@media (min-width:1024px){
+  .pgrid .card .cover,#listingGrid .card .cover{flex-basis:var(--cover-grid-w-lg)}
 }
 
 /* --- Sort pills (homepage Our Products) --- */
@@ -1148,7 +1306,7 @@ body.fr-phase2 .fr-section-head .fr-crumb-ic svg{width:100%;height:100%}
   .kb-body h3{font-size:17px}
   .kb-list{font-size:13px}
   .kb-price{font-size:18px}
-  .kb-body .btn{min-height:40px;padding:10px 14px;font-size:13px}
+  .kb-body .btn{min-height:var(--btn-h);padding:10px 14px;font-size:13px}
 }
 
 /* --- Generic listing page-head: rounded warm banner --- */
@@ -1213,7 +1371,7 @@ body.fr-phase2 .fr-section-head .fr-crumb-ic svg{width:100%;height:100%}
   .pgrid .card h3,#listingGrid .card h3{font-size:12px;-webkit-line-clamp:4}
   .pgrid .card .meta,#listingGrid .card .meta{font-size:11px}
   .pgrid .card .price,#listingGrid .card .price{font-size:16px}
-  .pgrid .card .actions .btn,#listingGrid .card .actions .btn{min-height:36px;padding:8px 10px;font-size:12px}
+  .pgrid .card .actions .btn,#listingGrid .card .actions .btn{min-height:var(--btn-h);padding:10px 12px;font-size:13px}
   .pgrid .card .badge,#listingGrid .card .badge{font-size:10px;padding:2px 7px;top:6px;left:6px}
   /* Shop hero: smaller illustrations, vertically centred, wider text column */
   .ds-shop-hero{padding:18px 92px 18px 84px;min-height:124px}
@@ -1261,7 +1419,7 @@ body.fr-phase2 .fr-section-head .fr-crumb-ic svg{width:100%;height:100%}
   .pgrid .card .meta,#listingGrid .card .meta{font-size:12px}
   .pgrid .card .price,#listingGrid .card .price{font-size:17px}
   .pgrid .card .actions,#listingGrid .card .actions{margin-top:auto}
-  .pgrid .card .actions .btn,#listingGrid .card .actions .btn{min-height:40px;padding:10px 12px;font-size:13px;width:100%}
+  .pgrid .card .actions .btn,#listingGrid .card .actions .btn{min-height:var(--btn-h);padding:10px 12px;font-size:13px;width:100%}
   .pgrid .card .badge,#listingGrid .card .badge{top:8px;left:8px;font-size:11px;padding:3px 8px}
   /* Affiliate titles had their 2-line clamp removed (display:block); restore
      it on mobile so long titles (Watercolor…) don't run to 4+ lines. */
@@ -1295,6 +1453,11 @@ body.fr-phase2 .fr-section-head .fr-crumb-ic svg{width:100%;height:100%}
   .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;min-width:0}
   .chips::-webkit-scrollbar{display:none}
   .chips .chip{flex:none}
+  /* Phase 2 mobile compaction (audit D-01): filter chips were 44px tall
+     with desktop padding at every width — the 5-chip row ran ~628px in a
+     358px viewport. Smaller on mobile so more chips are visible per swipe.
+     FR tiles and sub-chips keep their own sizing (more specific rules). */
+  .chip{padding:8px 13px;font-size:13px;min-height:38px}
   /* A .chips row inside a .rail is a flex item: without an explicit flex
      basis it keeps its content width (484px) and overflows the rail instead
      of scrolling. Force it to fill the rail line and scroll internally. */
