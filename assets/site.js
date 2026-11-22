@@ -250,8 +250,9 @@ if ($('#tabSearch')) $('#tabSearch').addEventListener('click', e => { e.preventD
         const cover = it.thumb
           ? '<a href="' + detailUrl + '" aria-label="View ' + it.title.replace(/"/g, '&quot;') + ' details"><img src="' + it.thumb + '" alt="' + it.title.replace(/"/g, '&quot;') + '" loading="lazy"' + imgStyle + '></a>'
           : '<div class="af-brand">' + it.merchant + '<small>' + (it.type || '') + '</small></div>';
+        const hasReg = it.price && it.salePrice && it.price !== it.salePrice;
         const price = it.salePrice
-          ? '<div class="price-row"><span class="price">' + it.salePrice + '</span></div>' + (it.priceNote ? '<p class="af-price-note">' + it.priceNote + '</p>' : '')
+          ? '<div class="price-row"><span class="price">' + it.salePrice + (hasReg ? ' <s>' + it.price + '</s>' : '') + '</span></div>' + (it.priceNote ? '<p class="af-price-note">' + it.priceNote + '</p>' : '')
           : '';
         const coverStyle = it.coverStyle ? ' style="' + it.coverStyle + '"' : '';
         return '<article class="card af-card" data-id="' + it.key + '" data-cat="' + it.filterKey + '" data-price="' + (it.salePriceNum ?? '') + '">'
