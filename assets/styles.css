@@ -1313,6 +1313,13 @@ body.fr-phase2 .fr-section-head .fr-crumb-ic svg{width:100%;height:100%}
 .page-head{background:linear-gradient(135deg,#FFF6E0,#FFEFC2);border:1px solid #F3E3B3;border-radius:var(--radius-card);padding:28px;margin-top:18px}
 .page-head h1{font-size:34px}
 .page-head .lede{margin-top:10px;max-width:68ch}
+/* Fix #5 (22 Nov 2026): breathing room between the cream listing banner and the
+   filter pill row below it. Adjacent-sibling only, so it touches nothing else:
+   .rail directly under .page-head on Games, Blog and Free Resources
+   category/sub-category pages (260 files). Shop's pills already sit 32px below
+   its affiliate hero, and Our Products' chips already carry an 18px inline
+   margin, so those two need no change. Applies at every width. */
+.page-head + .rail{margin-top:16px}
 @media (max-width:640px){
   .page-head{padding:20px 16px;margin-top:12px}
   .page-head h1{font-size:28px}
