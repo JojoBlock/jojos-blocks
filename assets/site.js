@@ -303,9 +303,14 @@ if ($('#tabSearch')) $('#tabSearch').addEventListener('click', e => { e.preventD
         const wasNum = parseFloat(String(it.price || '').replace(/[^0-9.]/g, ''));
         const nowNum = parseFloat(String(it.salePrice || '').replace(/[^0-9.]/g, ''));
         const hasDiscount = !isNaN(wasNum) && !isNaN(nowNum) && nowNum < wasNum;
-        const price = it.salePrice ? '<div class="price-row"><span class="price">' + it.salePrice + '</span>' + (hasDiscount ? '<s>' + it.price + '</s><span class="off-pill">10% off</span>' : '') + '</div>' : '';
+        // FREE SAMPLER (2026-11-24): salePriceNum 0 means free — show "Free"
+        // with a "Get Free" button, no struck-through price and no off-pill.
+        const isFree = it.salePriceNum === 0;
+        const price = isFree
+          ? '<div class="price-row"><span class="price">Free</span></div>'
+          : (it.salePrice ? '<div class="price-row"><span class="price">' + it.salePrice + '</span>' + (hasDiscount ? '<s>' + it.price + '</s><span class="off-pill">10% off</span>' : '') + '</div>' : '');
         const buy = it.gumroadUrl
-          ? '<div class="actions"><a class="btn btn-accent" href="' + it.gumroadUrl + '" target="_blank" rel="noopener" data-book="' + it.key + '" data-location="card">' + LOGO_GUMROAD + 'Buy ' + it.salePrice + '</a></div>'
+          ? '<div class="actions"><a class="btn btn-accent" href="' + it.gumroadUrl + '" target="_blank" rel="noopener" data-book="' + it.key + '" data-location="card">' + LOGO_GUMROAD + (isFree ? 'Get Free' : 'Buy ' + it.salePrice) + '</a></div>'
           : '';
         return '<article class="card" data-id="' + it.key + '" data-cat="' + it.filterKey + '" data-price="' + (it.salePriceNum ?? '') + '">'
           + '<div class="cover"><a href="' + JB.root + it.url + '" aria-label="View ' + it.title.replace(/"/g, '&quot;') + ' details"><img src="' + it.thumb + '" alt="' + (it.coverAlt || it.title).replace(/"/g, '&quot;') + '" width="1200" height="1200" loading="lazy"></a></div>'
