@@ -293,6 +293,25 @@ if ($('#tabSearch')) $('#tabSearch').addEventListener('click', e => { e.preventD
           + pbPrice
           + '<div class="actions"><a class="btn btn-accent" href="' + it.amazonUrl + '" target="_blank" rel="noopener" data-amazon="' + it.key + '" data-location="card">' + LOGO_AMAZON + 'Buy on Amazon</a></div></div></article>';
       }
+      if (it.type === 'brushes' || it.type === 'templates') {
+        // Digital creative tools (Procreate brush packs / Canva templates, 2026-11-24):
+        // no product modal (the shared modal is book-specific), so the cover
+        // and title link straight to the detail page, and the primary button
+        // goes to Gumroad. The meta line is the format (brush/template count),
+        // not pages — these are not books.
+        const badge = it.badge ? '<span class="badge">' + it.badge + '</span>' : '';
+        const wasNum = parseFloat(String(it.price || '').replace(/[^0-9.]/g, ''));
+        const nowNum = parseFloat(String(it.salePrice || '').replace(/[^0-9.]/g, ''));
+        const hasDiscount = !isNaN(wasNum) && !isNaN(nowNum) && nowNum < wasNum;
+        const price = it.salePrice ? '<div class="price-row"><span class="price">' + it.salePrice + '</span>' + (hasDiscount ? '<s>' + it.price + '</s><span class="off-pill">10% off</span>' : '') + '</div>' : '';
+        const buy = it.gumroadUrl
+          ? '<div class="actions"><a class="btn btn-accent" href="' + it.gumroadUrl + '" target="_blank" rel="noopener" data-book="' + it.key + '" data-location="card">' + LOGO_GUMROAD + 'Buy ' + it.salePrice + '</a></div>'
+          : '';
+        return '<article class="card" data-id="' + it.key + '" data-cat="' + it.filterKey + '" data-price="' + (it.salePriceNum ?? '') + '">'
+          + '<div class="cover"><a href="' + JB.root + it.url + '" aria-label="View ' + it.title.replace(/"/g, '&quot;') + ' details"><img src="' + it.thumb + '" alt="' + (it.coverAlt || it.title).replace(/"/g, '&quot;') + '" width="1200" height="1200" loading="lazy"></a></div>'
+          + '<div class="body">' + badge + '<h3><a href="' + JB.root + it.url + '">' + it.title + '</a></h3>'
+          + '<p class="meta">' + it.format + '</p>' + price + buy + '</div></article>';
+      }
       const badge = it.badge ? '<span class="badge">' + it.badge + '</span>' : '';
       const wasNum = parseFloat(String(it.price || '').replace(/[^0-9.]/g, ''));
       const nowNum = parseFloat(String(it.salePrice || '').replace(/[^0-9.]/g, ''));
